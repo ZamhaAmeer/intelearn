@@ -1,2 +1,0 @@
-# intelearn
-Learning app project
