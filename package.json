@@ -13,6 +13,7 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-native": "0.81.5",
+    "react-native-element-dropdown": "^2.12.4",
     "react-native-safe-area-context": "~5.6.0",
     "react-native-screens": "~4.16.0",
     "web-vitals": "^2.1.4"
@@ -42,7 +43,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react": "^19.2.14",
+    "@types/react": "~19.1.10",
     "typescript": "~5.9.2"
   }
 }
