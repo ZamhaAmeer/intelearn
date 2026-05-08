@@ -33,7 +33,7 @@ export default function LoginPage() {
     <View style={styles.container}>
       {/* Purple Header Section using your curve image */}
       <ImageBackground
-        source={require("../../assets/images/header-curve.png")}
+        source={require("../src/assets/images/header-curve.png")}
         style={styles.headerBackground}
         resizeMode="stretch"
       >

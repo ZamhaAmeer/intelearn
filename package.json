@@ -1,11 +1,9 @@
 {
-<<<<<<< Updated upstream
   "name": "Intelearn",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@types/react": "~19.1.10",
     "expo": "~54.0.34",
     "expo-constants": "~18.0.13",
     "expo-linking": "~8.0.12",
@@ -14,18 +12,8 @@
     "react": "19.1.0",
     "react-native": "0.81.5",
     "react-native-safe-area-context": "~5.6.0",
-    "react-native-screens": "~4.16.0"
-=======
-  "name": "my-app",
-  "main": "node_modules/expo/AppEntry.js",
-  "version": "1.0.0",
-  "private": true,
-  "dependencies": {
-    "expo": "^55.0.23",
-    "react": "^19.1.0",
-    "react-native": "0.83.6",
+    "react-native-screens": "~4.16.0",
     "web-vitals": "^2.1.4"
->>>>>>> Stashed changes
   },
   "scripts": {
     "start": "expo start",
@@ -52,10 +40,7 @@
     ]
   },
   "devDependencies": {
-<<<<<<< Updated upstream
-=======
     "@types/react": "^19.2.14",
->>>>>>> Stashed changes
     "typescript": "~5.9.2"
   }
 }
