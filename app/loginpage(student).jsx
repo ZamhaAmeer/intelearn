@@ -49,7 +49,7 @@ export default function LoginPage() {
         </View>
         <View style={styles.logoContainer}>
           <Image
-            source={require("../../assets/images/logo.png")}
+            source={require("../src/assets/images/logo.png")}
             style={styles.logoImage}
             resizeMode="contain"
           />
