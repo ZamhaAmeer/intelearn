@@ -25,6 +25,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+   const [agree, setAgree] = useState(false);
 
    // Password validation states
   const isLengthValid = password.length >= 8;
@@ -34,53 +35,15 @@ export default function RegisterPage() {
 const showMatchError = confirmPassword.length > 0 && password !== confirmPassword;
 
 
-  const handleRegister = async () => {
-     // 1. Check if fields are empty
-  if (!email || !password || !confirmPassword) {
-    alert('Please fill in all required fields.');
-    return;
-  }
-
-  // 2. Check if passwords match
-  if (password !== confirmPassword) {
-    alert('Passwords do not match!');
-    return;
-  }
-  try {
-    // REPLACE the IP below with your actual IPv4 address
-    const response = await fetch('http://172.20.10.2:3000/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      // 3. Send the ACTUAL state variables, not the hardcoded test strings!
-      body: JSON.stringify({ 
-        email: email.trim().toLowerCase(), // .trim() removes accidental spaces
-        password: password, 
-        role: 'lecturer' // Since this navigates to the lecturer login, we hardcode 'lecturer' here
-      }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      console.log('Success! User registered:', data);
-      alert('Registration Successful!');
-    } else {
-      console.error('Registration failed:', data.error);
-      alert('Error: ' + data.error);
-    }
-  } catch (error) {
-    console.error('Network Error:', error);
-    alert('Could not connect to server');
-  }
+  const handleRegister = () => {
+    console.log("Registering:", fullName, email);
   };
 
   return (
       <View style={styles.container}>
         {/* Header Section */}
          <ImageBackground
-          source={require("../src/assets/images/header-curve.png")}
+          source={require("../../assets/images/header-curve.png")}
           style={styles.headerBackground}
           resizeMode="stretch"
         >
@@ -218,12 +181,25 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                               </Text>
                             </View>
                           </View>
+                          
               </View>
+               {/* Privacy Policy Checkbox Row */}
+                                      <View style={styles.privacyRow}>
+                                        <TouchableOpacity 
+                                          style={[styles.checkbox, agree && styles.checkboxChecked]} 
+                                          onPress={() => setAgree(!agree)}
+                                        >
+                                          {agree && <Ionicons name="checkmark" size={14} color="white" />}
+                                        </TouchableOpacity>
+                                        <Text style={styles.privacyText}>
+                                          I agree to the <Text style={styles.privacyLink}>Privacy Policy</Text>
+                                        </Text>
+                                      </View>
   
              
   
               {/* Register Button */}
-              <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
+              <TouchableOpacity style={[styles.registerButton, !agree && styles.registerButtonDisabled]} onPress={handleRegister} disabled={!agree}>
                 <Text style={styles.registerButtonText}>Register</Text>
               </TouchableOpacity>
   
@@ -309,6 +285,35 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#000",
   },
+  privacyRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 25,
+  },
+  checkbox: {
+    width: 20,
+    height: 20,
+    borderWidth: 1,
+    borderColor: '#CCC',
+    borderRadius: 4,
+    marginRight: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white'
+  },
+  checkboxChecked: {
+    backgroundColor: '#5D3FD3',
+    borderColor: '#5D3FD3',
+  },
+  privacyText: {
+    fontSize: 15,
+    color: "#444",
+  },
+  privacyLink: {
+    color: "#5D3FD3",
+    textDecorationLine: 'underline',
+  },
   registerButton: {
     backgroundColor: "#5D3FD3",
     borderRadius: 25,
@@ -320,6 +325,11 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
+  },
+  // Add this new style
+  registerButtonDisabled: {
+    backgroundColor: "#A794E8", // A lighter shade of the original purple
+    opacity: 0.6, // Makes it look faded/inactive
   },
   footer: {
     alignItems: "center",
