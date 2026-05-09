@@ -15,7 +15,7 @@ import {
     View
 } from 'react-native';
 import Markdown from 'react-native-markdown-display';
-import { getGeminiResponse } from '../../assets/API/gemini';
+import { getGeminiResponse } from '../src/assets/API/gemini';
 
 // Enable LayoutAnimation for Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
