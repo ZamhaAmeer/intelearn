@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "babel-preset-expo": "~54.0.10",
     "expo": "~54.0.34",
     "expo-constants": "~18.0.13",
     "expo-image-picker": "~17.0.11",
