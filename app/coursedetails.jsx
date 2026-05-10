@@ -76,7 +76,7 @@ const COURSES = [
   { id: '37', title: 'Web Application Development', tags: 'Full-stack • PHP • Frameworks', code: 'IS4102', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/WB.jpeg'), color: '#C5CAE9' },
   { id: '38', title: 'Operating Systems', tags: 'Processes • Memory • Concurrency', code: 'IS4103', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/OS.jpeg'), color: '#D1C4E9' },
   { id: '39', title: 'System Administration and Maintenance', tags: 'Linux • Scripts • Infrastructure', code: 'IS4104', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/SAS.jpeg'), color: '#B3E5FC' },
-  { id: '40', title: 'IT Procurement Management', tags: 'Contracts • Tenders • Sourcing', code: 'IS4105', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/IS4105.jpeg'), color: '#DCEDC8' },
+  { id: '40', title: 'IT Procurement Management', tags: 'Contracts • Tenders • Sourcing', code: 'IS4105', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/IS4105.jpeg'), color: '#DCEDC8' },
   { id: '41', title: 'Software Architecture', tags: 'Patterns • Microservices • Design', code: 'IS4106', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/IS4106.jpg'), color: '#FFECB3' },
   { id: '42', title: 'Professionalism & Ethics in Computing', tags: 'Code of Conduct • Ethics', code: 'IS4107', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/IS4107.jpg'), color: '#F0F4C3' },
   { id: '43', title: 'IS Strategies', tags: 'Alignment • Business Goals • Planning', code: 'IS4108', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/IS4108.jpg'), color: '#E1F5FE' },
