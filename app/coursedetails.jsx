@@ -103,7 +103,7 @@ HEAD
   { id: '58', title: 'Data Communication & Networks', tags: 'Protocols • Routing • Topologies', code: 'IS5111', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#F3E5F5' },
   { id: '59', title: 'Design Patterns & Anti-patterns', tags: 'GoF Patterns • Refactoring', code: 'IS5112', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E8F5E9' },
   { id: '60', title: 'Software Quality Assurance', tags: 'Testing • Metrics • Automation', code: 'IS5113', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E1F5FE' },
-  { id: '61', title: 'Data Mining & Analytics', tags: 'Big Data • Predictive • Algorithms', code: 'IS5114', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#F0F4C3' },
+  { id: '61', title: 'Data Mining & Analytics', tags: 'Big Data • Predictive • Algorithms', code: 'IS5114', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#F0F4C3' },
   // --- SEMESTER VI ---
   { id: '61a', title: 'Industrial Training', tags: 'Internship • Industry Exposure', code: 'IS6101', type: 'Compulsory', credits: '6 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#CFD8DC' },
 
