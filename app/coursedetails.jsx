@@ -44,7 +44,7 @@ const COURSES = [
   // --- SEMESTER II ---
   { id: '13', title: 'Object Oriented Programming', tags: 'Classes • Inheritance • Polymorphism', code: 'IS2101', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/OOP.jpg'), color: '#F0F4C3' },
   { id: '14', title: 'Object Oriented Programming Practicum', tags: 'Java • IDE • Real-world coding', code: 'IS2102', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/OOPPrac.jpeg'), color: '#D7CCC8' },
-  { id: '15', title: 'Emerging IS Technologies', tags: 'Cloud • DevOps • Blockchain', code: 'IS2103', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/EIS.jpeg'), color: '#BBDEFB' },
+  { id: '15', title: 'Emerging IS Technologies', tags: 'Cloud • DevOps • Blockchain', code: 'IS2103', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/EIS.jpeg'), color: '#BBDEFB' },
   { id: '16', title: 'Database Systems', tags: 'SQL • ER Modeling • Normalization', code: 'IS2104', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/DBS.jpeg'), color: '#C8E6C9' },
   { id: '17', title: 'Database Management Systems Practicum', tags: 'Queries • Joins • Implementation', code: 'IS2105', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/DBMS.jpg'), color: '#E1BEE7' },
   { id: '18', title: 'System Analysis & Design', tags: 'SDLC • UML • Planning', code: 'IS2106', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/SAD.jpeg'), color: '#FFCCBC' },
