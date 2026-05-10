@@ -35,6 +35,11 @@ const COURSES = [
   { id: '5', title: 'Computer System Organization', tags: 'CPU Architecture • Memory Hierarchy', code: 'IS1105', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#D1C4E9' },
   { id: '6', title: 'Foundations of Web Technologies', tags: 'HTML • CSS • Client-Side', code: 'IS1106', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/WB.jpeg'), color: '#FFE082' },
   { id: '7', title: 'Personal Productivity with IT', tags: 'Tools • Documentation • Efficiency', code: 'IS1107', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/PPIT.jpeg'), color: '#F8BBD0' },
+  { id: '8', title: 'Fundamentals of Mathematics', tags: 'Algebra • Logic • Matrices', code: 'IS1108', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/FOM.jpeg'), color: '#DCEDC8' },
+  { id: '9', title: 'Statistics & Probability Theory', tags: 'Data • Inference • Analysis', code: 'IS1109', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/Stat.png'), color: '#B2EBF2' },
+  { id: '10', title: 'Communication Skills I', tags: 'Written • Verbal • Professional', code: 'IS1110', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../../assets/images/comskills1.jpeg'), color: '#E1BEE7' },
+  { id: '11', title: 'Academic Integrity', tags: 'Ethics • Plagiarism • Research', code: 'IS1111', type: 'Compulsory (Non-GPA)', credits: '1 Credit', image: require('../../assets/images/AcIt1.jpeg'), color: '#FFECB3' },
+  { id: '12', title: 'General English I', tags: 'Grammar • Comprehension • Vocabulary', code: 'IS-EGP-1101', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../../assets/images/GE1.png'), color: '#C5CAE9' },
   { id: '8', title: 'Fundamentals of Mathematics', tags: 'Algebra • Logic • Matrices', code: 'IS1108', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/FOM.jpeg'), color: '#DCEDC8' },
   { id: '9', title: 'Statistics & Probability Theory', tags: 'Data • Inference • Analysis', code: 'IS1109', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/Stat.png'), color: '#B2EBF2' },
   { id: '10', title: 'Communication Skills I', tags: 'Written • Verbal • Professional', code: 'IS1110', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../src/assets/images/comskills1.jpeg'), color: '#E1BEE7' },
@@ -58,7 +63,11 @@ const COURSES = [
 
   // --- SEMESTER III ---
   { id: '26', title: 'Object Oriented Analysis & Design', tags: 'UML Modeling • Design Patterns', code: 'IS3101', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/OOAD.jpeg'), color: '#FFECB3' },
+
+  { id: '27', title: 'Data Structures & Algorithms', tags: 'Trees • Graphs • Sorting', code: 'IS3102', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/DSA.jpeg'), color: '#E1F5FE' },
+
   { id: '27', title: 'Data Structures & Algorithms', tags: 'Trees • Graphs • Sorting', code: 'IS3102', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/DSA.jpeg'), color: '#E1F5FE' },
+
   { id: '28', title: 'IT Governance', tags: 'COBIT • Compliance • Frameworks', code: 'IS3103', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/ITG.jpeg'), color: '#E8F5E9' },
   { id: '29', title: 'Software Engineering', tags: 'Lifecycles • Requirements • Testing', code: 'IS3104', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/SE.jpg'), color: '#F3E5F5' },
   { id: '30', title: 'IS Risk Management', tags: 'Assessment • Mitigation • Strategy', code: 'IS3105', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/ISRM.jpeg'), color: '#FFF3E0' },
@@ -67,7 +76,7 @@ const COURSES = [
   { id: '33', title: 'E-Business', tags: 'E-commerce • Strategy • Infrastructure', code: 'IS3108', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/EB.jpg'), color: '#E8EAF6' },
   { id: '34', title: 'Digital Innovation', tags: 'Transformation • Disruptive Tech', code: 'IS3109', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/DI.png'), color: '#F1F8E9' },
   { id: '35', title: 'Academic English I', tags: 'Research Writing • Comprehension', code: 'IS-EAP-2101', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../../assets/images/ACE1.jpg'), color: '#FFEBEE' },
-=======
+
   { id: '28', title: 'IT Governance', tags: 'COBIT • Compliance • Frameworks', code: 'IS3103', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/ITG.jpeg'), color: '#E8F5E9' },
   { id: '29', title: 'Software Engineering', tags: 'Lifecycles • Requirements • Testing', code: 'IS3104', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/SE.jpg'), color: '#F3E5F5' },
   { id: '30', title: 'IS Risk Management', tags: 'Assessment • Mitigation • Strategy', code: 'IS3105', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/ISRM.jpeg'), color: '#FFF3E0' },
@@ -76,7 +85,7 @@ const COURSES = [
   { id: '33', title: 'E-Business', tags: 'E-commerce • Strategy • Infrastructure', code: 'IS3108', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/EB.jpg'), color: '#E8EAF6' },
   { id: '34', title: 'Digital Innovation', tags: 'Transformation • Disruptive Tech', code: 'IS3109', type: 'Compulsory', credits: '2 Credits', image: require('../.src/assets/images/DI.png'), color: '#F1F8E9' },
   { id: '35', title: 'Academic English I', tags: 'Research Writing • Comprehension', code: 'IS-EAP-2101', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../src/assets/images/ACE1.jpg'), color: '#FFEBEE' },
->>>>>>> 8bf2b91bc466f2254a31b84c6b99946b1d3fda0c
+
 
   // --- SEMESTER IV ---
   { id: '36', title: 'IT Auditing', tags: 'Compliance • Controls • Frameworks', code: 'IS4101', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/IT-audit.jpg'), color: '#F8BBD0' },
