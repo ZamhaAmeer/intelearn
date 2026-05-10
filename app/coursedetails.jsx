@@ -52,8 +52,8 @@ const COURSES = [
   { id: '20', title: 'Human Computer Interaction', tags: 'UI/UX • Usability • Design', code: 'IS2108', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/HCI.jpg'), color: '#B3E5FC' },
   { id: '21', title: 'Information Assurance & Security', tags: 'CIA Triad • Encryption • Threats', code: 'IS2109', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/images.jpeg'), color: '#D1C4E9' },
   { id: '22', title: 'Software Project Initiation & Planning', tags: 'Project Charter • WBS • Scoping', code: 'IS2110', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/SIP.jpg'), color: '#FFCDD2' },
-  { id: '23', title: 'Advanced Mathematics', tags: 'Calculus • Graph Theory', code: 'IS2111', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/AdvM.jpg'), color: '#F5F5F5' },
-  { id: '24', title: 'Communication Skills II', tags: 'Presentations • Reports • Memos', code: 'IS2112', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../../assets/images/comskills2.png'), color: '#E0F2F1' },
+  { id: '23', title: 'Advanced Mathematics', tags: 'Calculus • Graph Theory', code: 'IS2111', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/AdvM.jpg'), color: '#F5F5F5' },
+  { id: '24', title: 'Communication Skills II', tags: 'Presentations • Reports • Memos', code: 'IS2112', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../src/assets/images/comskills2.png'), color: '#E0F2F1' },
   { id: '25', title: 'General English II', tags: 'Business Comm • Advanced Grammar', code: 'IS-EGP-1201', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../../assets/images/GE2.jpg'), color: '#FFF9C4' },
 
   // --- SEMESTER III ---
