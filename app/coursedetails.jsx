@@ -54,7 +54,7 @@ HEAD
 HEAD
   { id: '18', title: 'System Analysis & Design', tags: 'SDLC • UML • Planning', code: 'IS2106', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/SAD.jpeg'), color: '#FFCCBC' },
 
-  { id: '19', title: 'Social & Professional Issues', tags: 'Ethics • Law • Intellectual Property', code: 'IS2107', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/SPI.jpg'), color: '#CFD8DC' },
+  { id: '19', title: 'Social & Professional Issues', tags: 'Ethics • Law • Intellectual Property', code: 'IS2107', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/SPI.jpg'), color: '#CFD8DC' },
   { id: '20', title: 'Human Computer Interaction', tags: 'UI/UX • Usability • Design', code: 'IS2108', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/HCI.jpg'), color: '#B3E5FC' },
   { id: '21', title: 'Information Assurance & Security', tags: 'CIA Triad • Encryption • Threats', code: 'IS2109', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/images.jpeg'), color: '#D1C4E9' },
   { id: '22', title: 'Software Project Initiation & Planning', tags: 'Project Charter • WBS • Scoping', code: 'IS2110', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/SIP.jpg'), color: '#FFCDD2' },
