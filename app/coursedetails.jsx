@@ -104,15 +104,14 @@ HEAD
   { id: '59', title: 'Design Patterns & Anti-patterns', tags: 'GoF Patterns • Refactoring', code: 'IS5112', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#E8F5E9' },
   { id: '60', title: 'Software Quality Assurance', tags: 'Testing • Metrics • Automation', code: 'IS5113', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#E1F5FE' },
   { id: '61', title: 'Data Mining & Analytics', tags: 'Big Data • Predictive • Algorithms', code: 'IS5114', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#F0F4C3' },
-
   // --- SEMESTER VI ---
-  { id: '61a', title: 'Industrial Training', tags: 'Internship • Industry Exposure', code: 'IS6101', type: 'Compulsory', credits: '6 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#CFD8DC' },
+  { id: '61a', title: 'Industrial Training', tags: 'Internship • Industry Exposure', code: 'IS6101', type: 'Compulsory', credits: '6 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#CFD8DC' },
 
   // --- SEMESTER VII ---
-  { id: '62', title: 'Research Methodologies', tags: 'Research Design • Literature Review', code: 'IS7101', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#E1BEE7' },
-  { id: '63', title: 'IT Law', tags: 'Cyber Law • Regulations • Policy', code: 'IS7102', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/CSO.jpeg'), color: '#FFE082' },
-  { id: '64', title: 'Business Process Simulation', tags: 'Queuing Theory • Modeling Tools', code: 'IS7103', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#C8E6C9' },
-  { id: '65', title: 'Enterprise Modelling Ontologies', tags: 'Semantic Web • Knowledge Representation', code: 'IS7104', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#FFCCBC' },
+  { id: '62', title: 'Research Methodologies', tags: 'Research Design • Literature Review', code: 'IS7101', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E1BEE7' },
+  { id: '63', title: 'IT Law', tags: 'Cyber Law • Regulations • Policy', code: 'IS7102', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#FFE082' },
+  { id: '64', title: 'Business Process Simulation', tags: 'Queuing Theory • Modeling Tools', code: 'IS7103', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#C8E6C9' },
+  { id: '65', title: 'Enterprise Modelling Ontologies', tags: 'Semantic Web • Knowledge Representation', code: 'IS7104', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#FFCCBC' },
   { id: '66', title: 'Organizational Behavior & Management', tags: 'Leadership • Culture • Motivation', code: 'IS7105', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/CSO.jpeg'), color: '#B3E5FC' },
   { id: '67', title: 'Cloud Computing', tags: 'AWS • Azure • Microservices', code: 'IS7106', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#D1C4E9' },
   { id: '68', title: 'Mobile Application Development', tags: 'Android • iOS • Cross-platform', code: 'IS7107', type: 'Elective', credits: '1 Credit', image: require('../../assets/images/CSO.jpeg'), color: '#FFCDD2' },
