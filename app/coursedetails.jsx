@@ -95,7 +95,7 @@ HEAD
   { id: '51', title: 'Business Process Management', tags: 'Workflows • Modeling • Optimization', code: 'IS5105', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E8EAF6' },
   { id: '52', title: 'UI/UX Practicum', tags: 'Prototyping • Wireframes • Usability', code: 'IS5106', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#FFF3E0' },
   { id: '53', title: 'Project Management Practicum', tags: 'Scheduling • Resources • Execution', code: 'IS5107', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#E0F7FA' },
-  { id: '54', title: 'Business Intelligence', tags: 'Data Mining • Analytics • Dashboards', code: 'IS5108', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#F1F8E9' },
+  { id: '54', title: 'Business Intelligence', tags: 'Data Mining • Analytics • Dashboards', code: 'IS5108', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#F1F8E9' },
   { id: '55', title: 'IS Project for Community', tags: 'Social Impact • Real-world Sol', code: 'IS5109', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/CSO.jpeg'), color: '#FBE9E7' },
   { id: '56', title: 'Business English', tags: 'Corporate Comm • Proposals', code: 'IS-EBP-3101', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#EFEBE9' },
   { id: '57', title: 'Advanced Database Systems', tags: 'Distributed Data • Query Optimization', code: 'IS5110', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#FFF8E1' },
