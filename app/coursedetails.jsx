@@ -131,7 +131,7 @@ HEAD
   { id: '80', title: 'Supply Chain Management', tags: 'Logistics • Operations • Distribution', code: 'IS8107', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#E0F7FA' },
   { id: '81', title: 'Advanced Computer Networks', tags: 'IPv6 • Routing • Network Sec', code: 'IS8108', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#FFF8E1' },
   { id: '82', title: 'Process Mining', tags: 'Event Logs • Optimization • Discovery', code: 'IS8109', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#F3E5F5' },
-  { id: '83', title: 'Digital Business Model', tags: 'Disruption • E-Commerce • Value', code: 'IS8110', type: 'Elective', credits: '1 Credit', image: require('../../assets/images/CSO.jpeg'), color: '#E1F5FE' },
+  { id: '83', title: 'Digital Business Model', tags: 'Disruption • E-Commerce • Value', code: 'IS8110', type: 'Elective', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#E1F5FE' },
   { id: '84', title: 'Game Development', tags: 'Unity • 3D Design • Physics', code: 'IS8111', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#F0F4C3' }
 ];
 
