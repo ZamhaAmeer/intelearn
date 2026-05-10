@@ -1,5 +1,11 @@
 {
-  "plugins": [
-    "expo-router"
-  ]
+  "expo": {
+    "name": "Intelearn",
+    "slug": "Intelearn",
+    "version": "1.0.0",
+    "scheme": "myapp",
+    "plugins": [
+      "expo-router"
+    ]
+  }
 }
