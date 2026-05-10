@@ -119,7 +119,7 @@ HEAD
   { id: '70', title: 'Geographical Information Systems', tags: 'Mapping • Spatial Data • ArcGIS', code: 'IS7109', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#DCEDC8' },
   { id: '71', title: 'Statistical Distribution & Inferences', tags: 'Probability • Testing • Data', code: 'IS7110', type: 'Elective', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#E0F2F1' },
   { id: '72', title: 'Advanced Programming Practicum', tags: 'Optimization • Problem Solving', code: 'IS7111', type: 'Elective', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#FFF9C4' },
-  { id: '73', title: 'Machine Learning', tags: 'AI • Deep Learning • Neural Nets', code: 'IS7112', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#E1F5FE' },
+  { id: '73', title: 'Machine Learning', tags: 'AI • Deep Learning • Neural Nets', code: 'IS7112', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E1F5FE' },
 
   // --- SEMESTER VIII ---
   { id: '74', title: 'Research Project in IS', tags: 'Thesis • Investigation • Discovery', code: 'IS8101', type: 'Compulsory', credits: '8 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#FCE4EC' },
