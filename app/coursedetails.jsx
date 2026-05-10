@@ -128,7 +128,7 @@ HEAD
   { id: '77', title: 'Scientific Communication', tags: 'Publications • Journals • Writing', code: 'IS8104', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#E8EAF6' },
   { id: '78', title: 'IS Economics', tags: 'Markets • Tech Value • Investment', code: 'IS8105', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#F1F8E9' },
   { id: '79', title: 'Computer System Security', tags: 'Defense • Cyber • Access Control', code: 'IS8106', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#FBE9E7' },
-  { id: '80', title: 'Supply Chain Management', tags: 'Logistics • Operations • Distribution', code: 'IS8107', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#E0F7FA' },
+  { id: '80', title: 'Supply Chain Management', tags: 'Logistics • Operations • Distribution', code: 'IS8107', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E0F7FA' },
   { id: '81', title: 'Advanced Computer Networks', tags: 'IPv6 • Routing • Network Sec', code: 'IS8108', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#FFF8E1' },
   { id: '82', title: 'Process Mining', tags: 'Event Logs • Optimization • Discovery', code: 'IS8109', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#F3E5F5' },
   { id: '83', title: 'Digital Business Model', tags: 'Disruption • E-Commerce • Value', code: 'IS8110', type: 'Elective', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#E1F5FE' },
