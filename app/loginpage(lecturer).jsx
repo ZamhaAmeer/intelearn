@@ -112,7 +112,7 @@ export default function LoginPage() {
         </View>
 
         {/* Login Button */}
-        <TouchableOpacity style={styles.loginButton} onPress={() => router.push("./coursedetails")}>
+        <TouchableOpacity style={styles.loginButton} onPress={() => router.push("/coursedetailsforlecturer")}>
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
 
