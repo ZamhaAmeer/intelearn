@@ -123,7 +123,7 @@ HEAD
 
   // --- SEMESTER VIII ---
   { id: '74', title: 'Research Project in IS', tags: 'Thesis • Investigation • Discovery', code: 'IS8101', type: 'Compulsory', credits: '8 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#FCE4EC' },
-  { id: '75', title: 'Business/IT Alignment', tags: 'Strategy • Operations • Sync', code: 'IS8102', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#E8F5E9' },
+  { id: '75', title: 'Business/IT Alignment', tags: 'Strategy • Operations • Sync', code: 'IS8102', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E8F5E9' },
   { id: '76', title: 'Human Resource Management', tags: 'Recruitment • Performance • Culture', code: 'IS8103', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#FFF3E0' },
   { id: '77', title: 'Scientific Communication', tags: 'Publications • Journals • Writing', code: 'IS8104', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/CSO.jpeg'), color: '#E8EAF6' },
   { id: '78', title: 'IS Economics', tags: 'Markets • Tech Value • Investment', code: 'IS8105', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#F1F8E9' },
