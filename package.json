@@ -1,11 +1,10 @@
 {
-  "name": "Intelearn",
+  "name": "intelearn",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
-    "babel-preset-expo": "~54.0.10",
     "expo": "~54.0.34",
     "expo-constants": "~18.0.13",
     "expo-image-picker": "~17.0.11",
@@ -50,7 +49,7 @@
   },
   "devDependencies": {
     "@types/react": "~19.1.10",
-    "babel-preset-expo": "^55.0.21",
+    "babel-preset-expo": "~54.0.10",
     "typescript": "~5.9.2"
   }
 }
