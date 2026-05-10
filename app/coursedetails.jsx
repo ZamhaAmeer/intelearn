@@ -28,7 +28,7 @@ const { width, height } = Dimensions.get('window');
 // 1. DATA DEFINITION
 const COURSES = [
   // --- SEMESTER I ---
-  { id: '1', title: 'Fundamentals of IS', tags: 'Digital Transformation • Business Process', code: 'IS1101', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/FIS.jpg'), color: '#FFCCBC' },
+  { id: '1', title: 'Fundamentals of IS', tags: 'Digital Transformation • Business Process', code: 'IS1101', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/FIS.jpg'), color: '#FFCCBC' },
   { id: '2', title: 'Structured Programming(T)', tags: 'C Syntax • Logic & Control', code: 'IS1102', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/STRT.jpg'), color: '#C8E6C9' },
   { id: '3', title: 'Structured Programming(P)', tags: 'Compilation • Data Structures', code: 'IS1103', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/STRP.jpg'), color: '#CFD8DC' },
   { id: '4', title: 'Theories of IS', tags: 'Organizational Behavior • Frameworks', code: 'IS1104', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/TIS.jpg'), color: '#B3E5FC' },
