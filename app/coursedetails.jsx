@@ -109,7 +109,7 @@ HEAD
 
   // --- SEMESTER VII ---
   { id: '62', title: 'Research Methodologies', tags: 'Research Design • Literature Review', code: 'IS7101', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E1BEE7' },
-  { id: '63', title: 'IT Law', tags: 'Cyber Law • Regulations • Policy', code: 'IS7102', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/CSO.jpeg'), color: '#FFE082' },
+  { id: '63', title: 'IT Law', tags: 'Cyber Law • Regulations • Policy', code: 'IS7102', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#FFE082' },
   { id: '64', title: 'Business Process Simulation', tags: 'Queuing Theory • Modeling Tools', code: 'IS7103', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#C8E6C9' },
   { id: '65', title: 'Enterprise Modelling Ontologies', tags: 'Semantic Web • Knowledge Representation', code: 'IS7104', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#FFCCBC' },
   { id: '66', title: 'Organizational Behavior & Management', tags: 'Leadership • Culture • Motivation', code: 'IS7105', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/CSO.jpeg'), color: '#B3E5FC' },
