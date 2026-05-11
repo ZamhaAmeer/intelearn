@@ -195,7 +195,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                                           I agree to the{" "}
                                           <Text
                                            style={styles.privacyLink}
-                                           onPress={() => router.push("/privacy")}
+                                           onPress={() => router.push("/privacyregstudent")}
                                           >
                                            Privacy Policy
                                             </Text>
