@@ -73,12 +73,7 @@ export default function PrivacyScreen() {
         <View style={styles.topPurpleHeader}>
         <SafeAreaView>
           <View style={styles.headerTopRow}>
-            <TouchableOpacity>
-              <Feather name="menu" size={24} color="white" />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Feather name="bell" size={24} color="white" />
-            </TouchableOpacity>
+            
           </View>
         </SafeAreaView>
       </View>
