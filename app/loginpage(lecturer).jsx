@@ -5,6 +5,9 @@ import {
     Dimensions,
     Image,
     ImageBackground,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
     StyleSheet,
     Text,
     TextInput,
@@ -20,6 +23,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [isModalVisible, setModalVisible] = useState(false);
   const router = useRouter();
@@ -30,107 +34,132 @@ export default function LoginPage() {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Purple Header Section using your curve image */}
-      <ImageBackground
-        source={require("../src/assets/images/header-curve.png")}
-        style={styles.headerBackground}
-        resizeMode="stretch"
+      <KeyboardAvoidingView 
+      style={{ flex: 1, backgroundColor: "transparent" }} 
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-
-        {/* 3. Back Button positioned absolutely */}
-        <View style={styles.backButtonContainer}>
-          <TouchableOpacity 
-            onPress={() => router.replace('/choosingpage')} // Goes back to Choosing Page
-            style={styles.backButton}
-          >
-            <Ionicons name="chevron-back" size={30} color="white" />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.logoContainer}>
-          <Image
-            source={require("../src/assets/images/logo.png")}
-            style={styles.logoImage}
-            resizeMode="contain"
-          />
-          <Text style={styles.logoText}>INTELEARN</Text>
-        </View>
-      </ImageBackground>
-      
-
-
-      <View style={styles.content}>
-        {/* Welcome Section */}
-        <View style={styles.welcomeSection}>
-          <Text style={styles.welcomeTitle}>Welcome to INTELEARN</Text>
-          <Text style={styles.welcomeSubtitle}>Learn smart, Grow fast</Text>
-        </View>
-
-        {/* Login Form Card */}
-        <View style={styles.formCard}>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Email Address*</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="example@email.com"
-              placeholderTextColor="#A0A0A0"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Password*</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="@#$han&"
-              placeholderTextColor="#A0A0A0"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={true}
-            />
-          </View>
-
-          {/* Remember Me & Forgot Password */}
-          <View style={styles.row}>
+      <View style={styles.container}>
+        {/* Purple Header Section using your curve image */}
+        <ImageBackground
+          source={require("../src/assets/images/header-curve.png")}
+          style={styles.headerBackground}
+          resizeMode="stretch"
+        >
+  
+          {/* 3. Back Button positioned absolutely */}
+          <View style={styles.backButtonContainer}>
             <TouchableOpacity 
-              style={styles.checkboxRow} 
-              onPress={() => setRememberMe(!rememberMe)}
+              onPress={() => router.replace('/choosingpage')} // Goes back to Choosing Page
+              style={styles.backButton}
             >
-              <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
-                {rememberMe && <Text style={styles.checkmark}>✓</Text>}
-              </View>
-              <Text style={styles.checkboxLabel}>Remember Me</Text>
+              <Ionicons name="chevron-back" size={30} color="white" />
             </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => setModalVisible(true)}>
-        <Text style={styles.forgotText}>Forgot Password?</Text>
-      </TouchableOpacity>
           </View>
-        </View>
-
-        {/* Login Button */}
-        <TouchableOpacity style={styles.loginButton} onPress={() => router.push("/coursedetailsforlecturer")}>
-          <Text style={styles.loginButtonText}>Login</Text>
+          <View style={styles.logoContainer}>
+            <Image
+              source={require("../src/assets/images/logo.png")}
+              style={styles.logoImage}
+              resizeMode="contain"
+            />
+            <Text style={styles.logoText}>INTELEARN</Text>
+          </View>
+        </ImageBackground>
+  
+        <ScrollView 
+          style={styles.scrollView} 
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+        
+  
+  
+        <View style={styles.content}>
+          {/* Welcome Section */}
+          <View style={styles.welcomeSection}>
+            <Text style={styles.welcomeTitle}>Welcome to INTELEARN</Text>
+            <Text style={styles.welcomeSubtitle}>Learn smart, Grow fast</Text>
+          </View>
+  
+          {/* Login Form Card */}
+          <View style={styles.formCard}>
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Email Address*</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="example@email.com"
+                placeholderTextColor="#A0A0A0"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                returnKeyType="next"
+              />
+            </View>
+  
+            {/* Password* */}
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Password*</Text>
+              <View style={styles.passwordInputWrapper}>
+                <TextInput
+                  style={styles.flexInput}
+                  placeholder="........"
+                  placeholderTextColor="#A0A0A0"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={!showPassword} // Toggle visibility here
+                />
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                  <Ionicons 
+                    name={showPassword ? "eye-outline" : "eye-off-outline"} 
+                    size={22} 
+                    color="#A0A0A0" 
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+  
+            {/* Remember Me & Forgot Password */}
+            <View style={styles.row}>
+              <TouchableOpacity 
+                style={styles.checkboxRow} 
+                onPress={() => setRememberMe(!rememberMe)}
+              >
+                <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
+                  {rememberMe && <Text style={styles.checkmark}>✓</Text>}
+                </View>
+                <Text style={styles.checkboxLabel}>Remember Me</Text>
+              </TouchableOpacity>
+  
+              <TouchableOpacity onPress={() => setModalVisible(true)}>
+          <Text style={styles.forgotText}>Forgot Password?</Text>
         </TouchableOpacity>
-
-        {/* Footer */}
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>Don't have an account?</Text>
-          <TouchableOpacity onPress={() => router.push("/register(lecturer)")}>
-            <Text style={styles.signUpText}>Create an account</Text>
+            </View>
+          </View>
+  
+          {/* Login Button */}
+          <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+            <Text style={styles.loginButtonText}>Login</Text>
           </TouchableOpacity>
+  
+            {/* Footer */}
+            <View style={styles.footer}>
+              <Text style={styles.footerText}>Don't have an account?</Text>
+              <TouchableOpacity onPress={() => router.push("/register(student)")}>
+                <Text style={styles.signUpText}>Create an account</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+    
+          </ScrollView>
+          <ForgotPasswordModal 
+            visible={isModalVisible} 
+            onClose={() => setModalVisible(false)} 
+          />
         </View>
-        <ForgotPasswordModal 
-          visible={isModalVisible} 
-          onClose={() => setModalVisible(false)} 
-        />
-      </View>
-    </View>
-  );
-}
+        </KeyboardAvoidingView>
+      );
+  }
+  
 
 const styles = StyleSheet.create({
   container: {
