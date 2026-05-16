@@ -127,7 +127,7 @@ export default function PrivacyScreen() {
           />
           <Section 
             title="Section 5.1: Third-Party Academic Integrations" 
-            text="Learnora leverages a network of secondary service providers for plagiarism detection, e-library indexing, and cloud-based laboratory environments. Personal identifiers—excluding sensitive financial data—may be shared with these entities to ensure a seamless academic experience. Each provider is audited for compliance with the Federal Student Data Privacy Act (FSDPA)."
+            text="Learnora leverages a network of secondary service providers for plagiarism detection, e-library indexing, and cloud-based laboratory environments. Personal identifiers excluding sensitive financial data may be shared with these entities to ensure a seamless academic experience. Each provider is audited for compliance with the Federal Student Data Privacy Act (FSDPA)."
           />
           <Section 
             title="Section 6.0: Termination of Access" 
