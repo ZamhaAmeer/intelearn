@@ -74,7 +74,7 @@ export default function PrivacyScreen() {
         <SafeAreaView>
           <View style={styles.headerTopRow}>
             <TouchableOpacity>
-              <Feather name="menu" size={24} color="white" />
+              
             </TouchableOpacity>
           </View>
         </SafeAreaView>
@@ -135,31 +135,12 @@ export default function PrivacyScreen() {
           />
           
           <View style={styles.footerInfo}>
-            <Text style={styles.versionText}>Document Version: 2024.Q3.Institutional.Rev04</Text>
-            <Text style={styles.versionText}>Last Updated: September 14, 2024</Text>
+            <Text style={styles.versionText}>Document Version: 2026.Q3.Institutional.Rev04</Text>
+            <Text style={styles.versionText}>Last Updated: May 16, 2026</Text>
           </View>
         </View>
 
-        {/* 5. AGREE SECTION */}
-        <View style={styles.actionSection}>
-          <TouchableOpacity 
-            style={styles.checkboxRow} 
-            onPress={() => setHasAgreed(!hasAgreed)}
-          >
-            <View style={[styles.checkbox, hasAgreed && styles.checkboxChecked]}>
-              {hasAgreed && <Ionicons name="checkmark" size={14} color="white" />}
-            </View>
-            <Text style={styles.checkboxLabel}>I have read and agree to the terms</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={[styles.agreeBtn, !hasAgreed && styles.agreeBtnDisabled]}
-            disabled={!hasAgreed}
-            onPress={() => router.replace('/register(student)')}
-          >
-            <Text style={styles.agreeBtnText}>I AGREE & CONFIRM</Text>
-          </TouchableOpacity>
-        </View>
+        
         {/* SIDE MENU MODAL */}
           <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
             <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={toggleMenu}>
