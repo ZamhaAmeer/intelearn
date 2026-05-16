@@ -15,11 +15,56 @@ import {
 
 // --- DUMMY DATA ---
 const courseData = [
-  { id: '1', title: 'IS Risk Management', year: '22/23', sem: '3rd Sem', dept: 'CIS', students: '628', image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=150&q=80' },
-  { id: '2', title: 'IT Auditing', year: '21/22', sem: '5th Sem', dept: 'CIS', students: '463', image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=150&q=80' },
-  { id: '3', title: 'Enterprise Architecture', year: '21/22', sem: '5th Sem', dept: 'CIS', students: '299', image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=150&q=80' },
-  { id: '4', title: 'Fundamentals of IS', year: '23/24', sem: '1st Sem', dept: 'CIS', students: '328', image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=150&q=80' },
-  { id: '5', title: 'IS Economics', year: '20/21', sem: '7th Sem', dept: 'CIS', students: '121', image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=150&q=80' },
+  { 
+    id: '1', 
+    title: 'IS Risk Management', 
+    tags: 'Assessment • Mitigation • Strategy', 
+    year: '22/23', 
+    sem: '3rd Sem', 
+    dept: 'CIS', 
+    students: '628', 
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=150&q=80' 
+  },
+  { 
+    id: '2', 
+    title: 'IT Auditing', 
+    tags: 'Compliance • Controls • Frameworks', 
+    year: '21/22', 
+    sem: '5th Sem', 
+    dept: 'CIS', 
+    students: '463', 
+    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=150&q=80' 
+  },
+  { 
+    id: '3', 
+    title: 'Enterprise Architecture', 
+    tags: 'TOGAF • Systems Integration', 
+    year: '21/22', 
+    sem: '5th Sem', 
+    dept: 'CIS', 
+    students: '299', 
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=150&q=80' 
+  },
+  { 
+    id: '4', 
+    title: 'Fundamentals of IS', 
+    tags: 'Digital Transformation • Business Process', 
+    year: '23/24', 
+    sem: '1st Sem', 
+    dept: 'CIS', 
+    students: '328', 
+    image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=150&q=80' 
+  },
+  { 
+    id: '5', 
+    title: 'IS Economics', 
+    tags: 'Markets • Tech Value • Investment', 
+    year: '20/21', 
+    sem: '7th Sem', 
+    dept: 'CIS', 
+    students: '121', 
+    image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=150&q=80' 
+  },
 ];
 
 // --- HELPER COMPONENTS FOR MENU ---
@@ -78,19 +123,25 @@ export default function TeacherCoursesScreen() {
             <View style={styles.imageContainer}>
               <Image source={{ uri: course.image }} style={styles.courseImage} />
             </View>
-            <View style={styles.connectingLine} />
+          
             <View style={styles.courseCard}>
-              <Text style={styles.courseTitle}>{course.title}</Text>
-              <View style={styles.tagsRow}>
-                <View style={[styles.tag, { backgroundColor: '#D6CFF9' }]}>
-                  <Text style={[styles.tagText, { color: '#5C45C3' }]}>{course.year}</Text>
+              <Text style={styles.courseTitle} numberOfLines={1}>{course.title}</Text>
+              
+              {/* Added the new Tags Subtitle line */}
+              <Text style={styles.courseTags} numberOfLines={1}>{course.tags}</Text>
+              
+              <View style={styles.badgeRow}>
+                {/* Updated Badges to match the Student App pastel theme */}
+                <View style={[styles.statusBadge, { backgroundColor: '#FFCCBC' }]}>
+                  <Text style={styles.badgeText}>{course.year}</Text>
                 </View>
-                <View style={[styles.tag, { backgroundColor: '#C0F2F9' }]}>
-                  <Text style={[styles.tagText, { color: '#007A99' }]}>{course.sem}</Text>
+                <View style={[styles.statusBadge, { backgroundColor: '#C8E6C9' }]}>
+                  <Text style={styles.badgeText}>{course.sem}</Text>
                 </View>
-                <View style={[styles.tag, { backgroundColor: '#A7F3D0' }]}>
-                  <Text style={[styles.tagText, { color: '#065F46' }]}>{course.dept}</Text>
+                <View style={[styles.statusBadge, { backgroundColor: '#CFD8DC' }]}>
+                  <Text style={styles.badgeText}>{course.dept}</Text>
                 </View>
+                
                 <View style={styles.studentsCount}>
                   <MaterialIcons name="people" size={16} color="#555" />
                   <Text style={styles.studentsText}>{course.students}</Text>
@@ -166,7 +217,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 2,minHeight: 90,             // Forces the card to be at least this tall
     justifyContent: 'center',
   },
-  courseTitle: { fontSize: 16, fontWeight: 'bold', color: '#000000', marginBottom: 10 },
+  
   tagsRow: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 8 },
   tag: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12 },
   tagText: { fontSize: 10, fontWeight: 'bold' },
@@ -235,5 +286,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'grey',
     fontWeight: 'bold',
-  }
+  },
+  courseTitle: { fontSize: 17, fontWeight: 'bold' },
+  courseTags: { fontSize: 11, color: '#555', marginBottom: 4 },
+  badgeRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 4 },
+  statusBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12 },
+  badgeText: { fontSize: 10, fontWeight: '700', color: '#333' },
 });
