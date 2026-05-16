@@ -181,7 +181,6 @@ const MenuOption = ({ iconName, title, active, onPress }) => (
                       <MenuOption iconName="account" title="Profile" active onPress={() => {setMenuVisible(false); router.replace('/profilescreen')}} />
                       <MenuOption iconName="view-dashboard" title="Dashboard" />
                       <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/MiniGames')}} />
-                      <MenuOption iconName="shield-check" title="Privacy" onPress={() => {setMenuVisible(false); router.replace('/privacy')}} />
                       <MenuOption iconName="cog" title="Settings" onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
                     </View>
                     <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}>

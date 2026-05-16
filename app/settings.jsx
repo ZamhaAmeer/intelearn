@@ -62,8 +62,7 @@ export default function SettingsScreen() {
                     <MenuOption iconName="home-variant" title="Home" onPress={() => {setMenuVisible(false); router.replace('/coursedetails')}} />
                     <MenuOption iconName="account" title="Profile" onPress={() => {setMenuVisible(false); router.replace('/profilescreen')}} />
                     <MenuOption iconName="view-dashboard" title="Dashboard" />
-                    <MenuOption iconName="controller-classic" title="Games" />
-                    <MenuOption iconName="shield-check" title="Privacy" />
+                    <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/MiniGames')}}/>
                     <MenuOption iconName="cog" title="Settings" active onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
                   </View>
                   <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}>
