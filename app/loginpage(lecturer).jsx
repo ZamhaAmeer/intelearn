@@ -144,7 +144,7 @@ export default function LoginPage() {
             {/* Footer */}
             <View style={styles.footer}>
               <Text style={styles.footerText}>Don't have an account?</Text>
-              <TouchableOpacity onPress={() => router.push("/register(student)")}>
+              <TouchableOpacity onPress={() => router.push("/register(lecturer)")}>
                 <Text style={styles.signUpText}>Create an account</Text>
               </TouchableOpacity>
             </View>
