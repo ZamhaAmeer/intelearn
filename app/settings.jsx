@@ -103,16 +103,7 @@ export default function SettingsScreen() {
           
           <View style={styles.separator} />
           
-          <TouchableOpacity style={styles.itemRow}>
-            <View style={[styles.iconBox, { backgroundColor: '#E8E4FF' }]}>
-              <Text style={{color: '#4E33B3'}}>🏅</Text>
-            </View>
-            <Text style={styles.itemLabel}>Subscription Plan</Text>
-            <View style={styles.premiumBadge}>
-              <Text style={styles.premiumText}>PREMIUM</Text>
-            </View>
-            <Text style={styles.arrow}>❯</Text>
-          </TouchableOpacity>
+          
         </View>
 
         {/* AI PREFERENCES SECTION */}
@@ -160,6 +151,14 @@ export default function SettingsScreen() {
              <Text style={styles.itemLabel}>Dark Mode</Text>
              <Switch value={darkMode} onValueChange={setDarkMode} trackColor={{ false: '#767577', true: '#4E33B3' }} />
           </View>
+          <View style={styles.separator} />
+          <TouchableOpacity style={styles.itemRow}>
+            <View style={[styles.iconBox, { backgroundColor: '#E8E4FF' }]}>
+              <Text style={{color: '#4E33B3'}}><Icon name="shield-check" size={24} color="#4E33B3" /></Text>
+            </View>
+            <Text style={styles.itemLabel}>Privacy</Text>
+            <Text style={styles.arrow}>❯</Text>
+          </TouchableOpacity>
           <View style={styles.separator} />
           <TouchableOpacity 
             style={styles.itemRow}

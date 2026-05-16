@@ -76,9 +76,6 @@ export default function PrivacyScreen() {
             <TouchableOpacity>
               <Feather name="menu" size={24} color="white" />
             </TouchableOpacity>
-            <TouchableOpacity>
-              <Feather name="bell" size={24} color="white" />
-            </TouchableOpacity>
           </View>
         </SafeAreaView>
       </View>
