@@ -151,7 +151,7 @@ export default function SettingsScreen() {
              <Switch value={darkMode} onValueChange={setDarkMode} trackColor={{ false: '#767577', true: '#4E33B3' }} />
           </View>
           <View style={styles.separator} />
-          <TouchableOpacity style={styles.itemRow}>
+          <TouchableOpacity style={styles.itemRow} onpress={() => router.push('/privacy')}>
             <View style={[styles.iconBox, { backgroundColor: '#E8E4FF' }]}>
               <Text style={{color: '#4E33B3'}}><Icon name="shield-check" size={24} color="#4E33B3" /></Text>
             </View>
