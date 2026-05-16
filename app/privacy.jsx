@@ -82,7 +82,7 @@ export default function PrivacyScreen() {
 
       {/* 2. SUB-HEADER */}
       <View style={styles.subHeader}>
-        <TouchableOpacity onPress={() => router.replace('/coursedetails')} style={styles.backButton}>
+        <TouchableOpacity onPress={() => router.replace('/settings')} style={styles.backButton}>
           <Ionicons name="arrow-back" size={22} color="#1A73E8" />
           <Text style={styles.subHeaderTitle}>Privacy & Data Policy</Text>
         </TouchableOpacity>
