@@ -38,7 +38,7 @@ export default function LoginPage() {
     <View style={styles.container}>
       {/* Purple Header Section using your curve image */}
       <ImageBackground
-        source={require("../src/assets/images/header-curve.png")}
+        source={require("../../assets/images/header-curve.png")}
         style={styles.headerBackground}
         resizeMode="stretch"
       >
@@ -54,7 +54,7 @@ export default function LoginPage() {
         </View>
         <View style={styles.logoContainer}>
           <Image
-            source={require("../src/assets/images/logo.png")}
+            source={require("../../assets/images/logo.png")}
             style={styles.logoImage}
             resizeMode="contain"
           />
@@ -62,7 +62,11 @@ export default function LoginPage() {
         </View>
       </ImageBackground>
 
-      
+      <ScrollView 
+        style={styles.scrollView} 
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
       
 
 
@@ -85,19 +89,30 @@ export default function LoginPage() {
               onChangeText={setEmail}
               keyboardType="email-address"
               autoCapitalize="none"
+              returnKeyType="next"
             />
           </View>
 
+          {/* Password* */}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Password*</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="@#$han&"
-              placeholderTextColor="#A0A0A0"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={true}
-            />
+            <View style={styles.passwordInputWrapper}>
+              <TextInput
+                style={styles.flexInput}
+                placeholder="........"
+                placeholderTextColor="#A0A0A0"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={!showPassword} // Toggle visibility here
+              />
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <Ionicons 
+                  name={showPassword ? "eye-outline" : "eye-off-outline"} 
+                  size={22} 
+                  color="#A0A0A0" 
+                />
+              </TouchableOpacity>
+            </View>
           </View>
 
           {/* Remember Me & Forgot Password */}
@@ -119,25 +134,27 @@ export default function LoginPage() {
         </View>
 
         {/* Login Button */}
-        <TouchableOpacity style={styles.loginButton} onPress={() => router.push("/coursedetails")}>
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
 
-        {/* Footer */}
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>Don't have an account?</Text>
-          <TouchableOpacity onPress={() => router.push("/register(student)")}>
-            <Text style={styles.signUpText}>Create an account</Text>
-          </TouchableOpacity>
+          {/* Footer */}
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>Don't have an account?</Text>
+            <TouchableOpacity onPress={() => router.push("/register(student)")}>
+              <Text style={styles.signUpText}>Create an account</Text>
+            </TouchableOpacity>
+          </View>
         </View>
+  
+        </ScrollView>
         <ForgotPasswordModal 
           visible={isModalVisible} 
           onClose={() => setModalVisible(false)} 
         />
       </View>
-    </View>
-    </KeyboardAvoidingView>
-  );
+      </KeyboardAvoidingView>
+    );
 }
 
 const styles = StyleSheet.create({
