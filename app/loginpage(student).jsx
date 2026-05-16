@@ -31,6 +31,10 @@ export default function LoginPage() {
   };
 
   return (
+    <KeyboardAvoidingView 
+    style={{ flex: 1, backgroundColor: "transparent" }} 
+    behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
     <View style={styles.container}>
       {/* Purple Header Section using your curve image */}
       <ImageBackground
@@ -57,6 +61,8 @@ export default function LoginPage() {
           <Text style={styles.logoText}>INTELEARN</Text>
         </View>
       </ImageBackground>
+
+      
       
 
 
@@ -130,6 +136,7 @@ export default function LoginPage() {
         />
       </View>
     </View>
+    </KeyboardAvoidingView>
   );
 }
 
