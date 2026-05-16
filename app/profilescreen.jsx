@@ -1,6 +1,6 @@
 import * as ImagePicker from 'expo-image-picker'; // 1. Import the picker
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Alert,
   Dimensions,
@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   Modal,
   Platform,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -17,6 +18,13 @@ import {
 } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ReAnimated, {
+  interpolateColor,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring
+} from 'react-native-reanimated';
+import Svg, { Defs, LinearGradient, Path, Stop, Text as SvgText } from 'react-native-svg';
 
 const { width } = Dimensions.get('window');
 
@@ -31,6 +39,7 @@ export default function ProfileScreen() {
   const router = useRouter();
 
   const [isMenuVisible, setMenuVisible] = useState(false);
+  const [isDark, setIsDark] = useState(false);
   const toggleMenu = () => setMenuVisible(!isMenuVisible);
   
   // 3. State to store the selected image URI
@@ -48,11 +57,18 @@ const genderData = [
   { label: 'Other', value: 'other' },
 ];
 
-const MenuOption = ({ icon, title, active }) => (
-  <View style={[styles.menuItem, active && styles.activeMenuItem]}>
-    <Text style={styles.menuItemIcon}>{icon}</Text>
+const MenuOption = ({ iconName, title, active, onPress }) => (
+  <Pressable
+    onPress={onPress}
+    style={({ pressed }) => [
+      styles.menuItem,
+      active && styles.activeMenuItem,
+      pressed && styles.pressedMenuItem 
+    ]}
+  >
+    <Icon name={iconName} size={22} color={active ? "#4E33B3" : "#7E57C2"} style={styles.menuItemIcon} />
     <Text style={[styles.menuItemText, active && styles.activeMenuText]}>{title}</Text>
-  </View>
+  </Pressable>
 );
 
 
@@ -103,6 +119,44 @@ const MenuOption = ({ icon, title, active }) => (
       alert("Permission to access camera is required!");
     }
   };
+  // 2. SUB-COMPONENTS
+  const SunIcon = ({ color }) => (
+    <Svg width="22" height="22" viewBox="0 0 512 512">
+      <Path fill={color} d="M256,104c-83.813,0-152,68.187-152,152s68.187,152,152,152s152-68.187,152-152S339.813,104,256,104z M256,368c-61.757,0-112-50.243-112-112s50.243-112,112-112s112,50.243,112,112S317.757,368,256,368z M256,72c11.046,0,20-8.954,20-20V20c0-11.046-8.954-20-20-20s-20,8.954-20,20v32C236,63.046,244.954,72,256,72z M256,440c-11.046,0-20,8.954-20,20v32c0,11.046,8.954,20,20,20s20-8.954,20-20v-32C276,448.954,267.046,440,256,440z M440,256c0-11.046,8.954-20,20-20h32c11.046,0,20,8.954,20,20s-8.954,20-20,20h-32C448.954,276,440,267.046,440,256z M72,256c0,11.046-8.954,20-20,20H20c-11.046,0-20-8.954-20-20s8.954-20,20-20h32C63.046,236,72,244.954,72,256z"/>
+    </Svg>
+  );
+  
+  const MoonIcon = ({ color }) => (
+    <Svg width="20" height="20" viewBox="0 0 512 512">
+      <Path fill={color} d="M410,329.2c-73.4,0-132.8-59.4-132.8-132.8c0-33.8,12.6-64.6,33.4-88.1c-14.7-3.4-30.1-5.3-46-5.3c-110,0-199.1,89.2-199.1,199.1S154.6,501.2,264.6,501.2c78.8,0,147-45.7,179.3-111.9C434,329.1,422.3,329.2,410,329.2z"/>
+    </Svg>
+  );
+  
+  const ThemeToggle = ({ isDark, onToggle }) => {
+    const progress = useSharedValue(isDark ? 1 : 0);
+    useEffect(() => { progress.value = withSpring(isDark ? 1 : 0); }, [isDark]);
+  
+    const rTrackStyle = useAnimatedStyle(() => ({
+      backgroundColor: interpolateColor(progress.value, [0, 1], ['#E0E0E0', '#333333']),
+    }));
+    const rThumbStyle = useAnimatedStyle(() => ({
+      transform: [{ translateX: progress.value * 34 }],
+    }));
+  
+    return (
+      <Pressable onPress={onToggle}>
+        <ReAnimated.View style={[styles.toggleTrack, rTrackStyle]}>
+          <View style={styles.toggleIconsLayer}>
+             <SunIcon color="#999" />
+             <MoonIcon color="#999" />
+          </View>
+          <ReAnimated.View style={[styles.toggleThumb, rThumbStyle]}>
+             {isDark ? <MoonIcon color="white" /> : <SunIcon color="white" />}
+          </ReAnimated.View>
+        </ReAnimated.View>
+      </Pressable>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -110,53 +164,40 @@ const MenuOption = ({ icon, title, active }) => (
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}
       >
-        <Modal
-                transparent={true}
-                visible={isMenuVisible}
-                animationType="fade"
-                onRequestClose={toggleMenu}
-              >
-                <TouchableOpacity 
-                  style={styles.modalOverlay} 
-                  activeOpacity={1} 
-                  onPress={toggleMenu}
-                >
-                  <View style={styles.sideMenu}>
+        {/* SIDE MENU MODAL */}
+              <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
+                <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={toggleMenu}>
+                  <View style={[styles.sideMenu, isDark && { backgroundColor: '#1A1A1A' }]}>
                     <View style={styles.menuHeader}>
                       <TouchableOpacity onPress={toggleMenu}>
-                         <Text style={styles.closeMenuText}>☰</Text>
+                        <Icon name="menu" size={30} color={isDark ? "white" : "#333"} />
                       </TouchableOpacity>
-                      <Text style={styles.moonIcon}>🌙</Text>
+                      
+                      <ThemeToggle isDark={isDark} onToggle={() => setIsDark(!isDark)} />
                     </View>
         
                     <View style={styles.menuList}>
-                      <TouchableOpacity onPress={() => {setMenuVisible(false); router.replace('/coursedetails') }}>
-                                      <MenuOption icon="🏠" title="Home" />
-                                    </TouchableOpacity>  
-                                    <TouchableOpacity onPress={() => {setMenuVisible(false); router.replace('/profilescreen') }}>
-                                      <MenuOption icon="👤" title="Profile" active={true}/>
-                                    </TouchableOpacity>
-                                    <MenuOption icon="📊" title="Dashboard" />
-                                    <MenuOption icon="🎮" title="Games" />
-                                    <MenuOption icon="🛡️" title="Privacy" />
-                                     <TouchableOpacity onPress={() => {setMenuVisible(false); router.replace('/settings') }}>
-                                                  <MenuOption icon="⚙️" title="Settings" />
-                                                  </TouchableOpacity>
-                      </View>
-                      
-        
+                      <MenuOption iconName="home-variant" title="Home" onPress={() => {setMenuVisible(false); router.replace('/coursedetails')}} />
+                      <MenuOption iconName="account" title="Profile" active onPress={() => {setMenuVisible(false); router.replace('/profilescreen')}} />
+                      <MenuOption iconName="view-dashboard" title="Dashboard" />
+                      <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/minigamesection')}} />
+                      <MenuOption iconName="shield-check" title="Privacy" onPress={() => {setMenuVisible(false); router.replace('/privacy')}} />
+                      <MenuOption iconName="cog" title="Settings" onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
+                    </View>
                     <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}>
-                     <Text style={styles.logoutText}><Icon name="logout" size={24} color="red" /> Log Out</Text>
+                      <Text style={styles.logoutText}> Log Out    <Icon name="logout" size={24} color="grey" /></Text>
                     </TouchableOpacity>
                   </View>
                 </TouchableOpacity>
               </Modal>
+                      
         
+                
         <ScrollView contentContainerStyle={styles.scrollContent}>
           
           <View style={styles.header}>
             <TouchableOpacity style={styles.menuButton} onPress={toggleMenu}>
-              <Text style={styles.menuIcon}>☰</Text>
+              <Icon name="menu" size={30} color="white" />
             </TouchableOpacity>
             <Text style={styles.headerTitle}>Profile information</Text>
           </View>
@@ -409,47 +450,42 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.3)',
-    justifyContent: 'flex-start',
-  },
-  sideMenu: {
-    width: width * 0.6, // 60% of screen width
-    height: '100%',
-    backgroundColor: 'white',
-    padding: 20,
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
-    elevation: 10,
-  },
-  menuHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 40,
-    marginTop: 20,
-  },
-  closeMenuText: { fontSize: 24, color: '#333' },
-  moonIcon: { fontSize: 20 },
+  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.3)', justifyContent: 'flex-start' },
+  sideMenu: { width: width * 0.7, height: '100%', backgroundColor: 'white', padding: 20, borderTopRightRadius: 20, borderBottomRightRadius: 20, elevation: 10 },
+  menuHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 40, marginTop: 20 },
   menuList: { flex: 1 },
-  menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderRadius: 10,
-    marginBottom: 5,
-  },
-  activeMenuItem: { backgroundColor: '#C3B9EA' },
-  menuItemIcon: { fontSize: 18, marginRight: 15 },
+  menuItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14, paddingHorizontal: 15, borderRadius: 12, marginBottom: 8 },
+  activeMenuItem: { backgroundColor: '#E8E4FF' },
+  pressedMenuItem: { backgroundColor: '#D1C4E9', transform: [{ scale: 0.97 }] },
+  menuItemIcon: { marginRight: 15 },
   menuItemText: { fontSize: 16, color: '#333', fontWeight: '500' },
-  activeMenuText: { color: '#000', fontWeight: 'bold' },
-  logoutButton: {
-    borderTopWidth: 1,
-    borderTopColor: '#eee',
-    paddingVertical: 20,
-    alignItems: 'center',
+  activeMenuText: { color: '#4E33B3', fontWeight: 'bold' },
+  logoutButton: { borderTopWidth: 1, borderTopColor: '#eee', paddingVertical: 20, alignItems: 'center' },
+  logoutText: { fontSize: 18, color: 'grey' },
+  toggleTrack: { 
+    width: 75, 
+    height: 38, 
+    borderRadius: 20, 
+    padding: 4, 
+    justifyContent: 'center',
+    backgroundColor: '#E0E0E0' // Add fallback background
   },
-  logoutText: { fontSize: 18, fontWeight: 'bold', color: '#000' },
+  toggleIconsLayer: { 
+    ...StyleSheet.absoluteFillObject, 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+    paddingHorizontal: 10 
+  },
+  toggleThumb: { 
+    width: 30, 
+    height: 30, 
+    borderRadius: 15, 
+    backgroundColor: '#4E33B3', 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    elevation: 4, 
+    zIndex: 2 
+  },
 
 });
