@@ -5,6 +5,7 @@ import {
   Dimensions,
   Image,
   ImageBackground,
+  KeyboardAvoidingView,
   StyleSheet,
   Text,
   TextInput,
