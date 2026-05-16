@@ -308,4 +308,40 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 5,
   },
+   scrollView: {
+    flex: 1,
+    marginTop: -181, // Move the negative margin from 'content' to here
+  },
+  scrollContent: {
+    paddingBottom: 40, // Adds space at the bottom so it's not cramped
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: 30,
+    // Removed marginTop: -160 from here as it's now on the ScrollView
+  },
+  inputGroup: {
+    marginBottom: 15,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#333",
+    marginBottom: 8,
+  },
+   passwordInputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: "#F9F9F9",
+    borderWidth: 1,
+    borderColor: "#EEE",
+    borderRadius: 12,
+    paddingHorizontal: 14,
+  },
+  flexInput: {
+    flex: 1,
+    paddingVertical: 14,
+    fontSize: 16,
+    color: "#000",
+  },
 });
