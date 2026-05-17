@@ -192,8 +192,14 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                                           {agree && <Ionicons name="checkmark" size={14} color="white" />}
                                         </TouchableOpacity>
                                         <Text style={styles.privacyText}>
-                                          I agree to the <Text style={styles.privacyLink}>Privacy Policy</Text>
+                                        I agree to the{" "}
+                                        <Text
+                                         style={styles.privacyLink}
+                                         onPress={() => router.push("/privacyreg(lecturer)")}
+                                        >
+                                         Privacy Policy
                                         </Text>
+                                      </Text>
                                       </View>
   
              

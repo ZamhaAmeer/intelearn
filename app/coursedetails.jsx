@@ -664,21 +664,6 @@ export default function CourseDetailsScreen() {
         </TouchableOpacity>
       </Modal>
       
-      {/* NOTIFICATION MODAL */}
-      <Modal transparent visible={isNotifVisible} animationType="slide" onRequestClose={() => setNotifVisible(false)}>
-        <TouchableOpacity style={styles.notifOverlay} activeOpacity={1} onPress={() => setNotifVisible(false)}>
-          <View style={styles.notifPanel}>
-            <Text style={styles.notifHeader}>Recent Notifications</Text>
-            <View style={styles.notifItem}>
-              <Icon name="book-open-variant" size={20} color="#4E33B3" />
-              <Text style={styles.notifText}>New lecture added in Web Dev</Text>
-            </View>
-            <TouchableOpacity style={styles.closeNotifBtn} onPress={() => {setNotifVisible(false); setNotifications(0);}}>
-              <Text style={styles.closeNotifText}>Mark all as read</Text>
-            </TouchableOpacity>
-          </View>
-        </TouchableOpacity>
-      </Modal>
 
       {/* SIDE MENU MODAL */}
       <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
@@ -696,8 +681,7 @@ export default function CourseDetailsScreen() {
               <MenuOption iconName="home-variant" title="Home" active onPress={() => {setMenuVisible(false); router.replace('/coursedetails')}} />
               <MenuOption iconName="account" title="Profile" onPress={() => {setMenuVisible(false); router.replace('/profilescreen')}} />
               <MenuOption iconName="view-dashboard" title="Dashboard" />
-              <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/minigamesection')}} />
-              <MenuOption iconName="shield-check" title="Privacy" onPress={() => {setMenuVisible(false); router.replace('/privacy')}} />
+              <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/MiniGames')}} />
               <MenuOption iconName="cog" title="Settings" onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
             </View>
             <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}>

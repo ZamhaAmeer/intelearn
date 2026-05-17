@@ -5,6 +5,9 @@ import {
   Dimensions,
   Image,
   ImageBackground,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -20,6 +23,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [isModalVisible, setModalVisible] = useState(false);
   const router = useRouter();
@@ -30,6 +34,10 @@ export default function LoginPage() {
   };
 
   return (
+    <KeyboardAvoidingView 
+    style={{ flex: 1, backgroundColor: "transparent" }} 
+    behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
     <View style={styles.container}>
       {/* Purple Header Section using your curve image */}
       <ImageBackground
@@ -56,6 +64,12 @@ export default function LoginPage() {
           <Text style={styles.logoText}>INTELEARN</Text>
         </View>
       </ImageBackground>
+
+      <ScrollView 
+        style={styles.scrollView} 
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
       
 
 
@@ -78,19 +92,30 @@ export default function LoginPage() {
               onChangeText={setEmail}
               keyboardType="email-address"
               autoCapitalize="none"
+              returnKeyType="next"
             />
           </View>
 
+          {/* Password* */}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Password*</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="@#$han&"
-              placeholderTextColor="#A0A0A0"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={true}
-            />
+            <View style={styles.passwordInputWrapper}>
+              <TextInput
+                style={styles.flexInput}
+                placeholder="........"
+                placeholderTextColor="#A0A0A0"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={!showPassword} // Toggle visibility here
+              />
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <Ionicons 
+                  name={showPassword ? "eye-outline" : "eye-off-outline"} 
+                  size={22} 
+                  color="#A0A0A0" 
+                />
+              </TouchableOpacity>
+            </View>
           </View>
 
           {/* Remember Me & Forgot Password */}
@@ -116,20 +141,23 @@ export default function LoginPage() {
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
 
-        {/* Footer */}
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>Don't have an account?</Text>
-          <TouchableOpacity onPress={() => router.push("/register(student)")}>
-            <Text style={styles.signUpText}>Create an account</Text>
-          </TouchableOpacity>
+          {/* Footer */}
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>Don't have an account?</Text>
+            <TouchableOpacity onPress={() => router.push("/register(student)")}>
+              <Text style={styles.signUpText}>Create an account</Text>
+            </TouchableOpacity>
+          </View>
         </View>
+  
+        </ScrollView>
         <ForgotPasswordModal 
           visible={isModalVisible} 
           onClose={() => setModalVisible(false)} 
         />
       </View>
-    </View>
-  );
+      </KeyboardAvoidingView>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -278,5 +306,41 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     marginTop: 5,
+  },
+  scrollView: {
+    flex: 1,
+    marginTop: -181, // Move the negative margin from 'content' to here
+  },
+  scrollContent: {
+    paddingBottom: 40, // Adds space at the bottom so it's not cramped
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: 30,
+    // Removed marginTop: -160 from here as it's now on the ScrollView
+  },
+  inputGroup: {
+    marginBottom: 15,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#333",
+    marginBottom: 8,
+  },
+   passwordInputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: "#F9F9F9",
+    borderWidth: 1,
+    borderColor: "#EEE",
+    borderRadius: 12,
+    paddingHorizontal: 14,
+  },
+  flexInput: {
+    flex: 1,
+    paddingVertical: 14,
+    fontSize: 16,
+    color: "#000",
   },
 });

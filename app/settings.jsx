@@ -62,8 +62,7 @@ export default function SettingsScreen() {
                     <MenuOption iconName="home-variant" title="Home" onPress={() => {setMenuVisible(false); router.replace('/coursedetails')}} />
                     <MenuOption iconName="account" title="Profile" onPress={() => {setMenuVisible(false); router.replace('/profilescreen')}} />
                     <MenuOption iconName="view-dashboard" title="Dashboard" />
-                    <MenuOption iconName="controller-classic" title="Games" />
-                    <MenuOption iconName="shield-check" title="Privacy" />
+                    <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/MiniGames')}}/>
                     <MenuOption iconName="cog" title="Settings" active onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
                   </View>
                   <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}>
@@ -103,16 +102,7 @@ export default function SettingsScreen() {
           
           <View style={styles.separator} />
           
-          <TouchableOpacity style={styles.itemRow}>
-            <View style={[styles.iconBox, { backgroundColor: '#E8E4FF' }]}>
-              <Text style={{color: '#4E33B3'}}>🏅</Text>
-            </View>
-            <Text style={styles.itemLabel}>Subscription Plan</Text>
-            <View style={styles.premiumBadge}>
-              <Text style={styles.premiumText}>PREMIUM</Text>
-            </View>
-            <Text style={styles.arrow}>❯</Text>
-          </TouchableOpacity>
+          
         </View>
 
         {/* AI PREFERENCES SECTION */}
@@ -161,9 +151,17 @@ export default function SettingsScreen() {
              <Switch value={darkMode} onValueChange={setDarkMode} trackColor={{ false: '#767577', true: '#4E33B3' }} />
           </View>
           <View style={styles.separator} />
+          <TouchableOpacity style={styles.itemRow} onPress={() => router.push('/privacy')}>
+            <View style={[styles.iconBox, { backgroundColor: '#E8E4FF' }]}>
+              <Text style={{color: '#4E33B3'}}><Icon name="shield-check" size={24} color="#4E33B3" /></Text>
+            </View>
+            <Text style={styles.itemLabel}>Privacy</Text>
+            <Text style={styles.arrow}>❯</Text>
+          </TouchableOpacity>
+          <View style={styles.separator} />
           <TouchableOpacity 
             style={styles.itemRow}
-            onPress={() => router.replace('/loginpage')}
+            onPress={() => router.replace('/loginpage(student)')}
           >
              <View style={[styles.iconBox, { backgroundColor: '#FFE8E8' }]}><Text>🚪</Text></View>
              <Text style={[styles.itemLabel, { color: '#FF4B4B' }]}>Sign Out</Text>

@@ -73,19 +73,14 @@ export default function PrivacyScreen() {
         <View style={styles.topPurpleHeader}>
         <SafeAreaView>
           <View style={styles.headerTopRow}>
-            <TouchableOpacity>
-              <Feather name="menu" size={24} color="white" />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Feather name="bell" size={24} color="white" />
-            </TouchableOpacity>
+        
           </View>
         </SafeAreaView>
       </View>
 
       {/* 2. SUB-HEADER */}
       <View style={styles.subHeader}>
-        <TouchableOpacity onPress={() => router.replace('/coursedetails')} style={styles.backButton}>
+        <TouchableOpacity onPress={() => router.replace('/register(lecturer)')} style={styles.backButton}>
           <Ionicons name="arrow-back" size={22} color="#1A73E8" />
           <Text style={styles.subHeaderTitle}>Privacy & Data Policy</Text>
         </TouchableOpacity>
@@ -155,37 +150,13 @@ export default function PrivacyScreen() {
           <TouchableOpacity 
             style={[styles.agreeBtn, !hasAgreed && styles.agreeBtnDisabled]}
             disabled={!hasAgreed}
-            onPress={() => router.replace('/register(lecturer)')}
+            onPress={() => router.replace('/loginpage(lecturer)')}
           >
             <Text style={styles.agreeBtnText}>I AGREE & CONFIRM</Text>
           </TouchableOpacity>
         </View>
-        {/* SIDE MENU MODAL */}
-          <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
-            <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={toggleMenu}>
-              <View style={[styles.sideMenu, isDark && { backgroundColor: '#1A1A1A' }]}>
-                <View style={styles.menuHeader}>
-                  <TouchableOpacity onPress={toggleMenu}>
-                    <Icon name="menu" size={30} color={isDark ? "white" : "#333"} />
-                  </TouchableOpacity>
-                  
-                  <ThemeToggle isDark={isDark} onToggle={() => setIsDark(!isDark)} />
-                </View>
-    
-                <View style={styles.menuList}>
-                  <MenuOption iconName="home-variant" title="Home" active onPress={() => {setMenuVisible(false); router.replace('/coursedetails')}} />
-                  <MenuOption iconName="account" title="Profile" onPress={() => {setMenuVisible(false); router.replace('/profilescreen')}} />
-                  <MenuOption iconName="view-dashboard" title="Dashboard" />
-                  <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/minigamesection')}} />
-                  <MenuOption iconName="shield-check" title="Privacy" onPress={() => {setMenuVisible(false); router.replace('/privacy')}} />
-                  <MenuOption iconName="cog" title="Settings" onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
-                </View>
-                <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}>
-                  <Text style={styles.logoutText}> Log Out    <Icon name="logout" size={24} color="grey" /></Text>
-                </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-          </Modal>
+        
+        
 
         <View style={{ height: 60 }} />
       </ScrollView>

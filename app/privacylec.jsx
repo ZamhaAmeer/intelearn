@@ -155,7 +155,7 @@ export default function PrivacyScreen() {
           <TouchableOpacity 
             style={[styles.agreeBtn, !hasAgreed && styles.agreeBtnDisabled]}
             disabled={!hasAgreed}
-            onPress={() => router.replace('/register(lecturer)')}
+            onPress={() => router.replace('/loginpage(lecturer)')}
           >
             <Text style={styles.agreeBtnText}>I AGREE & CONFIRM</Text>
           </TouchableOpacity>
