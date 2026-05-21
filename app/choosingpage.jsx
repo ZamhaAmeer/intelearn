@@ -19,7 +19,7 @@ const ChoosingPage = () => {
 
   const handleNavigation = () => {
     // Navigate to your login page file
-    router.push('/loginpage'); 
+    router.push('/loginPage'); 
   };
 
   return (
@@ -59,7 +59,7 @@ const ChoosingPage = () => {
             {/* Student Option */}
             <TouchableOpacity 
               style={styles.optionButton}
-              onPress={() => router.push("./loginpage(student)")} // Adjust paths as needed
+              onPress={() => router.push("./loginPage_Student")} // Adjust paths as needed
             >
               <Ionicons name="school" size={35} color="black" style={styles.icon} />
               <Text style={styles.optionText}>I am a Student</Text>
@@ -68,7 +68,7 @@ const ChoosingPage = () => {
             {/* Educator Option */}
             <TouchableOpacity 
               style={styles.optionButton}
-              onPress={() => router.push("./loginpage(lecturer)")}
+              onPress={() => router.push("./loginPage_Lecturer")}
             >
               <Ionicons name="people" size={35} color="black" style={styles.icon} />
               <Text style={styles.optionText}>I am an Educator</Text>
@@ -77,7 +77,7 @@ const ChoosingPage = () => {
             {/* Guest Option */}
             <TouchableOpacity 
               style={styles.optionButton}
-              onPress={() => router.push("./coursedetailsforguest")}
+              onPress={() => router.push("./courseDetailsForGuest")}
             >
               <Ionicons name="person-outline" size={35} color="black" style={styles.icon} />
               <Text style={styles.optionText}>I am a Guest</Text>

@@ -151,7 +151,7 @@ export default function TeacherCoursesScreen() {
           </TouchableOpacity>
         ))}
 
-        <TouchableOpacity style={styles.createButton} onPress={() => router.push('/addnewcourse')}>
+        <TouchableOpacity style={styles.createButton} onPress={() => router.push('/addNewCourse')}>
           <Ionicons name="add" size={50} color="#FFFFFF" alignItems="center" /> 
           <View>
             <Text style={styles.createButtonText}>Create New</Text>
@@ -173,14 +173,14 @@ export default function TeacherCoursesScreen() {
             </View>
 
             <View style={styles.menuList}>
-              <MenuOption iconName="home-variant" title="Home" active onPress={() => { setMenuVisible(false); router.replace('/coursedetailsforlecturer'); }} />
-              <MenuOption iconName="account" title="Profile" onPress={() => { setMenuVisible(false); router.replace('/profilescreen'); }} />
+              <MenuOption iconName="home-variant" title="Home" active onPress={() => { setMenuVisible(false); router.replace('/courseDetailsForLecturer'); }} />
+              <MenuOption iconName="account" title="Profile" onPress={() => { setMenuVisible(false); router.replace('/profileScreen'); }} />
               <MenuOption iconName="view-dashboard" title="Dashboard" />
               <MenuOption iconName="shield-check" title="Privacy" />
               <MenuOption iconName="cog" title="Settings" onPress={() => { setMenuVisible(false); router.replace('/settings'); }} />
             </View>
 
-            <TouchableOpacity style={styles.logoutButton} onPress={() => { setMenuVisible(false); router.replace('/loginpage(lecturer)'); }}>
+            <TouchableOpacity style={styles.logoutButton} onPress={() => { setMenuVisible(false); router.replace('/loginPage_Lecturer)'); }}>
               <Text style={styles.logoutText}> Log Out    <MaterialCommunityIcons name="logout" size={24} color="grey" /></Text>
             </TouchableOpacity>
 

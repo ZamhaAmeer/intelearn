@@ -195,7 +195,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                                         I agree to the{" "}
                                         <Text
                                          style={styles.privacyLink}
-                                         onPress={() => router.push("/privacyreg(lecturer)")}
+                                         onPress={() => router.push("/privacyReg_Lecturer")}
                                         >
                                          Privacy Policy
                                         </Text>
@@ -212,7 +212,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
               {/* Footer */}
               <View style={styles.footer}>
                 <Text style={styles.footerText}>Already have an account?</Text>
-                <TouchableOpacity onPress={() => router.push("/loginpage(student)")}>
+                <TouchableOpacity onPress={() => router.push("/loginPage_Student")}>
                   <Text style={styles.loginText}>Login</Text>
                 </TouchableOpacity>
               </View>

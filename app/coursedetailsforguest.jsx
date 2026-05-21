@@ -91,7 +91,7 @@ export default function CourseDetailsScreen() {
             onPanResponderRelease: (evt, gestureState) => {
                 // If the user swipes Left (negative dx) more than 60 pixels
                 if (gestureState.dx < -60) {
-                    router.push('/choosingpage');
+                    router.push('/choosingPage');
                 }
             },
         })
@@ -215,7 +215,7 @@ export default function CourseDetailsScreen() {
                         </Text>
                         <TouchableOpacity 
                             style={styles.boostActionBtn} 
-                            onPress={() => { setDetailVisible(false); router.push('/choosingpage'); }}
+                            onPress={() => { setDetailVisible(false); router.push('/choosingPage'); }}
                         >
                             <Text style={styles.boostActionText}>Select your role</Text>
                         </TouchableOpacity>

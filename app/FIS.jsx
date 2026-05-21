@@ -75,7 +75,7 @@ export default function CourseScreen() {
       },
       onPanResponderRelease: (_, gestureState) => {
         if (gestureState.dx > 50) {
-          router.replace('/coursedetails'); 
+          router.replace('/courseDetails'); 
         }
       },
     })

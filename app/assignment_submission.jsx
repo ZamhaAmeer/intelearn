@@ -28,7 +28,7 @@ export default function SubmissionScreen() {
 
       {/* Sub Header (White) */}
       <View style={styles.subHeader}>
-        <TouchableOpacity style={styles.backButton} onPress={() => router.push('/coursedetails')}>
+        <TouchableOpacity style={styles.backButton} onPress={() => router.push('/courseDetails')}>
           <Feather name="arrow-left" size={24} color="#0B1E4A" />
         </TouchableOpacity>
         <Text style={styles.subHeaderText}>IS4106: Quiz 01 Submission</Text>

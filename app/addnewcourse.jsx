@@ -144,7 +144,7 @@ const AddNewCourse = () => {
           <Text style={styles.footerActionText}>Discard</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.primaryButton} onPress={() => router.push('/lecturercoursemanagement')}>
+        <TouchableOpacity style={styles.primaryButton} onPress={() => router.push('/lecturerCourseManagement')}>
           <View style={styles.primaryButtonContent}>
             <Text style={styles.primaryButtonText}>Create{"\n"}Course</Text>
             <FeatherIcon name="send" size={20} color="#FFF" style={{ marginLeft: 8 }} />

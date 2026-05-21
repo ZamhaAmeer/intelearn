@@ -80,7 +80,7 @@ export default function PrivacyScreen() {
 
       {/* 2. SUB-HEADER */}
       <View style={styles.subHeader}>
-        <TouchableOpacity onPress={() => router.replace('/register(student)')} style={styles.backButton}>
+        <TouchableOpacity onPress={() => router.replace('/register_Student')} style={styles.backButton}>
           <Ionicons name="arrow-back" size={22} color="#1A73E8" />
           <Text style={styles.subHeaderTitle}>Privacy & Data Policy</Text>
         </TouchableOpacity>
@@ -153,7 +153,7 @@ export default function PrivacyScreen() {
           <TouchableOpacity 
             style={[styles.agreeBtn, !hasAgreed && styles.agreeBtnDisabled]}
             disabled={!hasAgreed}
-            onPress={() => router.replace('/register(student)')}
+            onPress={() => router.replace('/register_Student')}
           >
             <Text style={styles.agreeBtnText}>I AGREE & CONFIRM</Text>
           </TouchableOpacity>
