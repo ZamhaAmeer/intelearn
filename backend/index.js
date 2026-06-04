@@ -423,3 +423,10 @@ app.get('/courses', authenticateToken, async (req, res) => {
         attributes: ['email'] // Only pull the email, we don't need their password hash!
       }]
     });
+
+    // Format the data exactly how your React Native frontend expects it
+    const formattedCourses = courses.map(course => {
+      const courseData = course.toJSON();
+      courseData.lecturer_email = course.User ? course.User.email : null;
+      return courseData;
+    });
