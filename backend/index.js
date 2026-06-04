@@ -133,3 +133,11 @@ app.post('/register', async (req, res) => {
     // Hash password
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
+
+    // Sequelize: Insert new user
+    const newUser = await User.create({
+      full_name,
+      email,
+      password_hash: passwordHash,
+      role
+    });
