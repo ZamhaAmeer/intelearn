@@ -163,16 +163,16 @@ const AddNewCourse = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#FCFCF5', // Light cream background
+    backgroundColor: '#FCFCF5', 
   },
   headerContainer: {
     backgroundColor: '#FCFCF5',
     overflow: 'hidden',
-    paddingBottom: 20, // Space for the curve shadow/spacing
+    paddingBottom: 20, 
     marginTop: -60, 
   },
   headerCurve: {
-    backgroundColor: '#6044E4', // Primary purple
+    backgroundColor: '#6044E4', 
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
     height: 120,
