@@ -336,3 +336,9 @@ app.post('/verify-otp', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+// ------------------------------------
+// RESET PASSWORD - Verify OTP & Update (Sequelize Version)
+// ------------------------------------
+app.post('/reset-password', async (req, res) => {
+  const { email, otp, newPassword } = req.body;
