@@ -33,3 +33,7 @@ const user = sequelize.define('user', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  bio: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
