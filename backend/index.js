@@ -392,3 +392,14 @@ app.post('/courses', authenticateToken, upload.single('thumbnail'), async (req, 
 
   try {
     const lecturerId = req.user.id;
+
+    // Sequelize: Create the course
+    const newCourse = await Course.create({
+      title,
+      description,
+      semester,
+      academic_year,
+      is_published,
+      lecturer_id: lecturerId,
+      image_url: imageUrl
+    });
