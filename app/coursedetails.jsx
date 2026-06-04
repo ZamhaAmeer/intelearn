@@ -62,4 +62,4 @@ const COURSES = [
   { id: '28', title: 'IT Governance', tags: 'COBIT • Compliance • Frameworks', code: 'IS3103', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/ITG.jpeg'), color: '#E8F5E9' },
   { id: '29', title: 'Software Engineering', tags: 'Lifecycles • Requirements • Testing', code: 'IS3104', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/SE.jpg'), color: '#F3E5F5' },
   { id: '30', title: 'IS Risk Management', tags: 'Assessment • Mitigation • Strategy', code: 'IS3105', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/ISRM.jpeg'), color: '#FFF3E0' },
-  
+  { id: '31', title: 'IS Sustainability', tags: 'Green IT • Lifecycle • Environmental', code: 'IS3106', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/ISSt.jpeg'), color: '#E0F7FA' },
