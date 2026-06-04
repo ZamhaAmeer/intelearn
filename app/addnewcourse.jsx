@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
   },
   semesterChip: {
     backgroundColor: '#E6EEDA',
-    width: (width - 70) / 4, // 4 columns with gap
+    width: (width - 70) / 4, 
     aspectRatio: 1,
     borderRadius: 50,
     justifyContent: 'center',
