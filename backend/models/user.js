@@ -45,3 +45,7 @@ const user = sequelize.define('user', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  reset_otp: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
