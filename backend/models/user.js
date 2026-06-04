@@ -21,3 +21,7 @@ const user = sequelize.define('user', {
     allowNull: false,
     unique: true,
   },
+  password_hash: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
