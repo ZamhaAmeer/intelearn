@@ -22,3 +22,10 @@ import ReAnimated, {
   withSpring
 } from 'react-native-reanimated';
 import Svg, { Defs, LinearGradient, Path, Stop, Text as SvgText } from 'react-native-svg';
+const { width, height } = Dimensions.get('window');
+
+// 1. DATA DEFINITION
+const COURSES = [
+  // --- SEMESTER I ---
+  { id: '1', title: 'Fundamentals of IS', tags: 'Digital Transformation • Business Process', code: 'IS1101', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/FIS.jpg'), color: '#FFCCBC' },
+  { id: '2', title: 'Structured Programming(T)', tags: 'C Syntax • Logic & Control', code: 'IS1102', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/STRT.jpg'), color: '#C8E6C9' },
