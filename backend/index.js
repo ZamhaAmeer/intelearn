@@ -156,3 +156,9 @@ app.post('/register', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+// ------------------------------------
+// THE LOGIN ROUTE (Sequelize Version)
+// ------------------------------------
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
