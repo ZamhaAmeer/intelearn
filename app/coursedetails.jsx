@@ -58,4 +58,4 @@ const COURSES = [
 
     // --- SEMESTER III ---
   { id: '26', title: 'Object Oriented Analysis & Design', tags: 'UML Modeling • Design Patterns', code: 'IS3101', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/OOAD.jpeg'), color: '#FFECB3' },
-  
+  { id: '27', title: 'Data Structures & Algorithms', tags: 'Trees • Graphs • Sorting', code: 'IS3102', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/DSA.jpeg'), color: '#E1F5FE' },
