@@ -194,3 +194,8 @@ app.post('/login', async (req, res) => {
       full_name: user.full_name, 
       message: 'Login successful' 
     });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
