@@ -141,3 +141,13 @@ app.post('/register', async (req, res) => {
       password_hash: passwordHash,
       role
     });
+
+    res.status(201).json({ 
+        message: 'User created successfully', 
+        user: { 
+            id: newUser.id, 
+            full_name: newUser.full_name, 
+            email: newUser.email, 
+            role: newUser.role 
+        } 
+    });
