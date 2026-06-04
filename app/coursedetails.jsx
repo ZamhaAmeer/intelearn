@@ -14,3 +14,11 @@ import {
   View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+// Reanimated for the smooth button slide
+import ReAnimated, {
+  interpolateColor,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring
+} from 'react-native-reanimated';
+import Svg, { Defs, LinearGradient, Path, Stop, Text as SvgText } from 'react-native-svg';
