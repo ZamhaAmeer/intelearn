@@ -284,3 +284,11 @@ app.post('/forgot-password', async (req, res) => {
       reset_otp: otp,
       reset_otp_expires_at: expiresAt
     });
+
+    // Send OTP email
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Password Reset OTP',
+      text: `Your OTP is: ${otp}`
+    });
