@@ -239,3 +239,10 @@ app.get('/get-profile', async (req, res) => {
   if (!userEmail) {
     return res.status(400).json({ error: "Email parameter is required to sync profile data." });
   }
+
+  try {
+    // Queries database safely using your Sequelize User model config
+    const user = await User.findOne({
+      where: { email: userEmail },
+      attributes: ['full_name', 'username', 'email', 'phone', 'bio', 'department', 'gender'] // Safe extraction whitelist
+    });
