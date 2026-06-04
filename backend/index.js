@@ -205,3 +205,13 @@ app.post('/login', async (req, res) => {
 // ------------------------------------
 app.put('/update-profile', async (req, res) => {
   const { full_name, username, email, phone, bio, department, gender } = req.body;
+
+  try {
+    // Sequelize: Update user and return the newly updated data
+    const [updatedRowCount, updatedRows] = await User.update(
+      { full_name, username, phone, bio, department, gender },
+      { 
+        where: { email },
+        returning: true // Tells Postgres to give us the updated row back
+      }
+    );
