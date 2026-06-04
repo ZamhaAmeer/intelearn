@@ -9,3 +9,12 @@ const path = require('path');
 const fs = require('fs');
 const pdfParse = require('pdf-parse');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+
+// --- NEW SEQUELIZE IMPORTS & MODELS ---
+const sequelize = require('./config/database');
+const User = require('./models/user');
+const Course = require('./models/Course');
+const CourseMaterial = require('./models/courseMaterial');
+const Enrollment = require('./models/enrollment');
+const Quiz = require('./models/quiz');
+const Question = require('./models/question');
