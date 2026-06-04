@@ -10,7 +10,7 @@ const fs = require('fs');
 const pdfParse = require('pdf-parse');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-// --- NEW SEQUELIZE IMPORTS & MODELS ---
+
 const sequelize = require('./config/database');
 const User = require('./models/user');
 const Course = require('./models/Course');
@@ -19,7 +19,7 @@ const Enrollment = require('./models/enrollment');
 const Quiz = require('./models/quiz');
 const Question = require('./models/question');
 
-// --- DATABASE RELATIONSHIPS ---
+
 // Lecturer -> Courses
 User.hasMany(Course, { foreignKey: 'lecturer_id' });
 Course.belongsTo(User, { foreignKey: 'lecturer_id' });
