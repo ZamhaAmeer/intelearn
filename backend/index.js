@@ -33,3 +33,7 @@ User.hasMany(Enrollment, { foreignKey: 'student_id' });
 Enrollment.belongsTo(User, { foreignKey: 'student_id' });
 Course.hasMany(Enrollment, { foreignKey: 'course_id' });
 Enrollment.belongsTo(Course, { foreignKey: 'course_id' });
+
+// Course -> Quizzes
+Course.hasMany(Quiz, { foreignKey: 'course_id' });
+Quiz.belongsTo(Course, { foreignKey: 'course_id' });
