@@ -278,3 +278,9 @@ app.post('/forgot-password', async (req, res) => {
 
     // Expiry time (10 minutes)
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+
+    // Sequelize: Update user with OTP and Expiry
+    await user.update({
+      reset_otp: otp,
+      reset_otp_expires_at: expiresAt
+    });
