@@ -328,3 +328,5 @@ app.post('/verify-otp', async (req, res) => {
     if (new Date() > new Date(user.reset_otp_expires_at)) {
       return res.status(400).json({ error: 'OTP expired' });
     }
+
+    res.json({ message: 'OTP verified successfully' });
