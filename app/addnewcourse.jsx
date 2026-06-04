@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     color: '#6B6B6B',
   },
   semTextSelected: {
-    color: '#6044E4', // Darker purple text for contrast on selection
+    color: '#6044E4', 
   },
   dropdownInput: {
     flexDirection: 'row',
