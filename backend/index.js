@@ -235,3 +235,7 @@ app.put('/update-profile', async (req, res) => {
 // ------------------------------------
 app.get('/get-profile', async (req, res) => {
   const userEmail = req.query.email;
+
+  if (!userEmail) {
+    return res.status(400).json({ error: "Email parameter is required to sync profile data." });
+  }
