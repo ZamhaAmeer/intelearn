@@ -342,3 +342,7 @@ app.post('/verify-otp', async (req, res) => {
 // ------------------------------------
 app.post('/reset-password', async (req, res) => {
   const { email, otp, newPassword } = req.body;
+
+  if (!email || !otp || !newPassword) {
+    return res.status(400).json({ error: 'Missing fields' });
+  }
