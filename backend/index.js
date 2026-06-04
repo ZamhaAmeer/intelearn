@@ -403,3 +403,10 @@ app.post('/courses', authenticateToken, upload.single('thumbnail'), async (req, 
       lecturer_id: lecturerId,
       image_url: imageUrl
     });
+
+    res.status(201).json(newCourse);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
