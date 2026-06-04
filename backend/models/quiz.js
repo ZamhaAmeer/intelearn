@@ -7,3 +7,11 @@ const quiz = sequelize.define('quiz', {
     autoIncrement: true,
     primaryKey: true,
   },
+  course_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  title: {
+    type: DataTypes.STRING,
+    allowNull: false
+  }
