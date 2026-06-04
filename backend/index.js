@@ -180,3 +180,10 @@ app.post('/login', async (req, res) => {
     if (!validPassword) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
+  
+    // Generate JWT
+    const token = jwt.sign(
+      { id: user.id, role: user.role }, 
+      process.env.JWT_SECRET, 
+      { expiresIn: '1h' }
+    );
