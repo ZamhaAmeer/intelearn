@@ -137,7 +137,7 @@ const AddNewCourse = () => {
         <View style={{ height: 100 }} /> 
       </ScrollView>
 
-      {/* Floating Bottom Action Bar */}
+      
       <View style={styles.footerBar}>
         <TouchableOpacity style={styles.footerAction}>
           <FeatherIcon name="x" size={24} color="#555" />
