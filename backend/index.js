@@ -364,3 +364,6 @@ app.post('/reset-password', async (req, res) => {
     if (new Date() > new Date(user.reset_otp_expires_at)) {
       return res.status(400).json({ error: 'OTP expired' });
     }
+
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
