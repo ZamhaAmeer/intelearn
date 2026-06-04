@@ -151,3 +151,8 @@ app.post('/register', async (req, res) => {
             role: newUser.role 
         } 
     });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
