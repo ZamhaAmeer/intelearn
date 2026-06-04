@@ -292,3 +292,5 @@ app.post('/forgot-password', async (req, res) => {
       subject: 'Password Reset OTP',
       text: `Your OTP is: ${otp}`
     });
+
+    res.json({ message: 'OTP sent successfully' });
