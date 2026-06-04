@@ -15,3 +15,9 @@ const quiz = sequelize.define('quiz', {
     type: DataTypes.STRING,
     allowNull: false
   }
+  }, {
+  tableName: 'quizzes',
+  timestamps: true,
+});
+
+module.exports = quiz;
