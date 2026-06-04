@@ -27,3 +27,9 @@ Course.belongsTo(User, { foreignKey: 'lecturer_id' });
 // Course -> Materials
 Course.hasMany(CourseMaterial, { foreignKey: 'course_id' });
 CourseMaterial.belongsTo(Course, { foreignKey: 'course_id' });
+
+// Students <-> Courses (Enrollments)
+User.hasMany(Enrollment, { foreignKey: 'student_id' });
+Enrollment.belongsTo(User, { foreignKey: 'student_id' });
+Course.hasMany(Enrollment, { foreignKey: 'course_id' });
+Enrollment.belongsTo(Course, { foreignKey: 'course_id' });
