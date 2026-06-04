@@ -268,3 +268,7 @@ app.post('/forgot-password', async (req, res) => {
   try {
     // Sequelize: Find user
     const user = await User.findOne({ where: { email } });
+
+    if (!user) {
+      return res.status(404).json({ error: 'Email not found' });
+    }
