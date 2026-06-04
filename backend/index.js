@@ -359,4 +359,8 @@ app.post('/reset-password', async (req, res) => {
     if (user.reset_otp != otp) {
       return res.status(400).json({ error: 'Invalid OTP' });
     }
-    
+
+    // Expiry check
+    if (new Date() > new Date(user.reset_otp_expires_at)) {
+      return res.status(400).json({ error: 'OTP expired' });
+    }
