@@ -219,3 +219,13 @@ app.put('/update-profile', async (req, res) => {
     if (updatedRowCount === 0) {
       return res.status(404).json({ error: 'User not found' });
     }
+
+    res.json({ 
+      message: 'Profile updated successfully', 
+      user: updatedRows[0] 
+    });
+  } catch (err) {
+    console.error("DEBUG - SQL FAILED:", err.message); 
+    res.status(500).json({ error: 'Database Update Error: ' + err.message });
+  }
+});
