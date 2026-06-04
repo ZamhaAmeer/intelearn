@@ -215,3 +215,7 @@ app.put('/update-profile', async (req, res) => {
         returning: true // Tells Postgres to give us the updated row back
       }
     );
+
+    if (updatedRowCount === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
