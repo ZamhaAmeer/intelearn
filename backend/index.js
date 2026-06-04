@@ -410,3 +410,16 @@ app.post('/courses', authenticateToken, upload.single('thumbnail'), async (req, 
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+// ------------------------------------
+// GET ALL COURSES (With Lecturer Email)
+// ------------------------------------
+app.get('/courses', authenticateToken, async (req, res) => {
+  try {
+    // Sequelize: Find all courses and JOIN the User table to get the email
+    const courses = await Course.findAll({
+      include: [{
+        model: User,
+        attributes: ['email'] // Only pull the email, we don't need their password hash!
+      }]
+    });
