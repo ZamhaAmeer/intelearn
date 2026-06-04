@@ -11,3 +11,10 @@ const question = sequelize.define('question', {
     type: DataTypes.INTEGER,
     allowNull: false
   },
+  question: DataTypes.TEXT,
+  option_a: DataTypes.STRING,
+  option_b: DataTypes.STRING,
+  option_c: DataTypes.STRING,
+  option_d: DataTypes.STRING,
+  correct_answer: DataTypes.STRING
+}, {
