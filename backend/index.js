@@ -246,3 +246,21 @@ app.get('/get-profile', async (req, res) => {
       where: { email: userEmail },
       attributes: ['full_name', 'username', 'email', 'phone', 'bio', 'department', 'gender'] // Safe extraction whitelist
     });
+
+    if (!user) {
+      return res.status(404).json({ error: "No user profile found matching this email." });
+    }
+
+    // Return user object context safely
+    return res.json(user);
+  } catch (err) {
+    console.error("Database extraction error:", err.message);
+    return res.status(500).json({ error: "Internal server database error: " + err.message });
+  }
+});
+
+// ------------------------------------
+// FORGOT PASSWORD - Generate & Send OTP (Sequelize Version)
+// ------------------------------------
+app.post('/forgot-password', async (req, res) => {
+  const { email } = req.body;
