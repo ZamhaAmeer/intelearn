@@ -346,3 +346,7 @@ app.post('/reset-password', async (req, res) => {
   if (!email || !otp || !newPassword) {
     return res.status(400).json({ error: 'Missing fields' });
   }
+
+  try {
+    // Sequelize: Find user
+    const user = await User.findOne({ where: { email } });
