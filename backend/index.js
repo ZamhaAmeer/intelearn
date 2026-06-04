@@ -306,3 +306,7 @@ app.post('/forgot-password', async (req, res) => {
 // ------------------------------------
 app.post('/verify-otp', async (req, res) => {
   const { email, otp } = req.body;
+
+  if (!email || !otp) {
+    return res.status(400).json({ error: 'Email and OTP are required' });
+  }
