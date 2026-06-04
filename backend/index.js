@@ -187,3 +187,51 @@ app.post('/login', async (req, res) => {
       process.env.JWT_SECRET, 
       { expiresIn: '1h' }
     );
+
+    res.json({ 
+      token, 
+      role: user.role, 
+      full_name: user.full_name, 
+      message: 'Login successful' 
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// ------------------------------------
+// UPDATE PROFILE ROUTE (Sequelize Version)
+// ------------------------------------
+app.put('/update-profile', async (req, res) => {
+  const { full_name, username, email, phone, bio, department, gender } = req.body;
+
+  try {
+    // Sequelize: Update user and return the newly updated data
+    const [updatedRowCount, updatedRows] = await User.update(
+      { full_name, username, phone, bio, department, gender },
+      { 
+        where: { email },
+        returning: true // Tells Postgres to give us the updated row back
+      }
+    );
+
+    if (updatedRowCount === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({ 
+      message: 'Profile updated successfully', 
+      user: updatedRows[0] 
+    });
+  } catch (err) {
+    console.error("DEBUG - SQL FAILED:", err.message); 
+    res.status(500).json({ error: 'Database Update Error: ' + err.message });
+  }
+});
+
+// ------------------------------------
+// GET PROFILE ROUTE (Sequelize Version)
+// ------------------------------------
+app.get('/get-profile', async (req, res) => {
+  const userEmail = req.query.email;
