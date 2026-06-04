@@ -375,4 +375,10 @@ app.post('/reset-password', async (req, res) => {
       reset_otp_expires_at: null
     });
 
-     res.json({ message: 'Password reset successful' });   
+     res.json({ message: 'Password reset successful' }); 
+     
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
