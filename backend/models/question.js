@@ -18,3 +18,6 @@ const question = sequelize.define('question', {
   option_d: DataTypes.STRING,
   correct_answer: DataTypes.STRING
 }, {
+    tableName: 'questions',
+  timestamps: true,
+});
