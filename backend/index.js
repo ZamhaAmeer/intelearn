@@ -170,3 +170,7 @@ app.post('/login', async (req, res) => {
   try {
     // Sequelize: Find user by email
     const user = await User.findOne({ where: { email } });
+
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
