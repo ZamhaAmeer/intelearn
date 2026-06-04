@@ -123,3 +123,9 @@ app.post('/register', async (req, res) => {
     return res.status(400).json({ error: 'Missing email or password' });
   }
   
+  try {
+    // Sequelize: Check if user exists
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ error: 'User already exists' });
+    }
