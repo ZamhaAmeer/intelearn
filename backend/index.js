@@ -367,3 +367,10 @@ app.post('/reset-password', async (req, res) => {
 
     // Hash new password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Sequelize: Update user and wipe OTP fields clean
+    await user.update({
+      password_hash: hashedPassword,
+      reset_otp: null,
+      reset_otp_expires_at: null
+    });
