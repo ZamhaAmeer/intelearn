@@ -272,3 +272,6 @@ app.post('/forgot-password', async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: 'Email not found' });
     }
+
+    // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000);
