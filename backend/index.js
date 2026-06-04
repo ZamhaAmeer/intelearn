@@ -310,3 +310,7 @@ app.post('/verify-otp', async (req, res) => {
   if (!email || !otp) {
     return res.status(400).json({ error: 'Email and OTP are required' });
   }
+
+  try {
+    // Sequelize: Find user
+    const user = await User.findOne({ where: { email } });
