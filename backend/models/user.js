@@ -11,3 +11,8 @@ const user = sequelize.define('user', {
     type: DataTypes.STRING,
     allowNull: true, 
   },
+  username: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    unique: true,
+  },
