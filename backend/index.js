@@ -264,3 +264,7 @@ app.get('/get-profile', async (req, res) => {
 // ------------------------------------
 app.post('/forgot-password', async (req, res) => {
   const { email } = req.body;
+
+  try {
+    // Sequelize: Find user
+    const user = await User.findOne({ where: { email } });
