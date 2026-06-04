@@ -229,3 +229,9 @@ app.put('/update-profile', async (req, res) => {
     res.status(500).json({ error: 'Database Update Error: ' + err.message });
   }
 });
+
+// ------------------------------------
+// GET PROFILE ROUTE (Sequelize Version)
+// ------------------------------------
+app.get('/get-profile', async (req, res) => {
+  const userEmail = req.query.email;
