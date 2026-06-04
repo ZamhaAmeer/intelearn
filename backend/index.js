@@ -389,3 +389,17 @@ app.post('/reset-password', async (req, res) => {
 app.post('/courses', authenticateToken, upload.single('thumbnail'), async (req, res) => {
   const { title, description, semester, academic_year, is_published } = req.body;
   const imageUrl = req.file ? req.file.path : null;
+
+  try {
+    const lecturerId = req.user.id;
+
+    // Sequelize: Create the course
+    const newCourse = await Course.create({
+      title,
+      description,
+      semester,
+      academic_year,
+      is_published,
+      lecturer_id: lecturerId,
+      image_url: imageUrl
+    });
