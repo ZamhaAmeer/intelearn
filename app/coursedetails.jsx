@@ -55,4 +55,7 @@ const COURSES = [
   { id: '23', title: 'Advanced Mathematics', tags: 'Calculus • Graph Theory', code: 'IS2111', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/AdvM.jpg'), color: '#F5F5F5' },
   { id: '24', title: 'Communication Skills II', tags: 'Presentations • Reports • Memos', code: 'IS2112', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../src/assets/images/comskills2.png'), color: '#E0F2F1' },
   { id: '25', title: 'General English II', tags: 'Business Comm • Advanced Grammar', code: 'IS-EGP-1201', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../src/assets/images/GE2.jpg'), color: '#FFF9C4' },
+
+    // --- SEMESTER III ---
+  { id: '26', title: 'Object Oriented Analysis & Design', tags: 'UML Modeling • Design Patterns', code: 'IS3101', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/OOAD.jpeg'), color: '#FFECB3' },
   
