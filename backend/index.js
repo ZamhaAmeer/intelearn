@@ -318,3 +318,8 @@ app.post('/verify-otp', async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
+
+    // Check OTP (using != to allow string/number comparison)
+    if (user.reset_otp != otp) {
+      return res.status(400).json({ error: 'Invalid OTP' });
+    }
