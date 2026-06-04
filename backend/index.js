@@ -23,3 +23,7 @@ const Question = require('./models/question');
 // Lecturer -> Courses
 User.hasMany(Course, { foreignKey: 'lecturer_id' });
 Course.belongsTo(User, { foreignKey: 'lecturer_id' });
+
+// Course -> Materials
+Course.hasMany(CourseMaterial, { foreignKey: 'course_id' });
+CourseMaterial.belongsTo(Course, { foreignKey: 'course_id' });
