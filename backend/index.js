@@ -37,3 +37,7 @@ Enrollment.belongsTo(Course, { foreignKey: 'course_id' });
 // Course -> Quizzes
 Course.hasMany(Quiz, { foreignKey: 'course_id' });
 Quiz.belongsTo(Course, { foreignKey: 'course_id' });
+
+// Quiz -> Questions
+Quiz.hasMany(Question, { foreignKey: 'quiz_id' });
+Question.belongsTo(Quiz, { foreignKey: 'quiz_id' });
