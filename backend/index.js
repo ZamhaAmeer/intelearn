@@ -42,7 +42,7 @@ Quiz.belongsTo(Course, { foreignKey: 'course_id' });
 Quiz.hasMany(Question, { foreignKey: 'quiz_id' });
 Question.belongsTo(Quiz, { foreignKey: 'quiz_id' });
 
-// --- APP INITIALIZATION ---
+
 const app = express();
 app.use(cors());
 app.use(express.json()); 
