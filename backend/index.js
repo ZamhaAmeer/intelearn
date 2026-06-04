@@ -246,3 +246,7 @@ app.get('/get-profile', async (req, res) => {
       where: { email: userEmail },
       attributes: ['full_name', 'username', 'email', 'phone', 'bio', 'department', 'gender'] // Safe extraction whitelist
     });
+
+    if (!user) {
+      return res.status(404).json({ error: "No user profile found matching this email." });
+    }
