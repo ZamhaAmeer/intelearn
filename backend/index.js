@@ -374,3 +374,5 @@ app.post('/reset-password', async (req, res) => {
       reset_otp: null,
       reset_otp_expires_at: null
     });
+
+     res.json({ message: 'Password reset successful' });   
