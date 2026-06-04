@@ -21,3 +21,5 @@ const question = sequelize.define('question', {
     tableName: 'questions',
   timestamps: true,
 });
+
+module.exports = question;
