@@ -163,7 +163,7 @@ const AddNewCourse = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#FCFCF5', // Light cream background
+    backgroundColor: '#FCFCF5', 
   },
   headerContainer: {
     backgroundColor: '#FCFCF5',
