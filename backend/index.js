@@ -382,3 +382,10 @@ app.post('/reset-password', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+// ------------------------------------
+// ADD COURSE
+// ------------------------------------
+app.post('/courses', authenticateToken, upload.single('thumbnail'), async (req, res) => {
+  const { title, description, semester, academic_year, is_published } = req.body;
+  const imageUrl = req.file ? req.file.path : null;
