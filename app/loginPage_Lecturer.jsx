@@ -15,7 +15,7 @@ import {
     View
 } from "react-native";
 
-import ForgotPasswordModal from "./forgotpassword";
+import ForgotPasswordModal from "./forgotPassword";
 
 const { height } = Dimensions.get("window");
 
@@ -49,7 +49,7 @@ export default function LoginPage() {
           {/* 3. Back Button positioned absolutely */}
           <View style={styles.backButtonContainer}>
             <TouchableOpacity 
-              onPress={() => router.replace('/choosingpage')} // Goes back to Choosing Page
+              onPress={() => router.replace('/choosingPage')} // Goes back to Choosing Page
               style={styles.backButton}
             >
               <Ionicons name="chevron-back" size={30} color="white" />
@@ -137,7 +137,7 @@ export default function LoginPage() {
           </View>
   
           {/* Login Button */}
-          <TouchableOpacity style={styles.loginButton} onPress={() => router.push("/coursedetailsforlecturer")}>
+          <TouchableOpacity style={styles.loginButton} onPress={() => router.push("/courseDetailsForLecturer")}>
             <Text style={styles.loginButtonText}>Login</Text>
           </TouchableOpacity>
   

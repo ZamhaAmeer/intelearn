@@ -194,7 +194,7 @@ export default function ResetPasswordScreen() {
               style={styles.returnButton}
               onPress={() => {
                 setIsModalVisible(false);
-                router.replace('/loginpage(student)');
+                router.replace('/loginPage_Student');
               }}
             >
               <Text style={styles.returnButtonText}>Return to Login</Text>

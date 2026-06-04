@@ -27,7 +27,7 @@ const CourseManagement = () => {
 
       {/* Light Sub-Header */}
       <View style={styles.subHeader}>
-        <TouchableOpacity style={styles.subHeaderIcon} onPress={() => router.push('/addnewcourse')}>
+        <TouchableOpacity style={styles.subHeaderIcon} onPress={() => router.push('/addNewCourse')}>
           <Icon name="arrow-back" size={24} color="#1E1E64" />
         </TouchableOpacity>
         <Text style={styles.subHeaderTitle}>Course Management</Text>

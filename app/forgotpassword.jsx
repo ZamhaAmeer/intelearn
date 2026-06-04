@@ -173,7 +173,7 @@ export default function ForgotPasswordModal({ visible, onClose }) {
                     // 2. Navigate to the create new password screen
                     // Using a small timeout ensures the modal closes smoothly before routing
                     setTimeout(() => {
-                      router.replace('/createnewpassword');
+                      router.replace('/createNewPassword');
                     }, 150); 
                   }}
                 >
