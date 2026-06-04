@@ -358,3 +358,5 @@ app.post('/reset-password', async (req, res) => {
     // OTP check
     if (user.reset_otp != otp) {
       return res.status(400).json({ error: 'Invalid OTP' });
+    }
+    
