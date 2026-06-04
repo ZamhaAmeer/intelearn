@@ -49,3 +49,7 @@ const user = sequelize.define('user', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
+  reset_otp_expires_at: {
+    type: DataTypes.DATE,
+    allowNull: true,
+  }
