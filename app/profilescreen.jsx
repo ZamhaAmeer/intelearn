@@ -180,7 +180,11 @@ const MenuOption = ({ iconName, title, active, onPress }) => (
                       <MenuOption iconName="home-variant" title="Home" onPress={() => {setMenuVisible(false); router.replace('/courseDetails')}} />
                       <MenuOption iconName="account" title="Profile" active onPress={() => {setMenuVisible(false); router.replace('/profileScreen')}} />
                       <MenuOption iconName="view-dashboard" title="Dashboard" />
+<<<<<<< HEAD
                       <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/miniGames')}} />
+=======
+                      <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/MiniGames')}}/>
+>>>>>>> 7dc77f170f9c1fd9d3cfd88aa00d2f6e6268df43
                       <MenuOption iconName="cog" title="Settings" onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
                     </View>
                     <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginPage_student') }}>
