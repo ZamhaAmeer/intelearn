@@ -23,7 +23,7 @@ const AddNewCourse = () => {
   const [selectedSem, setSelectedSem] = useState('2nd');
   const [publishImmediately, setPublishImmediately] = useState(true);
 
-  // Semesters array based on standard 8-semester degree
+
   const semesters = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th'];
 
   const data = [
@@ -133,7 +133,7 @@ const AddNewCourse = () => {
           />
         </View>
 
-        {/* Bottom padding to prevent overlap with footer */}
+        
         <View style={{ height: 100 }} /> 
       </ScrollView>
 
