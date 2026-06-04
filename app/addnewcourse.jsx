@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   textInput: {
-    backgroundColor: '#F4F7E6', // Light greenish-yellow
+    backgroundColor: '#F4F7E6', 
     borderRadius: 15,
     paddingHorizontal: 15,
     paddingVertical: 15,
