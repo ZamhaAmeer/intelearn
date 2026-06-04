@@ -300,3 +300,9 @@ app.post('/forgot-password', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+// ------------------------------------
+// VERIFY OTP ROUTE (Sequelize Version)
+// ------------------------------------
+app.post('/verify-otp', async (req, res) => {
+  const { email, otp } = req.body;
