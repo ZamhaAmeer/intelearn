@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     backgroundColor: '#FCFCF5',
     overflow: 'hidden',
-    paddingBottom: 20, // Space for the curve shadow/spacing
+    paddingBottom: 20, 
     marginTop: -60, 
   },
   headerCurve: {
