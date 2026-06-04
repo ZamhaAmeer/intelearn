@@ -258,3 +258,9 @@ app.get('/get-profile', async (req, res) => {
     return res.status(500).json({ error: "Internal server database error: " + err.message });
   }
 });
+
+// ------------------------------------
+// FORGOT PASSWORD - Generate & Send OTP (Sequelize Version)
+// ------------------------------------
+app.post('/forgot-password', async (req, res) => {
+  const { email } = req.body;
