@@ -187,3 +187,10 @@ app.post('/login', async (req, res) => {
       process.env.JWT_SECRET, 
       { expiresIn: '1h' }
     );
+
+    res.json({ 
+      token, 
+      role: user.role, 
+      full_name: user.full_name, 
+      message: 'Login successful' 
+    });
