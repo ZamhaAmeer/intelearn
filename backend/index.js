@@ -112,3 +112,10 @@ const upload = multer({
   },
   limits: { fileSize: 10 * 1024 * 1024 }
 });
+
+// ------------------------------------
+// THE REGISTER ROUTE (Sequelize Version)
+// ------------------------------------
+app.post('/register', async (req, res) => {
+  const { full_name, email, password, role } = req.body;
+  
