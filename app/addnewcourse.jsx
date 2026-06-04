@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     paddingVertical: 15,
-    paddingBottom: 25, // safe area padding
+    paddingBottom: 25, 
     shadowColor: '#000',
     shadowOffset: { width: 0, height: -3 },
     shadowOpacity: 0.05,
