@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     marginTop: -60, 
   },
   headerCurve: {
-    backgroundColor: '#6044E4', // Primary purple
+    backgroundColor: '#6044E4', 
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
     height: 120,
