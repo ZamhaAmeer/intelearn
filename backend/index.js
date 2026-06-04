@@ -199,3 +199,9 @@ app.post('/login', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+// ------------------------------------
+// UPDATE PROFILE ROUTE (Sequelize Version)
+// ------------------------------------
+app.put('/update-profile', async (req, res) => {
+  const { full_name, username, email, phone, bio, department, gender } = req.body;
