@@ -18,3 +18,8 @@ const CourseMaterial = require('./models/courseMaterial');
 const Enrollment = require('./models/enrollment');
 const Quiz = require('./models/quiz');
 const Question = require('./models/question');
+
+// --- DATABASE RELATIONSHIPS ---
+// Lecturer -> Courses
+User.hasMany(Course, { foreignKey: 'lecturer_id' });
+Course.belongsTo(User, { foreignKey: 'lecturer_id' });
