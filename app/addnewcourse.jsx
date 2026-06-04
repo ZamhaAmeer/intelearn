@@ -133,7 +133,7 @@ const AddNewCourse = () => {
           />
         </View>
 
-        {/* Bottom padding to prevent overlap with footer */}
+        
         <View style={{ height: 100 }} /> 
       </ScrollView>
 
