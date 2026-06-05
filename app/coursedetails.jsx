@@ -775,3 +775,29 @@ const styles = StyleSheet.create({
   statusBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12 },
   badgeText: { fontSize: 10, fontWeight: '700' },
 
+  fab: { position: 'absolute', bottom: 30, right: 30, backgroundColor: '#4E33B3', width: 65, height: 65, borderRadius: 33, justifyContent: 'center', alignItems: 'center', elevation: 8 },
+  chatbotOverlay: { flex: 1, backgroundColor: 'transparent' },
+  chatbotPopup: { position: 'absolute', bottom: 110, right: 30, backgroundColor: '#E8E4FF', borderRadius: 50, paddingVertical: 10, paddingHorizontal: 5, alignItems: 'center', elevation: 10, borderWidth: 2, borderColor: '#9B86EE' },
+  charOption: { alignItems: 'center', padding: 10, width: 70 },
+  charText: { fontSize: 10, fontWeight: 'bold', color: '#4E33B3', marginTop: 2 },
+  charSeparator: { height: 1, width: '60%', backgroundColor: '#9B86EE', marginVertical: 5 },
+  emptyContainer: { alignItems: 'center', marginTop: 50 },
+  emptyText: { color: '#888', fontSize: 16, marginTop: 10 },
+  notifOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.2)', justifyContent: 'flex-start', alignItems: 'center' },
+  notifPanel: { width: '90%', backgroundColor: 'white', marginTop: 100, borderRadius: 20, padding: 20, elevation: 15 },
+  notifHeader: { fontSize: 18, fontWeight: 'bold', marginBottom: 15, color: '#4E33B3' },
+  notifItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10 },
+  notifText: { marginLeft: 10, fontSize: 14, color: '#333' },
+  closeNotifBtn: { marginTop: 15, backgroundColor: '#4E33B3', padding: 10, borderRadius: 10, alignItems: 'center' },
+  closeNotifText: { color: 'white', fontWeight: 'bold' },
+
+  // --- NEW UNIFIED POPUP STYLES ---
+  notifOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'center', alignItems: 'center' },
+  popupMainContainer: { width: width * 0.9, backgroundColor: '#EFEFEF', borderRadius: 30, paddingTop: 15, elevation: 20, overflow: 'hidden' },
+  
+  popupToggleRow: { flexDirection: 'row', justifyContent: 'space-evenly', marginHorizontal: 20, marginBottom: 15 },
+  popupToggleBtn: { flex: 1, marginHorizontal: 5, paddingVertical: 12, alignItems: 'center', borderRadius: 25 },
+  popupToggleBtnActive: { backgroundColor: '#6F42C1' },
+  
+  popupContentArea: { backgroundColor: '#EFEFEF', paddingBottom: 20 },
+
