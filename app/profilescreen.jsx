@@ -272,7 +272,6 @@ const handleSaveChanges = async () => {
             />
           </View>
 
-          {/* Gender Dropdown */}
           <View style={styles.halfInput}>
             <Text style={styles.label}>Gender</Text>
             <Dropdown
