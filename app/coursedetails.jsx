@@ -79,4 +79,8 @@ const COURSES = [
   { id: '43', title: 'IS Strategies', tags: 'Alignment • Business Goals • Planning', code: 'IS4108', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/IS4108.jpg'), color: '#E1F5FE' },
   { id: '44', title: 'Agile Software Development', tags: 'Scrum • Kanban • Sprints', code: 'IS4109', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/IS4109.jpg'), color: '#E8F5E9' },
   { id: '45', title: 'Capstone Project', tags: 'Implementation • Problem Solving', code: 'IS4110', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/IS4110.jpg'), color: '#FFCCBC' },
-  
+  { id: '46', title: 'Academic English II', tags: 'Presentation • Professional Writing', code: 'IS-EAP-2201', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../src/assets/images/ACE2.jpeg'), color: '#FFF9C4' },
+
+    // --- SEMESTER V ---
+  { id: '47', title: 'Entrepreneurship & Innovation', tags: 'Startups • Ideation • Business Models', code: 'IS5101', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#BBDEFB' },
+  { id: '48', title: 'Enterprise Architecture', tags: 'TOGAF • Systems Integration', code: 'IS5102', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#D7CCC8' },
