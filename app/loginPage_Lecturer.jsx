@@ -343,3 +343,38 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 40,
   },
+    backButtonContainer: {
+    position: 'absolute',
+    top: 40,
+    left: 10,
+    zIndex: 10,
+  },
+  backButton: {
+    padding: 10,
+  },
+  footerText: {
+    color: "#000",
+    fontSize: 15,
+    fontWeight: "300",
+  },
+  signUpText: {
+    color: "#3716A4",
+    fontSize: 14,
+    fontWeight: "bold",
+    marginTop: 5,
+  },
+    scrollView: {
+    flex: 1,
+    marginTop: -181, 
+  },
+  scrollContent: {
+    paddingBottom: 40, 
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: 30,
+    
+  },
+  inputGroup: {
+    marginBottom: 15,
+  },
