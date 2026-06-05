@@ -687,3 +687,25 @@ export default function CourseDetailsScreen() {
         </TouchableOpacity>
       </Modal>
 
+      {/* CHATBOT MODAL */}
+      <Modal transparent visible={isChatbotOptionsVisible} animationType="fade" onRequestClose={toggleChatbot}>
+        <TouchableOpacity style={styles.chatbotOverlay} activeOpacity={1} onPress={toggleChatbot}>
+          <View style={styles.chatbotPopup}>
+            <TouchableOpacity style={styles.charOption} onPress={() => {setChatbotOptionsVisible(false); router.replace('/chatbotmaya') }}>
+               <Text style={{fontSize: 30}}>👩‍💼</Text><Text style={styles.charText}>Maya</Text>
+            </TouchableOpacity>
+            <View style={styles.charSeparator} />
+            <TouchableOpacity style={styles.charOption} onPress={() => {setChatbotOptionsVisible(false); router.replace('/chatbotdhruv') }}>
+               <Text style={{fontSize: 30}}>👨‍🎓</Text><Text style={styles.charText}>Dhruv</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
+
+      <TouchableOpacity style={styles.fab} onPress={toggleChatbot}>
+        <Icon name="face-agent" size={30} color="white" />
+      </TouchableOpacity>
+    </View>
+  );
+}
+
