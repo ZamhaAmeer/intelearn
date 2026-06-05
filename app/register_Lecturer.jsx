@@ -325,4 +325,18 @@ const styles = StyleSheet.create({
     color: "#333",
     marginBottom: 8,
   },
-  
+  input: {
+    backgroundColor: "#F9F9F9",
+    borderWidth: 1,
+    borderColor: "#EEE",
+    borderRadius: 12,
+    padding: 14,
+    fontSize: 16,
+    color: "#000",
+  },
+   privacyRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 25,
+  },
