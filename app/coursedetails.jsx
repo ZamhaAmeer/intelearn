@@ -382,4 +382,19 @@ export default function CourseDetailsScreen() {
               <Text style={[styles.calDateText, {color: '#6F42C1'}]}>7</Text>
               <View style={[styles.calDateDot, {backgroundColor: '#6F42C1'}]} />
             </View>
+          </TouchableOpacity>
+          <Text style={styles.calDateText}>8</Text>
+          <Text style={styles.calDateText}>9</Text>
+          <View style={[styles.calDateItem, styles.calDateHighlightPinkLight]}>
+             <Text style={[styles.calDateText, {color: '#D81B60'}]}>10</Text>
+             <View style={[styles.calDateDot, {backgroundColor: '#D81B60'}]} />
+          </View>
+          <Text style={styles.calDateText}>11</Text>
+          <Text style={styles.calDateText}>12</Text>
+        </View>
+        <View style={styles.calDateRow}>
+          <Text style={styles.calDateText}>13</Text>
+          <View style={[styles.calDateItem, styles.calDateHighlightPurpleDark]}>
+             <Text style={[styles.calDateText, {color: 'white'}]}>14</Text>
+          </View>
 
