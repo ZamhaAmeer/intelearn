@@ -230,4 +230,33 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                               At least 8 characters long
                             </Text>
                           </View>
+                                      
+                          <View style={styles.requirementRow}>
+                            <Ionicons 
+                              name={hasSpecialChar ? "checkmark-circle" : "ellipse-outline"} 
+                              size={20} 
+                              color={hasSpecialChar ? "#10b981" : "#d1d5db"} 
+                            />
+                            <Text style={[
+                              styles.requirementText, 
+                              hasSpecialChar && styles.requirementTextValid
+                            ]}>
+                              Include one special character
+                            </Text>
+                          </View>
+                        </View>
+                   </View>
+
+                   {/* Privacy Policy Checkbox Row */}
+            <View style={styles.privacyRow}>
+              <TouchableOpacity 
+                style={[styles.checkbox, agree && styles.checkboxChecked]} 
+                onPress={() => setAgree(!agree)}
+              >
+                {agree && <Ionicons name="checkmark" size={14} color="white" />}
+              </TouchableOpacity>
+              <Text style={styles.privacyText}>
+                I agree to the <Text style={styles.privacyLink}>Privacy Policy</Text>
+              </Text>
+            </View>
                           
