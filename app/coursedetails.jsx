@@ -100,4 +100,8 @@ const COURSES = [
 
     // --- SEMESTER VI ---
   { id: '61a', title: 'Industrial Training', tags: 'Internship • Industry Exposure', code: 'IS6101', type: 'Compulsory', credits: '6 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#CFD8DC' },
+
+    // --- SEMESTER VII ---
+  { id: '62', title: 'Research Methodologies', tags: 'Research Design • Literature Review', code: 'IS7101', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E1BEE7' },
+  { id: '63', title: 'IT Law', tags: 'Cyber Law • Regulations • Policy', code: 'IS7102', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#FFE082' },
   
