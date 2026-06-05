@@ -486,4 +486,20 @@ export default function CourseDetailsScreen() {
             </View>
           </View>
 
+          {/* SEMESTER TABS */}
+          <View style={styles.tabsWrapper}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.tabsScroll}>
+              {semesters.map((sem, index) => (
+                <TouchableOpacity 
+                  key={index} 
+                  onPress={() => handleTabPress(sem)}
+                  style={[styles.tabButton, activeSem === sem && styles.activeTabButton]}
+                >
+                  <Text style={[styles.tabText, activeSem === sem && styles.activeTabText]}>{sem}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
+
 
