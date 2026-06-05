@@ -709,3 +709,51 @@ export default function CourseDetailsScreen() {
   );
 }
 
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#FEFDF0' },
+  stableTopBar: {
+    position: 'absolute', top: 0, left: 0, right: 0, height: 100,
+    backgroundColor: '#4E33B3', flexDirection: 'row', justifyContent: 'space-between',
+    alignItems: 'center', paddingHorizontal: 20, paddingTop: 45, zIndex: 1000,
+  },
+  stickyTitleText: { color: 'white', fontSize: 18, fontWeight: 'bold' },
+  headerContentSection: { backgroundColor: '#4E33B3', padding: 20, paddingTop: 110, borderBottomLeftRadius: 30, borderBottomRightRadius: 30, paddingBottom: 40 },
+  headerTitle: { color: 'white', fontSize: 32, fontWeight: 'bold' },
+  headerSubtitle: { color: '#A292FF', fontSize: 32, fontWeight: 'bold', marginTop: -10 },
+  searchSection: { backgroundColor: 'white', borderRadius: 25, marginTop: 20, paddingHorizontal: 15, height: 45, justifyContent: 'center' },
+  input: { color: '#000' },
+  cardListWrapper: { padding: 20 },
+
+  scrollList: { 
+    flexGrow: 1,
+    paddingBottom: 120 // Ensures bottom semesters can definitely scroll to the top
+  },
+  
+  sectionHeader: { fontSize: 18, fontWeight: 'bold', color: '#4E33B3', marginBottom: 15, marginTop: 10, marginLeft: 5 },
+
+  toggleTrack: { width: 75, height: 38, borderRadius: 20, padding: 4, justifyContent: 'center' },
+  toggleIconsLayer: { ...StyleSheet.absoluteFillObject, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 10 },
+  toggleThumb: { width: 30, height: 30, borderRadius: 15, backgroundColor: '#4E33B3', justifyContent: 'center', alignItems: 'center', elevation: 4, zIndex: 2 },
+
+  rightScrollBar: { position: 'absolute', top: 300, right: 10, width: 4, height: 250, backgroundColor: '#E0E0E0', borderRadius: 2, zIndex: 1 },
+
+  tabsWrapper: { marginTop: -15, marginBottom: 10 },
+  tabsScroll: { paddingHorizontal: 15, gap: 10 },
+  tabButton: { backgroundColor: '#E8E4FF', paddingVertical: 8, paddingHorizontal: 18, borderRadius: 20 },
+  activeTabButton: { backgroundColor: '#C4B5FD' },
+  tabText: { color: '#4E33B3', fontWeight: 'bold', fontSize: 13 },
+  activeTabText: { color: '#311B92' },
+
+  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.3)', justifyContent: 'flex-start' },
+  sideMenu: { width: width * 0.7, height: '100%', backgroundColor: 'white', padding: 20, borderTopRightRadius: 20, borderBottomRightRadius: 20, elevation: 10 },
+  menuHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 40, marginTop: 20 },
+  menuList: { flex: 1 },
+  menuItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14, paddingHorizontal: 15, borderRadius: 12, marginBottom: 8 },
+  activeMenuItem: { backgroundColor: '#E8E4FF' },
+  pressedMenuItem: { backgroundColor: '#D1C4E9', transform: [{ scale: 0.97 }] },
+  menuItemIcon: { marginRight: 15 },
+  menuItemText: { fontSize: 16, color: '#333', fontWeight: '500' },
+  activeMenuText: { color: '#4E33B3', fontWeight: 'bold' },
+  logoutButton: { borderTopWidth: 1, borderTopColor: '#eee', paddingVertical: 20, alignItems: 'center' },
+  logoutText: { fontSize: 18, color: 'grey' },
+
