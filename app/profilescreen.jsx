@@ -132,7 +132,7 @@ const handleSaveChanges = async () => {
 };
 
 
-  // 4. Function to handle Image Selection
+  
   const handleChangePhoto = () => {
     Alert.alert(
       "Select Profile Picture",
