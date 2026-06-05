@@ -515,5 +515,24 @@ export default function CourseDetailsScreen() {
                   }}
                 >
                   <Text style={styles.sectionHeader}>{group.title}</Text>
+                  
+                  {group.data.map((course) => (
+                    <CourseCard 
+                      key={course.id} 
+                      item={course} 
+                      onView={(item) => {
+                        switch (item.code) {
+                          case 'IS1101': router.push('/FIS'); break;
+                          case 'IS1102': router.push('/structured-t'); break;
+                          case 'IS1103': router.push('/structured-p'); break;
+                          case 'IS1104': router.push('/theories-is'); break;
+                          case 'IS1105': router.push('/comp-org'); break;
+                          case 'IS1106': router.push('/foundations-web-tech'); break;
+                          case 'IS1107': router.push('/personal-productivity'); break;
+                          case 'IS1108': router.push('/fundamentals-maths'); break;
+                          case 'IS1109': router.push('/stats-probability'); break;
+                          case 'IS1110': router.push('/comm-skills-1'); break;
+                          case 'IS1111': router.push('/academic-integrity'); break;
+                          case 'IS-EGP-1101': router.push('/gen-english-1'); break;
 
 
