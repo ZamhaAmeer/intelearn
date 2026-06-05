@@ -16,3 +16,51 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
+
+import ForgotPasswordModal from "./forgotpassword";
+
+const { height } = Dimensions.get("window");
+
+export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const [isModalVisible, setModalVisible] = useState(false);
+  const router = useRouter();
+
+  const handleLogin = async () => {
+    // Basic frontend validation
+    if (!email || !password) {
+      Alert.alert("Error", "Please enter both email and password.");
+      return;
+    }
+
+    console.log("Attempting login for:", email);
+
+    try {
+      
+      const response = await fetch("http://10.19.66.72:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const rawText = await response.text();
+
+      // Debugging logs to see exactly what the server said
+    console.log("Server Status Code:", response.status);
+    console.log("RAW SERVER RESPONSE:", rawText);
+
+    // 3. Now safely try to convert it to JSON
+      let data;
+      try {
+        data = JSON.parse(rawText);
+      } catch (parseError) {
+        console.error("Failed to parse JSON. The server sent HTML instead.");
+        Alert.alert("Server Error", "Check your Expo terminal to see the raw HTML response.");
+        return; 
+      }
