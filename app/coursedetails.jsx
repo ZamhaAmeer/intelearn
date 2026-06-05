@@ -660,5 +660,16 @@ export default function CourseDetailsScreen() {
         </TouchableOpacity>
       </Modal>
 
+      {/* SIDE MENU MODAL */}
+      <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
+        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={toggleMenu}>
+          <View style={[styles.sideMenu, isDark && { backgroundColor: '#1A1A1A' }]}>
+            <View style={styles.menuHeader}>
+              <TouchableOpacity onPress={toggleMenu}>
+                <Icon name="menu" size={30} color={isDark ? "white" : "#333"} />
+              </TouchableOpacity>
+              
+              <ThemeToggle isDark={isDark} onToggle={() => setIsDark(!isDark)} />
+            </View>
 
 
