@@ -256,7 +256,6 @@ const handleSaveChanges = async () => {
               />
               <View style={styles.row}>
           
-          {/* Department Dropdown */}
           <View style={styles.halfInput}>
             <Text style={styles.label}>Department</Text>
             <Dropdown
