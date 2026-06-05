@@ -219,7 +219,6 @@ const handleSaveChanges = async () => {
           <View style={styles.contentCard}>
             <View style={styles.profileImageSection}>
               <View style={styles.imageWrapper}>
-                {/* 5. Update Image source to use the state */}
                 <TouchableOpacity onPress={handleChangePhoto}>
                   <Image 
                     source={require("../../assets/images/pr2.jpg")} 
