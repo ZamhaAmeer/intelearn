@@ -452,3 +452,27 @@ export default function CourseDetailsScreen() {
         </TouchableOpacity>
       </View>
 
+      <Animated.ScrollView 
+        ref={scrollRef}
+        contentContainerStyle={styles.scrollList} 
+        showsVerticalScrollIndicator={false}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true })}
+        scrollEventThrottle={16}
+      >
+        <View onLayout={(e) => { headerHeight.current = e.nativeEvent.layout.height; }}>
+          <View style={[styles.headerContentSection, isDark && { backgroundColor: '#1A1A1A' }]}>
+            <Animated.View style={{ opacity: mainTitleOpacity }}>
+              <Text style={styles.headerTitle}>Course</Text>
+              <Svg height="45" width="200" style={{marginTop: -5}}>
+                <Defs>
+                  <LinearGradient id="grad" x1="0" y1="0" x2="1" y2="0">
+                    <Stop offset="0" stopColor="#9B86EE" stopOpacity="1" />
+                    <Stop offset="0.6" stopColor="#5CA0D3" stopOpacity="1" />
+                    <Stop offset="1" stopColor="#31B998" stopOpacity="1" />
+                  </LinearGradient>
+                </Defs>
+                <SvgText fill="url(#grad)" fontSize="38" fontWeight="bold" x="0" y="35">Details</SvgText>
+              </Svg>
+            </Animated.View>
+
+
