@@ -46,7 +46,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
   const studentEmailRegex = /^\d{2}[a-zA-Z]{3}\d{4}@ms\.sab\.ac\.lk$/i;
     if (!studentEmailRegex.test(email.trim())) {
       alert('Invalid Email! Please use your official university email (e.g., 22fis0574@ms.sab.ac.lk).');
-      return; // Stops the registration process
+      return;
     }
 
   // 2. Check if passwords match
@@ -61,3 +61,44 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
       headers: {
         'Content-Type': 'application/json',
       },
+      // 3. Send the ACTUAL state variables, not the hardcoded test strings!
+      body: JSON.stringify({ 
+        full_name: fullName,
+        email: email.trim().toLowerCase(),
+        password: password, 
+        role: 'student'
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log('Success! User registered:', data);
+      Alert.alert(
+    "Registration Successful",
+    "Your account has been created successfully.",
+    [
+      {
+        text: "OK",
+        onPress: () => {
+          // Navigate to Profile ONLY after clicking OK
+          router.push({
+            pathname: '/profilescreen',
+            params: { 
+              fullName: fullName, 
+              email: email.trim().toLowerCase() 
+            }
+          });
+        }
+      }
+          ]
+  );
+    } else {
+      console.error('Registration failed:', data.error);
+      alert('Error: ' + data.error);
+    }
+  } catch (error) {
+    console.error('Network Error:', error);
+    alert('Could not connect to server');
+  }
+};
