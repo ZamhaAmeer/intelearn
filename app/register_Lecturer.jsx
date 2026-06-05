@@ -159,7 +159,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                             placeholderTextColor="#A0A0A0"
                             value={password}
                             onChangeText={setPassword}
-                            secureTextEntry={!showPassword} // Toggle visibility here
+                            secureTextEntry={!showPassword} 
                           />
                           <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
                             <Ionicons 
@@ -170,3 +170,16 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                           </TouchableOpacity>
                         </View>
                       </View>
+  
+                      {/* Confirm Password* */}
+                      <View style={styles.inputGroup}>
+                        <Text style={styles.label}>Confirm Password*</Text>
+                        <View style={styles.passwordInputWrapper}>
+                          <TextInput
+                            style={styles.flexInput}
+                            placeholder="........"
+                            placeholderTextColor="#A0A0A0"
+                            value={confirmPassword}
+                            onChangeText={setConfirmPassword}
+                            secureTextEntry={!showPassword} 
+                          />
