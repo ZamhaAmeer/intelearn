@@ -31,7 +31,7 @@ export default function PrivacyScreen() {
   const handleScroll = (event) => {
     const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
     
-    // Check if the user is near or at the bottom layout threshold (within 20 pixels)
+
     const isCloseToBottom = layoutMeasurement.height + contentOffset.y >= contentSize.height - 20;
     
     if (isCloseToBottom && !hasAgreed) {
