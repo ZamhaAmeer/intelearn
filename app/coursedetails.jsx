@@ -801,3 +801,42 @@ const styles = StyleSheet.create({
   
   popupContentArea: { backgroundColor: '#EFEFEF', paddingBottom: 20 },
 
+  // --- NOTIFICATION STYLES ---
+  notifListItem: { flexDirection: 'row', paddingHorizontal: 20, paddingVertical: 15 },
+  notifIconCircle: { width: 45, height: 45, borderRadius: 22.5, justifyContent: 'center', alignItems: 'center' },
+  notifTextContainer: { flex: 1, marginLeft: 15, justifyContent: 'center' },
+  notifTitle: { fontSize: 16, fontWeight: 'bold', color: '#333' },
+  notifDesc: { fontSize: 13, color: '#666', marginTop: 2, lineHeight: 18 },
+  notifTime: { fontSize: 11, fontWeight: 'bold', color: '#6F42C1', marginTop: 5 },
+  notifTimeRed: { fontSize: 11, fontWeight: 'bold', color: '#D81B60', marginTop: 5 },
+  
+  // --- CALENDAR STYLES ---
+  calHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 25, marginBottom: 15 },
+  calMonthText: { fontSize: 18, fontWeight: 'bold', color: '#333' },
+  calArrows: { flexDirection: 'row', gap: 15 },
+  
+  calDaysRow: { flexDirection: 'row', justifyContent: 'space-around', paddingHorizontal: 15, marginBottom: 10 },
+  calDayName: { fontSize: 11, fontWeight: 'bold', color: '#999', width: 30, textAlign: 'center' },
+  
+  calDatesGrid: { paddingHorizontal: 15, marginBottom: 20 },
+  calDateRow: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 10 },
+  calDateItem: { width: 34, height: 34, justifyContent: 'center', alignItems: 'center', borderRadius: 17 },
+  calDateText: { fontSize: 15, color: '#333', width: 34, textAlign: 'center', lineHeight: 34 },
+  calDateDim: { color: '#CCC' },
+  
+  calDateHighlightPurpleLight: { backgroundColor: '#EAE2FD' },
+  calDateHighlightPinkLight: { backgroundColor: '#FCE4EC' },
+  calDateHighlightPurpleDark: { backgroundColor: '#6F42C1' },
+  calDateDot: { width: 4, height: 4, borderRadius: 2, position: 'absolute', bottom: 4 },
+
+  calEventCard: { backgroundColor: '#FDFBF3', marginHorizontal: 20, padding: 15, borderRadius: 20, flexDirection: 'row', alignItems: 'center', elevation: 2 },
+  calEventIconWrap: { backgroundColor: '#EAE2FD', width: 40, height: 40, borderRadius: 8, justifyContent: 'center', alignItems: 'center' },
+  calEventInfo: { marginLeft: 15 },
+  calEventLabel: { fontSize: 11, fontWeight: 'bold', color: '#6F42C1' },
+  calEventTitle: { fontSize: 15, fontWeight: 'bold', color: '#333', marginTop: 2 },
+
+  // --- BOTTOM BUTTON STYLES ---
+  bottomActionBtn: { marginTop: 10, alignSelf: 'center', paddingVertical: 15 },
+  bottomActionText: { color: '#6F42C1', fontWeight: 'bold', fontSize: 13, letterSpacing: 0.5 },
+});
+
