@@ -352,4 +352,25 @@ export const styles = StyleSheet.create({
     padding: 14,
     fontSize: 16,
     color: "#000",
+  },
+  privacyRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 25,
+  },
+  checkbox: {
+    width: 20,
+    height: 20,
+    borderWidth: 1,
+    borderColor: '#CCC',
+    borderRadius: 4,
+    marginRight: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white'
+  },
+  checkboxChecked: {
+    backgroundColor: '#5D3FD3',
+    borderColor: '#5D3FD3',
   },                        
