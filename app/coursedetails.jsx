@@ -114,4 +114,8 @@ const COURSES = [
   { id: '71', title: 'Statistical Distribution & Inferences', tags: 'Probability • Testing • Data', code: 'IS7110', type: 'Elective', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#E0F2F1' },
   { id: '72', title: 'Advanced Programming Practicum', tags: 'Optimization • Problem Solving', code: 'IS7111', type: 'Elective', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#FFF9C4' },
   { id: '73', title: 'Machine Learning', tags: 'AI • Deep Learning • Neural Nets', code: 'IS7112', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E1F5FE' },
+
+    // --- SEMESTER VIII ---
+  { id: '74', title: 'Research Project in IS', tags: 'Thesis • Investigation • Discovery', code: 'IS8101', type: 'Compulsory', credits: '8 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#FCE4EC' },
+  { id: '75', title: 'Business/IT Alignment', tags: 'Strategy • Operations • Sync', code: 'IS8102', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E8F5E9' },
   
