@@ -335,4 +335,21 @@ export const styles = StyleSheet.create({
     shadowRadius: 15,
     elevation: 8,
   },
-                        
+  inputGroup: {
+    marginBottom: 15,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#333",
+    marginBottom: 8,
+  },
+  input: {
+    backgroundColor: "#F9F9F9",
+    borderWidth: 1,
+    borderColor: "#EEE",
+    borderRadius: 12,
+    padding: 14,
+    fontSize: 16,
+    color: "#000",
+  },                        
