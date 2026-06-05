@@ -23,7 +23,7 @@ export default function PrivacyScreen() {
   const router = useRouter();
   const [hasAgreed, setHasAgreed] = useState(false);
   const [isMenuVisible, setMenuVisible] = useState(false);
-  const [isDark, setIsDark] = useState(false);
+  
 
 
 
