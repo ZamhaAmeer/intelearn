@@ -397,4 +397,20 @@ export default function CourseDetailsScreen() {
           <View style={[styles.calDateItem, styles.calDateHighlightPurpleDark]}>
              <Text style={[styles.calDateText, {color: 'white'}]}>14</Text>
           </View>
+                    <Text style={styles.calDateText}>15</Text>
+          <Text style={styles.calDateText}>16</Text>
+          <Text style={styles.calDateText}>17</Text>
+          <Text style={styles.calDateText}>18</Text>
+          <Text style={styles.calDateText}>19</Text>
+        </View>
+        <View style={styles.calDateRow}>
+          <Text style={styles.calDateText}>20</Text>
+          <Text style={styles.calDateText}>21</Text>
+          <Text style={styles.calDateText}>22</Text>
+          <Text style={styles.calDateText}>23</Text>
+          <Text style={styles.calDateText}>24</Text>
+          <Text style={styles.calDateText}>25</Text>
+          <Text style={styles.calDateText}>26</Text>
+        </View>
+      </View>
 
