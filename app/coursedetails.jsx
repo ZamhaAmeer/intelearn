@@ -622,4 +622,18 @@ export default function CourseDetailsScreen() {
         </View>
       </Animated.ScrollView>
 
+      {/* NOTIFICATION / CALENDAR POPUP MODAL */}
+      <Modal transparent visible={isNotifVisible} animationType="slide" onRequestClose={() => setNotifVisible(false)}>
+        <TouchableOpacity style={styles.notifOverlay} activeOpacity={1} onPress={() => setNotifVisible(false)}>
+          <View style={styles.popupMainContainer} onStartShouldSetResponder={() => true}>
+            
+            {/* Top Toggle Area */}
+            <View style={styles.popupToggleRow}>
+              <TouchableOpacity 
+                style={[styles.popupToggleBtn, activePopupTab === 'notifications' && styles.popupToggleBtnActive]} 
+                onPress={() => setActivePopupTab('notifications')}
+              >
+                <Icon name={activePopupTab === 'notifications' ? "bell" : "bell-outline"} size={22} color={activePopupTab === 'notifications' ? 'white' : '#6F42C1'} />
+              </TouchableOpacity>
+
 
