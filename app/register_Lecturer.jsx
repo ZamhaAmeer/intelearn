@@ -406,3 +406,25 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     letterSpacing: 0.5,
   },
+ // ... existing styles ...
+  requirementRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  requirementText: {
+    marginLeft: 8,
+    fontSize: 14,
+    color: '#6b7280', 
+  },
+  requirementTextValid: {
+    color: '#10b981', 
+    fontWeight: '500', 
+  },
+  scrollView: {
+    flex: 1,
+    marginTop: -110, 
+  },
+  scrollContainer: {
+    flexGrow: 1,
+  },
