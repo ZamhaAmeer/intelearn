@@ -273,3 +273,108 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 5,
   },
+    inputGroup: {
+    marginBottom: 15,
+  },
+  label: {
+    fontSize: 13,
+    fontWeight: "500",
+    color: "rgba(7, 0, 16, 0.9)",
+    marginBottom: 6,
+  },
+  input: {
+    backgroundColor: "rgba(242, 231, 231, 0.2)",
+    borderWidth: 1,
+    borderColor: "#E5E5E5",
+    borderRadius: 12,
+    padding: 12,
+    fontSize: 14,
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 5,
+  },
+    checkboxRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  checkbox: {
+    width: 18,
+    height: 18,
+    borderWidth: 1,
+    borderColor: "#000",
+    borderRadius: 4,
+    marginRight: 8,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  checkboxChecked: {
+    backgroundColor: "#5B3CC2",
+    borderColor: "#5B3CC2",
+  },
+    checkmark: {
+    color: "white",
+    fontSize: 12,
+  },
+  checkboxLabel: {
+    fontSize: 12,
+    color: "#5C5C57",
+  },
+  forgotText: {
+    fontSize: 12,
+    color: "#201A26",
+    fontWeight: "500",
+  },
+  loginButton: {
+    backgroundColor: "#5B3CC2",
+    borderRadius: 18,
+    paddingVertical: 15,
+    alignItems: "center",
+    marginTop: 30,
+  },
+    loginButtonText: {
+    color: "#FFFFF0",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  footer: {
+    alignItems: "center",
+    marginTop: 40,
+  },
+  backButtonContainer: {
+    position: 'absolute',
+    top: 40,
+    left: 10,
+    zIndex: 10,
+  },
+    backButton: {
+    padding: 10,
+  },
+  footerText: {
+    color: "#000",
+    fontSize: 15,
+    fontWeight: "300",
+  },
+  signUpText: {
+    color: "#3716A4",
+    fontSize: 14,
+    fontWeight: "bold",
+    marginTop: 5,
+  },
+    scrollView: {
+    flex: 1,
+    marginTop: -181, // Move the negative margin from 'content' to here
+  },
+  scrollContent: {
+    paddingBottom: 40, // Adds space at the bottom so it's not cramped
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: 30,
+    // Removed marginTop: -160 from here as it's now on the ScrollView
+  },
+  inputGroup: {
+    marginBottom: 15,
+  },
