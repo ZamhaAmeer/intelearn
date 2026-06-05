@@ -85,3 +85,53 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
     alert('Could not connect to server');
   }
   };
+
+  return (
+      <View style={styles.container}>
+        {/* Header Section */}
+         <ImageBackground
+          source={require("../src/assets/images/header-curve.png")}
+          style={styles.headerBackground}
+          resizeMode="stretch"
+        >
+          <View style={styles.backButtonContainer}>
+            <TouchableOpacity 
+              onPress={() => router.back()} 
+              style={styles.backButton}
+            >
+              <Ionicons name="chevron-back" size={30} color="white" />
+            </TouchableOpacity>
+          </View>
+  
+          <View style={styles.headerTextContainer}>
+            <Text style={styles.headerTitle}>Create Your Account</Text>
+          </View>
+        </ImageBackground>
+        
+  
+        <KeyboardAvoidingView 
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1 }}
+        >
+          <ScrollView
+                    style={styles.scrollView}  
+                    contentContainerStyle={styles.scrollContainer}
+                    showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps="handled" 
+                                      >
+                  
+  
+            <View style={styles.content}>
+              
+              {/* Registration Form Card */}
+              <View style={styles.formCard}>
+                <View style={styles.inputGroup}>
+                  <Text style={styles.label}>Full Name*</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="John Doe"
+                    placeholderTextColor="#A0A0A0"
+                    value={fullName}
+                    onChangeText={setFullName}
+                  />
+                </View>
