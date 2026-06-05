@@ -52,17 +52,7 @@ export default function PrivacyScreen() {
     </Svg>
   );
   
-  const ThemeToggle = ({ isDark, onToggle }) => {
-    const progress = useSharedValue(isDark ? 1 : 0);
-    useEffect(() => { progress.value = withSpring(isDark ? 1 : 0); }, [isDark]);
-  
-    const rTrackStyle = useAnimatedStyle(() => ({
-      backgroundColor: interpolateColor(progress.value, [0, 1], ['#E0E0E0', '#333333']),
-    }));
-    const rThumbStyle = useAnimatedStyle(() => ({
-      transform: [{ translateX: progress.value * 34 }],
-    }));
-
+ 
     return (
       <TouchableOpacity activeOpacity={0.8} onPress={onToggle}>
         <Animated.View style={[styles.trackStyle, rTrackStyle]}>
