@@ -259,4 +259,29 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                 I agree to the <Text style={styles.privacyLink}>Privacy Policy</Text>
               </Text>
             </View>
+
+           
+
+            {/* Register Button */}
+            <TouchableOpacity 
+              style={[styles.registerButton, !agree && styles.registerButtonDisabled]} 
+              onPress={handleRegister}
+              disabled={!agree} // Disables the button if agree is false
+            >
+              <Text style={styles.registerButtonText}>Register</Text>
+            </TouchableOpacity>
+
+            {/* Footer */}
+            <View style={styles.footer}>
+              <Text style={styles.footerText}>Already have an account?</Text>
+              <TouchableOpacity onPress={() => router.push("/loginpage(student)")}>
+                <Text style={styles.loginText}>Login</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </View>
+  );
+}
                           
