@@ -124,3 +124,66 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
           <Text style={styles.headerTitle}>Create Your Account</Text>
         </View>
       </ImageBackground>
+            
+
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        <ScrollView
+                  style={styles.scrollView}  
+                  contentContainerStyle={styles.scrollContainer}
+                  showsVerticalScrollIndicator={false}
+                  keyboardShouldPersistTaps="handled" // Allows tapping outside inputs to dismiss keyboard
+                >
+                
+
+          <View style={styles.content}>
+                        
+            {/* Registration Form Card */}
+            <View style={styles.formCard}>
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Full Name*</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="John Doe"
+                  placeholderTextColor="#A0A0A0"
+                  value={fullName}
+                  onChangeText={setFullName}
+                />
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Email Address*</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="example@email.com"
+                  placeholderTextColor="#A0A0A0"
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
+              </View>
+
+                  {/* Password* */}
+                    <View style={styles.inputGroup}>
+                      <Text style={styles.label}>Password*</Text>
+                      <View style={styles.passwordInputWrapper}>
+                        <TextInput
+                          style={styles.flexInput}
+                          placeholder="........"
+                          placeholderTextColor="#A0A0A0"
+                          value={password}
+                          onChangeText={setPassword}
+                          secureTextEntry={!showPassword} // Toggle visibility here
+                        />
+                        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                          <Ionicons 
+                            name={showPassword ? "eye-outline" : "eye-off-outline"} 
+                            size={22} 
+                            color="#A0A0A0" 
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
