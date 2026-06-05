@@ -474,5 +474,16 @@ export default function CourseDetailsScreen() {
                 <SvgText fill="url(#grad)" fontSize="38" fontWeight="bold" x="0" y="35">Details</SvgText>
               </Svg>
             </Animated.View>
+                        
+            <View style={styles.searchSection}>
+              <TextInput 
+                style={styles.input} 
+                placeholder="Explore your future" 
+                placeholderTextColor="#888" 
+                value={searchQuery} 
+                onChangeText={setSearchQuery}
+              />
+            </View>
+          </View>
 
 
