@@ -321,7 +321,7 @@ const handleSaveChanges = async () => {
 const styles = StyleSheet.create({
     container: {
     flex: 1,
-    backgroundColor: '#F0F0F0', // Slight grey background to pop the card
+    backgroundColor: '#F0F0F0', 
   },
   scrollContent: {
     paddingBottom: 40,
