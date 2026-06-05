@@ -255,7 +255,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
               {/* Footer */}
               <View style={styles.footer}>
                 <Text style={styles.footerText}>Already have an account?</Text>
-                <TouchableOpacity onPress={() => router.push("/loginpage(lecturer)")}>
+                <TouchableOpacity onPress={() => router.push("/loginpage_Lecturer")}>
                   <Text style={styles.loginText}>Login</Text>
                 </TouchableOpacity>
               </View>

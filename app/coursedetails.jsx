@@ -254,8 +254,6 @@ export default function CourseDetailsScreen() {
 
   // ==============================================================
   // THE MATHEMATICAL FALLBACK FIX
-  // This calculates exactly where the screen needs to go, even if 
-  // the app hasn't loaded the bottom of the screen yet!
   // ==============================================================
   const handleTabPress = (sem) => {
     setActiveSem(sem);
@@ -673,14 +671,14 @@ export default function CourseDetailsScreen() {
             </View>
 
             <View style={styles.menuList}>
-              <MenuOption iconName="home-variant" title="Home" active onPress={() => {setMenuVisible(false); router.replace('/coursedetails')}} />
+              <MenuOption iconName="home-variant" title="Home" active onPress={() => {setMenuVisible(false); router.replace('/courseDetails')}} />
               <MenuOption iconName="account" title="Profile" onPress={() => {setMenuVisible(false); router.replace('/profilescreen_Student')}} />
               <MenuOption iconName="view-dashboard" title="Dashboard" />
-              <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/minigamesection')}} />
+              <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/miniGameSection')}} />
               <MenuOption iconName="shield-check" title="Privacy" onPress={() => {setMenuVisible(false); router.replace('/privacy')}} />
               <MenuOption iconName="cog" title="Settings" onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
             </View>
-            <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}>
+            <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage_Student') }}>
               <Text style={styles.logoutText}> Log Out    <Icon name="logout" size={24} color="grey" /></Text>
             </TouchableOpacity>
           </View>
@@ -691,11 +689,11 @@ export default function CourseDetailsScreen() {
       <Modal transparent visible={isChatbotOptionsVisible} animationType="fade" onRequestClose={toggleChatbot}>
         <TouchableOpacity style={styles.chatbotOverlay} activeOpacity={1} onPress={toggleChatbot}>
           <View style={styles.chatbotPopup}>
-            <TouchableOpacity style={styles.charOption} onPress={() => {setChatbotOptionsVisible(false); router.replace('/chatbotmaya') }}>
+            <TouchableOpacity style={styles.charOption} onPress={() => {setChatbotOptionsVisible(false); router.replace('/chatbotMaya') }}>
                <Text style={{fontSize: 30}}>👩‍💼</Text><Text style={styles.charText}>Maya</Text>
             </TouchableOpacity>
             <View style={styles.charSeparator} />
-            <TouchableOpacity style={styles.charOption} onPress={() => {setChatbotOptionsVisible(false); router.replace('/chatbotdhruv') }}>
+            <TouchableOpacity style={styles.charOption} onPress={() => {setChatbotOptionsVisible(false); router.replace('/chatbotDhruv') }}>
                <Text style={{fontSize: 30}}>👨‍🎓</Text><Text style={styles.charText}>Dhruv</Text>
             </TouchableOpacity>
           </View>
