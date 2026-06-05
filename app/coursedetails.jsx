@@ -185,3 +185,34 @@ const ThemeToggle = ({ isDark, onToggle }) => {
     </Pressable>
   );
 };
+
+const MenuOption = ({ iconName, title, active, onPress }) => (
+  <Pressable
+    onPress={onPress}
+    style={({ pressed }) => [
+      styles.menuItem,
+      active && styles.activeMenuItem,
+      pressed && styles.pressedMenuItem 
+    ]}
+  >
+    <Icon name={iconName} size={22} color={active ? "#4E33B3" : "#7E57C2"} style={styles.menuItemIcon} />
+    <Text style={[styles.menuItemText, active && styles.activeMenuText]}>{title}</Text>
+  </Pressable>
+);
+
+const CourseCard = ({ item, onView }) => (
+  <TouchableOpacity style={styles.cardContainer} onPress={() => onView(item)}>
+    <View style={styles.imageCircleContainer}>
+      <Image source={item.image} style={styles.courseImage} />
+    </View>
+    <View style={styles.infoCard}>
+      <Text style={styles.courseTitle} numberOfLines={1}>{item.title}</Text>
+      <Text style={styles.courseTags} numberOfLines={1}>{item.tags}</Text>
+      <View style={styles.badgeRow}>
+        <View style={[styles.statusBadge, { backgroundColor: '#FFCCBC' }]}><Text style={styles.badgeText}>{item.code}</Text></View>
+        <View style={[styles.statusBadge, { backgroundColor: '#C8E6C9' }]}><Text style={styles.badgeText}>{item.type}</Text></View>
+        <View style={[styles.statusBadge, { backgroundColor: '#CFD8DC' }]}><Text style={styles.badgeText}>{item.credits}</Text></View>
+      </View>
+    </View>
+  </TouchableOpacity>
+);
