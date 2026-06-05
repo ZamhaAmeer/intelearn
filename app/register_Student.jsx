@@ -373,4 +373,42 @@ export const styles = StyleSheet.create({
   checkboxChecked: {
     backgroundColor: '#5D3FD3',
     borderColor: '#5D3FD3',
+  },
+  privacyText: {
+    fontSize: 15,
+    color: "#444",
+  },
+  privacyLink: {
+    color: "#5D3FD3",
+    textDecorationLine: 'underline',
+  },
+  registerButton: {
+    backgroundColor: "#5D3FD3",
+    borderRadius: 25,
+    paddingVertical: 15,
+    alignItems: "center",
+    marginTop: 40,
+  },
+  registerButtonDisabled: {
+    backgroundColor: "#A0A0A0", 
+    opacity: 0.7,
+  },
+  registerButtonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  footer: {
+    alignItems: "center",
+    marginTop: 30,
+  },
+  footerText: {
+    color: "#000",
+    fontSize: 16,
+  },
+  loginText: {
+    color: "#3716A4",
+    fontSize: 16,
+    fontWeight: "bold",
+    marginTop: 5,
   },                        
