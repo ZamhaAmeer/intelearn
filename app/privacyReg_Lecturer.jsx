@@ -22,11 +22,7 @@ const { width } = Dimensions.get('window');
 export default function PrivacyScreen() {
   const router = useRouter();
   const [hasAgreed, setHasAgreed] = useState(false);
-  const [isMenuVisible, setMenuVisible] = useState(false);
   
-
-
-
   const handleScroll = (event) => {
     const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
     
