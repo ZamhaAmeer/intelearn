@@ -71,3 +71,5 @@ const COURSES = [
     // --- SEMESTER IV ---
   { id: '36', title: 'IT Auditing', tags: 'Compliance • Controls • Frameworks', code: 'IS4101', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/IT-audit.jpg'), color: '#F8BBD0' },
   { id: '37', title: 'Web Application Development', tags: 'Full-stack • PHP • Frameworks', code: 'IS4102', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/WB.jpeg'), color: '#C5CAE9' },
+  { id: '38', title: 'Operating Systems', tags: 'Processes • Memory • Concurrency', code: 'IS4103', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/OS.jpeg'), color: '#D1C4E9' },
+  { id: '39', title: 'System Administration and Maintenance', tags: 'Linux • Scripts • Infrastructure', code: 'IS4104', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/SAS.jpeg'), color: '#B3E5FC' },
