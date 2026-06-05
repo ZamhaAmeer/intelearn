@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   contentCard: {
-    backgroundColor: '#FEFDF0', // Matches your off-white background
+    backgroundColor: '#FEFDF0', 
     marginHorizontal: 20,
     marginTop: -40,
     borderRadius: 30,
