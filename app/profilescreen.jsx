@@ -186,26 +186,7 @@ const handleSaveChanges = async () => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}
       >
-       <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
-               <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={toggleMenu}>
-                 <View style={styles.sideMenu}>
-                   <View style={styles.menuHeader}>
-                     <Text style={styles.moonIcon}>🌙</Text>
-                   </View>
-                   <View style={styles.menuList}>
-                     <MenuOption iconName="home-variant" title="Home" onPress={() => {setMenuVisible(false); router.replace('/coursedetails')}} />
-                     <MenuOption iconName="account" title="Profile"  active onPress={() => {setMenuVisible(false); router.replace('/profilescreen')}} />
-                     <MenuOption iconName="view-dashboard" title="Dashboard" />
-                     <MenuOption iconName="controller-classic" title="Games" />
-                     <MenuOption iconName="shield-check" title="Privacy" onPress={() => {setMenuVisible(false); router.replace('/privacy')}}/>
-                     <MenuOption iconName="cog" title="Settings" onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
-                   </View>
-                   <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}>
-                     <Text style={styles.logoutText}> Log Out   <Icon name="logout" size={24} color="grey" /></Text>
-                   </TouchableOpacity>
-                 </View>
-               </TouchableOpacity>
-             </Modal>
+       
 
         <ScrollView contentContainerStyle={styles.scrollContent}>
           
