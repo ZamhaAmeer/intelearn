@@ -414,3 +414,24 @@ export default function CourseDetailsScreen() {
         </View>
       </View>
 
+      {/* Tomorrow Event Card */}
+      <View style={styles.calEventCard}>
+        <View style={styles.calEventIconWrap}>
+           <Icon name="calendar-text-outline" size={24} color="#6F42C1" />
+        </View>
+        <View style={styles.calEventInfo}>
+           <Text style={styles.calEventLabel}>TOMORROW</Text>
+           <Text style={styles.calEventTitle}>IS Final Review Session</Text>
+        </View>
+      </View>
+
+      <TouchableOpacity style={styles.bottomActionBtn} onPress={() => setNotifVisible(false)}>
+        <Text style={[styles.bottomActionText, {color: '#777'}]}>VIEW FULL SCHEDULE</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  return (
+    <View style={[styles.container, isDark && { backgroundColor: '#121212' }]}>
+      
+
