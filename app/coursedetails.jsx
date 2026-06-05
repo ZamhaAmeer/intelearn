@@ -108,4 +108,7 @@ const COURSES = [
   { id: '65', title: 'Enterprise Modelling Ontologies', tags: 'Semantic Web • Knowledge Representation', code: 'IS7104', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#FFCCBC' },
   { id: '66', title: 'Organizational Behavior & Management', tags: 'Leadership • Culture • Motivation', code: 'IS7105', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#B3E5FC' },
   { id: '67', title: 'Cloud Computing', tags: 'AWS • Azure • Microservices', code: 'IS7106', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#D1C4E9' },
-  
+  { id: '68', title: 'Mobile Application Development', tags: 'Android • iOS • Cross-platform', code: 'IS7107', type: 'Elective', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#FFCDD2' },
+  { id: '69', title: 'Web Service Technologies', tags: 'REST • SOAP • APIs', code: 'IS7108', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#F5F5F5' },
+  { id: '70', title: 'Geographical Information Systems', tags: 'Mapping • Spatial Data • ArcGIS', code: 'IS7109', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#DCEDC8' },
+  { id: '71', title: 'Statistical Distribution & Inferences', tags: 'Probability • Testing • Data', code: 'IS7110', type: 'Elective', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#E0F2F1' },
