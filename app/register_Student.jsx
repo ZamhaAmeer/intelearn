@@ -225,7 +225,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                             />
                             <Text style={[
                               styles.requirementText, 
-                              isLengthValid && styles.requirementTextValid // Apply valid style if true
+                              isLengthValid && styles.requirementTextValid 
                             ]}>
                               At least 8 characters long
                             </Text>
@@ -266,7 +266,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
             <TouchableOpacity 
               style={[styles.registerButton, !agree && styles.registerButtonDisabled]} 
               onPress={handleRegister}
-              disabled={!agree} // Disables the button if agree is false
+              disabled={!agree} 
             >
               <Text style={styles.registerButtonText}>Register</Text>
             </TouchableOpacity>
@@ -284,4 +284,55 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
     </View>
   );
 }
-                          
+
+export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FFFCF0", 
+
+  },
+  headerBackground: {
+    width: "100%",
+    height: height * 0.3,
+    justifyContent: "center",
+    alignItems: "center", 
+    backgroundColor: "transparent", 
+  },
+
+   backButtonContainer: {
+    position: 'absolute',
+    top: 40,
+    left: 10,
+    zIndex: 10,
+  },
+  backButton: {
+    padding: 10,
+  },
+  headerTextContainer: {
+    marginTop: -35,
+  },
+  headerTitle: {
+    color: "#FFF",
+    fontSize: 28,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  content: {
+    paddingHorizontal: 30,
+    marginTop: 25,
+    paddingBottom: 40,
+    position: "relative", 
+    zIndex: 1,            
+    elevation: 10,
+  },
+  formCard: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.1,
+    shadowRadius: 15,
+    elevation: 8,
+  },
+                        
