@@ -128,3 +128,22 @@ const COURSES = [
   { id: '83', title: 'Digital Business Model', tags: 'Disruption • E-Commerce • Value', code: 'IS8110', type: 'Elective', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#E1F5FE' },
   { id: '84', title: 'Game Development', tags: 'Unity • 3D Design • Physics', code: 'IS8111', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#F0F4C3' }
 ];
+
+const getSemesterFromCode = (code) => {
+  if (code === 'IS-EGP-1101') return '1st Sem';
+  if (code === 'IS-EGP-1201') return '2nd Sem';
+  if (code === 'IS-EAP-2101') return '3rd Sem';
+  if (code === 'IS-EAP-2201') return '4th Sem';
+  if (code === 'IS-EBP-3101') return '5th Sem';
+
+  if (code.startsWith('IS1')) return '1st Sem';
+  if (code.startsWith('IS2')) return '2nd Sem';
+  if (code.startsWith('IS3')) return '3rd Sem';
+  if (code.startsWith('IS4')) return '4th Sem';
+  if (code.startsWith('IS5')) return '5th Sem';
+  if (code.startsWith('IS6')) return '6th Sem';
+  if (code.startsWith('IS7')) return '7th Sem';
+  if (code.startsWith('IS8')) return '8th Sem';
+  
+  return 'Unknown';
+};
