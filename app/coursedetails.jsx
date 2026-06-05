@@ -266,3 +266,20 @@ export default function CourseDetailsScreen() {
       
       // 2. Get the Y location from React Native (if it loaded)
       let yOffset = sectionOffsets.current[sem];
+
+      // 3. IF THE APP DIDN'T LOAD THE LOCATION YET, DO THE MATH OURSELVES!
+      if (yOffset === undefined) {
+        let estimatedY = 0;
+        for (let i = 0; i < groupedCourses.length; i++) {
+          if (groupedCourses[i].title === sem) break;
+          if (groupedCourses[i].data.length > 0) {
+            estimatedY += 45; // Exact pixel height of the "1st Sem" title
+            estimatedY += (groupedCourses[i].data.length * 125); // Math: number of courses * height of one card
+          }
+        }
+        yOffset = estimatedY;
+      }
+
+      // 4. Calculate Final Destination
+      let targetY = sem === '1st Sem' ? 0 : (safeHeaderHeight + yOffset - 110);
+      if (targetY < 0) targetY = 0; // Never scroll above the ceiling
