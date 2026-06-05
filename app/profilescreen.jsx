@@ -41,7 +41,6 @@ export default function ProfileScreen() {
     }
   }, [params]);
 
-  const [isMenuVisible, setMenuVisible] = useState(false);
   
   
   const [profileImage, setProfileImage] = useState('https://via.placeholder.com/150');
