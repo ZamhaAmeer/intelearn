@@ -149,3 +149,57 @@ export default function LoginPage() {
               returnKeyType="next"
             />
           </View>
+
+          {/* Password* */}
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Password*</Text>
+            <View style={styles.passwordInputWrapper}>
+              <TextInput
+                style={styles.flexInput}
+                placeholder="........"
+                placeholderTextColor="#A0A0A0"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={!showPassword} // Toggle visibility here
+              />
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <Ionicons 
+                  name={showPassword ? "eye-outline" : "eye-off-outline"} 
+                  size={22} 
+                  color="#A0A0A0" 
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {/* Remember Me & Forgot Password */}
+          <View style={styles.row}>
+            <TouchableOpacity 
+              style={styles.checkboxRow} 
+              onPress={() => setRememberMe(!rememberMe)}
+            >
+              <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
+                {rememberMe && <Text style={styles.checkmark}>✓</Text>}
+              </View>
+              <Text style={styles.checkboxLabel}>Remember Me</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => setModalVisible(true)}>
+        <Text style={styles.forgotText}>Forgot Password?</Text>
+      </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Login Button */}
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+          <Text style={styles.loginButtonText}>Login</Text>
+        </TouchableOpacity>
+
+          {/* Footer */}
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>Don't have an account?</Text>
+            <TouchableOpacity onPress={() => router.push("/register(student)")}>
+              <Text style={styles.signUpText}>Create an account</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
