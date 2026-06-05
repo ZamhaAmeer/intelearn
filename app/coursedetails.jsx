@@ -251,3 +251,18 @@ export default function CourseDetailsScreen() {
     title: sem,
     data: filteredCourses.filter(c => getSemesterFromCode(c.code) === sem)
   }));
+
+  // ==============================================================
+  // 🌟 THE MATHEMATICAL FALLBACK FIX 🌟
+  // This calculates exactly where the screen needs to go, even if 
+  // the app hasn't loaded the bottom of the screen yet!
+  // ==============================================================
+  const handleTabPress = (sem) => {
+    setActiveSem(sem);
+    
+    setTimeout(() => {
+      // 1. Get the known Header Height or fallback to a standard 280px
+      const safeHeaderHeight = headerHeight.current || 280;
+      
+      // 2. Get the Y location from React Native (if it loaded)
+      let yOffset = sectionOffsets.current[sem];
