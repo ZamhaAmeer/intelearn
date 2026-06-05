@@ -227,7 +227,6 @@ const handleSaveChanges = async () => {
                   />
                 </TouchableOpacity>
               </View>
-              {/* 6. Link the button to the function */}
               <TouchableOpacity 
                 style={styles.changePhotoButton} 
                 onPress={handleChangePhoto}
