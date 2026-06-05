@@ -373,8 +373,29 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingHorizontal: 30,
-    
   },
   inputGroup: {
     marginBottom: 15,
   },
+    label: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#333",
+    marginBottom: 8,
+  },
+   passwordInputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: "#F9F9F9",
+    borderWidth: 1,
+    borderColor: "#EEE",
+    borderRadius: 12,
+    paddingHorizontal: 14,
+  },
+    flexInput: {
+    flex: 1,
+    paddingVertical: 14,
+    fontSize: 16,
+    color: "#000",
+  },
+});
