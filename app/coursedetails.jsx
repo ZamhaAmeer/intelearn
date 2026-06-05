@@ -560,4 +560,17 @@ export default function CourseDetailsScreen() {
                           case 'IS3109': router.push('/digital-innovation'); break;
                           case 'IS-EAP-2101': router.push('/acad-english-1'); break;
 
+                          case 'IS4101': router.push('/it-auditing'); break;
+                          case 'IS4102': router.push('/web-app-dev'); break;
+                          case 'IS4103': router.push('/operating-systems'); break;
+                          case 'IS4104': router.push('/sys-admin'); break;
+                          case 'IS4105': router.push('/it-procurement'); break;
+                          case 'IS4106': router.push('/sw-architecture'); break;
+                          case 'IS4107': router.push('/prof-ethics'); break;
+                          case 'IS4108': router.push('/is-strategies'); break;
+                          case 'IS4109': router.push('/agile'); break;
+                          case 'IS4110': router.push('/capstone'); break;
+                          case 'IS-EAP-2201': router.push('/acad-english-2'); break;
+
+
 
