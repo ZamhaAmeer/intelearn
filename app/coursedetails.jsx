@@ -301,3 +301,41 @@ export default function CourseDetailsScreen() {
     setActivePopupTab(tab);
     setNotifVisible(true);
   } 
+
+  // --- POPUP VIEWS RENDERING FUNCTIONS ---
+  const renderNotificationsContent = () => (
+    <View style={styles.popupContentArea}>
+      <View style={styles.notifListItem}>
+        <View style={[styles.notifIconCircle, { backgroundColor: '#E0D4FC' }]}>
+          <Icon name="clipboard-text-outline" size={24} color="#6F42C1" />
+        </View>
+        <View style={styles.notifTextContainer}>
+          <Text style={styles.notifTitle}>New assignment posted</Text>
+          <Text style={styles.notifDesc}>Structured Programming: Unit 4 - Logic Gates</Text>
+          <Text style={styles.notifTime}>2 HOURS AGO</Text>
+        </View>
+      </View>
+
+      <View style={styles.notifListItem}>
+        <View style={[styles.notifIconCircle, { backgroundColor: '#FCE4EC' }]}>
+          <Icon name="calendar-month-outline" size={24} color="#D81B60" />
+        </View>
+        <View style={styles.notifTextContainer}>
+          <Text style={styles.notifTitle}>Exam date reminder</Text>
+          <Text style={styles.notifDesc}>Fundamentals of IS mid-term scheduled for Oct 12th.</Text>
+          <Text style={styles.notifTimeRed}>YESTERDAY</Text>
+        </View>
+      </View>
+
+      <View style={styles.notifListItem}>
+        <View style={[styles.notifIconCircle, { backgroundColor: '#EDE7F6' }]}>
+          <Icon name="message-text-outline" size={24} color="#7E57C2" />
+        </View>
+        <View style={styles.notifTextContainer}>
+          <Text style={styles.notifTitle}>New grade available</Text>
+          <Text style={styles.notifDesc}>Assignment 3: Modular Functions - Grade: A-</Text>
+          <Text style={styles.notifTime}>2 DAYS AGO</Text>
+        </View>
+      </View>
+
+
