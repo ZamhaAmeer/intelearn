@@ -359,3 +359,23 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#444",
   },
+  privacyLink: {
+    color: "#5D3FD3",
+    textDecorationLine: 'underline',
+  },
+  registerButton: {
+    backgroundColor: "#5D3FD3",
+    borderRadius: 25,
+    paddingVertical: 15,
+    alignItems: "center",
+    marginTop: 40,
+  },
+  registerButtonDisabled: {
+    backgroundColor: "#A0A0A0", 
+    opacity: 0.7, 
+  },
+  registerButtonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
