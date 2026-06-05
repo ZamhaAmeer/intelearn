@@ -379,3 +379,30 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
+  footer: {
+    alignItems: "center",
+    marginTop: 30,
+  },
+  footerText: {
+    color: "#000",
+    fontSize: 16,
+  },
+  loginText: {
+    color: "#3716A4",
+    fontSize: 16,
+    fontWeight: "bold",
+    marginTop: 5,
+  },
+  requirementsBox: {
+    backgroundColor: '#F5F5EC',
+    padding: 16,
+    borderRadius: 10,
+    marginBottom: 24,
+  },
+  requirementsTitle: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#111827',
+    marginBottom: 12,
+    letterSpacing: 0.5,
+  },
