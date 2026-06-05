@@ -235,7 +235,7 @@ const handleSaveChanges = async () => {
               </TouchableOpacity>
             </View>
 
-            {/* ... rest of your form code ... */}
+            
             <View style={styles.form}>
               <Text style={styles.label}>Full Name</Text>
               <TextInput style={styles.input} value={fullName} onChangeText={setFullName} />
