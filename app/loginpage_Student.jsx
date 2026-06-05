@@ -64,3 +64,24 @@ export default function LoginPage() {
         Alert.alert("Server Error", "Check your Expo terminal to see the raw HTML response.");
         return; 
       }
+
+      // 3. The Logic Check
+    if (response.status === 200) {
+
+  await AsyncStorage.setItem('userEmail', email);
+
+  console.log("Saved Email:", email);
+
+  router.push("./coursedetails");
+}
+     else {
+      // If status is 401 (Unauthorized) or 400 (Bad Request), show the error and DO NOT navigate
+      console.log("Login rejected by server.");
+      Alert.alert("Login Failed", data.error || "Incorrect email or password");
+    }
+
+  } catch (error) {
+    console.error("Network or Fetch Error:", error);
+    Alert.alert("Network Error", "Could not connect to the backend server. Is it running?");
+  }
+};
