@@ -44,7 +44,7 @@ export default function ProfileScreen() {
   const [isMenuVisible, setMenuVisible] = useState(false);
   const toggleMenu = () => setMenuVisible(!isMenuVisible);
   
-  // 3. State to store the selected image URI
+  
   const [profileImage, setProfileImage] = useState('https://via.placeholder.com/150');
   const departmentData = [
   { label: 'CIS', value: 'cis' },
