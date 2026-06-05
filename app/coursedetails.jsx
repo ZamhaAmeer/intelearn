@@ -86,4 +86,6 @@ const COURSES = [
   { id: '48', title: 'Enterprise Architecture', tags: 'TOGAF • Systems Integration', code: 'IS5102', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#D7CCC8' },
   { id: '49', title: 'High Performance Computing', tags: 'Parallel Processing • GPU • Scaling', code: 'IS5103', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E0F2F1' },
   { id: '50', title: 'Software Process Management', tags: 'CMMI • Quality • Process Improvement', code: 'IS5104', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#FCE4EC' },
+  { id: '51', title: 'Business Process Management', tags: 'Workflows • Modeling • Optimization', code: 'IS5105', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E8EAF6' },
+  { id: '52', title: 'UI/UX Practicum', tags: 'Prototyping • Wireframes • Usability', code: 'IS5106', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#FFF3E0' },
   
