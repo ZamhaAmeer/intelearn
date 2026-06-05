@@ -603,4 +603,23 @@ export default function CourseDetailsScreen() {
                           case 'IS7111': router.push('/adv-prog-prac'); break;
                           case 'IS7112': router.push('/machine-learning'); break;
 
+                          default:
+                            router.push('/coursecontent');
+                            break;
+                        }
+                      }} 
+                    />
+                  ))}
+                </View>
+              );
+            })
+          ) : (
+            <View style={styles.emptyContainer}>
+               <Icon name="magnify-close" size={50} color="#BBB" />
+               <Text style={styles.emptyText}>No results found.</Text>
+            </View>
+          )}
+        </View>
+      </Animated.ScrollView>
+
 
