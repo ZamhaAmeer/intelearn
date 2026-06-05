@@ -310,3 +310,36 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+    checkboxChecked: {
+    backgroundColor: "#5B3CC2",
+    borderColor: "#5B3CC2",
+  },
+  checkmark: {
+    color: "white",
+    fontSize: 12,
+  },
+  checkboxLabel: {
+    fontSize: 12,
+    color: "#5C5C57",
+  },
+  forgotText: {
+    fontSize: 12,
+    color: "#201A26",
+    fontWeight: "500",
+  },
+    loginButton: {
+    backgroundColor: "#5B3CC2",
+    borderRadius: 18,
+    paddingVertical: 15,
+    alignItems: "center",
+    marginTop: 30,
+  },
+  loginButtonText: {
+    color: "#FFFFF0",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  footer: {
+    alignItems: "center",
+    marginTop: 40,
+  },
