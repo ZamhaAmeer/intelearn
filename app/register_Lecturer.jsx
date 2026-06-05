@@ -70,3 +70,18 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
         role: 'lecturer' // Since this navigates to the lecturer login, we hardcode 'lecturer' here
       }),
     });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log('Success! User registered:', data);
+      alert('Registration Successful!');
+    } else {
+      console.error('Registration failed:', data.error);
+      alert('Error: ' + data.error);
+    }
+  } catch (error) {
+    console.error('Network Error:', error);
+    alert('Could not connect to server');
+  }
+  };
