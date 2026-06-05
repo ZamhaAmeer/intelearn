@@ -13,9 +13,10 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import { interpolateColor, useSharedValue, withSpring } from 'react-native-reanimated';
+import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import Svg, { Path } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/Ionicons';
+
 const { width } = Dimensions.get('window');
 
 export default function PrivacyScreen() {
@@ -24,6 +25,19 @@ export default function PrivacyScreen() {
   const [isMenuVisible, setMenuVisible] = useState(false);
   const [isDark, setIsDark] = useState(false);
   
+  const toggleMenu = () => setMenuVisible(!isMenuVisible);
+
+  // 🔑 NEW: Dynamic scroll detector to auto-unlock mode at the page bottom
+  const handleScroll = (event) => {
+    const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
+    
+    // Check if the user is near or at the bottom layout threshold (within 20 pixels)
+    const isCloseToBottom = layoutMeasurement.height + contentOffset.y >= contentSize.height - 20;
+    
+    if (isCloseToBottom && !hasAgreed) {
+      setHasAgreed(true);
+    }
+  };
 
   // 2. SUB-COMPONENTS
   const SunIcon = ({ color }) => (
@@ -50,37 +64,40 @@ export default function PrivacyScreen() {
     }));
 
     return (
-        <View style={styles.trackStyle}>
+      <TouchableOpacity activeOpacity={0.8} onPress={onToggle}>
+        <Animated.View style={[styles.trackStyle, rTrackStyle]}>
           <Animated.View style={[styles.thumbStyle, rThumbStyle]} />
-        </View>
-      );
-    };
-  
-    const toggleMenu = () => setMenuVisible(!isMenuVisible);
-  
-    const MenuOption = ({ iconName, title, active, onPress }) => (
-      <TouchableOpacity style={[styles.menuItem, active && styles.activeMenuItem]} onPress={onPress}>
-        <Icon name={iconName} size={22} color={active ? "#4E33B3" : "#666"} style={styles.menuItemIcon} />
-        <Text style={[styles.menuItemText, active && styles.activeMenuText]}>{title}</Text>
+        </Animated.View>
       </TouchableOpacity>
     );
+  };
   
-    return (
-      <View style={styles.masterContainer}>
-        <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
-        
-        {/* 1. PRIMARY PURPLE HEADER */}
-        <View style={styles.topPurpleHeader}>
+  const MenuOption = ({ iconName, title, active, onPress }) => (
+    <TouchableOpacity style={[styles.menuItem, active && styles.activeMenuItem]} onPress={onPress}>
+      <Icon name={iconName} size={22} color={active ? "#4E33B3" : "#666"} style={styles.menuItemIcon} />
+      <Text style={[styles.menuItemText, active && styles.activeMenuText]}>{title}</Text>
+    </TouchableOpacity>
+  );
+  
+  return (
+    <View style={styles.masterContainer}>
+      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+      
+      {/* 1. PRIMARY PURPLE HEADER */}
+      <View style={styles.topPurpleHeader}>
         <SafeAreaView>
           <View style={styles.headerTopRow}>
-        
+            <TouchableOpacity onPress={toggleMenu}>
+            </TouchableOpacity>
+            <TouchableOpacity>
+            </TouchableOpacity>
           </View>
         </SafeAreaView>
       </View>
 
       {/* 2. SUB-HEADER */}
       <View style={styles.subHeader}>
-        <TouchableOpacity onPress={() => router.replace('/register(lecturer)')} style={styles.backButton}>
+        <TouchableOpacity onPress={() => router.replace('/register(lecturer')} style={styles.backButton}>
           <Ionicons name="arrow-back" size={22} color="#1A73E8" />
           <Text style={styles.subHeaderTitle}>Privacy & Data Policy</Text>
         </TouchableOpacity>
@@ -88,10 +105,13 @@ export default function PrivacyScreen() {
       </View>
 
       {/* 3. MAIN SCROLLABLE CONTENT */}
+      {/* 🔑 FIXED: Wired up onScroll processing with optimal frame throttling parameters */}
       <ScrollView 
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent} 
         showsVerticalScrollIndicator={false}
+        onScroll={handleScroll}
+        scrollEventThrottle={16} 
       >
         <Text style={styles.protocolTag}>INSTITUTIONAL PROTOCOL</Text>
         
@@ -105,7 +125,7 @@ export default function PrivacyScreen() {
           regarding digital engagement.
         </Text>
 
-        {/* 4. DOCUMENT CARD WITH FIXED SYNTAX */}
+        {/* 4. DOCUMENT CARD */}
         <View style={styles.documentCard}>
           <Section 
             title="Section 1.0: Preamble" 
@@ -119,7 +139,6 @@ export default function PrivacyScreen() {
             title="Section 2.0: Intellectual Property of Contributions" 
             text="All scholarly outputs, discussion board contributions, and peer-review submissions transmitted via the VLE are subject to an irrevocable, non-exclusive license granted to Learnora for the purposes of pedagogical analysis and institutional archiving. Users retain moral rights to their work, but acknowledge that the platform may utilize anonymized fragments of such work for the refinement of Large Language Models (LLMs) used in institutional tutoring."
           />
-          
           <Section 
             title="Section 5.1: Third-Party Academic Integrations" 
             text="Learnora leverages a network of secondary service providers for plagiarism detection, e-library indexing, and cloud-based laboratory environments. Personal identifiers—excluding sensitive financial data—may be shared with these entities to ensure a seamless academic experience. Each provider is audited for compliance with the Federal Student Data Privacy Act (FSDPA)."
@@ -135,31 +154,48 @@ export default function PrivacyScreen() {
           </View>
         </View>
 
-        {/* 5. AGREE SECTION */}
-        <View style={styles.actionSection}>
-          <TouchableOpacity 
-            style={styles.checkboxRow} 
-            onPress={() => setHasAgreed(!hasAgreed)}
-          >
-            <View style={[styles.checkbox, hasAgreed && styles.checkboxChecked]}>
-              {hasAgreed && <Ionicons name="checkmark" size={14} color="white" />}
-            </View>
-            <Text style={styles.checkboxLabel}>I have read and agree to the terms</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={[styles.agreeBtn, !hasAgreed && styles.agreeBtnDisabled]}
-            disabled={!hasAgreed}
-            onPress={() => router.replace('/loginpage(lecturer)')}
-          >
-            <Text style={styles.agreeBtnText}>I AGREE & CONFIRM</Text>
-          </TouchableOpacity>
-        </View>
-        
-        
-
-        <View style={{ height: 60 }} />
+        <View style={{ height: 120 }} />
       </ScrollView>
+
+      {/* 5. FIXED ACTION SECTION */}
+      <View style={styles.fixedActionSection}>
+        {/* Helper UX Prompt that flips automatically when state unlocks */}
+      
+        <TouchableOpacity 
+          style={[styles.agreeBtn, !hasAgreed && styles.agreeBtnDisabled]}
+          disabled={!hasAgreed}
+          onPress={() => router.replace('/loginpage(student)')}
+        >
+          <Text style={styles.agreeBtnText}>I AGREE & CONFIRM</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* SIDE MENU MODAL */}
+      <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
+        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={toggleMenu}>
+          <View style={[styles.sideMenu, isDark && { backgroundColor: '#1A1A1A' }]}>
+            <View style={styles.menuHeader}>
+              <TouchableOpacity onPress={toggleMenu}>
+                <Icon name="menu" size={30} color={isDark ? "white" : "#333"} />
+              </TouchableOpacity>
+              
+              <ThemeToggle isDark={isDark} onToggle={() => setIsDark(!isDark)} />
+            </View>
+
+            <View style={styles.menuList}>
+              <MenuOption iconName="home-variant" title="Home" onPress={() => {setMenuVisible(false); router.replace('/coursedetails')}} />
+              <MenuOption iconName="account" title="Profile" onPress={() => {setMenuVisible(false); router.replace('/profilescreen')}} />
+              <MenuOption iconName="view-dashboard" title="Dashboard" />
+              <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/minigamesection')}} />
+              <MenuOption iconName="shield-check" title="Privacy" active onPress={() => {setMenuVisible(false); router.replace('/privacy')}} />
+              <MenuOption iconName="cog" title="Settings" onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
+            </View>
+            <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}>
+              <Text style={styles.logoutText}> Log Out    <Icon name="logout" size={24} color="grey" /></Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 }
@@ -193,15 +229,14 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#F0F0F0',
+    zIndex: 10,
   },
-
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.3)', justifyContent: 'flex-start' },
   sideMenu: { width: width * 0.7, height: '100%', backgroundColor: 'white', padding: 20, borderTopRightRadius: 20, borderBottomRightRadius: 20, elevation: 10 },
   menuHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 40, marginTop: 20 },
   menuList: { flex: 1 },
   menuItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14, paddingHorizontal: 15, borderRadius: 12, marginBottom: 8 },
   activeMenuItem: { backgroundColor: '#E8E4FF' },
-  pressedMenuItem: { backgroundColor: '#D1C4E9', transform: [{ scale: 0.97 }] },
   menuItemIcon: { marginRight: 15 },
   menuItemText: { fontSize: 16, color: '#333', fontWeight: '500' },
   activeMenuText: { color: '#4E33B3', fontWeight: 'bold' },
@@ -220,12 +255,39 @@ const styles = StyleSheet.create({
   sectionBody: { fontSize: 14, color: '#78849E', lineHeight: 22 },
   footerInfo: { marginTop: 10, borderTopWidth: 1, borderTopColor: '#F0F0F0', paddingTop: 15 },
   versionText: { fontSize: 11, color: '#9FA8DA', fontStyle: 'italic', marginBottom: 4 },
-  actionSection: { paddingBottom: 20 },
-  checkboxRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 20 },
-  checkbox: { width: 22, height: 22, borderRadius: 6, borderWidth: 1.5, borderColor: '#D1D5DB', marginRight: 12, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white' },
-  checkboxChecked: { backgroundColor: '#1A237E', borderColor: '#1A237E' },
-  checkboxLabel: { fontSize: 14, color: '#5C677D' },
+  
+  fixedActionSection: { 
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#FEFDF9', 
+    paddingHorizontal: 25,
+    paddingTop: 12,
+    paddingBottom: Platform.OS === 'ios' ? 35 : 20,
+    borderTopWidth: 1,
+    borderTopColor: '#EBEBEB',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 10,
+  },
+  scrollNoticeText: {
+    fontSize: 12,
+    textAlign: 'center',
+    color: '#E53935',
+    marginBottom: 10,
+    fontWeight: '600',
+    letterSpacing: 0.3
+  },
+  scrollNoticeActive: {
+    color: '#2E7D32'
+  },
   agreeBtn: { backgroundColor: '#1A237E', height: 56, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   agreeBtnDisabled: { backgroundColor: '#C5CAE9' },
-  agreeBtnText: { color: 'white', fontWeight: 'bold', fontSize: 16 },
+  agreeBtnText: { color: 'white', fontWeight: 'bold', fontSize: 16, letterSpacing: 0.5 },
+  
+  trackStyle: { width: 60, height: 26, borderRadius: 13, padding: 2, justifyContent: 'center' },
+  thumbStyle: { width: 22, height: 22, borderRadius: 11, backgroundColor: 'white', elevation: 2, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 2 }
 });
