@@ -428,3 +428,26 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
   },
+  passwordInputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: "#F9F9F9",
+    borderWidth: 1,
+    borderColor: "#EEE",
+    borderRadius: 12,
+    paddingHorizontal: 14,
+  },
+  flexInput: {
+    flex: 1,
+    paddingVertical: 14,
+    fontSize: 16,
+    color: "#000",
+  },
+  errorText: {
+    color: '#ef4444',
+    fontSize: 12,
+    marginTop: 5,
+    fontWeight: '500',
+    marginLeft: 4,
+  },
+});
