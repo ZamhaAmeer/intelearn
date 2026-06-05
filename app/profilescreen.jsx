@@ -42,7 +42,6 @@ export default function ProfileScreen() {
   }, [params]);
 
   const [isMenuVisible, setMenuVisible] = useState(false);
-  const toggleMenu = () => setMenuVisible(!isMenuVisible);
   
   
   const [profileImage, setProfileImage] = useState('https://via.placeholder.com/150');
