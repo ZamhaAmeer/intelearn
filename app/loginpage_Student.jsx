@@ -203,3 +203,42 @@ export default function LoginPage() {
             </TouchableOpacity>
           </View>
         </View>
+          
+        </ScrollView>
+        <ForgotPasswordModal 
+          visible={isModalVisible} 
+          onClose={() => setModalVisible(false)} 
+        />
+      </View>
+      </KeyboardAvoidingView>
+    );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FFFFF0",
+  },
+  headerBackground: {
+    width: "100%",
+    height: height * 0.5,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+    logoContainer: {
+    alignItems: "center",
+    marginTop: -250,
+  },
+  logoImage: {
+    width: 170,
+    height: 170,
+    tintColor: "white",
+    marginTop: 50
+  },
+  logoText: {
+    color: "#FFF",
+    fontSize: 26,
+    fontWeight: "bold",
+    letterSpacing: 1,
+    marginTop: -50
+  },
