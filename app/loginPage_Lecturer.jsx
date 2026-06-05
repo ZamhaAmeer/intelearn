@@ -194,3 +194,44 @@ export default function LoginPage() {
         <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
+
+          {/* Footer */}
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>Don't have an account?</Text>
+            <TouchableOpacity onPress={() => router.push("/register_Student")}>
+              <Text style={styles.signUpText}>Create an account</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+  
+        </ScrollView>
+        <ForgotPasswordModal 
+          visible={isModalVisible} 
+          onClose={() => setModalVisible(false)} 
+        />
+      </View>
+      </KeyboardAvoidingView>
+    );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FFFFF0",
+  },
+  headerBackground: {
+    width: "100%",
+    height: height * 0.5,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logoContainer: {
+    alignItems: "center",
+    marginTop: -250,
+  },
+  logoImage: {
+    width: 170,
+    height: 170,
+    tintColor: "white",
+    marginTop: 50
+  },
