@@ -430,4 +430,43 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 8,
+  },
+  requirementText: {
+    marginLeft: 8,
+    fontSize: 14,
+    color: '#6b7280', 
+  },
+  requirementTextValid: {
+    color: '#10b981', 
+    fontWeight: '500', 
+  },
+  scrollView: {
+    flex: 1,
+    marginTop: -110, 
+  },
+  scrollContainer: {
+    flexGrow: 1,
+  },
+  passwordInputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: "#F9F9F9",
+    borderWidth: 1,
+    borderColor: "#EEE",
+    borderRadius: 12,
+    paddingHorizontal: 14,
   },                        
+  flexInput: {
+    flex: 1,
+    paddingVertical: 14,
+    fontSize: 16,
+    color: "#000",
+  },
+  errorText: {
+    color: '#ef4444',
+    fontSize: 12,
+    marginTop: 5,
+    fontWeight: '500',
+    marginLeft: 4,
+  },
+});
