@@ -572,5 +572,35 @@ export default function CourseDetailsScreen() {
                           case 'IS4110': router.push('/capstone'); break;
                           case 'IS-EAP-2201': router.push('/acad-english-2'); break;
 
+                          case 'IS5101': router.push('/entrepreneurship'); break;
+                          case 'IS5102': router.push('/enterprise-arch'); break;
+                          case 'IS5103': router.push('/hpc'); break;
+                          case 'IS5104': router.push('/sw-process-mgt'); break;
+                          case 'IS5105': router.push('/bpm'); break;
+                          case 'IS5106': router.push('/ui-ux-prac'); break;
+                          case 'IS5107': router.push('/proj-mgt-prac'); break;
+                          case 'IS5108': router.push('/business-intelligence'); break;
+                          case 'IS5109': router.push('/community-proj'); break;
+                          case 'IS-EBP-3101': router.push('/business-english'); break;
+                          case 'IS5110': router.push('/adv-dbms'); break;
+                          case 'IS5111': router.push('/data-comm-networks'); break;
+                          case 'IS5112': router.push('/design-patterns'); break;
+                          case 'IS5113': router.push('/sqa'); break;
+                          case 'IS5114': router.push('/data-mining'); break;
+                                                    
+                          case 'IS6101': router.push('/industrial-training'); break;
+
+                          case 'IS7101': router.push('/research-methodologies'); break;
+                          case 'IS7102': router.push('/it-law'); break;
+                          case 'IS7103': router.push('/process-simulation'); break;
+                          case 'IS7104': router.push('/enterprise-ontologies'); break;
+                          case 'IS7105': router.push('/org-behavior'); break;
+                          case 'IS7106': router.push('/cloud-computing'); break;
+                          case 'IS7107': router.push('/mobile-app-dev'); break;
+                          case 'IS7108': router.push('/web-services'); break;
+                          case 'IS7109': router.push('/gis'); break;
+                          case 'IS7110': router.push('/stats-inference'); break;
+                          case 'IS7111': router.push('/adv-prog-prac'); break;
+                          case 'IS7112': router.push('/machine-learning'); break;
 
 
