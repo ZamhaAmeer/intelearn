@@ -64,3 +64,63 @@ export default function LoginPage() {
         Alert.alert("Server Error", "Check your Expo terminal to see the raw HTML response.");
         return; 
       }
+
+      // 3. The Logic Check
+    if (response.status === 200) {
+
+  await AsyncStorage.setItem('userEmail', email);
+
+  console.log("Saved Email:", email);
+
+  router.push("./coursedetails");
+}
+     else {
+      // If status is 401 (Unauthorized) or 400 (Bad Request), show the error and DO NOT navigate
+      console.log("Login rejected by server.");
+      Alert.alert("Login Failed", data.error || "Incorrect email or password");
+    }
+
+  } catch (error) {
+    console.error("Network or Fetch Error:", error);
+    Alert.alert("Network Error", "Could not connect to the backend server. Is it running?");
+  }
+};
+
+
+  return (
+    <KeyboardAvoidingView 
+    style={{ flex: 1, backgroundColor: "transparent" }} 
+    behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+    <View style={styles.container}>
+      {/* Purple Header Section using your curve image */}
+      <ImageBackground
+        source={require("../src/assets/images/header-curve.png")}
+        style={styles.headerBackground}
+        resizeMode="stretch"
+      >
+
+        {/* 3. Back Button positioned absolutely */}
+        <View style={styles.backButtonContainer}>
+          <TouchableOpacity 
+            onPress={() => router.replace('/choosingpage')} // Goes back to Choosing Page
+            style={styles.backButton}
+          >
+            <Ionicons name="chevron-back" size={30} color="white" />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.logoContainer}>
+          <Image
+            source={require("../src/assets/images/logo.png")}
+            style={styles.logoImage}
+            resizeMode="contain"
+          />
+          <Text style={styles.logoText}>INTELEARN</Text>
+        </View>
+      </ImageBackground>
+
+      <ScrollView 
+        style={styles.scrollView} 
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
