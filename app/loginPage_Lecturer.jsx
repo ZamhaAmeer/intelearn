@@ -235,3 +235,41 @@ const styles = StyleSheet.create({
     tintColor: "white",
     marginTop: 50
   },
+    logoText: {
+    color: "#FFF",
+    fontSize: 26,
+    fontWeight: "bold",
+    letterSpacing: 1,
+    marginTop: -50
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: 30,
+    marginTop: -160,
+  },
+  welcomeSection: {
+    alignItems: "center",
+    marginBottom: 50,
+    zIndex: 1, 
+  },
+    welcomeTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#0B0C10",
+    marginTop: 20,
+  },
+  welcomeSubtitle: {
+    fontSize: 18,
+    color: "rgba(0, 0, 0, 0.6)",
+    marginTop: 5,
+  },
+  formCard: {
+    backgroundColor: "white",
+    borderRadius: 15,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 5,
+  },
