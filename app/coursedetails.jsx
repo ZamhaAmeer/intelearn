@@ -164,10 +164,10 @@ const ThemeToggle = ({ isDark, onToggle }) => {
   const progress = useSharedValue(isDark ? 1 : 0);
   useEffect(() => { progress.value = withSpring(isDark ? 1 : 0); }, [isDark]);
 
-  const rTrackStyle = useAnimatedStyle(() => ({
+const rTrackStyle = useAnimatedStyle(() => ({
     backgroundColor: interpolateColor(progress.value, [0, 1], ['#E0E0E0', '#333333']),
   }));
-  const rThumbStyle = useAnimatedStyle(() => ({
+const rThumbStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: progress.value * 34 }],
   }));
 
@@ -216,3 +216,38 @@ const CourseCard = ({ item, onView }) => (
     </View>
   </TouchableOpacity>
 );
+
+// 3. MAIN SCREEN
+export default function CourseDetailsScreen() {
+  const [isMenuVisible, setMenuVisible] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+  const [isChatbotOptionsVisible, setChatbotOptionsVisible] = useState(false);
+  const [isNotifVisible, setNotifVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(''); 
+  const [notifications, setNotifications] = useState(3);
+  const [activePopupTab, setActivePopupTab] = useState('notifications');
+  const router = useRouter();
+
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const scrollRef = useRef(null); 
+  const headerHeight = useRef(100);
+  const sectionOffsets = useRef({});
+
+  const stickyTitleOpacity = scrollY.interpolate({ inputRange: [60, 110], outputRange: [0, 1], extrapolate: 'clamp' });
+  const mainTitleOpacity = scrollY.interpolate({ inputRange: [0, 80], outputRange: [1, 0], extrapolate: 'clamp' });
+
+  const toggleMenu = () => setMenuVisible(!isMenuVisible);
+  const toggleChatbot = () => setChatbotOptionsVisible(!isChatbotOptionsVisible);
+
+  const filteredCourses = COURSES.filter(course => 
+    course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    course.tags.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const semesters = ['1st Sem', '2nd Sem', '3rd Sem', '4th Sem', '5th Sem', '6th Sem', '7th Sem', '8th Sem'];
+  const [activeSem, setActiveSem] = useState('1st Sem');
+
+  const groupedCourses = semesters.map(sem => ({
+    title: sem,
+    data: filteredCourses.filter(c => getSemesterFromCode(c.code) === sem)
+  }));
