@@ -42,3 +42,22 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
     alert('Please fill in all required fields.');
     return;
   }
+
+  const studentEmailRegex = /^\d{2}[a-zA-Z]{3}\d{4}@ms\.sab\.ac\.lk$/i;
+    if (!studentEmailRegex.test(email.trim())) {
+      alert('Invalid Email! Please use your official university email (e.g., 22fis0574@ms.sab.ac.lk).');
+      return; // Stops the registration process
+    }
+
+  // 2. Check if passwords match
+  if (password !== confirmPassword) {
+    alert('Passwords do not match!');
+    return;
+  }
+  try {
+    // REPLACE the IP below with your actual IPv4 address
+    const response = await fetch('http://10.19.66.72:3000/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
