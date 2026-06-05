@@ -24,8 +24,7 @@ export default function PrivacyScreen() {
   const [hasAgreed, setHasAgreed] = useState(false);
   const [isMenuVisible, setMenuVisible] = useState(false);
   const [isDark, setIsDark] = useState(false);
-  
-  const toggleMenu = () => setMenuVisible(!isMenuVisible);
+
 
 
   const handleScroll = (event) => {
