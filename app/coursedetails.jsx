@@ -726,7 +726,7 @@ const styles = StyleSheet.create({
 
   scrollList: { 
     flexGrow: 1,
-    paddingBottom: 120 // Ensures bottom semesters can definitely scroll to the top
+    paddingBottom: 120
   },
   
   sectionHeader: { fontSize: 18, fontWeight: 'bold', color: '#4E33B3', marginBottom: 15, marginTop: 10, marginLeft: 5 },
