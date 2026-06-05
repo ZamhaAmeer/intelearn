@@ -635,5 +635,30 @@ export default function CourseDetailsScreen() {
               >
                 <Icon name={activePopupTab === 'notifications' ? "bell" : "bell-outline"} size={22} color={activePopupTab === 'notifications' ? 'white' : '#6F42C1'} />
               </TouchableOpacity>
+            </View>
+
+            {/* Render Specific Content based on Tab */}
+            {activePopupTab === 'notifications' ? renderNotificationsContent() : renderCalendarContent()}
+
+          </View>
+        </TouchableOpacity>
+      </Modal>
+      
+      {/* NOTIFICATION MODAL */}
+      <Modal transparent visible={isNotifVisible} animationType="slide" onRequestClose={() => setNotifVisible(false)}>
+        <TouchableOpacity style={styles.notifOverlay} activeOpacity={1} onPress={() => setNotifVisible(false)}>
+          <View style={styles.notifPanel}>
+            <Text style={styles.notifHeader}>Recent Notifications</Text>
+            <View style={styles.notifItem}>
+              <Icon name="book-open-variant" size={20} color="#4E33B3" />
+              <Text style={styles.notifText}>New lecture added in Web Dev</Text>
+            </View>
+            <TouchableOpacity style={styles.closeNotifBtn} onPress={() => {setNotifVisible(false); setNotifications(0);}}>
+              <Text style={styles.closeNotifText}>Mark all as read</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
+
 
 
