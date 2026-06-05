@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Ionicons } from "@expo/vector-icons"; // For the close (X) icon
+import { Ionicons } from "@expo/vector-icons"; 
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -103,7 +103,7 @@ export default function LoginPage() {
         {/* 3. Back Button positioned absolutely */}
         <View style={styles.backButtonContainer}>
           <TouchableOpacity 
-            onPress={() => router.replace('/choosingpage')} // Goes back to Choosing Page
+            onPress={() => router.replace('/choosingpage')} 
             style={styles.backButton}
           >
             <Ionicons name="chevron-back" size={30} color="white" />
@@ -160,7 +160,7 @@ export default function LoginPage() {
                 placeholderTextColor="#A0A0A0"
                 value={password}
                 onChangeText={setPassword}
-                secureTextEntry={!showPassword} // Toggle visibility here
+                secureTextEntry={!showPassword} 
               />
               <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
                 <Ionicons 
@@ -171,3 +171,26 @@ export default function LoginPage() {
               </TouchableOpacity>
             </View>
           </View>
+
+          {/* Remember Me & Forgot Password */}
+          <View style={styles.row}>
+            <TouchableOpacity 
+              style={styles.checkboxRow} 
+              onPress={() => setRememberMe(!rememberMe)}
+            >
+              <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
+                {rememberMe && <Text style={styles.checkmark}>✓</Text>}
+              </View>
+              <Text style={styles.checkboxLabel}>Remember Me</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => setModalVisible(true)}>
+        <Text style={styles.forgotText}>Forgot Password?</Text>
+      </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Login Button */}
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+          <Text style={styles.loginButtonText}>Login</Text>
+        </TouchableOpacity>
