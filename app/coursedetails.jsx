@@ -433,5 +433,22 @@ export default function CourseDetailsScreen() {
 
   return (
     <View style={[styles.container, isDark && { backgroundColor: '#121212' }]}>
-      
+
+      {/* STABLE TOP BAR */}
+      <View style={[styles.stableTopBar, isDark && { backgroundColor: '#1A1A1A' }]}>
+        <TouchableOpacity onPress={() => setMenuVisible(true)}>
+          <Icon name="menu" size={30} color="white" />
+        </TouchableOpacity>
+
+        <Animated.View style={{ opacity: stickyTitleOpacity }}>
+          <Text style={styles.stickyTitleText}>Course Details</Text>
+        </Animated.View>
+
+        <TouchableOpacity onPress={() => setNotifVisible(true)} style={styles.notificationContainer}>
+          <Icon name="bell-outline" size={28} color="white" />
+          {notifications > 0 && (
+            <View style={styles.badge}><Text style={styles.badgeTextSmall}>{notifications}</Text></View>
+          )}
+        </TouchableOpacity>
+      </View>
 
