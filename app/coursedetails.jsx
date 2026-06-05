@@ -502,4 +502,18 @@ export default function CourseDetailsScreen() {
           </View>
         </View>
 
+        {/* LIST RENDERED BY GROUPS TO TRACK Y POSITIONS */}
+        <View style={styles.cardListWrapper}>
+          {filteredCourses.length > 0 ? (
+            groupedCourses.map(group => {
+              if (group.data.length === 0) return null; 
+              return (
+                <View 
+                  key={group.title} 
+                  onLayout={(e) => { 
+                    sectionOffsets.current[group.title] = e.nativeEvent.layout.y; 
+                  }}
+                >
+                  <Text style={styles.sectionHeader}>{group.title}</Text>
+
 
