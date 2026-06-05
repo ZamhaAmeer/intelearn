@@ -253,7 +253,7 @@ export default function CourseDetailsScreen() {
   }));
 
   // ==============================================================
-  // 🌟 THE MATHEMATICAL FALLBACK FIX 🌟
+  // THE MATHEMATICAL FALLBACK FIX
   // This calculates exactly where the screen needs to go, even if 
   // the app hasn't loaded the bottom of the screen yet!
   // ==============================================================
