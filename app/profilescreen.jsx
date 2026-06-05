@@ -1,4 +1,4 @@
-import * as ImagePicker from 'expo-image-picker'; // 1. Import the picker
+import * as ImagePicker from 'expo-image-picker';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
