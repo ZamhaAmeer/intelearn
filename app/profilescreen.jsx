@@ -64,23 +64,6 @@ const handlePhoneChange = (text) => {
     setPhone(numericValue);
   };
 
-const MenuOption = ({ iconName, title, active, onPress }) => (
-  <Pressable
-    onPress={onPress}
-    style={({ pressed }) => [
-      styles.menuItem,
-      active && styles.activeMenuItem,
-      pressed && styles.pressedMenuItem 
-    ]}
-  >
-    {({ pressed }) => (
-      <>
-        <Icon name={iconName} size={22} color={active || pressed ? "#4E33B3" : "#7E57C2"} style={styles.menuItemIcon} />
-        <Text style={[styles.menuItemText, (active || pressed) && styles.activeMenuText]}>{title}</Text>
-      </>
-    )}
-  </Pressable>
-);
 
 const handleSaveChanges = async () => {
   try {
