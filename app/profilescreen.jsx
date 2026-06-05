@@ -97,7 +97,6 @@ const handleSaveChanges = async () => {
           {
             text: "OK",
             onPress: () => {
-              // Redirect to the login page
               router.replace('/loginpage(student)'); 
             }
           }
