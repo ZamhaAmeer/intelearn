@@ -65,3 +65,5 @@ const COURSES = [
   { id: '31', title: 'IS Sustainability', tags: 'Green IT • Lifecycle • Environmental', code: 'IS3106', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/ISSt.jpeg'), color: '#E0F7FA' },
   { id: '32', title: 'Management Information Systems', tags: 'Enterprise • CRM • SCM', code: 'IS3107', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/MIS.jpeg'), color: '#FBE9E7' },
   { id: '33', title: 'E-Business', tags: 'E-commerce • Strategy • Infrastructure', code: 'IS3108', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/EB.jpg'), color: '#E8EAF6' },
+  { id: '34', title: 'Digital Innovation', tags: 'Transformation • Disruptive Tech', code: 'IS3109', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/DI.png'), color: '#F1F8E9' },
+  
