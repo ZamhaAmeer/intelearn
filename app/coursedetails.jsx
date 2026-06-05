@@ -757,3 +757,21 @@ const styles = StyleSheet.create({
   logoutButton: { borderTopWidth: 1, borderTopColor: '#eee', paddingVertical: 20, alignItems: 'center' },
   logoutText: { fontSize: 18, color: 'grey' },
 
+  notificationContainer: { padding: 5, position: 'relative' },
+  badge: {
+    position: 'absolute', right: -2, top: -2, backgroundColor: 'rgba(255, 255, 255, 0.25)', 
+    borderRadius: 10, width: 20, height: 20, justifyContent: 'center', alignItems: 'center',
+    borderWidth: 1.5, borderColor: 'rgba(255, 255, 255, 0.4)', elevation: 4,
+  },
+  badgeTextSmall: { color: 'white', fontSize: 11, fontWeight: '900', textShadowColor: 'rgba(0, 0, 0, 0.5)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 1 },
+
+  cardContainer: { flexDirection: 'row', alignItems: 'center', marginBottom: 20},
+  imageCircleContainer: { width: 85, height: 85, borderRadius: 42.5, borderWidth: 4, borderColor: 'white', overflow: 'hidden', zIndex: 2, elevation: 8 },
+  courseImage: { width: '100%', height: '100%' },
+  infoCard: { flex: 1, backgroundColor: 'white', borderRadius: 20, paddingVertical: 15, paddingLeft: 55, marginLeft: -45, elevation: 4,  shadowColor: '#000',  shadowOffset: { width: 0, height: 2 },  shadowOpacity: 0.1  },
+  courseTitle: { fontSize: 17, fontWeight: 'bold' },
+  courseTags: { fontSize: 11, color: '#555' },
+  badgeRow: { flexDirection: 'row', gap: 6, marginTop: 4 },
+  statusBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12 },
+  badgeText: { fontSize: 10, fontWeight: '700' },
+
