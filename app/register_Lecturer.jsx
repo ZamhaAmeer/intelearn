@@ -265,3 +265,64 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
       </View>
     );
   }
+
+const styles = StyleSheet.create({
+   container: {
+    flex: 1,
+    backgroundColor: "#FFFCF0", // Cream background
+
+  },
+  headerBackground: {
+    width: "100%",
+    height: height * 0.3,
+    justifyContent: "center",
+    alignItems: "center", 
+    backgroundColor: "transparent", 
+  },
+  
+  backButtonContainer: {
+    position: 'absolute',
+    top: 40,
+    left: 10,
+    zIndex: 10,
+  },
+  backButton: {
+    padding: 10,
+  },
+  headerTextContainer: {
+    marginTop: -35,
+  },
+  headerTitle: {
+    color: "#FFF",
+    fontSize: 28,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  content: {
+    paddingHorizontal: 30,
+    marginTop: 25,
+    paddingBottom: 40,
+    position: "relative", 
+    zIndex: 1,            
+    elevation: 10,
+  },
+  formCard: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.1,
+    shadowRadius: 15,
+    elevation: 8,
+  },
+ inputGroup: {
+    marginBottom: 15,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#333",
+    marginBottom: 8,
+  },
+  
