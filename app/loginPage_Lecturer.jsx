@@ -149,3 +149,25 @@ export default function LoginPage() {
               returnKeyType="next"
             />
           </View>
+
+          {/* Password* */}
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Password*</Text>
+            <View style={styles.passwordInputWrapper}>
+              <TextInput
+                style={styles.flexInput}
+                placeholder="........"
+                placeholderTextColor="#A0A0A0"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={!showPassword} // Toggle visibility here
+              />
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <Ionicons 
+                  name={showPassword ? "eye-outline" : "eye-off-outline"} 
+                  size={22} 
+                  color="#A0A0A0" 
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
