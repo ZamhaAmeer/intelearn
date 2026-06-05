@@ -338,4 +338,19 @@ export default function CourseDetailsScreen() {
         </View>
       </View>
 
+      <TouchableOpacity style={styles.bottomActionBtn} onPress={() => {setNotifVisible(false); setNotifications(0);}}>
+        <Text style={styles.bottomActionText}>MARK ALL AS READ</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const renderCalendarContent = () => (
+    <View style={styles.popupContentArea}>
+      <View style={styles.calHeader}>
+        <Text style={styles.calMonthText}>November 2023</Text>
+        <View style={styles.calArrows}>
+          <Icon name="chevron-left" size={24} color="#555" />
+          <Icon name="chevron-right" size={24} color="#555" />
+        </View>
+      </View>
 
