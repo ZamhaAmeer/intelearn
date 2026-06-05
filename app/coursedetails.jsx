@@ -353,4 +353,33 @@ export default function CourseDetailsScreen() {
           <Icon name="chevron-right" size={24} color="#555" />
         </View>
       </View>
+            
+      {/* Days Row */}
+      <View style={styles.calDaysRow}>
+        {['MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU'].map((day, i) => (
+          <Text key={i} style={styles.calDayName}>{day}</Text>
+        ))}
+      </View>
+
+      {/* Dates Grid (Hardcoded exactly to the image layout for this visual) */}
+      <View style={styles.calDatesGrid}>
+        <View style={styles.calDateRow}>
+          <Text style={[styles.calDateText, styles.calDateDim]}>30</Text>
+          <Text style={[styles.calDateText, styles.calDateDim]}>31</Text>
+          <Text style={styles.calDateText}>1</Text>
+          <Text style={styles.calDateText}>2</Text>
+          <Text style={styles.calDateText}>3</Text>
+          <Text style={styles.calDateText}>4</Text>
+          <Text style={styles.calDateText}>5</Text>
+        </View>
+        <View style={styles.calDateRow}>
+          <Text style={styles.calDateText}>6</Text>
+          <TouchableOpacity onPress={() => {
+            router.push("/assignment_submission");
+            setNotifVisible(false);
+          }}>
+            <View style={[styles.calDateItem, styles.calDateHighlightPurpleLight]}>
+              <Text style={[styles.calDateText, {color: '#6F42C1'}]}>7</Text>
+              <View style={[styles.calDateDot, {backgroundColor: '#6F42C1'}]} />
+            </View>
 
