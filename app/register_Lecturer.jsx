@@ -195,7 +195,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                           )}
                         </View>
                       </View>
-                                       {/* Password Requirements Box */}
+                      {/* Password Requirements Box */}
                           <View style={styles.requirementsBox}>
                             <Text style={styles.requirementsTitle}>PASSWORD REQUIREMENTS</Text>
                             
@@ -208,8 +208,60 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                               />
                               <Text style={[
                                 styles.requirementText, 
-                                isLengthValid && styles.requirementTextValid // Apply valid style if true
+                                isLengthValid && styles.requirementTextValid 
                               ]}>
                                 At least 8 characters long
                               </Text>
                             </View>
+                            <View style={styles.requirementRow}>
+                              <Ionicons 
+                                name={hasSpecialChar ? "checkmark-circle" : "ellipse-outline"} 
+                                size={20} 
+                                color={hasSpecialChar ? "#10b981" : "#d1d5db"} 
+                              />
+                              <Text style={[
+                                styles.requirementText, 
+                                hasSpecialChar && styles.requirementTextValid
+                              ]}>
+                                Include one special character
+                              </Text>
+                            </View>
+                          </View>
+              </View>
+
+              {/* Privacy Policy Checkbox Row */}
+            <View style={styles.privacyRow}>
+              <TouchableOpacity 
+                style={[styles.checkbox, agree && styles.checkboxChecked]} 
+                onPress={() => setAgree(!agree)}
+              >
+                {agree && <Ionicons name="checkmark" size={14} color="white" />}
+              </TouchableOpacity>
+              <Text style={styles.privacyText}>
+                I agree to the <Text style={styles.privacyLink}>Privacy Policy</Text>
+              </Text>
+            </View>
+
+  
+             {/* Register Button */}
+            <TouchableOpacity 
+              style={[styles.registerButton, !agree && styles.registerButtonDisabled]} 
+              onPress={handleRegister}
+              disabled={!agree} 
+            >
+              <Text style={styles.registerButtonText}>Register</Text>
+            </TouchableOpacity>
+  
+              {/* Footer */}
+              <View style={styles.footer}>
+                <Text style={styles.footerText}>Already have an account?</Text>
+                <TouchableOpacity onPress={() => router.push("/loginpage(lecturer)")}>
+                  <Text style={styles.loginText}>Login</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </View>
+    );
+  }
