@@ -535,4 +535,29 @@ export default function CourseDetailsScreen() {
                           case 'IS1111': router.push('/academic-integrity'); break;
                           case 'IS-EGP-1101': router.push('/gen-english-1'); break;
 
+                          case 'IS2101': router.push('/oop'); break;
+                          case 'IS2102': router.push('/oop-p'); break;
+                          case 'IS2103': router.push('/emerging-tech'); break;
+                          case 'IS2104': router.push('/dbms'); break;
+                          case 'IS2105': router.push('/dbms-p'); break;
+                          case 'IS2106': router.push('/sad'); break;
+                          case 'IS2107': router.push('/social-prof-issues'); break;
+                          case 'IS2108': router.push('/hci'); break;
+                          case 'IS2109': router.push('/info-assurance-sec'); break;
+                          case 'IS2110': router.push('/sw-project-planning'); break;
+                          case 'IS2111': router.push('/adv-maths'); break;
+                          case 'IS2112': router.push('/comm-skills-2'); break;
+                          case 'IS-EGP-1201': router.push('/gen-english-2'); break;
+
+                          case 'IS3101': router.push('/ooad'); break;
+                          case 'IS3102': router.push('/dsa'); break;
+                          case 'IS3103': router.push('/it-governance'); break;
+                          case 'IS3104': router.push('/software-eng'); break;
+                          case 'IS3105': router.push('/is-risk-mgt'); break;
+                          case 'IS3106': router.push('/is-sustainability'); break;
+                          case 'IS3107': router.push('/mis'); break;
+                          case 'IS3108': router.push('/e-business'); break;
+                          case 'IS3109': router.push('/digital-innovation'); break;
+                          case 'IS-EAP-2101': router.push('/acad-english-1'); break;
+
 
