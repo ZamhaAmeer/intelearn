@@ -124,3 +124,28 @@ export default function LoginPage() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
+              
+
+
+      <View style={styles.content}>
+        {/* Welcome Section */}
+        <View style={styles.welcomeSection}>
+          <Text style={styles.welcomeTitle}>Welcome to INTELEARN</Text>
+          <Text style={styles.welcomeSubtitle}>Learn smart, Grow fast</Text>
+        </View>
+
+        {/* Login Form Card */}
+        <View style={styles.formCard}>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Email Address*</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="example@email.com"
+              placeholderTextColor="#A0A0A0"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              returnKeyType="next"
+            />
+          </View>
