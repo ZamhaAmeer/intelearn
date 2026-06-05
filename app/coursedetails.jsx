@@ -283,3 +283,21 @@ export default function CourseDetailsScreen() {
       // 4. Calculate Final Destination
       let targetY = sem === '1st Sem' ? 0 : (safeHeaderHeight + yOffset - 110);
       if (targetY < 0) targetY = 0; // Never scroll above the ceiling
+
+      // 5. Force the Scroll Command
+      try {
+        if (scrollRef.current?.scrollTo) {
+          scrollRef.current.scrollTo({ y: targetY, animated: true });
+        } else if (scrollRef.current?.getNode?.().scrollTo) {
+          scrollRef.current.getNode().scrollTo({ y: targetY, animated: true });
+        }
+      } catch (err) {
+        console.log("Scroll Failed:", err);
+      }
+    }, 50);
+  };
+
+ const openPopup = (tab) => {
+    setActivePopupTab(tab);
+    setNotifVisible(true);
+  } 
