@@ -157,7 +157,6 @@ export default function PrivacyScreen() {
 
     
       <View style={styles.fixedActionSection}>
-        {/* Helper UX Prompt that flips automatically when state unlocks */}
       
         <TouchableOpacity 
           style={[styles.agreeBtn, !hasAgreed && styles.agreeBtnDisabled]}
