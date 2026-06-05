@@ -104,9 +104,7 @@ export default function PrivacyScreen() {
         <Feather name="info" size={20} color="#78849E" />
       </View>
 
-      {/* 3. MAIN SCROLLABLE CONTENT */}
-      {/* 🔑 FIXED: Wired up onScroll processing with optimal frame throttling parameters */}
-      <ScrollView 
+     <ScrollView 
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent} 
         showsVerticalScrollIndicator={false}
