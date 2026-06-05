@@ -183,3 +183,33 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                             onChangeText={setConfirmPassword}
                             secureTextEntry={!showPassword} 
                           />
+                          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                            <Ionicons 
+                              name={showPassword ? "eye-outline" : "eye-off-outline"} 
+                              size={22} 
+                              color="#A0A0A0" 
+                            />
+                          </TouchableOpacity>
+                                          {showMatchError && (
+                            <Text style={styles.errorText}>Passwords do not match</Text>
+                          )}
+                        </View>
+                      </View>
+                                       {/* Password Requirements Box */}
+                          <View style={styles.requirementsBox}>
+                            <Text style={styles.requirementsTitle}>PASSWORD REQUIREMENTS</Text>
+                            
+                            <View style={styles.requirementRow}>
+                              <Ionicons 
+                                name={isLengthValid ? "checkmark-circle" : "ellipse-outline"} 
+                                size={20} 
+                                // Use a bright green when valid, gray when invalid
+                                color={isLengthValid ? "#10b981" : "#d1d5db"} 
+                              />
+                              <Text style={[
+                                styles.requirementText, 
+                                isLengthValid && styles.requirementTextValid // Apply valid style if true
+                              ]}>
+                                At least 8 characters long
+                              </Text>
+                            </View>
