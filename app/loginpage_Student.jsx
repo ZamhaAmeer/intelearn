@@ -198,7 +198,7 @@ export default function LoginPage() {
           {/* Footer */}
           <View style={styles.footer}>
             <Text style={styles.footerText}>Don't have an account?</Text>
-            <TouchableOpacity onPress={() => router.push("/register(student)")}>
+            <TouchableOpacity onPress={() => router.push("/register_Student")}>
               <Text style={styles.signUpText}>Create an account</Text>
             </TouchableOpacity>
           </View>
@@ -365,15 +365,14 @@ const styles = StyleSheet.create({
   },
     scrollView: {
     flex: 1,
-    marginTop: -181, // Move the negative margin from 'content' to here
+    marginTop: -181, 
   },
   scrollContent: {
-    paddingBottom: 40, // Adds space at the bottom so it's not cramped
+    paddingBottom: 40, 
   },
   content: {
     flex: 1,
     paddingHorizontal: 30,
-    // Removed marginTop: -160 from here as it's now on the ScrollView
   },
   inputGroup: {
     marginBottom: 15,
