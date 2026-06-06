@@ -630,3 +630,16 @@ app.post('/questions', authenticateToken, async (req, res) => {
 // START THE SERVER & SYNC DATABASE
 // ------------------------------------
 const PORT = process.env.PORT || 3000;
+
+// .sync() creates all the tables automatically based on your models!
+sequelize.sync() 
+  .then(() => {
+    console.log('Database synchronized successfully.');
+    // Keep '0.0.0.0' so React Native can connect via your local IP
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
