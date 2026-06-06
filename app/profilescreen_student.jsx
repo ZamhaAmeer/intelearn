@@ -23,7 +23,7 @@ export default function ProfileViewScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
 
-  // --- STATES FOR DATA ---
+  
   const [fullName, setFullName] = useState('');
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
