@@ -105,7 +105,7 @@ export default function PrivacyScreen() {
       </View>
 
       
-      {/* 🔑 FIXED: Wired up onScroll processing with optimal frame throttling parameters */}
+      
       <ScrollView 
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent} 
