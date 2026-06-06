@@ -287,7 +287,7 @@ export default function ProfileScreen() {
               <Text style={styles.label}>User Name</Text>
               <TextInput style={styles.input} value={userName} onChangeText={setUserName} />
 
-              {/* Keep Email field read-only to avoid database query breakdown issues */}
+            
               <Text style={styles.label}>Email Address (Read-Only)</Text>
               <TextInput style={[styles.input, { backgroundColor: '#F3F4F6', color: '#6B7280' }]} value={email} editable={false} />
 
