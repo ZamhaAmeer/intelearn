@@ -38,7 +38,7 @@ export default function ProfileViewScreen() {
 
   const toggleMenu = () => setMenuVisible(!isMenuVisible);
 
-  // --- FETCH USER DETAILS POST-LOGIN ---
+  
   useEffect(() => {
     const checkSessionAndFetch = async () => {
       try {
