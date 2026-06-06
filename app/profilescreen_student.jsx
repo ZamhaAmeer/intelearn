@@ -148,7 +148,6 @@ export default function ProfileViewScreen() {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#4A28B3" />
       
-      {/* --- SIDEBAR NAVIGATION DRAWER --- */}
       <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
         <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={toggleMenu}>
           <View style={styles.sideMenu}>
