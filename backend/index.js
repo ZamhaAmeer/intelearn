@@ -491,3 +491,12 @@ app.get('/courses/:id', authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Server error: ' + err.message });
   }
 });
+
+// ------------------------------------
+// UPLOAD COURSE MATERIAL (With Gemini AI)
+// ------------------------------------
+app.post('/upload-material', authenticateToken, upload.single('file'), async (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No valid PDF file uploaded' });
+    }
+  
