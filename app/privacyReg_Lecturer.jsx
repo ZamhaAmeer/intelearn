@@ -157,7 +157,7 @@ export default function PrivacyScreen() {
         <View style={{ height: 120 }} />
       </ScrollView>
 
-      {/* 5. FIXED ACTION SECTION */}
+      
       <View style={styles.fixedActionSection}>
         {/* Helper UX Prompt that flips automatically when state unlocks */}
       
