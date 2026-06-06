@@ -507,3 +507,9 @@ app.post('/upload-material', authenticateToken, upload.single('file'), async (re
       fs.unlinkSync(filePath);
       return res.status(400).json({ error: 'Lesson title is required' });
     }
+
+    try {
+      // 1. Process PDF and call Gemini (Logic stays exactly the same!)
+      const pdfBuffer = fs.readFileSync(filePath);
+      const pdfData = await pdfParse(pdfBuffer);
+      const extractedText = pdfData.text;
