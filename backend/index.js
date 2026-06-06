@@ -430,3 +430,10 @@ app.get('/courses', authenticateToken, async (req, res) => {
       courseData.lecturer_email = course.User ? course.User.email : null;
       return courseData;
     });
+
+    res.json(formattedCourses);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
