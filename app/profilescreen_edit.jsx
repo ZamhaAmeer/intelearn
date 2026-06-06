@@ -265,7 +265,6 @@ export default function ProfileScreen() {
           <View style={styles.contentCard}>
             <View style={styles.profileImageSection}>
               <View style={styles.imageWrapper}>
-                {/* 🔑 FIXED: Dynamic Image URI source toggler using state */}
                 <TouchableOpacity onPress={handleChangePhoto}>
                   <Image 
                     source={profileImage.startsWith('http') || profileImage.startsWith('file') ? { uri: profileImage } : require("../../assets/images/pr2.jpg")} 
