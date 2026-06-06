@@ -550,3 +550,12 @@ app.post('/upload-material', authenticateToken, upload.single('file'), async (re
         material: newMaterial,
         aiGeneratedContent: aiData
       });
+
+    } catch (err) {
+      console.error(err.message);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+      res.status(500).json({ error: 'Server error during processing' });
+    }
+});
