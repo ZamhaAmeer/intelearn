@@ -191,7 +191,6 @@ export default function ProfileViewScreen() {
         <Text style={styles.headerTitle}>Profile Information</Text>
       </View>
 
-      {/* --- MAIN SCROLLABLE CONTENT --- */}
       <ScrollView 
         style={styles.scrollContentWrapper} 
         contentContainerStyle={styles.scrollContainer} 
