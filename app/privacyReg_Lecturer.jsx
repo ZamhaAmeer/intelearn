@@ -95,7 +95,7 @@ export default function PrivacyScreen() {
         </View>
       </View>
 
-      {/* 2. SUB-HEADER */}
+      
       <View style={styles.subHeader}>
         <TouchableOpacity onPress={() => router.replace('/register(lecturer')} style={styles.backButton}>
           <Ionicons name="arrow-back" size={22} color="#1A73E8" />
