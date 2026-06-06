@@ -46,7 +46,7 @@ export default function ProfileScreen() {
   useEffect(() => {
     const loadProfileData = async () => {
       try {
-        // 1. If we have params passed directly via navigation, check them first
+        
         if (params && params.email) {
           setEmail(params.email);
           await fetchUserData(params.email);
