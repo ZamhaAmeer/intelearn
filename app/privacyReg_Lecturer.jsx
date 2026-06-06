@@ -92,7 +92,7 @@ export default function PrivacyScreen() {
             <TouchableOpacity>
             </TouchableOpacity>
           </View>
-        </SafeAreaView>
+        </View>
       </View>
 
       {/* 2. SUB-HEADER */}
