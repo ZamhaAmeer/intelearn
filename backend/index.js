@@ -449,3 +449,10 @@ app.get('/lecturer/courses', authenticateToken, async (req, res) => {
       where: { lecturer_id: lecturerId },
       order: [['id', 'DESC']] // Shows newest courses first
     });
+
+    res.json(courses);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
