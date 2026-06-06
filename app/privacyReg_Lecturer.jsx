@@ -125,7 +125,7 @@ export default function PrivacyScreen() {
           regarding digital engagement.
         </Text>
 
-        {/* 4. DOCUMENT CARD */}
+        
         <View style={styles.documentCard}>
           <Section 
             title="Section 1.0: Preamble" 
