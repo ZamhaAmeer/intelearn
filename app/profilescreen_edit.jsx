@@ -42,7 +42,7 @@ export default function ProfileScreen() {
 
   const toggleMenu = () => setMenuVisible(!isMenuVisible);
 
-  // --- RECONCILE AND LOAD PROFILE DATA ---
+  
   useEffect(() => {
     const loadProfileData = async () => {
       try {
