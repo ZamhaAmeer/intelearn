@@ -83,7 +83,7 @@ export default function PrivacyScreen() {
     <View style={styles.masterContainer}>
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
       
-      {/* 1. PRIMARY PURPLE HEADER */}
+    
       <View style={styles.topPurpleHeader}>
         <SafeAreaView>
           <View style={styles.headerTopRow}>
