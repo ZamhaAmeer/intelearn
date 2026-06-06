@@ -607,3 +607,14 @@ app.post('/quizzes', authenticateToken, async (req, res) => {
 app.post('/questions', authenticateToken, async (req, res) => {
   try {
     const { quiz_id, question, option_a, option_b, option_c, option_d, correct_answer } = req.body;
+
+    // Sequelize: Add question to the quiz
+    const newQuestion = await Question.create({
+      quiz_id,
+      question,
+      option_a,
+      option_b,
+      option_c,
+      option_d,
+      correct_answer
+    });
