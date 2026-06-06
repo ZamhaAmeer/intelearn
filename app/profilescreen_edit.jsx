@@ -71,7 +71,7 @@ export default function ProfileScreen() {
     loadProfileData();
   }, []);
 
-  // --- DATABASE DATA SYNC FETCH ---
+  
   const fetchUserData = async (targetEmail) => {
     try {
       const url = `http://172.20.10.3:3000/get-profile?email=${encodeURIComponent(targetEmail)}`;
