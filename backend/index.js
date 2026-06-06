@@ -600,3 +600,10 @@ app.post('/quizzes', authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+// ------------------------------------
+// ADD QUESTIONS
+// ------------------------------------
+app.post('/questions', authenticateToken, async (req, res) => {
+  try {
+    const { quiz_id, question, option_a, option_b, option_c, option_d, correct_answer } = req.body;
