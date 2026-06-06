@@ -20,7 +20,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const { width } = Dimensions.get('window');
 
 export default function PrivacyScreen() {
-  const router = useRouter();
+  
   const [hasAgreed, setHasAgreed] = useState(false);
   
   
