@@ -480,3 +480,8 @@ app.get('/courses/:id', authenticateToken, async (req, res) => {
       where: { course_id: id },
       order: [['createdAt', 'ASC']]
     });
+
+    res.json({
+      ...course.toJSON(),
+      materials: materials
+    });  
