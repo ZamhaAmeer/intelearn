@@ -513,3 +513,19 @@ app.post('/upload-material', authenticateToken, upload.single('file'), async (re
       const pdfBuffer = fs.readFileSync(filePath);
       const pdfData = await pdfParse(pdfBuffer);
       const extractedText = pdfData.text;
+
+      const prompt = `
+      You are an AI tutor for an LMS system.
+      From the following course content:
+      1. Create a short COURSE DESCRIPTION (important key points summary)
+      2. Generate exactly 5 MCQs
+  
+      Rules:
+      - Each MCQ must have question, A, B, C, D, correct answer
+      - Output ONLY valid JSON using this schema:
+      {
+        "courseDescription": "string",
+        "mcqs": [
+          { "question": "string", "A": "string", "B": "string", "C": "string", "D": "string", "answer": "A/B/C/D" }
+        ]
+      }
