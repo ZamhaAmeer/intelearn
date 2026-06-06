@@ -118,7 +118,6 @@ export default function ProfileViewScreen() {
     return values[genderCode?.toLowerCase()] || genderCode || 'Not Set';
   };
 
-  // --- DRAWER MENU ITEM COMPONENT ---
   const MenuOption = ({ iconName, title, active, onPress }) => (
     <Pressable
       onPress={onPress}
