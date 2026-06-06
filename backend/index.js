@@ -500,3 +500,10 @@ app.post('/upload-material', authenticateToken, upload.single('file'), async (re
       return res.status(400).json({ error: 'No valid PDF file uploaded' });
     }
   
+    const { course_id, title } = req.body; 
+    const filePath = req.file.path;
+  
+    if (!title) {
+      fs.unlinkSync(filePath);
+      return res.status(400).json({ error: 'Lesson title is required' });
+    }
