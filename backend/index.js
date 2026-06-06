@@ -580,3 +580,10 @@ app.post('/enroll', authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+// ------------------------------------
+// CREATE QUIZ
+// ------------------------------------
+app.post('/quizzes', authenticateToken, async (req, res) => {
+  try {
+    const { course_id, title } = req.body;
