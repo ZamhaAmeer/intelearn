@@ -573,3 +573,10 @@ app.post('/enroll', authenticateToken, async (req, res) => {
       student_id: studentId,
       course_id: course_id
     });
+
+    res.json({ message: 'Enrolled successfully' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
