@@ -77,7 +77,6 @@ export default function ProfileViewScreen() {
   const fetchUserData = async (userEmail) => {
     try {
       setIsLoading(true);
-      // Construct a safe, clean URL payload containing the encoded identifier
       const url = `http://172.20.10.3:3000/get-profile?email=${encodeURIComponent(userEmail)}`;
 
       const response = await fetch(url, {
