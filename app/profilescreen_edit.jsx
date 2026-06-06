@@ -363,15 +363,5 @@ const styles = StyleSheet.create({
   cancelButtonText: { color: '#333', fontWeight: 'bold', fontSize: 16 },
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.3)', justifyContent: 'flex-start' },
   sideMenu: { width: width * 0.6, height: '100%', backgroundColor: 'white', padding: 20, borderTopRightRadius: 20, borderBottomRightRadius: 20, elevation: 10 },
-  menuHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 40, marginTop: 20 },
-  moonIcon: { fontSize: 20 },
-  menuList: { flex: 1 },
-  menuItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14, paddingHorizontal: 15, borderRadius: 12, marginBottom: 8 },
-  activeMenuItem: { backgroundColor: '#E8E4FF' },
-  pressedMenuItem: { backgroundColor: '#D1C4E9', transform: [{ scale: 0.97 }] },
-  menuItemIcon: { marginRight: 15 },
-  menuItemText: { fontSize: 16, color: '#333', fontWeight: '500' },
-  activeMenuText: { color: '#4E33B3', fontWeight: 'bold' },
-  logoutButton: { borderTopWidth: 1, borderTopColor: '#eee', paddingVertical: 20, alignItems: 'center' },
-  logoutText: { fontSize: 18, fontWeight: '450', color: 'grey' },
+  
 });
