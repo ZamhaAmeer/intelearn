@@ -342,7 +342,6 @@ export default function ProfileScreen() {
               <TouchableOpacity style={styles.saveButton} onPress={handleSaveChanges}>
                 <Text style={styles.saveButtonText}>Save Changes</Text>
               </TouchableOpacity>
-              {/* 🔑 FIXED: Wire up cancel to bounce back safely */}
               <TouchableOpacity style={styles.cancelButton} onPress={() => router.replace('/coursedetails')}>
                 <Text style={styles.cancelButtonText}>Cancel</Text>
               </TouchableOpacity>
