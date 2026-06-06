@@ -529,3 +529,11 @@ app.post('/upload-material', authenticateToken, upload.single('file'), async (re
           { "question": "string", "A": "string", "B": "string", "C": "string", "D": "string", "answer": "A/B/C/D" }
         ]
       }
+
+      CONTENT:
+      ${extractedText}
+      `;
+  
+      const result = await model.generateContent(prompt);
+      const responseText = result.response.text();
+      const aiData = JSON.parse(responseText);
