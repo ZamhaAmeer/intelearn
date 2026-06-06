@@ -27,7 +27,7 @@ export default function PrivacyScreen() {
   
   const toggleMenu = () => setMenuVisible(!isMenuVisible);
 
-  // 🔑 NEW: Dynamic scroll detector to auto-unlock mode at the page bottom
+  
   const handleScroll = (event) => {
     const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
     
