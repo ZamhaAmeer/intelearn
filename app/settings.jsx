@@ -1,6 +1,9 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
+  ActivityIndicator,
+  Alert,
   Dimensions,
   Image,
   Modal,
@@ -19,15 +22,67 @@ const { width } = Dimensions.get('window');
 export default function SettingsScreen() {
   const router = useRouter();
 
-  // Navigation Menu State
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [profileImage, setProfileImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
   const [isMenuVisible, setMenuVisible] = useState(false);
   const toggleMenu = () => setMenuVisible(!isMenuVisible);
 
-  // States for toggle switches
   const [autoSummarize, setAutoSummarize] = useState(true);
   const [pushNotifications, setPushNotifications] = useState(true);
   const [weeklySummary, setWeeklySummary] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+
+
+  useEffect(() => {
+    const checkSessionAndFetch = async () => {
+      try {
+        const storedEmail = await AsyncStorage.getItem('userEmail');
+        if (storedEmail) {
+          await fetchUserData(storedEmail);
+        } else {
+          setIsLoading(false);
+          Alert.alert(
+            "Session Missing",
+            "Please sign in again to configure your application parameters.",
+            [{ text: "Login", onPress: () => router.replace('/loginpage(student)') }]
+          );
+        }
+      } catch (e) {
+        console.error("Settings profile link setup failed:", e);
+        setIsLoading(false);
+      }
+    };
+
+    checkSessionAndFetch();
+  }, []);
+
+  const fetchUserData = async (userEmail) => {
+    try {
+      setIsLoading(true);
+      const url = `http://172.20.10.3:3000/get-profile?email=${encodeURIComponent(userEmail)}`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setFullName(data.full_name || 'INTELEARN User');
+        setEmail(data.email || userEmail);
+      } else {
+        console.error("Database sync drop context mismatch inside parameters configuration.");
+        setFullName('Not Provided');
+        setEmail(userEmail);
+      }
+    } catch (error) {
+      console.error("Network interface connection failure downstream:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const MenuOption = ({ iconName, title, active, onPress }) => (
     <Pressable
@@ -47,32 +102,46 @@ export default function SettingsScreen() {
     </Pressable>
   );
 
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#4E33B3" />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       
-      {/* Side Menu Modal */}
-            <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
-              <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={toggleMenu}>
-                <View style={styles.sideMenu}>
-                  <View style={styles.menuHeader}>
-                    <TouchableOpacity onPress={toggleMenu}><Icon name="menu" size={30} color="#333" /></TouchableOpacity>
-                    <Text style={styles.moonIcon}>🌙</Text>
-                  </View>
-                  <View style={styles.menuList}>
-                    <MenuOption iconName="home-variant" title="Home" onPress={() => {setMenuVisible(false); router.replace('/courseDetails')}} />
-                    <MenuOption iconName="account" title="Profile" onPress={() => {setMenuVisible(false); router.replace('/profileScreen')}} />
-                    <MenuOption iconName="view-dashboard" title="Dashboard" />
-                    <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/miniGames')}}/>
-                    <MenuOption iconName="cog" title="Settings" active onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
-                  </View>
-                  <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginPage_Student') }}>
-                    <Text style={styles.logoutText}> Log Out   <Icon name="logout" size={24} color="grey" /></Text>
-                  </TouchableOpacity>
-                </View>
-              </TouchableOpacity>
-            </Modal>
       
-      {/* --- HEADER SECTION --- */}
+      <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
+        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={toggleMenu}>
+          <View style={styles.sideMenu} onStartShouldSetResponder={() => true}>
+            <View style={styles.menuHeader}>
+              <TouchableOpacity onPress={toggleMenu}><Icon name="menu" size={30} color="#333" /></TouchableOpacity>
+            </View>
+            <View style={styles.menuList}>
+              <MenuOption iconName="home-variant" title="Home" onPress={() => {setMenuVisible(false); router.replace('/coursedetails')}} />
+              <MenuOption iconName="account" title="Profile" onPress={() => {setMenuVisible(false); router.replace('/profilescreen_student')}} />
+              <MenuOption iconName="view-dashboard" title="Dashboard" onPress={() => {setMenuVisible(false); router.replace('/dashboard')}} />
+              <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/minigamesection')}} />
+              <MenuOption iconName="cog" title="Settings" active onPress={() => {setMenuVisible(false); toggleMenu();}} />
+            </View>
+            <TouchableOpacity 
+              style={styles.logoutButton} 
+              onPress={async () => {
+                setMenuVisible(false); 
+                await AsyncStorage.removeItem('userEmail');
+                router.replace('/loginpage(student)');
+              }}
+            >
+              <Text style={styles.logoutText}> Log Out   <Icon name="logout" size={24} color="grey" /></Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
+      
+      
       <View style={styles.header}>
         <TouchableOpacity style={styles.menuButton} onPress={toggleMenu}>
           <Icon name="menu" size={30} color="white" />
@@ -80,32 +149,41 @@ export default function SettingsScreen() {
         <Text style={styles.headerTitle}>Settings</Text>
       </View>
 
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         
-        {/* ACCOUNT SECTION */}
+        
         <Text style={styles.sectionHeader}>ACCOUNT</Text>
         <View style={styles.sectionCard}>
           <TouchableOpacity 
             style={styles.profileRow} 
-            onPress={() => router.push('/profileScreen')}
+            onPress={() => router.push('/profilescreen_student')}
           >
             <Image 
-              source={require("../src/assets/images/pr2.jpg")} 
+              source={profileImage ? { uri: profileImage } : require("../../assets/images/pr2.jpg")} 
               style={styles.avatar} 
             />
             <View style={styles.profileInfo}>
-              <Text style={styles.profileName}>Alex Rivera</Text>
-              <Text style={styles.profileEmail}>alex.rivera@edu-mail.com</Text>
+              <Text style={styles.profileName} numberOfLines={1}>{fullName}</Text>
+              <Text style={styles.profileEmail} numberOfLines={1}>{email}</Text>
             </View>
             <Text style={styles.arrow}>❯</Text>
           </TouchableOpacity>
           
           <View style={styles.separator} />
           
-          
+          <TouchableOpacity style={styles.itemRow}>
+            <View style={[styles.iconBox, { backgroundColor: '#E8E4FF' }]}>
+              <Text style={{color: '#4E33B3'}}>🏅</Text>
+            </View>
+            <Text style={styles.itemLabel}>Subscription Plan</Text>
+            <View style={styles.premiumBadge}>
+              <Text style={styles.premiumText}>PREMIUM</Text>
+            </View>
+            <Text style={styles.arrow}>❯</Text>
+          </TouchableOpacity>
         </View>
 
-        {/* AI PREFERENCES SECTION */}
+        
         <Text style={styles.sectionHeader}>AI PREFERENCES</Text>
         <View style={styles.sectionCard}>
           <SettingItem icon="🧠" label="AI Tutor Personality" hasArrow />
@@ -123,10 +201,10 @@ export default function SettingsScreen() {
             />
           </View>
           <View style={styles.separator} />
-          <SettingItem icon="文A" label="Prefered AI Language" valueText="English (US)" hasArrow />
+          <SettingItem icon="文A" label="Preferred AI Language" valueText="English (US)" hasArrow />
         </View>
 
-        {/* NOTIFICATIONS SECTION */}
+    
         <Text style={styles.sectionHeader}>NOTIFICATIONS</Text>
         <View style={styles.sectionCard}>
           <View style={styles.itemRow}>
@@ -142,7 +220,7 @@ export default function SettingsScreen() {
           </View>
         </View>
 
-        {/* APP SETTINGS */}
+      
         <Text style={styles.sectionHeader}>APP SETTINGS</Text>
         <View style={styles.sectionCard}>
           <View style={styles.itemRow}>
@@ -151,17 +229,12 @@ export default function SettingsScreen() {
              <Switch value={darkMode} onValueChange={setDarkMode} trackColor={{ false: '#767577', true: '#4E33B3' }} />
           </View>
           <View style={styles.separator} />
-          <TouchableOpacity style={styles.itemRow} onPress={() => router.push('/privacy')}>
-            <View style={[styles.iconBox, { backgroundColor: '#E8E4FF' }]}>
-              <Text style={{color: '#4E33B3'}}><Icon name="shield-check" size={24} color="#4E33B3" /></Text>
-            </View>
-            <Text style={styles.itemLabel}>Privacy</Text>
-            <Text style={styles.arrow}>❯</Text>
-          </TouchableOpacity>
-          <View style={styles.separator} />
           <TouchableOpacity 
             style={styles.itemRow}
-            onPress={() => router.replace('/loginPage_Student')}
+            onPress={async () => {
+              await AsyncStorage.removeItem('userEmail');
+              router.replace('/loginpage(student)');
+            }}
           >
              <View style={[styles.iconBox, { backgroundColor: '#FFE8E8' }]}><Text>🚪</Text></View>
              <Text style={[styles.itemLabel, { color: '#FF4B4B' }]}>Sign Out</Text>
@@ -173,15 +246,7 @@ export default function SettingsScreen() {
   );
 }
 
-// Reusable component for Side Menu Items
-const MenuOption = ({ icon, title, active }) => (
-  <View style={[styles.menuItem, active && styles.activeMenuItem]}>
-    <Text style={styles.menuItemIcon}>{icon}</Text>
-    <Text style={[styles.menuItemText, active && styles.activeMenuText]}>{title}</Text>
-  </View>
-);
 
-// Helper component for Setting Rows
 const SettingItem = ({ icon, label, valueText, hasArrow }) => (
   <TouchableOpacity style={styles.itemRow}>
     <View style={[styles.iconBox, { backgroundColor: '#E8E4FF' }]}>
@@ -195,15 +260,14 @@ const SettingItem = ({ icon, label, valueText, hasArrow }) => (
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FEFDF0' },
-  // --- SIDE MENU STYLES ---
+  loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FEFDF0' },
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.3)',
     justifyContent: 'flex-start',
   },
-  sideMenu: { width: width * 0.6, height: '100%', backgroundColor: 'white', padding: 20, borderTopRightRadius: 20, borderBottomRightRadius: 20, elevation: 10 },
+  sideMenu: { width: width * 0.7, height: '100%', backgroundColor: 'white', padding: 20, borderTopRightRadius: 20, borderBottomRightRadius: 20, elevation: 10 },
   menuHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 40, marginTop: 20 },
-  moonIcon: { fontSize: 20 },
   menuList: { flex: 1 },
   menuItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14, paddingHorizontal: 15, borderRadius: 12, marginBottom: 8 },
   activeMenuItem: { backgroundColor: '#E8E4FF' },
@@ -212,9 +276,8 @@ const styles = StyleSheet.create({
   menuItemText: { fontSize: 16, color: '#333', fontWeight: '500' },
   activeMenuText: { color: '#4E33B3', fontWeight: 'bold' },
   logoutButton: { borderTopWidth: 1, borderTopColor: '#eee', paddingVertical: 20, alignItems: 'center' },
-  logoutText: { fontSize: 18, fontWeight: '450', color: 'grey' },
+  logoutText: { fontSize: 18, color: 'grey' },
 
-  // --- SETTINGS STYLES ---
   header: {
     backgroundColor: '#4E33B3',
     height: 140,
@@ -222,10 +285,9 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop : -30,
+    marginTop: -30,
   },
-  menuButton: { position: 'absolute', left: 20, top: 40 ,marginTop : 40,},
-  menuIcon: { color: 'white', fontSize: 24 },
+  menuButton: { position: 'absolute', left: 20, top: 40, marginTop: 40 },
   headerTitle: { color: 'white', fontSize: 24, fontWeight: 'bold', marginTop: 50 },
   scrollContent: { padding: 20 },
   sectionHeader: { fontSize: 14, fontWeight: 'bold', color: '#888', marginBottom: 10, marginTop: 20 },
@@ -243,8 +305,8 @@ const styles = StyleSheet.create({
   profileRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 20 },
   avatar: { width: 60, height: 60, borderRadius: 30 },
   profileInfo: { flex: 1, marginLeft: 15 },
-  profileName: { fontSize: 18, fontWeight: 'bold' },
-  profileEmail: { fontSize: 13, color: '#888' },
+  profileName: { fontSize: 18, fontWeight: 'bold', color: '#1A1A1A' },
+  profileEmail: { fontSize: 13, color: '#888', marginTop: 2 },
   itemRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 15 },
   iconBox: { width: 40, height: 40, borderRadius: 10, justifyContent: 'center', alignItems: 'center' },
   itemLabel: { flex: 1, fontSize: 16, marginLeft: 15, color: '#333' },
