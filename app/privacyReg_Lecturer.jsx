@@ -190,9 +190,6 @@ export default function PrivacyScreen() {
               <MenuOption iconName="shield-check" title="Privacy" active onPress={() => {setMenuVisible(false); router.replace('/privacy')}} />
               <MenuOption iconName="cog" title="Settings" onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
             </View>
-            <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}>
-              <Text style={styles.logoutText}> Log Out    <Icon name="logout" size={24} color="grey" /></Text>
-            </TouchableOpacity>
           </View>
         </TouchableOpacity>
       </Modal>
