@@ -544,3 +544,9 @@ app.post('/upload-material', authenticateToken, upload.single('file'), async (re
         title,
         material_url: filePath
       });
+
+      res.status(201).json({
+        message: 'Material uploaded successfully',
+        material: newMaterial,
+        aiGeneratedContent: aiData
+      });
