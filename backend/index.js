@@ -468,3 +468,9 @@ app.get('/courses/:id', authenticateToken, async (req, res) => {
     return res.status(400).json({ error: 'Invalid Course ID' });
   }
 
+  try {
+    const course = await Course.findByPk(id);
+
+    if (!course) {
+      return res.status(404).json({ error: 'Course not found' });
+    }
