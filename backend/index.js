@@ -485,3 +485,9 @@ app.get('/courses/:id', authenticateToken, async (req, res) => {
       ...course.toJSON(),
       materials: materials
     });  
+
+  } catch (err) {
+    console.error("DATABASE QUERY ERROR:", err); 
+    res.status(500).json({ error: 'Server error: ' + err.message });
+  }
+});
