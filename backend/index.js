@@ -464,4 +464,7 @@ app.get('/courses/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
 
 
+  if (!id || id === 'undefined') {
+    return res.status(400).json({ error: 'Invalid Course ID' });
+  }
 
