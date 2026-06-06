@@ -618,3 +618,10 @@ app.post('/questions', authenticateToken, async (req, res) => {
       option_d,
       correct_answer
     });
+
+    res.status(201).json(newQuestion);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
