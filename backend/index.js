@@ -456,3 +456,12 @@ app.get('/lecturer/courses', authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+// ------------------------------------
+// GET SINGLE COURSE WITH MATERIALS
+// ------------------------------------
+app.get('/courses/:id', authenticateToken, async (req, res) => {
+  const { id } = req.params;
+
+
+
