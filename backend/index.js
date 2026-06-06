@@ -537,3 +537,10 @@ app.post('/upload-material', authenticateToken, upload.single('file'), async (re
       const result = await model.generateContent(prompt);
       const responseText = result.response.text();
       const aiData = JSON.parse(responseText);
+
+      // 2. Sequelize: Save material to database
+      const newMaterial = await CourseMaterial.create({
+        course_id,
+        title,
+        material_url: filePath
+      });
