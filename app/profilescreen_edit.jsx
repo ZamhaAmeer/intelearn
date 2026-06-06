@@ -133,7 +133,7 @@ export default function ProfileScreen() {
         body: JSON.stringify({
           full_name: fullName,
           username: userName,
-          email: email, // Critical link column
+          email: email, 
           phone: phone,
           bio: bio,
           department: department,
