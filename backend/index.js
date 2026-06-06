@@ -437,3 +437,15 @@ app.get('/courses', authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+// ------------------------------------
+// GET COURSES FOR A SPECIFIC LECTURER
+// ------------------------------------
+app.get('/lecturer/courses', authenticateToken, async (req, res) => {
+  try {
+    const lecturerId = req.user ? req.user.id : 1; 
+
+    const courses = await Course.findAll({
+      where: { lecturer_id: lecturerId },
+      order: [['id', 'DESC']] // Shows newest courses first
+    });
