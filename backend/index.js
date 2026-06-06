@@ -474,3 +474,9 @@ app.get('/courses/:id', authenticateToken, async (req, res) => {
     if (!course) {
       return res.status(404).json({ error: 'Course not found' });
     }
+
+    // Grab the materials for this specific course
+    const materials = await CourseMaterial.findAll({
+      where: { course_id: id },
+      order: [['createdAt', 'ASC']]
+    });
