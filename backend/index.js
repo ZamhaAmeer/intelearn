@@ -559,3 +559,11 @@ app.post('/upload-material', authenticateToken, upload.single('file'), async (re
       res.status(500).json({ error: 'Server error during processing' });
     }
 });
+
+// ------------------------------------
+// ENROLL STUDENT
+// ------------------------------------
+app.post('/enroll', authenticateToken, async (req, res) => {
+  try {
+    const studentId = req.user.id;
+    const { course_id } = req.body;
