@@ -51,7 +51,7 @@ export default function ProfileScreen() {
           setEmail(params.email);
           await fetchUserData(params.email);
         } else {
-          // 2. Otherwise, look up our persistent storage fallback session key
+          
           const storedEmail = await AsyncStorage.getItem('userEmail');
           if (storedEmail) {
             setEmail(storedEmail);
