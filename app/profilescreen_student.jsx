@@ -1,13 +1,13 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
+  Animated,
   Dimensions,
   Image,
-  Modal,
-  Pressable,
-  ScrollView,
+  PanResponder,
   StatusBar,
   StyleSheet,
   Text,
@@ -15,15 +15,19 @@ import {
   View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
+
+
+const HEADER_MAX_HEIGHT = 160;
+const HEADER_MIN_HEIGHT = 100;
+const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 
 export default function ProfileViewScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
 
-  
+
   const [fullName, setFullName] = useState('');
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
@@ -32,13 +36,27 @@ export default function ProfileViewScreen() {
   const [department, setDepartment] = useState('');
   const [gender, setGender] = useState('');
   const [profileImage, setProfileImage] = useState(null);
-  
-  const [isMenuVisible, setMenuVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const toggleMenu = () => setMenuVisible(!isMenuVisible);
+  
+  const scrollY = useRef(new Animated.Value(0)).current;
 
   
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: (evt, gestureState) => {
+        return Math.abs(gestureState.dx) > 60 && Math.abs(gestureState.dy) < 30;
+      },
+      onPanResponderRelease: (evt, gestureState) => {
+        if (gestureState.dx > 80) {
+          router.replace('/dashboard');
+        } else if (gestureState.dx < -80) {
+          router.replace('/coursedetails');
+        }
+      },
+    })
+  ).current;
+
   useEffect(() => {
     const checkSessionAndFetch = async () => {
       try {
@@ -52,7 +70,6 @@ export default function ProfileViewScreen() {
           setGender(params.gender || 'male');
           setIsLoading(false);
         } else {
-          
           const storedEmail = await AsyncStorage.getItem('userEmail');
           if (storedEmail) {
             await fetchUserData(storedEmail);
@@ -78,7 +95,6 @@ export default function ProfileViewScreen() {
     try {
       setIsLoading(true);
       const url = `http://172.20.10.3:3000/get-profile?email=${encodeURIComponent(userEmail)}`;
-
       const response = await fetch(url, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
@@ -86,7 +102,6 @@ export default function ProfileViewScreen() {
       
       if (response.ok) {
         const data = await response.json();
-        
         setFullName(data.full_name || 'Not Provided');
         setUserName(data.username || 'Not Assigned');
         setEmail(data.email || userEmail);
@@ -96,18 +111,15 @@ export default function ProfileViewScreen() {
         setGender(data.gender || 'male');
       } else {
         const errorData = await response.json();
-        console.error("Backend Profile Sync Error:", errorData.error);
         Alert.alert("Profile Sync Fail", errorData.error || "Could not retrieve user entries.");
       }
     } catch (error) {
-      console.error("Network Link Error:", error);
       Alert.alert("Connection Failure", "Could not synchronize with the remote sequence node.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  
   const formatDepartment = (deptCode) => {
     const values = { cis: 'CIS', is: 'IS', ds: 'DS', se: 'SE' };
     return values[deptCode?.toLowerCase()] || deptCode || 'Not Set';
@@ -118,185 +130,215 @@ export default function ProfileViewScreen() {
     return values[genderCode?.toLowerCase()] || genderCode || 'Not Set';
   };
 
-  const MenuOption = ({ iconName, title, active, onPress }) => (
-    <Pressable
-      onPress={onPress}
-      style={({ pressed }) => [
-        styles.menuItem,
-        active && styles.activeMenuItem,
-        pressed && styles.pressedMenuItem 
-      ]}
-    >
-      {({ pressed }) => (
-        <>
-          <Icon name={iconName} size={22} color={active || pressed ? "#4E33B3" : "#7E57C2"} style={styles.menuItemIcon} />
-          <Text style={[styles.menuItemText, (active || pressed) && styles.activeMenuText]}>{title}</Text>
-        </>
-      )}
-    </Pressable>
-  );
+  
+  const headerHeight = scrollY.interpolate({
+    inputRange: [0, HEADER_SCROLL_DISTANCE],
+    outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
+    extrapolate: 'clamp',
+  });
+
+  const headerTitleSize = scrollY.interpolate({
+    inputRange: [0, HEADER_SCROLL_DISTANCE],
+    outputRange: [32, 18],
+    extrapolate: 'clamp',
+  });
+
+  const headerPaddingTop = scrollY.interpolate({
+    inputRange: [0, HEADER_SCROLL_DISTANCE],
+    outputRange: [75, 45],
+    extrapolate: 'clamp',
+  });
+
+  
+  const headerPaddingLeft = scrollY.interpolate({
+    inputRange: [0, HEADER_SCROLL_DISTANCE],
+    outputRange: [24, 0], 
+    extrapolate: 'clamp',
+  });
 
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#4A28B3" />
+        <ActivityIndicator size="large" color="#4E33B3" />
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#4A28B3" />
+    <View style={styles.container} {...panResponder.panHandlers}>
+      <StatusBar barStyle="light-content" backgroundColor="#4E33B3" />
       
-      <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
-        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={toggleMenu}>
-          <View style={styles.sideMenu}>
-            <View style={styles.menuHeader}>
-              <TouchableOpacity onPress={toggleMenu}>
-                <Icon name="menu" size={30} color="#333" />
-              </TouchableOpacity>
-              <Text style={styles.moonIcon}>🌙</Text>
-            </View>
-            <View style={styles.menuList}>
-              <MenuOption iconName="home-variant" title="Home" onPress={() => { setMenuVisible(false); router.replace('/coursedetails'); }} />
-              <MenuOption iconName="account" title="Profile" active onPress={() => setMenuVisible(false)} />
-              <MenuOption iconName="view-dashboard" title="Dashboard" />
-              <MenuOption iconName="controller-classic" title="Games" />
-              <MenuOption iconName="shield-check" title="Privacy" onPress={() => { setMenuVisible(false); router.replace('/privacy'); }} />
-              <MenuOption iconName="cog" title="Settings" onPress={() => { setMenuVisible(false); router.replace('/settings'); }} />
-            </View>
-            <TouchableOpacity 
-              style={styles.logoutButton} 
-              onPress={async () => { 
-                setMenuVisible(false); 
-                await AsyncStorage.removeItem('userEmail'); // Clean session storage cache on logout
-                router.replace('/loginpage(student)'); 
-              }}
-            >
-              <Text style={styles.logoutText}> Log Out   <Icon name="logout" size={24} color="grey" /></Text>
-            </TouchableOpacity>
-          </View>
-        </TouchableOpacity>
-      </Modal>
-
-      <View style={styles.header}>
-        <View style={styles.headerTopBar}>
-          <TouchableOpacity style={styles.iconButton} onPress={toggleMenu}>
-            <Icon name="menu" size={28} color="#FFFFFF" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
-            <Icon name="bell" size={26} color="#FFFFFF" />
-          </TouchableOpacity>
+      
+      <Animated.View style={[styles.header, { height: headerHeight, paddingTop: headerPaddingTop, paddingLeft: headerPaddingLeft }]}>
+        <View style={styles.headerTitleContainer}>
+          <Animated.Text style={[styles.headerTitle, { fontSize: headerTitleSize }]}>
+            Profile Details
+          </Animated.Text>
         </View>
-        <Text style={styles.headerTitle}>Profile Information</Text>
-      </View>
+      </Animated.View>
 
-      <ScrollView 
+    
+      <Animated.ScrollView 
         style={styles.scrollContentWrapper} 
-        contentContainerStyle={styles.scrollContainer} 
+        contentContainerStyle={[styles.scrollContainer, { paddingTop: HEADER_MAX_HEIGHT + 15 }]} 
+        showsVerticalScrollIndicator={false}
         bounces={false}
+        scrollEventThrottle={16}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: false }
+        )}
       >
-        <View style={styles.profileCard}>
-          <View style={styles.avatarContainer}>
+      
+        <View style={styles.avatarCardSection}>
+          <View style={styles.avatarOutlineRing}>
             <Image
               source={profileImage ? { uri: profileImage } : require("../../assets/images/pr2.jpg")}
-              style={styles.avatar}
+              style={styles.avatarImage}
             />
-            <Text style={styles.profileName} numberOfLines={2}>{fullName}</Text>
           </View>
+          <Text style={styles.profileNameText} numberOfLines={1}>{fullName}</Text>
+          <Text style={styles.profileTaglineText}>@{userName || 'student'}</Text>
+        </View>
 
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>FULL NAME</Text>
-            <Text style={styles.fieldValue}>{fullName}</Text>
-            <View style={styles.underline} />
-          </View>
-
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>USER NAME</Text>
-            <Text style={styles.fieldValue}>{userName}</Text>
-            <View style={styles.underline} />
-          </View>
-
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>EMAIL ADDRESS</Text>
-            <Text style={styles.fieldValue}>{email}</Text>
-            <View style={styles.underline} />
-          </View>
-
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>PHONE NUMBER</Text>
-            <Text style={styles.fieldValue}>{phone}</Text>
-            <View style={styles.underline} />
-          </View>
-
-          <View style={styles.rowFields}>
-            <View style={[styles.fieldContainer, { flex: 1, marginRight: 16 }]}>
-              <Text style={styles.fieldLabel}>DEPARTMENT</Text>
-              <Text style={styles.fieldValue}>{formatDepartment(department)}</Text>
-              <View style={styles.underline} />
+      
+        <View style={styles.detailsSectionSurface}>
+          <View style={styles.dataFieldBlock}>
+            <View style={styles.labelRow}>
+              <Icon name="account-outline" size={18} color="#7E57C2" />
+              <Text style={styles.fieldLabelText}>FULL NAME</Text>
             </View>
-            <View style={[styles.fieldContainer, { flex: 1 }]}>
-              <Text style={styles.fieldLabel}>GENDER</Text>
-              <Text style={styles.fieldValue}>{formatGender(gender)}</Text>
-              <View style={styles.underline} />
+            <Text style={styles.fieldValueText}>{fullName}</Text>
+          </View>
+
+          <View style={styles.dataFieldBlock}>
+            <View style={styles.labelRow}>
+              <Icon name="card-account-details-outline" size={18} color="#7E57C2" />
+              <Text style={styles.fieldLabelText}>USER NAME</Text>
+            </View>
+            <Text style={styles.fieldValueText}>{userName}</Text>
+          </View>
+
+          <View style={styles.dataFieldBlock}>
+            <View style={styles.labelRow}>
+              <Icon name="email-outline" size={18} color="#7E57C2" />
+              <Text style={styles.fieldLabelText}>EMAIL ADDRESS</Text>
+            </View>
+            <Text style={styles.fieldValueText}>{email}</Text>
+          </View>
+
+          <View style={styles.dataFieldBlock}>
+            <View style={styles.labelRow}>
+              <Icon name="phone-outline" size={18} color="#7E57C2" />
+              <Text style={styles.fieldLabelText}>PHONE NUMBER</Text>
+            </View>
+            <Text style={styles.fieldValueText}>{phone}</Text>
+          </View>
+
+          <View style={styles.rowFieldsContainer}>
+            <View style={[styles.dataFieldBlock, { flex: 1, marginRight: 16 }]}>
+              <View style={styles.labelRow}>
+                <Icon name="school-outline" size={18} color="#7E57C2" />
+                <Text style={styles.fieldLabelText}>DEPARTMENT</Text>
+              </View>
+              <Text style={styles.fieldValueText}>{formatDepartment(department)}</Text>
+            </View>
+            <View style={[styles.dataFieldBlock, { flex: 1 }]}>
+              <View style={styles.labelRow}>
+                <Icon name="gender-male-female" size={18} color="#7E57C2" />
+                <Text style={styles.fieldLabelText}>GENDER</Text>
+              </View>
+              <Text style={styles.fieldValueText}>{formatGender(gender)}</Text>
             </View>
           </View>
 
-          <View style={styles.bioContainer}>
-            <Text style={styles.fieldLabel}>BIO</Text>
-            <Text style={styles.bioText}>{bio}</Text>
+          <View style={[styles.dataFieldBlock, { borderBottomWidth: 0, paddingBottom: 5 }]}>
+            <View style={styles.labelRow}>
+              <Icon name="text-account" size={18} color="#7E57C2" />
+              <Text style={styles.fieldLabelText}>BIOGRAPHY</Text>
+            </View>
+            <Text style={styles.bioContentText}>{bio}</Text>
           </View>
+        </View>
 
+        
+        <View style={styles.actionContainer}>
           <TouchableOpacity 
-            style={styles.editButton} 
+            style={styles.primaryActionButton} 
             onPress={() => router.push({ pathname: '/profilescreen_edit', params: { email: email, fullName: fullName } })} 
           >
-            <Text style={styles.editButtonText}>✎   Edit Profile</Text>
+            <Text style={styles.primaryActionText}>Edit Profile</Text>
+            <Icon name="pencil" size={18} color="#FFFFFF" style={{ marginLeft: 8 }} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.backButton} onPress={() => router.replace('/coursedetails')}>
-            <Text style={styles.backButtonText}>Back</Text>
+          <TouchableOpacity style={styles.secondaryActionButton} onPress={() => router.replace('/coursedetails')}>
+            <Text style={styles.secondaryActionText}>Return Home</Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
+      </Animated.ScrollView>
     </View>
   );
 }
 
+
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FAF9F5' },
-  loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FAF9F5' },
-  scrollContainer: { flexGrow: 1 },
-  header: { backgroundColor: '#4A28B3', paddingHorizontal: 24, paddingTop: 16, paddingBottom: 45, borderBottomLeftRadius: 32, borderBottomRightRadius: 32 },
-  headerTopBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
-  iconButton: { padding: 6 },
-  headerTitle: { fontSize: 26, fontWeight: '800', color: '#FFFFFF', textAlign: 'center', marginTop: 2 },
-  profileCard: { backgroundColor: '#FFFFFF', borderRadius: 28, marginTop: -25, marginHorizontal: 16, padding: 24, shadowColor: '#000', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.06, shadowRadius: 12, elevation: 4, marginBottom: 24 },
-  avatarContainer: { flexDirection: 'row', alignItems: 'center', marginBottom: 24 },
-  avatar: { width: 85, height: 85, borderRadius: 42.5, backgroundColor: '#E1E1E1', borderWidth: 2, borderColor: '#4A28B3' },
-  profileName: { fontSize: 22, fontWeight: '700', color: '#1A1A1A', marginLeft: 18, flex: 1 },
-  fieldContainer: { marginBottom: 18 },
-  fieldLabel: { fontSize: 12, fontWeight: '700', color: '#71717A', marginBottom: 6, letterSpacing: 0.5 },
-  fieldValue: { fontSize: 16, color: '#18181B', fontWeight: '500', paddingVertical: 1 },
-  underline: { height: 1, backgroundColor: '#E4E4E7', marginTop: 6 },
-  rowFields: { flexDirection: 'row', justifyContent: 'space-between' },
-  bioContainer: { marginBottom: 32 },
-  bioText: { fontSize: 14, color: '#4B5563', lineHeight: 22, marginTop: 4 },
-  editButton: { backgroundColor: '#5229D2', borderRadius: 24, paddingVertical: 16, alignItems: 'center', justifyContent: 'center', marginBottom: 12 },
-  editButtonText: { color: '#FFFFFF', fontSize: 16, fontWeight: '600' },
-  backButton: { backgroundColor: '#E6E4DC', borderRadius: 24, paddingVertical: 16, alignItems: 'center', justifyContent: 'center' },
-  backButtonText: { color: '#1A1A1A', fontSize: 16, fontWeight: '600' },
-  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.35)', justifyContent: 'flex-start' },
-  sideMenu: { width: width * 0.65, height: '100%', backgroundColor: 'white', padding: 20, borderTopRightRadius: 24, borderBottomRightRadius: 24, elevation: 10 },
-  menuHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 35, marginTop: 20 },
-  moonIcon: { fontSize: 20 },
-  menuList: { flex: 1 },
-  menuItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14, paddingHorizontal: 15, borderRadius: 12, marginBottom: 8 },
-  activeMenuItem: { backgroundColor: '#E8E4FF' },
-  pressedMenuItem: { backgroundColor: '#D1C4E9', transform: [{ scale: 0.97 }] },
-  menuItemIcon: { marginRight: 15 },
-  menuItemText: { fontSize: 16, color: '#333', fontWeight: '500' },
-  activeMenuText: { color: '#4E33B3', fontWeight: 'bold' },
-  logoutButton: { borderTopWidth: 1, borderTopColor: '#eee', paddingVertical: 20, alignItems: 'center' },
-  logoutText: { fontSize: 18, fontWeight: '450', color: 'grey' },
+  container: { flex: 1, backgroundColor: '#FEFDF0' },
+  loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FEFDF0' },
+  header: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#4E33B3',
+    paddingRight: 24, 
+    zIndex: 1000,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    justifyContent: 'center',
+  },
+  headerTitleContainer: {
+    width: '100%',
+    alignItems: 'center', 
+    justifyContent: 'center',
+  },
+  headerTitle: { 
+    fontWeight: 'bold', 
+    color: '#FFFFFF',
+    letterSpacing: -0.5,
+    textAlign: 'center',
+  },
+  
+  scrollContentWrapper: { flex: 1 },
+  scrollContainer: { paddingBottom: 40 },
+  
+  avatarCardSection: { alignItems: 'center', marginTop: 10, marginBottom: 24 },
+  avatarOutlineRing: {
+    width: 110, height: 110, borderRadius: 55, borderWidth: 4, borderColor: '#FFF',
+    overflow: 'hidden', elevation: 8, shadowColor: '#4E33B3', shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15, shadowRadius: 8, backgroundColor: '#EAEAEA',
+  },
+  avatarImage: { width: '100%', height: '100%' },
+  profileNameText: { fontSize: 22, fontWeight: '800', color: '#1A1A1A', marginTop: 14, paddingHorizontal: 20, textAlign: 'center' },
+  profileTaglineText: { fontSize: 13, color: '#7E57C2', fontWeight: '600', marginTop: 2 },
+  
+  detailsSectionSurface: {
+    backgroundColor: '#FFF', marginHorizontal: 24, borderRadius: 24, padding: 20, borderWidth: 1, borderColor: '#F4F2E4',
+    shadowColor: '#4E33B3', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.04, shadowRadius: 12, elevation: 3,
+  },
+  dataFieldBlock: { borderBottomWidth: 1, borderBottomColor: '#F5F5F0', paddingBottom: 12, marginBottom: 14 },
+  labelRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 6 },
+  fieldLabelText: { fontSize: 11, fontWeight: '700', color: '#9E9E9E', marginLeft: 8, letterSpacing: 0.5 },
+  fieldValueText: { fontSize: 15, color: '#1A1A1A', fontWeight: '600', paddingLeft: 26 },
+  rowFieldsContainer: { flexDirection: 'row', justifyContent: 'space-between' },
+  bioContentText: { fontSize: 14, color: '#555', lineHeight: 22, paddingLeft: 26, marginTop: 2 },
+  
+  actionContainer: { paddingHorizontal: 24, marginTop: 24 },
+  primaryActionButton: {
+    backgroundColor: '#4E33B3', borderRadius: 20, height: 52, flexDirection: 'row', alignItems: 'center',
+    justifyContent: 'center', elevation: 4, shadowColor: '#4E33B3', shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2, shadowRadius: 6, marginBottom: 12,
+  },
+  primaryActionText: { color: '#FFFFFF', fontSize: 15, fontWeight: '700' },
+  secondaryActionButton: { backgroundColor: '#C4B5FD', borderRadius: 20, height: 52, alignItems: 'center', justifyContent: 'center' },
+  secondaryActionText: { color: '#311B92', fontSize: 15, fontWeight: '700' },
 });
