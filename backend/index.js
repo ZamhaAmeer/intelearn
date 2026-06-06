@@ -13,7 +13,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const sequelize = require('./config/database');
 const User = require('./models/user');
-const Course = require('./models/Course');
+const Course = require('./models/course');
 const CourseMaterial = require('./models/courseMaterial');
 const Enrollment = require('./models/enrollment');
 const Quiz = require('./models/quiz');
