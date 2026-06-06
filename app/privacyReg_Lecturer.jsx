@@ -85,7 +85,7 @@ export default function PrivacyScreen() {
       
     
       <View style={styles.topPurpleHeader}>
-        <SafeAreaView>
+        <View>
           <View style={styles.headerTopRow}>
             <TouchableOpacity onPress={toggleMenu}>
             </TouchableOpacity>
