@@ -587,3 +587,9 @@ app.post('/enroll', authenticateToken, async (req, res) => {
 app.post('/quizzes', authenticateToken, async (req, res) => {
   try {
     const { course_id, title } = req.body;
+
+    // Sequelize: Create a new quiz
+    const quiz = await Quiz.create({
+      course_id,
+      title
+    });
