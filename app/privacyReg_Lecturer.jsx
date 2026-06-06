@@ -23,9 +23,6 @@ export default function PrivacyScreen() {
   
   const [hasAgreed, setHasAgreed] = useState(false);
   
-  
-
-  
   const handleScroll = (event) => {
     const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
     
