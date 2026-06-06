@@ -179,7 +179,6 @@ export default function ProfileViewScreen() {
         </TouchableOpacity>
       </Modal>
 
-      {/* 🔑 STABLE HEADER BAR (Moved outside ScrollView) */}
       <View style={styles.header}>
         <View style={styles.headerTopBar}>
           <TouchableOpacity style={styles.iconButton} onPress={toggleMenu}>
