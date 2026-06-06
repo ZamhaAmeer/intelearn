@@ -107,7 +107,7 @@ export default function ProfileViewScreen() {
     }
   };
 
-  // --- DATA FORMATTER UTILITIES ---
+  
   const formatDepartment = (deptCode) => {
     const values = { cis: 'CIS', is: 'IS', ds: 'DS', se: 'SE' };
     return values[deptCode?.toLowerCase()] || deptCode || 'Not Set';
