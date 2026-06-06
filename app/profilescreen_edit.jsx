@@ -233,12 +233,6 @@ export default function ProfileScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}
       >
-        <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
-          <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={toggleMenu}>
-            <View style={styles.sideMenu}>
-              <View style={styles.menuHeader}>
-                <Text style={styles.moonIcon}>🌙</Text>
-              </View>
               
 
         <ScrollView contentContainerStyle={styles.scrollContent}>
