@@ -625,3 +625,8 @@ app.post('/questions', authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+// ------------------------------------
+// START THE SERVER & SYNC DATABASE
+// ------------------------------------
+const PORT = process.env.PORT || 3000;
