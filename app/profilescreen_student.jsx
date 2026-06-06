@@ -52,7 +52,7 @@ export default function ProfileViewScreen() {
           setGender(params.gender || 'male');
           setIsLoading(false);
         } else {
-          // 🔑 Fallback to persistent AsyncStorage parameter if route params are empty
+          
           const storedEmail = await AsyncStorage.getItem('userEmail');
           if (storedEmail) {
             await fetchUserData(storedEmail);
