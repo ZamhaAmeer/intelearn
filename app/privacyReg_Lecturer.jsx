@@ -22,10 +22,8 @@ const { width } = Dimensions.get('window');
 export default function PrivacyScreen() {
   const router = useRouter();
   const [hasAgreed, setHasAgreed] = useState(false);
-  const [isMenuVisible, setMenuVisible] = useState(false);
-  const [isDark, setIsDark] = useState(false);
   
-  const toggleMenu = () => setMenuVisible(!isMenuVisible);
+  
 
   
   const handleScroll = (event) => {
@@ -39,10 +37,8 @@ export default function PrivacyScreen() {
     }
   };
 
-  
-  
 
-    return (
+  return (
       <TouchableOpacity activeOpacity={0.8} onPress={onToggle}>
         <Animated.View style={[styles.trackStyle, rTrackStyle]}>
           <Animated.View style={[styles.thumbStyle, rThumbStyle]} />
