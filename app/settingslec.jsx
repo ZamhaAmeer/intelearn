@@ -1,316 +1,241 @@
-import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
 import {
-    Image,
-    Modal,
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from 'react-native';
+  Alert,
+  Dimensions,
+  Image,
+  ImageBackground,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
+} from "react-native";
 
-const ThemeToggle = ({ isDark, onToggle }) => (
-  <TouchableOpacity onPress={onToggle}>
-    <MaterialCommunityIcons name={isDark ? 'moon-waning-crescent' : 'white-balance-sunny'} size={24} color={isDark ? '#FFD700' : '#FFA500'} />
-  </TouchableOpacity>
-);
+import ForgotPasswordModal from "./forgotpassword";
 
-export default function SettingsScreen() {
-  const [isMenuVisible, setMenuVisible] = useState(false);
-  const [isDark, setIsDark] = useState(false);
-  
-  const toggleMenu = () => setMenuVisible(!isMenuVisible);
+const { height } = Dimensions.get("window");
 
-  // Mock Data for the lists
-  const accountSettings = [
-    { id: '1', title: 'Personal Information', icon: 'person-outline' },
-    { id: '2', title: 'Notifications & Chat', icon: 'notifications-outline' },
-    { id: '3', title: 'Privacy & Permissions', icon: 'shield-checkmark-outline' },
-    { id: '4', title: 'Data & Storage', icon: 'server-outline' },
-    { id: '5', title: 'Password & Account', icon: 'lock-closed-outline' },
-  ];
+export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  const moreSettings = [
-    { id: '6', title: 'Help', icon: 'help-circle-outline' },
-    { id: '7', title: 'Feedback', icon: 'chatbox-ellipses-outline' },
-    { id: '8', title: 'About', icon: 'information-circle-outline' },
-    { id: '9', title: 'Invite a Friend', icon: 'share-social-outline' },
-  ];
+  const [isModalVisible, setModalVisible] = useState(false);
+  const router = useRouter();
 
-  const renderSettingItem = (item) => (
-    <TouchableOpacity key={item.id} style={styles.itemContainer} activeOpacity={0.7}>
-      <View style={styles.itemLeft}>
-        <View style={styles.iconContainer}>
-          <Ionicons name={item.icon} size={20} color="#FFFFFF" />
-        </View>
-        <Text style={styles.itemTitle}>{item.title}</Text>
-      </View>
-      <Ionicons name="chevron-forward" size={20} color="#C4C4C4" />
-    </TouchableOpacity>
-  );
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert("Error", "Please enter both email and password.");
+      return;
+    }
 
-  const MenuOption = ({ iconName, title, active, onPress }) => (
-  <TouchableOpacity style={[styles.menuOption, active && styles.activeMenuOption]} onPress={onPress}>
-    <MaterialCommunityIcons name={iconName} size={24} color={active ? '#5C45C3' : '#666'} />
-    <Text style={[styles.menuOptionText, active && styles.activeMenuOptionText]}>{title}</Text>
-  </TouchableOpacity>
-);
+    const trimmedEmail = email.trim().toLowerCase();
 
+    // Enforce strict format: standard strings before @ms.sab.ac.lk 
+    // and proactively blocks student numbers like EU/IS/2022/... or "std" identifiers
+    const isStudentFormat = /[a-zA-Z]{2,3}\d{4,}/i.test(trimmedEmail) || trimmedEmail.includes("std");
+    const lecturerEmailRegex = /^[a-z]+[a-z0-9._-]*@ms\.sab\.ac\.lk$/;
+
+    if (isStudentFormat || !lecturerEmailRegex.test(trimmedEmail)) {
+      Alert.alert(
+        "Access Denied", 
+        "This login page is strictly for Lecturers. Please use your official faculty credentials."
+      );
+      return; 
+    }
+
+    console.log("Attempting lecturer login for:", trimmedEmail);
+
+    try {
+      const response = await fetch("http://172.20.10.3:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: trimmedEmail, password }),
+      });
+
+      const rawText = await response.text();
+
+      console.log("Server Status Code:", response.status);
+      console.log("RAW SERVER RESPONSE:", rawText);
+
+      let data;
+      try {
+        data = JSON.parse(rawText);
+      } catch (parseError) {
+        console.error("Failed to parse JSON.");
+        Alert.alert("Server Error", "Something went wrong on the server side.");
+        return; 
+      }
+
+      if (response.status === 200) {
+        console.log("Success! Saving details and navigating...");
+        
+        // Save token, name, and email strings cleanly to local storage
+        await AsyncStorage.setItem('token', data.token);
+        await AsyncStorage.setItem('fullName', data.full_name || 'Lecturer');
+        await AsyncStorage.setItem('email', trimmedEmail); 
+        
+        router.push("./coursedetailsforlecturer");
+      } else {
+        console.log("Login rejected by server.");
+        Alert.alert("Login Failed", data.error || "Incorrect email or password");
+      }
+
+    } catch (error) {
+      console.error("Network or Fetch Error:", error);
+      Alert.alert("Network Error", "Could not connect to the backend server. Is it running?");
+    }
+  };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="light-content" backgroundColor="#3b2396" />
-      
-      {/* Curved Background Header Trick */}
-      <View style={styles.headerBackground} />
-
+    <KeyboardAvoidingView 
+      style={{ flex: 1, backgroundColor: "transparent" }} 
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
       <View style={styles.container}>
-        {/* Header Navigation */}
-        <View style={styles.header}>
-          <TouchableOpacity>
-            <Ionicons name="menu" size={32} color="#FFFFFF" onPress={toggleMenu}/>
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Settings</Text>
-        </View>
-         {/* --- SIDE MENU MODAL --- */}
-              <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
-                <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={toggleMenu}>
-                  <View style={[styles.sideMenu, isDark && { backgroundColor: '#1A1A1A' }]}>
-                    
-                    <View style={styles.menuHeader}>
-                      <TouchableOpacity onPress={toggleMenu}>
-                        <MaterialCommunityIcons name="menu" size={30} color={isDark ? "white" : "#333"} />
-                      </TouchableOpacity>
-                      <ThemeToggle isDark={isDark} onToggle={() => setIsDark(!isDark)} />
-                    </View>
-        
-                    <View style={styles.menuList}>
-                      <MenuOption iconName="home-variant" title="Home" active onPress={() => { setMenuVisible(false); router.replace('/courseDetailsForLecturer'); }} />
-                      <MenuOption iconName="account" title="Profile" onPress={() => { setMenuVisible(false); router.replace('/profileScreen'); }} />
-                      <MenuOption iconName="view-dashboard" title="Dashboard" />
-                      <MenuOption iconName="shield-check" title="Privacy" />
-                      <MenuOption iconName="cog" title="Settings" onPress={() => { setMenuVisible(false); router.replace('/settingsLec'); }} />
-                    </View>
-        
-                    <TouchableOpacity style={styles.logoutButton} onPress={() => { setMenuVisible(false); router.replace('/loginPage_Lecturer'); }}>
-                      <Text style={styles.logoutText}> Log Out    <MaterialCommunityIcons name="logout" size={24} color="grey" /></Text>
-                    </TouchableOpacity>
-        
-                  </View>
-                </TouchableOpacity>
-              </Modal>
+        <ImageBackground
+          source={require("../../assets/images/header-curve.png")}
+          style={styles.headerBackground}
+          resizeMode="stretch"
+        >
+          <View style={styles.backButtonContainer}>
+            <TouchableOpacity 
+              onPress={() => router.replace('/choosingpage')} 
+              style={styles.backButton}
+            >
+              <Ionicons name="chevron-back" size={30} color="white" />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.logoContainer}>
+            <Image
+              source={require("../../assets/images/logo.png")}
+              style={styles.logoImage}
+              resizeMode="contain"
+            />
+            <Text style={styles.logoText}>INTELEARN</Text>
+          </View>
+        </ImageBackground>
 
-        <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-          {/* Profile Section */}
-          <View style={styles.profileSection}>
-            <View style={styles.avatarContainer}>
-              <Image
-                source={{ uri: 'https://randomuser.me/api/portraits/women/44.jpg' }} // Placeholder image
-                style={styles.avatar}
-              />
-              <TouchableOpacity style={styles.editBadge} activeOpacity={0.8}>
-                <MaterialIcons name="edit" size={12} color="#000" />
+        <ScrollView 
+          style={styles.scrollView} 
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.content}>
+            <View style={styles.welcomeSection}>
+              <Text style={styles.welcomeTitle}>Welcome to INTELEARN</Text>
+              <Text style={styles.welcomeSubtitle}>Learn smart, Grow fast</Text>
+            </View>
+
+            <View style={styles.formCard}>
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Email Address*</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="example@email.com"
+                  placeholderTextColor="#A0A0A0"
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Password*</Text>
+                <View style={styles.passwordInputWrapper}>
+                  <TextInput
+                    style={styles.flexInput}
+                    placeholder="........"
+                    placeholderTextColor="#A0A0A0"
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry={!showPassword} 
+                  />
+                  <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                    <Ionicons 
+                      name={showPassword ? "eye-outline" : "eye-off-outline"} 
+                      size={22} 
+                      color="#A0A0A0" 
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View style={styles.row}>
+                <TouchableOpacity 
+                  style={styles.checkboxRow} 
+                  onPress={() => setRememberMe(!rememberMe)}
+                >
+                  <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
+                    {rememberMe && <Text style={styles.checkmark}>✓</Text>}
+                  </View>
+                  <Text style={styles.checkboxLabel}>Remember Me</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => setModalVisible(true)}>
+                  <Text style={styles.forgotText}>Forgot Password?</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+              <Text style={styles.loginButtonText}>Login</Text>
+            </TouchableOpacity>
+
+            <View style={styles.footer}>
+              <Text style={styles.footerText}>Don't have an account?</Text>
+              <TouchableOpacity onPress={() => router.push("/register(lecturer)")}>
+                <Text style={styles.signUpText}>Create an account</Text>
               </TouchableOpacity>
             </View>
-            <View style={styles.profileInfo}>
-              <Text style={styles.profileName}>Kimberly Mastrangelo</Text>
-              <Text style={styles.profileEmail}>kimberly.m@design.io</Text>
-            </View>
           </View>
-
-          {/* Account Settings Section */}
-          <Text style={styles.sectionHeader}>ACCOUNT SETTINGS</Text>
-          <View style={styles.sectionCard}>
-            {accountSettings.map(renderSettingItem)}
-          </View>
-
-          {/* More Section */}
-          <Text style={styles.sectionHeader}>MORE</Text>
-          <View style={styles.sectionCard}>
-            {moreSettings.map(renderSettingItem)}
-          </View>
-          
-          <View style={{ height: 40 }} /> {/* Bottom Padding */}
         </ScrollView>
+        <ForgotPasswordModal visible={isModalVisible} onClose={() => setModalVisible(false)} />
       </View>
-    </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#FCFCF4', // Light cream background
-  },
-  container: {
-    flex: 1,
-  },
-  headerBackground: {
-    position: 'absolute',
-    top: -150,
-    left: '-25%',
-    width: '150%',
-    height: 350,
-    backgroundColor: '#3b2396', // Deep purple
-    borderRadius: 300,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 20, // Adjust depending on platform/notch
-    marginBottom: 40,
-  },
-  headerTitle: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: '#FFFFFF',
-    marginLeft: 15,
-  },
-  scrollContent: {
-    paddingHorizontal: 20,
-  },
-  profileSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 40,
-  },
-  avatarContainer: {
-    position: 'relative',
-  },
-  avatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: '#E1E1E1',
-  },
-  editBadge: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    backgroundColor: '#FFFFFF',
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#FCFCF4',
-  },
-  profileInfo: {
-    marginLeft: 20,
-  },
-  profileName: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'white',
-    marginBottom: 4,
-  },
-  profileEmail: {
-    fontSize: 14,
-    color: '#4DA6E8', // Light blue text
-    fontWeight: '400',
-  },
-  sectionHeader: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#666666',
-    letterSpacing: 1,
-    marginBottom: 10,
-    marginLeft: 4,
-  },
-  sectionCard: {
-    backgroundColor: '#F3F4F8', // Very light grayish-blue wrapper
-    borderRadius: 20,
-    padding: 8,
-    marginBottom: 30,
-  },
-  itemContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#FFFFFF',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 16,
-    marginBottom: 6, // Space between items inside the card
-  },
-  itemLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
-    backgroundColor: '#6A52D4', // Brighter purple for the icons
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 15,
-  },
-  itemTitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#1A1A1A',
-  },
-  // Modal Menu Styles added here:
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-  },
-  sideMenu: {
-    width: '70%',
-    height: '100%',
-    backgroundColor: '#FFFFFF',
-    padding: 20,
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
-  },
-  menuHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 40,
-    marginBottom: 30,
-  },
-  menuList: {
-    flex: 1,
-  },
-  menuOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 15,
-    marginBottom: 5,
-  },
-  activeMenuOption: {
-    backgroundColor: '#F0EDFF',
-    borderRadius: 10,
-    paddingHorizontal: 10,
-  },
-  menuOptionText: {
-    fontSize: 16,
-    marginLeft: 15,
-    color: '#333',
-  },
-  activeMenuOptionText: {
-    color: '#5C45C3',
-    fontWeight: 'bold',
-  },
-  logoutButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 20,
-    borderTopWidth: 1,
-    borderTopColor: '#EEE',
-    marginBottom: 20, // To keep it above standard bottom bezels
-  },
-  logoutText: {
-    fontSize: 16,
-    color: 'grey',
-    fontWeight: 'bold',
-  }
+  container: { flex: 1, backgroundColor: "#FFFFF0" },
+  headerBackground: { width: "100%", height: height * 0.5, justifyContent: "center", alignItems: "center" },
+  logoContainer: { alignItems: "center", marginTop: -250 },
+  logoImage: { width: 170, height: 170, tintColor: "white", marginTop: 50 },
+  logoText: { color: "#FFF", fontSize: 26, fontWeight: "bold", letterSpacing: 1, marginTop: -50 },
+  scrollView: { flex: 1, marginTop: -181 },
+  scrollContent: { paddingBottom: 40 },
+  content: { flex: 1, paddingHorizontal: 30 },
+  welcomeSection: { alignItems: "center", marginBottom: 50, zIndex: 1 },
+  welcomeTitle: { fontSize: 24, fontWeight: "bold", color: "#0B0C10", marginTop: 20 },
+  welcomeSubtitle: { fontSize: 18, color: "rgba(0, 0, 0, 0.6)", marginTop: 5 },
+  formCard: { backgroundColor: "white", borderRadius: 15, padding: 20, elevation: 5, shadowColor: "#000", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 10 },
+  inputGroup: { marginBottom: 15 },
+  label: { fontSize: 14, fontWeight: "600", color: "#333", marginBottom: 8 },
+  input: { backgroundColor: "rgba(242, 231, 231, 0.2)", borderWidth: 1, borderColor: "#E5E5E5", borderRadius: 12, padding: 12, fontSize: 14 },
+  passwordInputWrapper: { flexDirection: 'row', alignItems: 'center', backgroundColor: "#F9F9F9", borderWidth: 1, borderColor: "#EEE", borderRadius: 12, paddingHorizontal: 14 },
+  flexInput: { flex: 1, paddingVertical: 14, fontSize: 16, color: "#000" },
+  row: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 5 },
+  checkboxRow: { flexDirection: "row", alignItems: "center" },
+  checkbox: { width: 18, height: 18, borderWidth: 1, borderColor: "#000", borderRadius: 4, marginRight: 8, alignItems: "center", justifyContent: "center" },
+  checkboxChecked: { backgroundColor: "#5B3CC2", borderColor: "#5B3CC2" },
+  checkmark: { color: "white", fontSize: 12 },
+  checkboxLabel: { fontSize: 12, color: "#5C5C57" },
+  forgotText: { fontSize: 12, color: "#201A26", fontWeight: "500" },
+  loginButton: { backgroundColor: "#5B3CC2", borderRadius: 18, paddingVertical: 15, alignItems: "center", marginTop: 30 },
+  loginButtonText: { color: "#FFFFF0", fontSize: 18, fontWeight: "bold" },
+  footer: { alignItems: "center", marginTop: 40 },
+  backButtonContainer: { position: 'absolute', top: 40, left: 10, zIndex: 10 },
+  backButton: { padding: 10 },
+  footerText: { color: "#000", fontSize: 15, fontWeight: "300" },
+  signUpText: { color: "#3716A4", fontSize: 14, fontWeight: "bold", marginTop: 5 }
 });

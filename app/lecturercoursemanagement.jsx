@@ -1,11 +1,16 @@
-import { router } from 'expo-router';
-import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as DocumentPicker from 'expo-document-picker';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useEffect, useState } from 'react';
 import {
+  ActivityIndicator,
+  Alert,
   Image,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -13,21 +18,130 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const CourseManagement = () => {
+  const router = useRouter();
+  
+  // 1. Get the course ID passed from the dashboard navigation
+  const { id } = useLocalSearchParams(); 
+
+  // 2. States for fetched data and form inputs
+  const [course, setCourse] = useState(null);
+  const [loadingCourse, setLoadingCourse] = useState(true);
+  
+  const [lessonTitle, setLessonTitle] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+
+  // 3. Separate reusable function to pull fresh course & materials data
+  const fetchCourseData = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      const response = await fetch(`http://172.20.10.3:3000/courses/${id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'No error message provided' }));
+        console.log("SERVER REJECTED REQUEST:", response.status, errorData);
+        throw new Error(errorData.error || `Server responded with ${response.status}`);
+      }
+      
+      const data = await response.json();
+      setCourse(data);
+    } catch (error) {
+      console.error('DEBUG FETCH ERROR:', error.message);
+    } finally {
+      setLoadingCourse(false);
+    }
+  };
+
+  useEffect(() => {
+    if (id) fetchCourseData();
+  }, [id]);
+
+  // 4. Function to open phone/laptop file browser
+  const pickDocument = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: 'application/pdf', // Restrict to PDFs
+        copyToCacheDirectory: true,
+      });
+
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        setSelectedFile(result.assets[0]);
+      }
+    } catch (error) {
+      console.error('Error picking document:', error);
+      Alert.alert('Error', 'Failed to pick document.');
+    }
+  };
+
+  // 5. Function to upload the Title + PDF to the backend
+  const handleUpload = async () => {
+    if (!lessonTitle) return Alert.alert('Missing Field', 'Please enter a Chapter Title.');
+    if (!selectedFile) return Alert.alert('Missing File', 'Please select a PDF file to upload.');
+
+    setIsUploading(true);
+
+    try {
+      const token = await AsyncStorage.getItem('token');
+      
+      const formData = new FormData();
+      formData.append('course_id', id);
+      formData.append('title', lessonTitle);
+      
+      formData.append('file', {
+        uri: selectedFile.uri,
+        name: selectedFile.name,
+        type: selectedFile.mimeType || 'application/pdf',
+      });
+
+      const response = await fetch(`http://172.20.10.3:3000/upload-material`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        Alert.alert('Success', 'Lesson material uploaded and processed by Gemini AI successfully!');
+        setLessonTitle('');
+        setSelectedFile(null);
+        
+        // 🌟 RE-FETCH: Instantly grab the new lesson list from backend to update UI live!
+        fetchCourseData();
+      } else {
+        const errorData = await response.json();
+        Alert.alert('Upload Failed', errorData.error || 'Something went wrong.');
+      }
+    } catch (error) {
+      console.error('Error uploading:', error);
+      Alert.alert('Network Error', 'Could not connect to the server.');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  if (loadingCourse) {
+    return (
+      <SafeAreaView style={[styles.safeArea, { justifyContent: 'center', alignItems: 'center' }]}>
+        <ActivityIndicator size="large" color="#6044E4" />
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.safeArea}>
-      {/* Top Dark Header */}
-      <View style={styles.topHeader}>
-        <TouchableOpacity>
-          <Icon name="menu" size={28} color="#FFF" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Icon name="notifications-outline" size={24} color="#FFF" />
-        </TouchableOpacity>
-      </View>
+      {/* Curved Header Block Accent */}
+      <View style={styles.topHeader} />
 
       {/* Light Sub-Header */}
       <View style={styles.subHeader}>
-        <TouchableOpacity style={styles.subHeaderIcon} onPress={() => router.push('/addNewCourse')}>
+        <TouchableOpacity style={styles.subHeaderIcon} onPress={() => router.replace('/addnewcourse')}>
           <Icon name="arrow-back" size={24} color="#1E1E64" />
         </TouchableOpacity>
         <Text style={styles.subHeaderTitle}>Course Management</Text>
@@ -44,48 +158,131 @@ const CourseManagement = () => {
           <Text style={styles.subLabel}>Lecturer:</Text>
           <View style={styles.profileRow}>
             <Image
-              source={{ uri: 'https://randomuser.me/api/portraits/women/44.jpg' }} // Placeholder image
+              source={{ 
+                uri: course?.user?.gender === 'Female' 
+                  ? 'https://randomuser.me/api/portraits/women/44.jpg' 
+                  : 'https://randomuser.me/api/portraits/men/44.jpg' 
+              }}
               style={styles.avatar}
             />
-            <Text style={styles.profileName}>Dr. Amali{"\n"}Perera</Text>
+            <Text style={styles.profileName}>
+              {course?.user?.full_name || 'Loading Instructor...'}
+              {"\n"}
+              <Text style={{ fontSize: 12, fontWeight: 'normal', color: '#718096' }}>
+                {course?.user?.department || 'Information Systems'}
+              </Text>
+            </Text>
           </View>
         </View>
 
-        {/* Course Information Card */}
+        {/* Dynamic Course Information Card */}
         <View style={styles.infoCard}>
           <Text style={styles.cardTitle}>Course Information</Text>
           <Text style={styles.cardSubLabel}>Course Title:</Text>
           <Text style={styles.courseTitleText}>
-            Advanced Software Architecture{"\n"}(IS4106)
+            {course?.title || 'Unknown Title'}
           </Text>
         </View>
 
-        {/* Course Description */}
+        {/* Dynamic Course Description */}
         <View style={styles.sectionContainer}>
           <Text style={styles.descriptionLabel}>Course Description:</Text>
           <Text style={styles.descriptionText}>
-            This course covers advanced principles and practices of software architecture
-            for designing complex and scalable systems. It focuses on architectural
-            patterns, system design, and key quality attributes such as performance,
-            reliability, and maintainability. Students learn how to make effective
-            architectural decisions and apply modern approaches like distributed and
-            cloud-based systems.
+            {course?.description || 'No description provided.'}
           </Text>
         </View>
 
+        <View style={styles.dividerLine} />
+
+        {/* --- ADD NEW LESSON INTERFACE --- */}
+        <View style={styles.sectionContainer}>
+          <Text style={styles.panelTitleHeader}>Add Course Material</Text>
+          <Text style={styles.descriptionLabel}>Chapter / Lesson Title:</Text>
+          <TextInput 
+            style={styles.textInput}
+            placeholder="e.g., Lesson 1: Introduction to SQL"
+            placeholderTextColor="#8A92BA"
+            value={lessonTitle}
+            onChangeText={setLessonTitle}
+          />
+        </View>
+
         {/* File Upload Box */}
-        <TouchableOpacity style={styles.uploadBox}>
+        <TouchableOpacity style={styles.uploadBox} onPress={pickDocument}>
           <View style={styles.uploadIconContainer}>
-             <MaterialCommunityIcons name="file-upload-outline" size={40} color="#8A92BA" />
+             <MaterialCommunityIcons 
+               name={selectedFile ? "file-document-outline" : "file-upload-outline"} 
+               size={40} 
+               color="#6044E4" 
+             />
           </View>
-          <Text style={styles.uploadMainText}>Tap or Drag & Drop File</Text>
-          <Text style={styles.uploadSubText}>PDF, DOCX, or ZIP (Max 25MB)</Text>
+          {selectedFile ? (
+            <>
+              <Text style={styles.uploadMainText} numberOfLines={1}>{selectedFile.name}</Text>
+              <Text style={styles.uploadSubtext}>Tap to change file</Text>
+            </>
+          ) : (
+            <>
+              <Text style={styles.uploadMainText}>Tap to Select PDF File</Text>
+              <Text style={styles.uploadSubtext}>Max 10MB</Text>
+            </>
+          )}
         </TouchableOpacity>
 
         {/* Add File Button */}
-        <TouchableOpacity style={styles.primaryButton}>
-          <Text style={styles.primaryButtonText}>Add File</Text>
+        <TouchableOpacity 
+          style={[styles.primaryButton, isUploading && styles.disabledButton]} 
+          onPress={handleUpload}
+          disabled={isUploading}
+        >
+          {isUploading ? (
+            <ActivityIndicator color="#FFF" />
+          ) : (
+            <Text style={styles.primaryButtonText}>Upload & Process Lesson</Text>
+          )}
         </TouchableOpacity>
+
+        <View style={styles.dividerLine} />
+
+        {/* 🌟 NEW: LIVE UPLOADED CHAPTERS LIST SECTION 🌟 */}
+        <View style={styles.lessonsContainer}>
+          <View style={styles.lessonsHeaderRow}>
+            <Text style={styles.panelTitleHeader}>Course Modules</Text>
+            <View style={styles.moduleCountBadge}>
+              <Text style={styles.moduleCountText}>
+                {course?.materials ? course.materials.length : 0} Chapters
+              </Text>
+            </View>
+          </View>
+
+          {course?.materials && course.materials.length > 0 ? (
+            course.materials.map((material, index) => (
+              <View key={material.id.toString()} style={styles.liveLessonCard}>
+                <View style={styles.liveLessonLeft}>
+                  <View style={styles.indexCircle}>
+                    <Text style={styles.indexCircleText}>{index + 1}</Text>
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.liveLessonTitle} numberOfLines={1}>
+                      {material.title}
+                    </Text>
+                    <Text style={styles.liveLessonSubtext} numberOfLines={1}>
+                      {material.material_url.split('/').pop()}
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.statusCheckedContainer}>
+                  <Icon name="checkmark-circle" size={22} color="#10B981" />
+                </View>
+              </View>
+            ))
+          ) : (
+            <View style={styles.emptyLessonsContainer}>
+              <MaterialCommunityIcons name="folder-open-outline" size={44} color="#A0AEC0" />
+              <Text style={styles.emptyLessonsText}>No lessons uploaded yet for this module.</Text>
+            </View>
+          )}
+        </View>
 
       </ScrollView>
     </SafeAreaView>
@@ -93,149 +290,72 @@ const CourseManagement = () => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#FCFCF5', // Cream background
-  },
+  safeArea: { flex: 1, backgroundColor: '#FCFCF5' },
   topHeader: {
-    backgroundColor: '#6044E4', // Deep purple
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 30,
-    paddingTop: 50,
-    paddingBottom: 25,
-    borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15,
-    marginTop: -60,
+    backgroundColor: '#6044E4', height: 120, borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15, marginTop: -60,
   },
   subHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 15,
-    paddingVertical: 15,
-    backgroundColor: '#F8F8F8', // Very light gray to distinguish from cream body
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    paddingHorizontal: 15, paddingVertical: 15, backgroundColor: '#F8F8F8',
   },
-  subHeaderIcon: {
-    padding: 5,
-  },
-  subHeaderTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#1E1E64', // Deep navy/purple text
-  },
-  scrollContent: {
-    paddingHorizontal: 20,
-    paddingTop: 15,
-    paddingBottom: 40,
-  },
-  sectionContainer: {
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#1E1E64',
-    marginBottom: 10,
-  },
-  subLabel: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#1E1E64',
-    marginBottom: 10,
-  },
-  profileRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 15,
-  },
-  profileName: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
-    lineHeight: 22,
-  },
+  subHeaderIcon: { padding: 5 },
+  subHeaderTitle: { fontSize: 18, fontWeight: 'bold', color: '#1E1E64' },
+  scrollContent: { paddingHorizontal: 20, paddingTop: 15, paddingBottom: 60 },
+  sectionContainer: { marginBottom: 15 },
+  sectionTitle: { fontSize: 16, fontWeight: 'bold', color: '#1E1E64', marginBottom: 10 },
+  subLabel: { fontSize: 14, fontWeight: '600', color: '#1E1E64', marginBottom: 10 },
+  profileRow: { flexDirection: 'row', alignItems: 'center' },
+  avatar: { width: 50, height: 50, borderRadius: 25, marginRight: 15 },
+  profileName: { fontSize: 16, fontWeight: 'bold', color: '#333', lineHeight: 22 },
   infoCard: {
-    backgroundColor: '#FFF',
-    borderRadius: 12,
-    padding: 20,
-    marginBottom: 25,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 5,
-    elevation: 2, // For Android shadow
+    backgroundColor: '#FFF', borderRadius: 12, padding: 20, marginBottom: 15,
+    shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05,
+    shadowRadius: 5, elevation: 2,
   },
-  cardTitle: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    color: '#1E1E64',
-    marginBottom: 12,
-  },
-  cardSubLabel: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: '#1E1E64',
-    marginBottom: 5,
-  },
-  courseTitleText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#4A5568',
-    lineHeight: 24,
-  },
-  descriptionLabel: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#1E1E64',
-    marginBottom: 8,
-  },
-  descriptionText: {
-    fontSize: 15,
-    color: '#3A4B5C',
-    lineHeight: 24,
-    fontWeight: '600',
+  cardTitle: { fontSize: 15, fontWeight: 'bold', color: '#1E1E64', marginBottom: 12 },
+  cardSubLabel: { fontSize: 13, fontWeight: '600', color: '#1E1E64', marginBottom: 5 },
+  courseTitleText: { fontSize: 16, fontWeight: 'bold', color: '#4A5568', lineHeight: 24 },
+  descriptionLabel: { fontSize: 14, fontWeight: 'bold', color: '#1E1E64', marginBottom: 8 },
+  descriptionText: { fontSize: 15, color: '#3A4B5C', lineHeight: 24, fontWeight: '600' },
+  panelTitleHeader: { fontSize: 18, fontWeight: '800', color: '#1E1E64', marginBottom: 15 },
+  textInput: {
+    backgroundColor: '#FFF', borderWidth: 1, borderColor: '#D3D9E5',
+    borderRadius: 12, paddingHorizontal: 15, paddingVertical: 15,
+    fontSize: 15, color: '#333'
   },
   uploadBox: {
-    borderWidth: 1.5,
-    borderColor: '#BCC5D3',
-    borderStyle: 'dashed',
-    borderRadius: 20,
-    paddingVertical: 35,
-    alignItems: 'center',
-    marginBottom: 20,
-    marginTop: 10,
+    backgroundColor: '#F3F4F9', borderWidth: 1.5, borderColor: '#6044E4',
+    borderStyle: 'dashed', borderRadius: 20, paddingVertical: 35,
+    alignItems: 'center', marginBottom: 20, marginTop: 10, paddingHorizontal: 20
   },
-  uploadIconContainer: {
-    marginBottom: 10,
+  uploadIconContainer: { marginBottom: 10 },
+  uploadMainText: { fontSize: 16, fontWeight: 'bold', color: '#312E4A', marginBottom: 5, textAlign: 'center' },
+  uploadSubtext: { fontSize: 13, color: '#718096' },
+  primaryButton: { backgroundColor: '#6044E4', borderRadius: 25, paddingVertical: 16, alignItems: 'center' },
+  disabledButton: { backgroundColor: '#A496E3' },
+  primaryButtonText: { color: '#FFF', fontSize: 16, fontWeight: 'bold' },
+  dividerLine: { height: 1, backgroundColor: '#E2E8F0', marginVertical: 25 },
+  
+  // 🌟 NEW LIVE LESSON LIST OBJECT STYLES
+  lessonsContainer: { marginBottom: 20 },
+  lessonsHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 },
+  moduleCountBadge: { backgroundColor: '#EBF8FF', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20 },
+  moduleCountText: { color: '#2B6CB0', fontSize: 12, fontWeight: 'bold' },
+  liveLessonCard: {
+    flexDirection: 'row', backgroundColor: '#FFF', padding: 15, borderRadius: 16,
+    alignItems: 'center', justifyContent: 'space-between', marginBottom: 12,
+    borderWidth: 1, borderColor: '#EDF2F7', elevation: 2,
+    shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 2,
   },
-  uploadMainText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#312E4A',
-    marginBottom: 5,
-  },
-  uploadSubText: {
-    fontSize: 13,
-    color: '#718096',
-  },
-  primaryButton: {
-    backgroundColor: '#6044E4', // Primary purple action button
-    borderRadius: 25,
-    paddingVertical: 16,
-    alignItems: 'center',
-  },
-  primaryButtonText: {
-    color: '#FFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
+  liveLessonLeft: { flexDirection: 'row', alignItems: 'center', flex: 1, marginRight: 10 },
+  indexCircle: { width: 30, height: 30, borderRadius: 15, backgroundColor: '#F0EDFF', justifyContent: 'center', alignItems: 'center', marginRight: 12 },
+  indexCircleText: { color: '#6044E4', fontWeight: 'bold', fontSize: 14 },
+  liveLessonTitle: { fontSize: 15, fontWeight: '700', color: '#2D3748', marginBottom: 2 },
+  liveLessonSubtext: { fontSize: 12, color: '#718096', fontWeight: '500' },
+  statusCheckedContainer: { paddingLeft: 5 },
+  emptyLessonsContainer: { alignItems: 'center', paddingVertical: 35, backgroundColor: '#F7FAFC', borderRadius: 16, borderWidth: 1, borderColor: '#EDF2F7', borderStyle: 'dashed' },
+  emptyLessonsText: { color: '#718096', fontSize: 14, marginTop: 8, fontWeight: '500' }
 });
 
 export default CourseManagement;
