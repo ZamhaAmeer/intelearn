@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
+  Alert,
   Dimensions,
   ImageBackground,
   KeyboardAvoidingView,
@@ -30,73 +31,90 @@ export default function RegisterPage() {
 
    const [agree, setAgree] = useState(false);
 
-   // Password validation states
+   
   const isLengthValid = password.length >= 8;
   const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
 
   const passwordsMatch = password === confirmPassword && confirmPassword.length > 0;
 const showMatchError = confirmPassword.length > 0 && password !== confirmPassword;
 
-  const handleRegister = async () => {
-     // 1. Check if fields are empty
-  if (!email || !password || !confirmPassword) {
-    alert('Please fill in all required fields.');
-    return;
-  }
-
-  const lecturerEmailRegex = /^[a-zA-Z0-9._-]+@ms\.sab\.ac\.lk$/i;
-    if (!lecturerEmailRegex.test(email.trim())) {
-      alert('Invalid Email! Please use your official university email (e.g., name@ms.sab.ac.lk).');
-      return; // Stops the registration process
+   const handleRegister = async () => {
+    
+    if (!email || !password || !confirmPassword) {
+      alert('Please fill in all required fields.');
+      return;
     }
-
-  // 2. Check if passwords match
-  if (password !== confirmPassword) {
-    alert('Passwords do not match!');
-    return;
-  }
-  try {
-    // REPLACE the IP below with your actual IPv4 address
-    const response = await fetch('http://10.19.66.72:3000/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      // 3. Send the ACTUAL state variables, not the hardcoded test strings!
-      body: JSON.stringify({ 
-        full_name: fullName,
-        email: email.trim().toLowerCase(), // .trim() removes accidental spaces
-        password: password, 
-        role: 'lecturer' // Since this navigates to the lecturer login, we hardcode 'lecturer' here
-      }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      console.log('Success! User registered:', data);
-      alert('Registration Successful!');
-    } else {
-      console.error('Registration failed:', data.error);
-      alert('Error: ' + data.error);
+  
+    const studentEmailRegex = /^[a-zA-Z0-9._%+-]+@ms\.sab\.ac\.lk$/i;
+        if (!studentEmailRegex.test(email.trim())) {
+          alert('Invalid Email! Please use your official university email (e.g., dulmini@ms.sab.ac.lk).');
+          return; 
+        }
+  
+    
+    if (password !== confirmPassword) {
+      alert('Passwords do not match!');
+      return;
     }
-  } catch (error) {
-    console.error('Network Error:', error);
-    alert('Could not connect to server');
-  }
+    try {
+      
+      const response = await fetch('http://172.20.10.3:3000/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        
+        body: JSON.stringify({ 
+          full_name: fullName,
+          email: email.trim().toLowerCase(), 
+          password: password, 
+          role: 'lecturer' 
+        }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        console.log('Success! User registered:', data);
+        Alert.alert(
+      "Registration Successful", 
+      "Your account has been created successfully.", 
+      [
+        {
+          text: "OK",
+          onPress: () => {
+            
+            router.push({
+              pathname: '/profilescreen',
+              params: { 
+                fullName: fullName, 
+                email: email.trim().toLowerCase() 
+              }
+            });
+          }
+        }
+      ]
+    );
+      } else {
+        console.error('Registration failed:', data.error);
+        alert('Error: ' + data.error);
+      }
+    } catch (error) {
+      console.error('Network Error:', error);
+      alert('Could not connect to server');
+    }
   };
-
+  
   return (
       <View style={styles.container}>
-        {/* Header Section */}
          <ImageBackground
-          source={require("../src/assets/images/header-curve.png")}
+          source={require("../../assets/images/header-curve.png")}
           style={styles.headerBackground}
           resizeMode="stretch"
         >
           <View style={styles.backButtonContainer}>
             <TouchableOpacity 
-              onPress={() => router.back()} 
+              onPress={() => router.replace('/loginpage(lecturer)')} 
               style={styles.backButton}
             >
               <Ionicons name="chevron-back" size={30} color="white" />
@@ -118,12 +136,12 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                     contentContainerStyle={styles.scrollContainer}
                     showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps="handled" 
-                                      >
+                  >
                   
   
             <View style={styles.content}>
               
-              {/* Registration Form Card */}
+              
               <View style={styles.formCard}>
                 <View style={styles.inputGroup}>
                   <Text style={styles.label}>Full Name*</Text>
@@ -135,7 +153,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                     onChangeText={setFullName}
                   />
                 </View>
-                  
+  
                 <View style={styles.inputGroup}>
                   <Text style={styles.label}>Email Address*</Text>
                   <TextInput
@@ -148,8 +166,8 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                     autoCapitalize="none"
                   />
                 </View>
+  
                   
-                    {/* Password* */}
                       <View style={styles.inputGroup}>
                         <Text style={styles.label}>Password*</Text>
                         <View style={styles.passwordInputWrapper}>
@@ -171,7 +189,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                         </View>
                       </View>
   
-                      {/* Confirm Password* */}
+                      
                       <View style={styles.inputGroup}>
                         <Text style={styles.label}>Confirm Password*</Text>
                         <View style={styles.passwordInputWrapper}>
@@ -195,7 +213,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                           )}
                         </View>
                       </View>
-                      {/* Password Requirements Box */}
+                 
                           <View style={styles.requirementsBox}>
                             <Text style={styles.requirementsTitle}>PASSWORD REQUIREMENTS</Text>
                             
@@ -203,16 +221,16 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                               <Ionicons 
                                 name={isLengthValid ? "checkmark-circle" : "ellipse-outline"} 
                                 size={20} 
-                                // Use a bright green when valid, gray when invalid
                                 color={isLengthValid ? "#10b981" : "#d1d5db"} 
                               />
                               <Text style={[
                                 styles.requirementText, 
-                                isLengthValid && styles.requirementTextValid 
+                                isLengthValid && styles.requirementTextValid // Apply valid style if true
                               ]}>
                                 At least 8 characters long
                               </Text>
                             </View>
+              
                             <View style={styles.requirementRow}>
                               <Ionicons 
                                 name={hasSpecialChar ? "checkmark-circle" : "ellipse-outline"} 
@@ -229,7 +247,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                           </View>
               </View>
 
-              {/* Privacy Policy Checkbox Row */}
+              
             <View style={styles.privacyRow}>
               <TouchableOpacity 
                 style={[styles.checkbox, agree && styles.checkboxChecked]} 
@@ -237,13 +255,15 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
               >
                 {agree && <Ionicons name="checkmark" size={14} color="white" />}
               </TouchableOpacity>
-              <Text style={styles.privacyText}>
-                I agree to the <Text style={styles.privacyLink}>Privacy Policy</Text>
-              </Text>
+              <TouchableOpacity onPress={() => router.push("/privacylec")}>
+                <Text style={styles.privacyText}>
+                  I agree to the <Text style={styles.privacyLink}>Privacy Policy</Text>
+                </Text>
+              </TouchableOpacity>
             </View>
 
   
-             {/* Register Button */}
+             
             <TouchableOpacity 
               style={[styles.registerButton, !agree && styles.registerButtonDisabled]} 
               onPress={handleRegister}
@@ -252,10 +272,10 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
               <Text style={styles.registerButtonText}>Register</Text>
             </TouchableOpacity>
   
-              {/* Footer */}
+              
               <View style={styles.footer}>
                 <Text style={styles.footerText}>Already have an account?</Text>
-                <TouchableOpacity onPress={() => router.push("/loginpage_Lecturer")}>
+                <TouchableOpacity onPress={() => router.push("/loginpage(lecturer)")}>
                   <Text style={styles.loginText}>Login</Text>
                 </TouchableOpacity>
               </View>
@@ -269,7 +289,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
 const styles = StyleSheet.create({
    container: {
     flex: 1,
-    backgroundColor: "#FFFCF0", // Cream background
+    backgroundColor: "#FFFCF0", 
 
   },
   headerBackground: {
@@ -316,7 +336,7 @@ const styles = StyleSheet.create({
     shadowRadius: 15,
     elevation: 8,
   },
- inputGroup: {
+  inputGroup: {
     marginBottom: 15,
   },
   label: {
@@ -406,7 +426,6 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     letterSpacing: 0.5,
   },
- // ... existing styles ...
   requirementRow: {
     flexDirection: 'row',
     alignItems: 'center',
