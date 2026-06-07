@@ -8,18 +8,22 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const pdfParse = require('pdf-parse');
+const rawPdfParse = require('pdf-parse');
+const parsePdf = typeof rawPdfParse === 'function' ? rawPdfParse : rawPdfParse.default;
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-
+// --- NEW SEQUELIZE IMPORTS & MODELS ---
 const sequelize = require('./config/database');
 const User = require('./models/user');
-const Course = require('./models/course');
+const Course = require('./models/Course');
 const CourseMaterial = require('./models/courseMaterial');
 const Enrollment = require('./models/enrollment');
 const Quiz = require('./models/quiz');
 const Question = require('./models/question');
+const QuizAttempt = require('./models/quizAttempt'); 
+const AiChat = require('./models/aiChat');
 
-
+// --- DATABASE RELATIONSHIPS ---
 // Lecturer -> Courses
 User.hasMany(Course, { foreignKey: 'lecturer_id' });
 Course.belongsTo(User, { foreignKey: 'lecturer_id' });
@@ -42,7 +46,19 @@ Quiz.belongsTo(Course, { foreignKey: 'course_id' });
 Quiz.hasMany(Question, { foreignKey: 'quiz_id' });
 Question.belongsTo(Quiz, { foreignKey: 'quiz_id' });
 
+// Student -> Quiz Attempts (🌟 New Tracking Chain)
+User.hasMany(QuizAttempt, { foreignKey: 'student_id' });
+QuizAttempt.belongsTo(User, { foreignKey: 'student_id' });
+Quiz.hasMany(QuizAttempt, { foreignKey: 'quiz_id' });
+QuizAttempt.belongsTo(Quiz, { foreignKey: 'quiz_id' });
 
+// Student -> Conversations (🌟 New AI Chain)
+User.hasMany(AiChat, { foreignKey: 'student_id' });
+AiChat.belongsTo(User, { foreignKey: 'student_id' });
+Course.hasMany(AiChat, { foreignKey: 'course_id' });
+AiChat.belongsTo(Course, { foreignKey: 'course_id' });
+
+// --- APP INITIALIZATION ---
 const app = express();
 app.use(cors());
 app.use(express.json()); 
@@ -64,6 +80,7 @@ const transporter = nodemailer.createTransport({
       pass: process.env.EMAIL_PASS
    }
 });
+
 
 // ------------------------------------
 // JWT AUTH MIDDLEWARE (Unchanged)
@@ -118,11 +135,11 @@ const upload = multer({
 // ------------------------------------
 app.post('/register', async (req, res) => {
   const { full_name, email, password, role } = req.body;
-
+  
   if (!email || !password) {
     return res.status(400).json({ error: 'Missing email or password' });
   }
-  
+
   try {
     // Sequelize: Check if user exists
     const existingUser = await User.findOne({ where: { email } });
@@ -170,7 +187,7 @@ app.post('/login', async (req, res) => {
   try {
     // Sequelize: Find user by email
     const user = await User.findOne({ where: { email } });
-
+    
     if (!user) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
@@ -180,7 +197,7 @@ app.post('/login', async (req, res) => {
     if (!validPassword) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
-  
+
     // Generate JWT
     const token = jwt.sign(
       { id: user.id, role: user.role }, 
@@ -375,8 +392,8 @@ app.post('/reset-password', async (req, res) => {
       reset_otp_expires_at: null
     });
 
-     res.json({ message: 'Password reset successful' }); 
-     
+    res.json({ message: 'Password reset successful' });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
@@ -387,27 +404,38 @@ app.post('/reset-password', async (req, res) => {
 // ADD COURSE
 // ------------------------------------
 app.post('/courses', authenticateToken, upload.single('thumbnail'), async (req, res) => {
-  const { title, description, semester, academic_year, is_published } = req.body;
+  // 🌟 Extract code and tags from the request body payload
+  const { title, code, tags, description, semester, academic_year, is_published } = req.body;
   const imageUrl = req.file ? req.file.path : null;
 
   try {
     const lecturerId = req.user.id;
 
-    // Sequelize: Create the course
+    // Check if a course with this code already exists to prevent duplicates
+    if (code) {
+      const duplicateCheck = await Course.findOne({ where: { code: code.trim().toUpperCase() } });
+      if (duplicateCheck) {
+        return res.status(400).json({ error: `A course module with code ${code} already exists.` });
+      }
+    }
+
+    // Sequelize: Create the course entry in PostgreSQL
     const newCourse = await Course.create({
       title,
+      code: code ? code.trim().toUpperCase() : null, // Ensure clean casing
+      tags,
       description,
       semester,
       academic_year,
-      is_published,
+      is_published: is_published === 'true' || is_published === true, // Handles Form-Data boolean conversions safely
       lecturer_id: lecturerId,
       image_url: imageUrl
     });
 
     res.status(201).json(newCourse);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ error: 'Server error' });
+    console.error("Error creating course routing:", err.message);
+    res.status(500).json({ error: 'Server error: ' + err.message });
   }
 });
 
@@ -443,14 +471,32 @@ app.get('/courses', authenticateToken, async (req, res) => {
 // ------------------------------------
 app.get('/lecturer/courses', authenticateToken, async (req, res) => {
   try {
-    const lecturerId = req.user ? req.user.id : 1; 
+    const lecturerId = req.user.id; 
 
     const courses = await Course.findAll({
       where: { lecturer_id: lecturerId },
-      order: [['id', 'DESC']] // Shows newest courses first
+      include: [{
+        model: Enrollment,
+        attributes: ['id'] // Include to count students later
+      }],
+      order: [['id', 'DESC']] 
     });
 
-    res.json(courses);
+    // Format the data explicitly for your frontend keys
+    const formattedCourses = courses.map(course => {
+      const plainCourse = course.toJSON();
+      return {
+        id: plainCourse.id,
+        title: plainCourse.title,
+        image: plainCourse.image_url ? `http://172.20.10.3:3000/${plainCourse.image_url}` : 'https://via.placeholder.com/150',
+        year: plainCourse.academic_year || 'N/A',
+        sem: plainCourse.semester ? `${plainCourse.semester} Sem` : 'N/A',
+        dept: req.user.department || 'IT Department', // Pulls from logged-in lecturer profile context
+        students: plainCourse.enrollments ? plainCourse.enrollments.length : 0
+      };
+    });
+
+    res.json(formattedCourses);
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ error: 'Server error' });
@@ -463,19 +509,24 @@ app.get('/lecturer/courses', authenticateToken, async (req, res) => {
 app.get('/courses/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
 
-
   if (!id || id === 'undefined') {
     return res.status(400).json({ error: 'Invalid Course ID' });
   }
 
   try {
-    const course = await Course.findByPk(id);
+    const course = await Course.findByPk(id, {
+      include: [
+        {
+          model: User,
+          attributes: ['full_name', 'email', 'department'] // Select the fields needed for the UI card
+        }
+      ]
+    });
 
     if (!course) {
       return res.status(404).json({ error: 'Course not found' });
     }
 
-    // Grab the materials for this specific course
     const materials = await CourseMaterial.findAll({
       where: { course_id: id },
       order: [['createdAt', 'ASC']]
@@ -484,7 +535,7 @@ app.get('/courses/:id', authenticateToken, async (req, res) => {
     res.json({
       ...course.toJSON(),
       materials: materials
-    });  
+    });
 
   } catch (err) {
     console.error("DATABASE QUERY ERROR:", err); 
@@ -507,13 +558,24 @@ app.post('/upload-material', authenticateToken, upload.single('file'), async (re
       fs.unlinkSync(filePath);
       return res.status(400).json({ error: 'Lesson title is required' });
     }
-
+  
     try {
-      // 1. Process PDF and call Gemini (Logic stays exactly the same!)
       const pdfBuffer = fs.readFileSync(filePath);
-      const pdfData = await pdfParse(pdfBuffer);
+      
+      if (!parsePdf) {
+        return res.status(500).json({ error: 'PDF parsing module failure: Function entry point missing.' });
+      }
+
+      
+      const pdfData = await parsePdf(pdfBuffer); 
       const extractedText = pdfData.text;
 
+    
+      if (!extractedText || extractedText.trim().length === 0) {
+        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+        return res.status(400).json({ error: 'The uploaded PDF is empty or contains non-scannable image text.' });
+      }
+  
       const prompt = `
       You are an AI tutor for an LMS system.
       From the following course content:
@@ -529,7 +591,7 @@ app.post('/upload-material', authenticateToken, upload.single('file'), async (re
           { "question": "string", "A": "string", "B": "string", "C": "string", "D": "string", "answer": "A/B/C/D" }
         ]
       }
-
+  
       CONTENT:
       ${extractedText}
       `;
@@ -537,26 +599,26 @@ app.post('/upload-material', authenticateToken, upload.single('file'), async (re
       const result = await model.generateContent(prompt);
       const responseText = result.response.text();
       const aiData = JSON.parse(responseText);
-
+  
       // 2. Sequelize: Save material to database
       const newMaterial = await CourseMaterial.create({
-        course_id,
+        course_id: parseInt(course_id, 10), // Ensures it's parsed as an integer for PostgreSQL
         title,
         material_url: filePath
       });
-
+  
       res.status(201).json({
         message: 'Material uploaded successfully',
         material: newMaterial,
         aiGeneratedContent: aiData
       });
-
+  
     } catch (err) {
-      console.error(err.message);
+      console.error("Error processing material route:", err.message);
       if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
       }
-      res.status(500).json({ error: 'Server error during processing' });
+      res.status(500).json({ error: 'Server error during processing: ' + err.message });
     }
 });
 
@@ -631,11 +693,10 @@ app.post('/questions', authenticateToken, async (req, res) => {
 // ------------------------------------
 const PORT = process.env.PORT || 3000;
 
-// .sync() creates all the tables automatically based on your models!
-sequelize.sync() 
+
+sequelize.sync({ force: true }) 
   .then(() => {
-    console.log('Database synchronized successfully.');
-    // Keep '0.0.0.0' so React Native can connect via your local IP
+    console.log('Database dropped and synchronized successfully.');
     app.listen(PORT, '0.0.0.0', () => {
       console.log(`Server running on port ${PORT}`);
     });
