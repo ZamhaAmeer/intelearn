@@ -694,7 +694,7 @@ app.post('/questions', authenticateToken, async (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 
-sequelize.sync({ force: true }) 
+sequelize.sync({ alter : true }) 
   .then(() => {
     console.log('Database dropped and synchronized successfully.');
     app.listen(PORT, '0.0.0.0', () => {
