@@ -124,3 +124,14 @@ export default function PrivacyScreen() {
           define the bilateral obligations between the institution and the student body 
           regarding digital engagement.
         </Text>
+
+         {/* 4. DOCUMENT CARD */}
+        <View style={styles.documentCard}>
+          <Section 
+            title="Section 1.0: Preamble" 
+            text="This document constitutes a binding legal agreement governing the use of the Learnora Virtual Learning Environment (VLE). By authenticating your credentials, you acknowledge the sovereignty of these clauses in all academic and administrative digital interactions within the platform ecosystem."
+          />
+          <Section 
+            title="Section 1.2: VLE Activity Logging" 
+            text="The Learnora architecture maintains an immutable ledger of all user interactions. This includes, but is not limited to: login frequency, duration of resource access, navigational heatmaps, and asynchronous participation metrics. These data points are synthesized to evaluate student engagement and predict academic outcomes. Under this clause, users concede that inactivity for periods exceeding 14 academic days may trigger automatic intervention protocols from the Office of Academic Affairs."
+          />
