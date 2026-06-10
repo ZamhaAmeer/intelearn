@@ -1,15 +1,19 @@
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router'; // Added useLocalSearchParams
 import { ChevronRight } from 'lucide-react-native';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react'; // Added useEffect
 import {
-  Animated, Dimensions, Modal, PanResponder, Pressable,
+  ActivityIndicator,
+  Animated,
+  Dimensions,
+  Modal, PanResponder, Pressable,
   SafeAreaView,
   StatusBar, StyleSheet,
   Text, TouchableOpacity, View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
+
 
 // Sub-components
 const LessonItem = ({ number, title }) => (
@@ -83,16 +87,52 @@ const MenuOption = ({ iconName, title, active, onPress }) => (
 
 export default function CourseScreen() {
   const router = useRouter();
+
+  // If you are passing the course ID from the previous screen, you can grab it here.
+  // For now, we will default to '1' if it's not provided.
+  const { id } = useLocalSearchParams(); 
+  const courseId = id || '1';
   
   // 1. All States and Refs must be inside the function
   const [isMenuVisible, setMenuVisible] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [isNotifVisible, setNotifVisible] = useState(false);
   const [notifications, setNotifications] = useState(3);
-  const [activePopupTab, setActivePopupTab] = useState('notifications');
-  
+  const [courseData, setCourseData] = useState(null);
   const scrollY = useRef(new Animated.Value(0)).current;
   const toggleMenu = () => setMenuVisible(!isMenuVisible);
+
+  const [loading, setLoading] = useState(true);
+  const [activePopupTab, setActivePopupTab] = useState('notifications');
+
+  // 3. Fetch Data from Backend
+  useEffect(() => {
+    const fetchCourseData = async () => {
+      try {
+        // REPLACE with your actual local IP address (e.g., 192.168.1.x)
+        // If testing on an Android emulator, use 10.0.2.2 instead of localhost
+        const response = await fetch(`http://172.20.10.3:3000/courses/${courseId}`, {
+          method: 'GET',
+          headers: {
+            // You need to retrieve the actual token you saved during login (e.g., from AsyncStorage)
+            'Authorization': `Bearer YOUR_SAVED_JWT_TOKEN_HERE`, 
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) throw new Error('Failed to fetch data');
+
+        const data = await response.json();
+        setCourseData(data);
+      } catch (error) {
+        console.error("Error fetching course:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourseData();
+  }, [courseId]);
 
   // Animation for sticky title
   const stickyTitleOpacity = scrollY.interpolate({ 
@@ -108,13 +148,31 @@ export default function CourseScreen() {
       },
       onPanResponderRelease: (_, gestureState) => {
         if (gestureState.dx > 50) {
-          router.replace('/courseDetails'); 
+          router.replace('/coursedetails'); 
         }
       },
     })
   ).current;
 
-  const openPopup = (tab) => {
+  // 4. Show loading screen while fetching
+  if (loading) {
+    return (
+      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }, isDark && { backgroundColor: '#121212' }]}>
+        <ActivityIndicator size="large" color="#5E35B1" />
+      </View>
+    );
+  }
+
+  // Fallback if data fails to load
+  if (!courseData) {
+    return (
+      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+        <Text style={{color: isDark ? 'white' : 'black'}}>Course not found.</Text>
+      </View>
+    );
+  }
+
+   const openPopup = (tab) => {
       setActivePopupTab(tab);
       setNotifVisible(true);
     } 
@@ -247,9 +305,6 @@ export default function CourseScreen() {
         </TouchableOpacity>
       </View>
     );
-  
-
-  
 
   return (
     <View style={[styles.container, isDark && { backgroundColor: '#121212' }]} {...panResponder.panHandlers}>
@@ -262,7 +317,10 @@ export default function CourseScreen() {
         </TouchableOpacity>
 
         <Animated.View style={{ opacity: stickyTitleOpacity }}>
-          <Text style={styles.stickyTitleText}>FIS</Text>
+          {/* Dynamically show an abbreviation or title snippet */}
+          <Text style={styles.stickyTitleText}>
+            {courseData.title.substring(0, 15)}...
+          </Text>
         </Animated.View>
 
         <TouchableOpacity onPress={() => setNotifVisible(true)} style={styles.notificationContainer}>
@@ -279,41 +337,58 @@ export default function CourseScreen() {
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true })}
         scrollEventThrottle={16}
       >
+        <View style={{
+          position: 'absolute',
+          top: -1000, 
+          left: 0,
+          right: 0,
+          height: 1100, // Covers the negative top plus the 100 paddingTop
+          backgroundColor: isDark ? '#1A1A1A' : '#5E35B1',
+        }} />
+        
         <View style={[styles.headerContainer, isDark && { backgroundColor: '#1A1A1A' }]}>
           <SafeAreaView>
-            <Text style={styles.headerTitle}>Fundamentals of Information System</Text>
+            {/* DYNAMIC TITLE */}
+            <Text style={styles.headerTitle}>{courseData.title}</Text>
             <View style={styles.moduleBadge1}>
-              <Text style={styles.moduleBadgeText}>IS1101</Text>
+              <Text style={styles.moduleBadgeText}>Course #{courseData.id}</Text>
             </View>
           </SafeAreaView>
         </View>
 
         <View style={styles.contentBody}>
-          <Text style={[styles.sectionTitle, isDark && { color: 'white' }]}>Fundamentals of IS</Text>
+          <Text style={[styles.sectionTitle, isDark && { color: 'white' }]}>About this Course</Text>
+          
+          {/* DYNAMIC DESCRIPTION */}
           <Text style={[styles.description, isDark && { color: 'white' }]}>
-
-            This course will introduce the fundamentals of information systems and the role of information
-
-            processing in today's business environment. An overview is presented on information concepts,
-
-            information systems, business information systems, systems development, competitive advantage,
-
-            careers in information systems, and global challenges in information systems.
-
+            {courseData.description}
           </Text>
+
 
           <View style={styles.lessonHeader}>
             <Text style={[styles.sectionTitle, isDark && { color: 'white' }]}>Lessons</Text>
             <View style={styles.moduleBadge}>
-              <Text style={styles.moduleBadgeText}>11 modules</Text>
+              <Text style={styles.moduleBadgeText}>
+                {courseData.materials ? courseData.materials.length : 0} modules
+              </Text>
             </View>
           </View>
 
-          <LessonItem number="1" title="Course Outline" />
-          <LessonItem number="2" title="Introduction" />
-          <LessonItem number="3" title="Value & Importance of Information" />
-          <LessonItem number="4" title="Information Systems Concepts" />
-          
+          {/* DYNAMIC LESSON LIST */}
+          {courseData.materials && courseData.materials.length > 0 ? (
+            courseData.materials.map((material, index) => (
+              <LessonItem 
+                key={material.id.toString()} 
+                number={(index + 1).toString()} 
+                title={material.title || `Lesson ${index + 1}`} 
+              />
+            ))
+          ) : (
+            <Text style={[styles.description, isDark && { color: 'white' }]}>
+              No materials uploaded yet.
+            </Text>
+          )}
+
           <View style={{ height: 120 }} />
         </View>
       </Animated.ScrollView>
@@ -346,8 +421,24 @@ export default function CourseScreen() {
                 </View>
               </TouchableOpacity>
             </Modal>
-
-      {/* SIDE MENU MODAL */}
+            
+            {/* NOTIFICATION MODAL */}
+            <Modal transparent visible={isNotifVisible} animationType="slide" onRequestClose={() => setNotifVisible(false)}>
+              <TouchableOpacity style={styles.notifOverlay} activeOpacity={1} onPress={() => setNotifVisible(false)}>
+                <View style={styles.notifPanel}>
+                  <Text style={styles.notifHeader}>Recent Notifications</Text>
+                  <View style={styles.notifItem}>
+                    <Icon name="book-open-variant" size={20} color="#4E33B3" />
+                    <Text style={styles.notifText}>New lecture added in Web Dev</Text>
+                  </View>
+                  <TouchableOpacity style={styles.closeNotifBtn} onPress={() => {setNotifVisible(false); setNotifications(0);}}>
+                    <Text style={styles.closeNotifText}>Mark all as read</Text>
+                  </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
+            </Modal>
+      
+            {/* SIDE MENU MODAL */}
             <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
               <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={toggleMenu}>
                 <View style={[styles.sideMenu, isDark && { backgroundColor: '#1A1A1A' }]}>
@@ -363,7 +454,8 @@ export default function CourseScreen() {
                     <MenuOption iconName="home-variant" title="Home" active onPress={() => {setMenuVisible(false); router.replace('/coursedetails')}} />
                     <MenuOption iconName="account" title="Profile" onPress={() => {setMenuVisible(false); router.replace('/profilescreen')}} />
                     <MenuOption iconName="view-dashboard" title="Dashboard" />
-                    <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/MiniGames')}} />
+                    <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/minigamesection')}} />
+                    <MenuOption iconName="shield-check" title="Privacy" onPress={() => {setMenuVisible(false); router.replace('/privacy')}} />
                     <MenuOption iconName="cog" title="Settings" onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
                   </View>
                   <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}>
@@ -422,15 +514,6 @@ const styles = StyleSheet.create({
   activeMenuText: { color: '#4E33B3', fontWeight: 'bold' },
   logoutButton: { borderTopWidth: 1, borderTopColor: '#eee', paddingVertical: 20, alignItems: 'center' },
   logoutText: { fontSize: 18, color: 'grey' },
-
-   notificationContainer: { padding: 5, position: 'relative' },
-  badge: {
-    position: 'absolute', right: -2, top: -2, backgroundColor: 'rgba(255, 255, 255, 0.25)', 
-    borderRadius: 10, width: 20, height: 20, justifyContent: 'center', alignItems: 'center',
-    borderWidth: 1.5, borderColor: 'rgba(255, 255, 255, 0.4)', elevation: 4,
-  },
-  badgeTextSmall: { color: 'white', fontSize: 11, fontWeight: '900', textShadowColor: 'rgba(0, 0, 0, 0.5)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 1 },
-  
   // --- NEW UNIFIED POPUP STYLES ---
   notifOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'center', alignItems: 'center' },
   popupMainContainer: { width: width * 0.9, backgroundColor: '#EFEFEF', borderRadius: 30, paddingTop: 15, elevation: 20, overflow: 'hidden' },
@@ -478,4 +561,5 @@ const styles = StyleSheet.create({
   // --- BOTTOM BUTTON STYLES ---
   bottomActionBtn: { marginTop: 10, alignSelf: 'center', paddingVertical: 15 },
   bottomActionText: { color: '#6F42C1', fontWeight: 'bold', fontSize: 13, letterSpacing: 0.5 },
+
 });
