@@ -135,3 +135,29 @@ export default function PrivacyScreen() {
             title="Section 1.2: VLE Activity Logging" 
             text="The Learnora architecture maintains an immutable ledger of all user interactions. This includes, but is not limited to: login frequency, duration of resource access, navigational heatmaps, and asynchronous participation metrics. These data points are synthesized to evaluate student engagement and predict academic outcomes. Under this clause, users concede that inactivity for periods exceeding 14 academic days may trigger automatic intervention protocols from the Office of Academic Affairs."
           />
+
+           <Section 
+            title="Section 2.0: Intellectual Property of Contributions" 
+            text="All scholarly outputs, discussion board contributions, and peer-review submissions transmitted via the VLE are subject to an irrevocable, non-exclusive license granted to Learnora for the purposes of pedagogical analysis and institutional archiving. Users retain moral rights to their work, but acknowledge that the platform may utilize anonymized fragments of such work for the refinement of Large Language Models (LLMs) used in institutional tutoring."
+          />
+          <Section 
+            title="Section 4.5: Biometric Facial Processing" 
+            text="In alignment with proctoring integrity standards, Learnora employs advanced biometric processing during synchronous assessment periods. This involves the real-time analysis of camera data to verify identity and maintain continuous presence detection. This 'Biometric Facial Processing' protocol captures micro-expression data points to ensure the integrity of the testing environment. Data extracted under this section is processed locally when possible, but high-assurance assessments may require encrypted transmission to institutional security servers for forensic auditing. By proceeding, you authorize the temporary activation of hardware imaging devices for these specific compliance checks."
+          />
+          <Section 
+            title="Section 5.1: Third-Party Academic Integrations" 
+            text="Learnora leverages a network of secondary service providers for plagiarism detection, e-library indexing, and cloud-based laboratory environments. Personal identifiers—excluding sensitive financial data—may be shared with these entities to ensure a seamless academic experience. Each provider is audited for compliance with the Federal Student Data Privacy Act (FSDPA)."
+          />
+          <Section 
+            title="Section 6.0: Termination of Access" 
+            text="Failure to comply with the ethical conduct standards outlined in the Student Handbook, or a breach of the digital security protocols established herein, may result in the immediate revocation of VLE access. Reinstatement is subject to a formal hearing before the Digital Ethics Committee."
+          />
+          
+          <View style={styles.footerInfo}>
+            <Text style={styles.versionText}>Document Version: 2024.Q3.Institutional.Rev04</Text>
+            <Text style={styles.versionText}>Last Updated: September 14, 2024</Text>
+          </View>
+        </View>
+
+        <View style={{ height: 120 }} />
+      </ScrollView>
