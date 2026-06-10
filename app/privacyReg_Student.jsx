@@ -94,3 +94,12 @@ export default function PrivacyScreen() {
           </View>
         </SafeAreaView>
       </View>
+
+    {/* 2. SUB-HEADER */}
+      <View style={styles.subHeader}>
+        <TouchableOpacity onPress={() => router.replace('/register(student)')} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={22} color="#1A73E8" />
+          <Text style={styles.subHeaderTitle}>Privacy & Data Policy</Text>
+        </TouchableOpacity>
+        <Feather name="info" size={20} color="#78849E" />
+      </View>
