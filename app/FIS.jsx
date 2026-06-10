@@ -1,21 +1,15 @@
-import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import { useLocalSearchParams, useRouter } from 'expo-router'; // Added useLocalSearchParams
+import { ChevronRight } from 'lucide-react-native';
+import React, { useEffect, useRef, useState } from 'react'; // Added useEffect
 import {
-  Image,
-  Modal,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Switch,
-  Text,
-  TouchableOpacity,
-  View
-}from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+  ActivityIndicator,
+  Animated,
+  Dimensions,
+  Modal, PanResponder, Pressable,
+  SafeAreaView,
+  StatusBar, StyleSheet,
+  Text, TouchableOpacity, View
+} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-// --- HELPER COMPONENTS FOR MENU ---
-// These ensure your menu renders properly if you haven't built them separately yet
-const ThemeToggle = ({ isDark, onToggle }) => (
-  <Switch value={isDark} onValueChange={onToggle} trackColor={{ false: "#767577", true: "#5C45C3" }} />
-);
+const { width, height } = Dimensions.get('window');
