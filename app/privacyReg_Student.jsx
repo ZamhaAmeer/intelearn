@@ -103,3 +103,24 @@ export default function PrivacyScreen() {
         </TouchableOpacity>
         <Feather name="info" size={20} color="#78849E" />
       </View>
+
+          {/* 3. MAIN SCROLLABLE CONTENT */}
+      {/* 🔑 FIXED: Wired up onScroll processing with optimal frame throttling parameters */}
+      <ScrollView 
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent} 
+        showsVerticalScrollIndicator={false}
+        onScroll={handleScroll}
+        scrollEventThrottle={16} 
+      >
+        <Text style={styles.protocolTag}>INSTITUTIONAL PROTOCOL</Text>
+        
+        <Text style={styles.mainTitle}>
+          Terms of{"\n"}Academic{"\n"}Service & Data{"\n"}Privacy
+        </Text>
+        
+        <Text style={styles.introText}>
+          Please review the Learnora digital governance framework. These statutes 
+          define the bilateral obligations between the institution and the student body 
+          regarding digital engagement.
+        </Text>
