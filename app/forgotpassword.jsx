@@ -96,7 +96,7 @@ export default function ForgotPasswordModal({ visible, onClose }) {
     }, 150); 
   };
 
-  function setIsModalVisible(arg0: boolean) {
+  function setIsModalVisible(arg0) {
     throw new Error('Function not implemented.');
   }
 
