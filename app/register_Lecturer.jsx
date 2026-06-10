@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
+  Alert,
   Dimensions,
   ImageBackground,
   KeyboardAvoidingView,
@@ -14,6 +15,8 @@ import {
   View
 } from "react-native";
 
+
+
 const { height } = Dimensions.get("window");
 
 export default function RegisterPage() {
@@ -25,31 +28,93 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
    const [agree, setAgree] = useState(false);
 
-   // Password validation states
+   
   const isLengthValid = password.length >= 8;
   const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
 
   const passwordsMatch = password === confirmPassword && confirmPassword.length > 0;
 const showMatchError = confirmPassword.length > 0 && password !== confirmPassword;
 
-
-  const handleRegister = () => {
-    console.log("Registering:", fullName, email);
+   const handleRegister = async () => {
+    
+    if (!email || !password || !confirmPassword) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+  
+    const studentEmailRegex = /^[a-zA-Z0-9._%+-]+@ms\.sab\.ac\.lk$/i;
+        if (!studentEmailRegex.test(email.trim())) {
+          alert('Invalid Email! Please use your official university email (e.g., dulmini@ms.sab.ac.lk).');
+          return; 
+        }
+  
+    
+    if (password !== confirmPassword) {
+      alert('Passwords do not match!');
+      return;
+    }
+    try {
+      
+      const response = await fetch('http://172.20.10.3:3000/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        
+        body: JSON.stringify({ 
+          full_name: fullName,
+          email: email.trim().toLowerCase(), 
+          password: password, 
+          role: 'lecturer' 
+        }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        console.log('Success! User registered:', data);
+        Alert.alert(
+      "Registration Successful", 
+      "Your account has been created successfully.", 
+      [
+        {
+          text: "OK",
+          onPress: () => {
+            
+            router.push({
+              pathname: '/profilescreen',
+              params: { 
+                fullName: fullName, 
+                email: email.trim().toLowerCase() 
+              }
+            });
+          }
+        }
+      ]
+    );
+      } else {
+        console.error('Registration failed:', data.error);
+        alert('Error: ' + data.error);
+      }
+    } catch (error) {
+      console.error('Network Error:', error);
+      alert('Could not connect to server');
+    }
   };
-
+  
   return (
       <View style={styles.container}>
-        {/* Header Section */}
          <ImageBackground
-          source={require("../src/assets/images/header-curve.png")}
+          source={require("../../assets/images/header-curve.png")}
           style={styles.headerBackground}
           resizeMode="stretch"
         >
           <View style={styles.backButtonContainer}>
             <TouchableOpacity 
-              onPress={() => router.back()} 
+              onPress={() => router.replace('/loginpage(lecturer)')} 
               style={styles.backButton}
             >
               <Ionicons name="chevron-back" size={30} color="white" />
@@ -70,13 +135,13 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                     style={styles.scrollView}  
                     contentContainerStyle={styles.scrollContainer}
                     showsVerticalScrollIndicator={false}
-                    keyboardShouldPersistTaps="handled" // Allows tapping outside inputs to dismiss keyboard
+                    keyboardShouldPersistTaps="handled" 
                   >
                   
   
             <View style={styles.content}>
               
-              {/* Registration Form Card */}
+              
               <View style={styles.formCard}>
                 <View style={styles.inputGroup}>
                   <Text style={styles.label}>Full Name*</Text>
@@ -102,7 +167,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                   />
                 </View>
   
-                    {/* Password* */}
+                  
                       <View style={styles.inputGroup}>
                         <Text style={styles.label}>Password*</Text>
                         <View style={styles.passwordInputWrapper}>
@@ -112,7 +177,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                             placeholderTextColor="#A0A0A0"
                             value={password}
                             onChangeText={setPassword}
-                            secureTextEntry={!showPassword} // Toggle visibility here
+                            secureTextEntry={!showPassword} 
                           />
                           <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
                             <Ionicons 
@@ -124,7 +189,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                         </View>
                       </View>
   
-                      {/* Confirm Password* */}
+                      
                       <View style={styles.inputGroup}>
                         <Text style={styles.label}>Confirm Password*</Text>
                         <View style={styles.passwordInputWrapper}>
@@ -134,7 +199,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                             placeholderTextColor="#A0A0A0"
                             value={confirmPassword}
                             onChangeText={setConfirmPassword}
-                            secureTextEntry={!showPassword} // Toggle visibility here
+                            secureTextEntry={!showPassword} 
                           />
                           <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
                             <Ionicons 
@@ -148,7 +213,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                           )}
                         </View>
                       </View>
-                 {/* Password Requirements Box */}
+                 
                           <View style={styles.requirementsBox}>
                             <Text style={styles.requirementsTitle}>PASSWORD REQUIREMENTS</Text>
                             
@@ -156,7 +221,6 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                               <Ionicons 
                                 name={isLengthValid ? "checkmark-circle" : "ellipse-outline"} 
                                 size={20} 
-                                // Use a bright green when valid, gray when invalid
                                 color={isLengthValid ? "#10b981" : "#d1d5db"} 
                               />
                               <Text style={[
@@ -181,38 +245,37 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                               </Text>
                             </View>
                           </View>
-                          
               </View>
-               {/* Privacy Policy Checkbox Row */}
-                                      <View style={styles.privacyRow}>
-                                        <TouchableOpacity 
-                                          style={[styles.checkbox, agree && styles.checkboxChecked]} 
-                                          onPress={() => setAgree(!agree)}
-                                        >
-                                          {agree && <Ionicons name="checkmark" size={14} color="white" />}
-                                        </TouchableOpacity>
-                                        <Text style={styles.privacyText}>
-                                        I agree to the{" "}
-                                        <Text
-                                         style={styles.privacyLink}
-                                         onPress={() => router.push("/privacyReg_Lecturer")}
-                                        >
-                                         Privacy Policy
-                                        </Text>
-                                      </Text>
-                                      </View>
+
+              
+            <View style={styles.privacyRow}>
+              <TouchableOpacity 
+                style={[styles.checkbox, agree && styles.checkboxChecked]} 
+                onPress={() => setAgree(!agree)}
+              >
+                {agree && <Ionicons name="checkmark" size={14} color="white" />}
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => router.push("/privacylec")}>
+                <Text style={styles.privacyText}>
+                  I agree to the <Text style={styles.privacyLink}>Privacy Policy</Text>
+                </Text>
+              </TouchableOpacity>
+            </View>
+
   
              
+            <TouchableOpacity 
+              style={[styles.registerButton, !agree && styles.registerButtonDisabled]} 
+              onPress={handleRegister}
+              disabled={!agree} 
+            >
+              <Text style={styles.registerButtonText}>Register</Text>
+            </TouchableOpacity>
   
-              {/* Register Button */}
-              <TouchableOpacity style={[styles.registerButton, !agree && styles.registerButtonDisabled]} onPress={handleRegister} disabled={!agree}>
-                <Text style={styles.registerButtonText}>Register</Text>
-              </TouchableOpacity>
-  
-              {/* Footer */}
+              
               <View style={styles.footer}>
                 <Text style={styles.footerText}>Already have an account?</Text>
-                <TouchableOpacity onPress={() => router.push("/loginPage_Student")}>
+                <TouchableOpacity onPress={() => router.push("/loginpage(lecturer)")}>
                   <Text style={styles.loginText}>Login</Text>
                 </TouchableOpacity>
               </View>
@@ -226,7 +289,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
 const styles = StyleSheet.create({
    container: {
     flex: 1,
-    backgroundColor: "#FFFCF0", // Cream background
+    backgroundColor: "#FFFCF0", 
 
   },
   headerBackground: {
@@ -259,8 +322,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     marginTop: 25,
     paddingBottom: 40,
-    position: "relative", // <-- ADD THIS
-    zIndex: 1,            // <-- KEEP THIS
+    position: "relative", 
+    zIndex: 1,            
     elevation: 10,
   },
   formCard: {
@@ -291,7 +354,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#000",
   },
-  privacyRow: {
+   privacyRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -327,15 +390,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 40,
   },
+  registerButtonDisabled: {
+    backgroundColor: "#A0A0A0", 
+    opacity: 0.7, 
+  },
   registerButtonText: {
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
-  },
-  // Add this new style
-  registerButtonDisabled: {
-    backgroundColor: "#A794E8", // A lighter shade of the original purple
-    opacity: 0.6, // Makes it look faded/inactive
   },
   footer: {
     alignItems: "center",
@@ -364,7 +426,6 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     letterSpacing: 0.5,
   },
- // ... existing styles ...
   requirementRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -373,15 +434,15 @@ const styles = StyleSheet.create({
   requirementText: {
     marginLeft: 8,
     fontSize: 14,
-    color: '#6b7280', // Default gray text
+    color: '#6b7280', 
   },
   requirementTextValid: {
-    color: '#10b981', // Turns green when the condition is met
+    color: '#10b981', 
     fontWeight: '500', 
   },
   scrollView: {
     flex: 1,
-    marginTop: -110, // Pulls the white card up over the bottom edge of the purple curve
+    marginTop: -110, 
   },
   scrollContainer: {
     flexGrow: 1,

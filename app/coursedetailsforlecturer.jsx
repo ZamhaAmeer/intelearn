@@ -1,4 +1,5 @@
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
@@ -12,60 +13,6 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-
-// --- DUMMY DATA ---
-const courseData = [
-  { 
-    id: '1', 
-    title: 'IS Risk Management', 
-    tags: 'Assessment • Mitigation • Strategy', 
-    year: '22/23', 
-    sem: '3rd Sem', 
-    dept: 'CIS', 
-    students: '628', 
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=150&q=80' 
-  },
-  { 
-    id: '2', 
-    title: 'IT Auditing', 
-    tags: 'Compliance • Controls • Frameworks', 
-    year: '21/22', 
-    sem: '5th Sem', 
-    dept: 'CIS', 
-    students: '463', 
-    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=150&q=80' 
-  },
-  { 
-    id: '3', 
-    title: 'Enterprise Architecture', 
-    tags: 'TOGAF • Systems Integration', 
-    year: '21/22', 
-    sem: '5th Sem', 
-    dept: 'CIS', 
-    students: '299', 
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=150&q=80' 
-  },
-  { 
-    id: '4', 
-    title: 'Fundamentals of IS', 
-    tags: 'Digital Transformation • Business Process', 
-    year: '23/24', 
-    sem: '1st Sem', 
-    dept: 'CIS', 
-    students: '328', 
-    image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=150&q=80' 
-  },
-  { 
-    id: '5', 
-    title: 'IS Economics', 
-    tags: 'Markets • Tech Value • Investment', 
-    year: '20/21', 
-    sem: '7th Sem', 
-    dept: 'CIS', 
-    students: '121', 
-    image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=150&q=80' 
-  },
-];
 
 // --- HELPER COMPONENTS FOR MENU ---
 // These ensure your menu renders properly if you haven't built them separately yet
@@ -85,8 +32,12 @@ export default function TeacherCoursesScreen() {
   const router = useRouter(); // Expo Router hook
 
   // State for the Menu Modal
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [isMenuVisible, setMenuVisible] = useState(false);
   const [isDark, setIsDark] = useState(false);
+
+  const [lecturerName, setLecturerName] = useState('Lecturer');
 
   const toggleMenu = () => setMenuVisible(!isMenuVisible);
 
@@ -95,6 +46,38 @@ export default function TeacherCoursesScreen() {
     // Ensure you have a file at app/coursemodule.js or similar.
     router.push({ pathname: '/coursemodule', params: { id: course.id, title: course.title } });
   };
+
+  React.useEffect(() => {
+    const loadUserData = async () => {
+      try {
+        const storedName = await AsyncStorage.getItem('fullName');
+        if (storedName) {
+          setLecturerName(storedName);
+        }
+      } catch (error) {
+        console.error("Error loading user name:", error);
+      }
+    };
+    loadUserData();
+
+    const fetchLecturerCourses = async () => {
+      try {
+        // Hardcoded to your laptop's Wi-Fi IP address for local testing
+        const response = await fetch('http://172.20.10.3:3000/lecturer/courses');
+        
+        if (!response.ok) throw new Error('Failed to fetch data');
+        
+        const data = await response.json();
+        setCourses(data);
+      } catch (error) {
+        console.error("Error fetching lecturer courses:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLecturerCourses();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -106,14 +89,14 @@ export default function TeacherCoursesScreen() {
         <TouchableOpacity style={styles.menuIcon} onPress={toggleMenu}>
           <Ionicons name="menu" size={32} color="#FFFFFF" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Welcome Back, Mr.Jack!</Text>
+        <Text style={styles.headerTitle}>Welcome Back, {lecturerName}!</Text>
       </View>
 
       {/* --- COURSE LIST --- */}
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <Text style={styles.sectionTitle}>My Courses</Text>
 
-        {courseData.map((course) => (
+        {courses.map((course) => (
           <TouchableOpacity 
             key={course.id} 
             style={styles.courseWrapper}
@@ -123,25 +106,19 @@ export default function TeacherCoursesScreen() {
             <View style={styles.imageContainer}>
               <Image source={{ uri: course.image }} style={styles.courseImage} />
             </View>
-          
+            <View style={styles.connectingLine} />
             <View style={styles.courseCard}>
-              <Text style={styles.courseTitle} numberOfLines={1}>{course.title}</Text>
-              
-              {/* Added the new Tags Subtitle line */}
-              <Text style={styles.courseTags} numberOfLines={1}>{course.tags}</Text>
-              
-              <View style={styles.badgeRow}>
-                {/* Updated Badges to match the Student App pastel theme */}
-                <View style={[styles.statusBadge, { backgroundColor: '#FFCCBC' }]}>
-                  <Text style={styles.badgeText}>{course.year}</Text>
+              <Text style={styles.courseTitle}>{course.title}</Text>
+              <View style={styles.tagsRow}>
+                <View style={[styles.tag, { backgroundColor: '#D6CFF9' }]}>
+                  <Text style={[styles.tagText, { color: '#5C45C3' }]}>{course.year}</Text>
                 </View>
-                <View style={[styles.statusBadge, { backgroundColor: '#C8E6C9' }]}>
-                  <Text style={styles.badgeText}>{course.sem}</Text>
+                <View style={[styles.tag, { backgroundColor: '#C0F2F9' }]}>
+                  <Text style={[styles.tagText, { color: '#007A99' }]}>{course.sem}</Text>
                 </View>
-                <View style={[styles.statusBadge, { backgroundColor: '#CFD8DC' }]}>
-                  <Text style={styles.badgeText}>{course.dept}</Text>
+                <View style={[styles.tag, { backgroundColor: '#A7F3D0' }]}>
+                  <Text style={[styles.tagText, { color: '#065F46' }]}>{course.dept}</Text>
                 </View>
-                
                 <View style={styles.studentsCount}>
                   <MaterialIcons name="people" size={16} color="#555" />
                   <Text style={styles.studentsText}>{course.students}</Text>
@@ -151,7 +128,7 @@ export default function TeacherCoursesScreen() {
           </TouchableOpacity>
         ))}
 
-        <TouchableOpacity style={styles.createButton} onPress={() => router.push('/addNewCourse')}>
+        <TouchableOpacity style={styles.createButton} onPress={() => router.push('/addnewcourse')}>
           <Ionicons name="add" size={50} color="#FFFFFF" alignItems="center" /> 
           <View>
             <Text style={styles.createButtonText}>Create New</Text>
@@ -173,14 +150,14 @@ export default function TeacherCoursesScreen() {
             </View>
 
             <View style={styles.menuList}>
-              <MenuOption iconName="home-variant" title="Home" active onPress={() => { setMenuVisible(false); router.replace('/courseDetailsForLecturer'); }} />
-              <MenuOption iconName="account" title="Profile" onPress={() => { setMenuVisible(false); router.replace('/profileScreen'); }} />
+              <MenuOption iconName="home-variant" title="Home" active onPress={() => { setMenuVisible(false); router.replace('/coursedetailsforlecturer'); }} />
+              <MenuOption iconName="account" title="Profile" onPress={() => { setMenuVisible(false); router.replace('/profilescreen'); }} />
               <MenuOption iconName="view-dashboard" title="Dashboard" />
               <MenuOption iconName="shield-check" title="Privacy" />
-              <MenuOption iconName="cog" title="Settings" onPress={() => { setMenuVisible(false); router.replace('/settings'); }} />
+              <MenuOption iconName="cog" title="Settings" onPress={() => { setMenuVisible(false); router.replace('/settingslec'); }} />
             </View>
 
-            <TouchableOpacity style={styles.logoutButton} onPress={() => { setMenuVisible(false); router.replace('/loginPage_Lecturer)'); }}>
+            <TouchableOpacity style={styles.logoutButton} onPress={() => { setMenuVisible(false); router.replace('/loginpage(lecturer)'); }}>
               <Text style={styles.logoutText}> Log Out    <MaterialCommunityIcons name="logout" size={24} color="grey" /></Text>
             </TouchableOpacity>
 
@@ -217,7 +194,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 2,minHeight: 90,             // Forces the card to be at least this tall
     justifyContent: 'center',
   },
-  
+  courseTitle: { fontSize: 16, fontWeight: 'bold', color: '#000000', marginBottom: 10 },
   tagsRow: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 8 },
   tag: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12 },
   tagText: { fontSize: 10, fontWeight: 'bold' },
@@ -286,10 +263,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'grey',
     fontWeight: 'bold',
-  },
-  courseTitle: { fontSize: 17, fontWeight: 'bold' },
-  courseTags: { fontSize: 11, color: '#555', marginBottom: 4 },
-  badgeRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 4 },
-  statusBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12 },
-  badgeText: { fontSize: 10, fontWeight: '700', color: '#333' },
+  }
 });

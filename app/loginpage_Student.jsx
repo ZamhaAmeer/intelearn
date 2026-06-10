@@ -1,7 +1,9 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from "@expo/vector-icons"; // For the close (X) icon
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
+  Alert,
   Dimensions,
   Image,
   ImageBackground,
@@ -15,7 +17,7 @@ import {
   View
 } from "react-native";
 
-import ForgotPasswordModal from "./forgotPassword";
+import ForgotPasswordModal from "./forgotpassword";
 
 const { height } = Dimensions.get("window");
 
@@ -28,10 +30,62 @@ export default function LoginPage() {
   const [isModalVisible, setModalVisible] = useState(false);
   const router = useRouter();
 
-  const handleLogin = () => {
-    // Add your login logic here
-    console.log("Login with:", email, password);
-  };
+  const handleLogin = async () => {
+    // Basic frontend validation
+    if (!email || !password) {
+      Alert.alert("Error", "Please enter both email and password.");
+      return;
+    }
+
+    console.log("Attempting login for:", email);
+
+    try {
+      
+      const response = await fetch("http://10.19.66.72:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const rawText = await response.text();
+
+      // Debugging logs to see exactly what the server said
+    console.log("Server Status Code:", response.status);
+    console.log("RAW SERVER RESPONSE:", rawText);
+
+    // 3. Now safely try to convert it to JSON
+      let data;
+      try {
+        data = JSON.parse(rawText);
+      } catch (parseError) {
+        console.error("Failed to parse JSON. The server sent HTML instead.");
+        Alert.alert("Server Error", "Check your Expo terminal to see the raw HTML response.");
+        return; 
+      }
+
+      // 3. The Logic Check
+    if (response.status === 200) {
+
+  await AsyncStorage.setItem('userEmail', email);
+
+  console.log("Saved Email:", email);
+
+  router.push("./coursedetails");
+}
+     else {
+      // If status is 401 (Unauthorized) or 400 (Bad Request), show the error and DO NOT navigate
+      console.log("Login rejected by server.");
+      Alert.alert("Login Failed", data.error || "Incorrect email or password");
+    }
+
+  } catch (error) {
+    console.error("Network or Fetch Error:", error);
+    Alert.alert("Network Error", "Could not connect to the backend server. Is it running?");
+  }
+};
+
 
   return (
     <KeyboardAvoidingView 
@@ -49,7 +103,7 @@ export default function LoginPage() {
         {/* 3. Back Button positioned absolutely */}
         <View style={styles.backButtonContainer}>
           <TouchableOpacity 
-            onPress={() => router.replace('/choosingPage')} // Goes back to Choosing Page
+            onPress={() => router.replace('/choosingpage')} // Goes back to Choosing Page
             style={styles.backButton}
           >
             <Ionicons name="chevron-back" size={30} color="white" />
@@ -137,7 +191,7 @@ export default function LoginPage() {
         </View>
 
         {/* Login Button */}
-        <TouchableOpacity style={styles.loginButton} onPress={() => router.push("/courseDetails")}>
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
 
@@ -149,7 +203,7 @@ export default function LoginPage() {
             </TouchableOpacity>
           </View>
         </View>
-  
+          
         </ScrollView>
         <ForgotPasswordModal 
           visible={isModalVisible} 
@@ -171,7 +225,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  logoContainer: {
+    logoContainer: {
     alignItems: "center",
     marginTop: -250,
   },
@@ -188,21 +242,23 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     marginTop: -50
   },
-  content: {
+    content: {
     flex: 1,
     paddingHorizontal: 30,
     marginTop: -160,
   },
   welcomeSection: {
     alignItems: "center",
-    marginBottom: 30,
+    marginBottom: 50,
+    zIndex: 1, 
   },
   welcomeTitle: {
     fontSize: 24,
     fontWeight: "bold",
     color: "#0B0C10",
+    marginTop: 20,
   },
-  welcomeSubtitle: {
+    welcomeSubtitle: {
     fontSize: 18,
     color: "rgba(0, 0, 0, 0.6)",
     marginTop: 5,
@@ -217,7 +273,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 5,
   },
-  inputGroup: {
+    inputGroup: {
     marginBottom: 15,
   },
   label: {
@@ -240,7 +296,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 5,
   },
-  checkboxRow: {
+    checkboxRow: {
     flexDirection: "row",
     alignItems: "center",
   },
@@ -258,7 +314,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#5B3CC2",
     borderColor: "#5B3CC2",
   },
-  checkmark: {
+    checkmark: {
     color: "white",
     fontSize: 12,
   },
@@ -278,7 +334,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 30,
   },
-  loginButtonText: {
+    loginButtonText: {
     color: "#FFFFF0",
     fontSize: 18,
     fontWeight: "bold",
@@ -293,7 +349,7 @@ const styles = StyleSheet.create({
     left: 10,
     zIndex: 10,
   },
-  backButton: {
+    backButton: {
     padding: 10,
   },
   footerText: {
@@ -307,22 +363,21 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 5,
   },
-  scrollView: {
+    scrollView: {
     flex: 1,
-    marginTop: -181, // Move the negative margin from 'content' to here
+    marginTop: -181, 
   },
   scrollContent: {
-    paddingBottom: 40, // Adds space at the bottom so it's not cramped
+    paddingBottom: 40, 
   },
   content: {
     flex: 1,
     paddingHorizontal: 30,
-    // Removed marginTop: -160 from here as it's now on the ScrollView
   },
   inputGroup: {
     marginBottom: 15,
   },
-  label: {
+    label: {
     fontSize: 14,
     fontWeight: "600",
     color: "#333",
