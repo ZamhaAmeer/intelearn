@@ -161,3 +161,79 @@ export default function PrivacyScreen() {
 
         <View style={{ height: 120 }} />
       </ScrollView>
+
+
+          {/* 5. FIXED ACTION SECTION */}
+      <View style={styles.fixedActionSection}>
+        {/* Helper UX Prompt that flips automatically when state unlocks */}
+      
+        <TouchableOpacity 
+          style={[styles.agreeBtn, !hasAgreed && styles.agreeBtnDisabled]}
+          disabled={!hasAgreed}
+          onPress={() => router.replace('/loginpage(student)')}
+        >
+          <Text style={styles.agreeBtnText}>I AGREE & CONFIRM</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* SIDE MENU MODAL */}
+      <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
+        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={toggleMenu}>
+          <View style={[styles.sideMenu, isDark && { backgroundColor: '#1A1A1A' }]}>
+            <View style={styles.menuHeader}>
+              <TouchableOpacity onPress={toggleMenu}>
+                <Icon name="menu" size={30} color={isDark ? "white" : "#333"} />
+              </TouchableOpacity>
+              
+              <ThemeToggle isDark={isDark} onToggle={() => setIsDark(!isDark)} />
+            </View>
+
+            <View style={styles.menuList}>
+              <MenuOption iconName="home-variant" title="Home" onPress={() => {setMenuVisible(false); router.replace('/coursedetails')}} />
+              <MenuOption iconName="account" title="Profile" onPress={() => {setMenuVisible(false); router.replace('/profilescreen')}} />
+              <MenuOption iconName="view-dashboard" title="Dashboard" />
+              <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/minigamesection')}} />
+              <MenuOption iconName="shield-check" title="Privacy" active onPress={() => {setMenuVisible(false); router.replace('/privacy')}} />
+              <MenuOption iconName="cog" title="Settings" onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
+            </View>
+            <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}>
+              <Text style={styles.logoutText}> Log Out    <Icon name="logout" size={24} color="grey" /></Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
+    </View>
+  );
+}
+
+const Section = ({ title, text }: { title: string, text: string }) => (
+  <View style={styles.sectionContainer}>
+    <Text style={styles.sectionTitle}>{title}</Text>
+    <Text style={styles.sectionBody}>{text}</Text>
+  </View>
+);
+
+const styles = StyleSheet.create({
+  masterContainer: { flex: 1, backgroundColor: '#FEFDF9' },
+  topPurpleHeader: {
+    backgroundColor: '#4E33B3', 
+    paddingHorizontal: 20,
+    paddingBottom: 15,
+    paddingTop: Platform.OS === 'android' ? (StatusBar.currentHeight || 0) + 10 : 10,
+  },
+  headerTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  subHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F0F0F0',
+    zIndex: 10,
+  },
