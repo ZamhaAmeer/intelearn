@@ -14,6 +14,7 @@ import {
   View
 } from 'react-native';
 import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import { spring } from 'react-native/types_generated/Libraries/Animated/AnimatedExports';
 
 
 
@@ -44,11 +45,9 @@ export default function PrivacyScreen() {
     );
   };
   
-  
   return (
     <View style={styles.masterContainer}>
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
-      
     
       <View style={styles.topPurpleHeader}>
         <View>
@@ -63,7 +62,7 @@ export default function PrivacyScreen() {
 
       
       <View style={styles.subHeader}>
-        <TouchableOpacity onPress={() => router.replace('/register(lecturer')} style={styles.backButton}>
+        <TouchableOpacity onPress={() => router.replace('/register_Lecturer')} style={styles.backButton}>
           <Ionicons name="arrow-back" size={22} color="#1A73E8" />
           <Text style={styles.subHeaderTitle}>Privacy & Data Policy</Text>
         </TouchableOpacity>
@@ -139,7 +138,7 @@ export default function PrivacyScreen() {
     
     </View>
   );
-}
+
 
 const Section = ({ title, text }: { title: string, text: string }) => (
   <View style={styles.sectionContainer}>
