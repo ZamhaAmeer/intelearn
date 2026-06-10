@@ -51,3 +51,23 @@ export default function PrivacyScreen() {
       <Path fill={color} d="M410,329.2c-73.4,0-132.8-59.4-132.8-132.8c0-33.8,12.6-64.6,33.4-88.1c-14.7-3.4-30.1-5.3-46-5.3c-110,0-199.1,89.2-199.1,199.1S154.6,501.2,264.6,501.2c78.8,0,147-45.7,179.3-111.9C434,329.1,422.3,329.2,410,329.2z"/>
     </Svg>
   );
+
+   const ThemeToggle = ({ isDark, onToggle }) => {
+    const progress = useSharedValue(isDark ? 1 : 0);
+    useEffect(() => { progress.value = withSpring(isDark ? 1 : 0); }, [isDark]);
+  
+    const rTrackStyle = useAnimatedStyle(() => ({
+      backgroundColor: interpolateColor(progress.value, [0, 1], ['#E0E0E0', '#333333']),
+    }));
+    const rThumbStyle = useAnimatedStyle(() => ({
+      transform: [{ translateX: progress.value * 34 }],
+    }));
+
+    return (
+      <TouchableOpacity activeOpacity={0.8} onPress={onToggle}>
+        <Animated.View style={[styles.trackStyle, rTrackStyle]}>
+          <Animated.View style={[styles.thumbStyle, rThumbStyle]} />
+        </Animated.View>
+      </TouchableOpacity>
+    );
+  };
