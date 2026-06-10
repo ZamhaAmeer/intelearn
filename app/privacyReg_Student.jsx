@@ -71,3 +71,14 @@ export default function PrivacyScreen() {
       </TouchableOpacity>
     );
   };
+
+   const MenuOption = ({ iconName, title, active, onPress }) => (
+    <TouchableOpacity style={[styles.menuItem, active && styles.activeMenuItem]} onPress={onPress}>
+      <Icon name={iconName} size={22} color={active ? "#4E33B3" : "#666"} style={styles.menuItemIcon} />
+      <Text style={[styles.menuItemText, active && styles.activeMenuText]}>{title}</Text>
+    </TouchableOpacity>
+  );
+  
+  return (
+    <View style={styles.masterContainer}>
+      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
