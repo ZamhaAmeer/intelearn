@@ -58,3 +58,49 @@ export default function TeacherCoursesScreen() {
         console.error("Error loading user name:", error);
       }
     };
+
+    loadUserData();
+
+    const fetchLecturerCourses = async () => {
+      try {
+        // Hardcoded to your laptop's Wi-Fi IP address for local testing
+        const response = await fetch('http://172.20.10.3:3000/lecturer/courses');
+        
+        if (!response.ok) throw new Error('Failed to fetch data');
+        
+        const data = await response.json();
+        setCourses(data);
+      } catch (error) {
+        console.error("Error fetching lecturer courses:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLecturerCourses();
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#5C45C3" />
+      
+      {/* --- HEADER --- */}
+      <View style={styles.header}>
+        {/* Changed this TouchableOpacity to trigger toggleMenu */}
+        <TouchableOpacity style={styles.menuIcon} onPress={toggleMenu}>
+          <Ionicons name="menu" size={32} color="#FFFFFF" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Welcome Back, {lecturerName}!</Text>
+      </View>
+
+      {/* --- COURSE LIST --- */}
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+        <Text style={styles.sectionTitle}>My Courses</Text>
+
+        {courses.map((course) => (
+          <TouchableOpacity 
+            key={course.id} 
+            style={styles.courseWrapper}
+            activeOpacity={0.7}
+            onPress={() => handleCoursePress(course)}
+          ></TouchableOpacity>
