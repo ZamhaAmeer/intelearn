@@ -1,4 +1,5 @@
 import * as ImagePicker from 'expo-image-picker';
+import { API_BASE_URL } from '../config';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
@@ -74,7 +75,7 @@ export default function ProfileScreen() {
   
   const fetchUserData = async (targetEmail) => {
     try {
-      const url = `http://172.20.10.3:3000/get-profile?email=${encodeURIComponent(targetEmail)}`;
+      const url = `${API_BASE_URL}/get-profile?email=${encodeURIComponent(targetEmail)}`;
       const response = await fetch(url, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
@@ -127,7 +128,7 @@ export default function ProfileScreen() {
 
   const handleSaveChanges = async () => {
     try {
-      const response = await fetch('http://172.20.10.3:3000/update-profile', {
+      const response = await fetch(`${API_BASE_URL}/update-profile`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -248,7 +249,7 @@ export default function ProfileScreen() {
               <View style={styles.imageWrapper}>
                 <TouchableOpacity onPress={handleChangePhoto}>
                   <Image 
-                    source={profileImage.startsWith('http') || profileImage.startsWith('file') ? { uri: profileImage } : require("../../assets/images/pr2.jpg")} 
+                    source={profileImage.startsWith('http') || profileImage.startsWith('file') ? { uri: profileImage } : require("../assets/images/pr2.jpg")} 
                     style={styles.profileImage}
                   />
                 </TouchableOpacity>

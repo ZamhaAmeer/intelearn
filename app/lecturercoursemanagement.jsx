@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_BASE_URL } from '../config';
 import * as DocumentPicker from 'expo-document-picker';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
@@ -35,7 +36,7 @@ const CourseManagement = () => {
   const fetchCourseData = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
-      const response = await fetch(`http://172.20.10.3:3000/courses/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/courses/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -98,7 +99,7 @@ const CourseManagement = () => {
         type: selectedFile.mimeType || 'application/pdf',
       });
 
-      const response = await fetch(`http://172.20.10.3:3000/upload-material`, {
+      const response = await fetch(`${API_BASE_URL}/upload-material`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

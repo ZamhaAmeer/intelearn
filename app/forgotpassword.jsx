@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { API_BASE_URL } from '../config';
 import { router } from 'expo-router';
 import React, { useRef, useState } from 'react';
 import {
@@ -53,7 +54,7 @@ export default function ForgotPasswordModal({ visible, onClose }) {
 
     try {
       // REPLACE with your actual Hotspot IP if it changed!
-      const response = await fetch('http://172.20.10.2:3000/forgot-password', {
+      const response = await fetch(`${API_BASE_URL}/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.trim().toLowerCase() }),

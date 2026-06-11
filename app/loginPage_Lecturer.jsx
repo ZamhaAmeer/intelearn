@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_BASE_URL } from '../config';
 import { Ionicons } from "@expo/vector-icons"; 
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
@@ -41,7 +42,7 @@ export default function LoginPage() {
 
     try {
       
-      const response = await fetch("http://10.19.66.72:3000/login", {
+      const response = await fetch(`${API_BASE_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_BASE_URL } from '../config';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -94,7 +95,7 @@ export default function ProfileViewScreen() {
   const fetchUserData = async (userEmail) => {
     try {
       setIsLoading(true);
-      const url = `http://172.20.10.3:3000/get-profile?email=${encodeURIComponent(userEmail)}`;
+      const url = `${API_BASE_URL}/get-profile?email=${encodeURIComponent(userEmail)}`;
       const response = await fetch(url, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
@@ -193,7 +194,7 @@ export default function ProfileViewScreen() {
         <View style={styles.avatarCardSection}>
           <View style={styles.avatarOutlineRing}>
             <Image
-              source={profileImage ? { uri: profileImage } : require("../../assets/images/pr2.jpg")}
+              source={profileImage ? { uri: profileImage } : require("../assets/images/pr2.jpg")}
               style={styles.avatarImage}
             />
           </View>

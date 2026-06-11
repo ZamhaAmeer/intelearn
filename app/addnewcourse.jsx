@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_BASE_URL } from '../config';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
@@ -172,7 +173,7 @@ const AddNewCourse = () => {
         });
       }
 
-      const response = await fetch(`http://172.20.10.3:3000/courses`, {
+      const response = await fetch(`${API_BASE_URL}/courses`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`

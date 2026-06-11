@@ -1,4 +1,5 @@
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { API_BASE_URL } from '../config';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
@@ -63,7 +64,7 @@ export default function TeacherCoursesScreen() {
     const fetchLecturerCourses = async () => {
       try {
         // Hardcoded to your laptop's Wi-Fi IP address for local testing
-        const response = await fetch('http://172.20.10.3:3000/lecturer/courses');
+        const response = await fetch(`${API_BASE_URL}/lecturer/courses`);
         
         if (!response.ok) throw new Error('Failed to fetch data');
         

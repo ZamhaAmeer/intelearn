@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { API_BASE_URL } from '../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
@@ -54,7 +55,7 @@ export default function LoginPage() {
     console.log("Attempting lecturer login for:", trimmedEmail);
 
     try {
-      const response = await fetch("http://172.20.10.3:3000/login", {
+      const response = await fetch(`${API_BASE_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -103,7 +104,7 @@ export default function LoginPage() {
     >
       <View style={styles.container}>
         <ImageBackground
-          source={require("../../assets/images/header-curve.png")}
+          source={require("../assets/images/header-curve.png")}
           style={styles.headerBackground}
           resizeMode="stretch"
         >
@@ -117,7 +118,7 @@ export default function LoginPage() {
           </View>
           <View style={styles.logoContainer}>
             <Image
-              source={require("../../assets/images/logo.png")}
+              source={require("../assets/images/logo.png")}
               style={styles.logoImage}
               resizeMode="contain"
             />

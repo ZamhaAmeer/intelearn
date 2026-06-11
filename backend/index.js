@@ -1,0 +1,706 @@
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+const pdfParse = require('pdf-parse');
+const rawPdfParse = require('pdf-parse');
+const parsePdf = typeof rawPdfParse === 'function' ? rawPdfParse : rawPdfParse.default;
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+
+// --- NEW SEQUELIZE IMPORTS & MODELS ---
+const sequelize = require('./config/database');
+const User = require('./models/user');
+const Course = require('./models/Course');
+const CourseMaterial = require('./models/courseMaterial');
+const Enrollment = require('./models/enrollment');
+const Quiz = require('./models/quiz');
+const Question = require('./models/question');
+const QuizAttempt = require('./models/quizAttempt'); 
+const AiChat = require('./models/aiChat');
+
+// --- DATABASE RELATIONSHIPS ---
+// Lecturer -> Courses
+User.hasMany(Course, { foreignKey: 'lecturer_id' });
+Course.belongsTo(User, { foreignKey: 'lecturer_id' });
+
+// Course -> Materials
+Course.hasMany(CourseMaterial, { foreignKey: 'course_id' });
+CourseMaterial.belongsTo(Course, { foreignKey: 'course_id' });
+
+// Students <-> Courses (Enrollments)
+User.hasMany(Enrollment, { foreignKey: 'student_id' });
+Enrollment.belongsTo(User, { foreignKey: 'student_id' });
+Course.hasMany(Enrollment, { foreignKey: 'course_id' });
+Enrollment.belongsTo(Course, { foreignKey: 'course_id' });
+
+// Course -> Quizzes
+Course.hasMany(Quiz, { foreignKey: 'course_id' });
+Quiz.belongsTo(Course, { foreignKey: 'course_id' });
+
+// Quiz -> Questions
+Quiz.hasMany(Question, { foreignKey: 'quiz_id' });
+Question.belongsTo(Quiz, { foreignKey: 'quiz_id' });
+
+// Student -> Quiz Attempts (🌟 New Tracking Chain)
+User.hasMany(QuizAttempt, { foreignKey: 'student_id' });
+QuizAttempt.belongsTo(User, { foreignKey: 'student_id' });
+Quiz.hasMany(QuizAttempt, { foreignKey: 'quiz_id' });
+QuizAttempt.belongsTo(Quiz, { foreignKey: 'quiz_id' });
+
+// Student -> Conversations (🌟 New AI Chain)
+User.hasMany(AiChat, { foreignKey: 'student_id' });
+AiChat.belongsTo(User, { foreignKey: 'student_id' });
+Course.hasMany(AiChat, { foreignKey: 'course_id' });
+AiChat.belongsTo(Course, { foreignKey: 'course_id' });
+
+// --- APP INITIALIZATION ---
+const app = express();
+app.use(cors());
+app.use(express.json()); 
+app.use('/uploads', express.static('uploads'));
+
+// --- INTELEARN SERVICES CONFIG ---
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({
+  model: "gemini-1.5-flash",
+  generationConfig: {
+    responseMimeType: "application/json",
+  }
+});
+
+const transporter = nodemailer.createTransport({
+   service: 'gmail',
+   auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+   }
+});
+
+
+// ------------------------------------
+// JWT AUTH MIDDLEWARE (Unchanged)
+// ------------------------------------
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: 'Access denied' });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.status(403).json({ error: 'Invalid token' });
+    }
+    req.user = user;
+    next();
+  });
+};
+
+// ------------------------------------
+// MULTER CONFIG (Unchanged)
+// ------------------------------------
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadPath = './uploads';
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath);
+    }
+    cb(null, uploadPath);
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ 
+  storage,
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === 'application/pdf') {
+      cb(null, true);
+    } else {
+      cb(new Error('Only PDF files are allowed!'), false);
+    }
+  },
+  limits: { fileSize: 10 * 1024 * 1024 }
+});
+
+// ------------------------------------
+// THE REGISTER ROUTE (Sequelize Version)
+// ------------------------------------
+app.post('/register', async (req, res) => {
+  const { full_name, email, password, role } = req.body;
+  
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Missing email or password' });
+  }
+
+  try {
+    // Sequelize: Check if user exists
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ error: 'User already exists' });
+    }
+
+    // Hash password
+    const saltRounds = 10;
+    const passwordHash = await bcrypt.hash(password, saltRounds);
+
+    // Sequelize: Insert new user
+    const newUser = await User.create({
+      full_name,
+      email,
+      password_hash: passwordHash,
+      role
+    });
+
+    res.status(201).json({ 
+        message: 'User created successfully', 
+        user: { 
+            id: newUser.id, 
+            full_name: newUser.full_name, 
+            email: newUser.email, 
+            role: newUser.role 
+        } 
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// ------------------------------------
+// THE LOGIN ROUTE (Sequelize Version)
+// ------------------------------------
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Missing email or password' });
+  }
+
+  try {
+    // Sequelize: Find user by email
+    const user = await User.findOne({ where: { email } });
+    
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    // Compare passwords
+    const validPassword = await bcrypt.compare(password, user.password_hash);
+    if (!validPassword) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    // Generate JWT
+    const token = jwt.sign(
+      { id: user.id, role: user.role }, 
+      process.env.JWT_SECRET, 
+      { expiresIn: '1h' }
+    );
+
+    res.json({ 
+      token, 
+      role: user.role, 
+      full_name: user.full_name, 
+      message: 'Login successful' 
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// ------------------------------------
+// UPDATE PROFILE ROUTE (Sequelize Version)
+// ------------------------------------
+app.put('/update-profile', async (req, res) => {
+  const { full_name, username, email, phone, bio, department, gender } = req.body;
+
+  try {
+    // Sequelize: Update user and return the newly updated data
+    const [updatedRowCount, updatedRows] = await User.update(
+      { full_name, username, phone, bio, department, gender },
+      { 
+        where: { email },
+        returning: true // Tells Postgres to give us the updated row back
+      }
+    );
+
+    if (updatedRowCount === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({ 
+      message: 'Profile updated successfully', 
+      user: updatedRows[0] 
+    });
+  } catch (err) {
+    console.error("DEBUG - SQL FAILED:", err.message); 
+    res.status(500).json({ error: 'Database Update Error: ' + err.message });
+  }
+});
+
+// ------------------------------------
+// GET PROFILE ROUTE (Sequelize Version)
+// ------------------------------------
+app.get('/get-profile', async (req, res) => {
+  const userEmail = req.query.email;
+
+  if (!userEmail) {
+    return res.status(400).json({ error: "Email parameter is required to sync profile data." });
+  }
+
+  try {
+    // Queries database safely using your Sequelize User model config
+    const user = await User.findOne({
+      where: { email: userEmail },
+      attributes: ['full_name', 'username', 'email', 'phone', 'bio', 'department', 'gender'] // Safe extraction whitelist
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "No user profile found matching this email." });
+    }
+
+    // Return user object context safely
+    return res.json(user);
+  } catch (err) {
+    console.error("Database extraction error:", err.message);
+    return res.status(500).json({ error: "Internal server database error: " + err.message });
+  }
+});
+
+// ------------------------------------
+// FORGOT PASSWORD - Generate & Send OTP (Sequelize Version)
+// ------------------------------------
+app.post('/forgot-password', async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    // Sequelize: Find user
+    const user = await User.findOne({ where: { email } });
+
+    if (!user) {
+      return res.status(404).json({ error: 'Email not found' });
+    }
+
+    // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000);
+
+    // Expiry time (10 minutes)
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+
+    // Sequelize: Update user with OTP and Expiry
+    await user.update({
+      reset_otp: otp,
+      reset_otp_expires_at: expiresAt
+    });
+
+    // Send OTP email
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Password Reset OTP',
+      text: `Your OTP is: ${otp}`
+    });
+
+    res.json({ message: 'OTP sent successfully' });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// ------------------------------------
+// VERIFY OTP ROUTE (Sequelize Version)
+// ------------------------------------
+app.post('/verify-otp', async (req, res) => {
+  const { email, otp } = req.body;
+
+  if (!email || !otp) {
+    return res.status(400).json({ error: 'Email and OTP are required' });
+  }
+
+  try {
+    // Sequelize: Find user
+    const user = await User.findOne({ where: { email } });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Check OTP (using != to allow string/number comparison)
+    if (user.reset_otp != otp) {
+      return res.status(400).json({ error: 'Invalid OTP' });
+    }
+
+    // Check expiry
+    if (new Date() > new Date(user.reset_otp_expires_at)) {
+      return res.status(400).json({ error: 'OTP expired' });
+    }
+
+    res.json({ message: 'OTP verified successfully' });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// ------------------------------------
+// RESET PASSWORD - Verify OTP & Update (Sequelize Version)
+// ------------------------------------
+app.post('/reset-password', async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+
+  if (!email || !otp || !newPassword) {
+    return res.status(400).json({ error: 'Missing fields' });
+  }
+
+  try {
+    // Sequelize: Find user
+    const user = await User.findOne({ where: { email } });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // OTP check
+    if (user.reset_otp != otp) {
+      return res.status(400).json({ error: 'Invalid OTP' });
+    }
+
+    // Expiry check
+    if (new Date() > new Date(user.reset_otp_expires_at)) {
+      return res.status(400).json({ error: 'OTP expired' });
+    }
+
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Sequelize: Update user and wipe OTP fields clean
+    await user.update({
+      password_hash: hashedPassword,
+      reset_otp: null,
+      reset_otp_expires_at: null
+    });
+
+    res.json({ message: 'Password reset successful' });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// ------------------------------------
+// ADD COURSE
+// ------------------------------------
+app.post('/courses', authenticateToken, upload.single('thumbnail'), async (req, res) => {
+  // 🌟 Extract code and tags from the request body payload
+  const { title, code, tags, description, semester, academic_year, is_published } = req.body;
+  const imageUrl = req.file ? req.file.path : null;
+
+  try {
+    const lecturerId = req.user.id;
+
+    // Check if a course with this code already exists to prevent duplicates
+    if (code) {
+      const duplicateCheck = await Course.findOne({ where: { code: code.trim().toUpperCase() } });
+      if (duplicateCheck) {
+        return res.status(400).json({ error: `A course module with code ${code} already exists.` });
+      }
+    }
+
+    // Sequelize: Create the course entry in PostgreSQL
+    const newCourse = await Course.create({
+      title,
+      code: code ? code.trim().toUpperCase() : null, // Ensure clean casing
+      tags,
+      description,
+      semester,
+      academic_year,
+      is_published: is_published === 'true' || is_published === true, // Handles Form-Data boolean conversions safely
+      lecturer_id: lecturerId,
+      image_url: imageUrl
+    });
+
+    res.status(201).json(newCourse);
+  } catch (err) {
+    console.error("Error creating course routing:", err.message);
+    res.status(500).json({ error: 'Server error: ' + err.message });
+  }
+});
+
+// ------------------------------------
+// GET ALL COURSES (With Lecturer Email)
+// ------------------------------------
+app.get('/courses', authenticateToken, async (req, res) => {
+  try {
+    // Sequelize: Find all courses and JOIN the User table to get the email
+    const courses = await Course.findAll({
+      include: [{
+        model: User,
+        attributes: ['email'] // Only pull the email, we don't need their password hash!
+      }]
+    });
+
+    // Format the data exactly how your React Native frontend expects it
+    const formattedCourses = courses.map(course => {
+      const courseData = course.toJSON();
+      courseData.lecturer_email = course.User ? course.User.email : null;
+      return courseData;
+    });
+
+    res.json(formattedCourses);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// ------------------------------------
+// GET COURSES FOR A SPECIFIC LECTURER
+// ------------------------------------
+app.get('/lecturer/courses', authenticateToken, async (req, res) => {
+  try {
+    const lecturerId = req.user.id; 
+
+    const courses = await Course.findAll({
+      where: { lecturer_id: lecturerId },
+      include: [{
+        model: Enrollment,
+        attributes: ['id'] // Include to count students later
+      }],
+      order: [['id', 'DESC']] 
+    });
+
+    // Format the data explicitly for your frontend keys
+    const formattedCourses = courses.map(course => {
+      const plainCourse = course.toJSON();
+      return {
+        id: plainCourse.id,
+        title: plainCourse.title,
+        image: plainCourse.image_url ? `http://172.20.10.3:3000/${plainCourse.image_url}` : 'https://via.placeholder.com/150',
+        year: plainCourse.academic_year || 'N/A',
+        sem: plainCourse.semester ? `${plainCourse.semester} Sem` : 'N/A',
+        dept: req.user.department || 'IT Department', // Pulls from logged-in lecturer profile context
+        students: plainCourse.enrollments ? plainCourse.enrollments.length : 0
+      };
+    });
+
+    res.json(formattedCourses);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// ------------------------------------
+// GET SINGLE COURSE WITH MATERIALS
+// ------------------------------------
+app.get('/courses/:id', authenticateToken, async (req, res) => {
+  const { id } = req.params;
+
+  if (!id || id === 'undefined') {
+    return res.status(400).json({ error: 'Invalid Course ID' });
+  }
+
+  try {
+    const course = await Course.findByPk(id, {
+      include: [
+        {
+          model: User,
+          attributes: ['full_name', 'email', 'department'] // Select the fields needed for the UI card
+        }
+      ]
+    });
+
+    if (!course) {
+      return res.status(404).json({ error: 'Course not found' });
+    }
+
+    const materials = await CourseMaterial.findAll({
+      where: { course_id: id },
+      order: [['createdAt', 'ASC']]
+    });
+
+    res.json({
+      ...course.toJSON(),
+      materials: materials
+    });
+
+  } catch (err) {
+    console.error("DATABASE QUERY ERROR:", err); 
+    res.status(500).json({ error: 'Server error: ' + err.message });
+  }
+});
+
+// ------------------------------------
+// UPLOAD COURSE MATERIAL (With Gemini AI)
+// ------------------------------------
+app.post('/upload-material', authenticateToken, upload.single('file'), async (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No valid PDF file uploaded' });
+    }
+  
+    const { course_id, title } = req.body; 
+    const filePath = req.file.path;
+  
+    if (!title) {
+      fs.unlinkSync(filePath);
+      return res.status(400).json({ error: 'Lesson title is required' });
+    }
+  
+    try {
+      const pdfBuffer = fs.readFileSync(filePath);
+      
+      if (!parsePdf) {
+        return res.status(500).json({ error: 'PDF parsing module failure: Function entry point missing.' });
+      }
+
+      
+      const pdfData = await parsePdf(pdfBuffer); 
+      const extractedText = pdfData.text;
+
+    
+      if (!extractedText || extractedText.trim().length === 0) {
+        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+        return res.status(400).json({ error: 'The uploaded PDF is empty or contains non-scannable image text.' });
+      }
+  
+      const prompt = `
+      You are an AI tutor for an LMS system.
+      From the following course content:
+      1. Create a short COURSE DESCRIPTION (important key points summary)
+      2. Generate exactly 5 MCQs
+  
+      Rules:
+      - Each MCQ must have question, A, B, C, D, correct answer
+      - Output ONLY valid JSON using this schema:
+      {
+        "courseDescription": "string",
+        "mcqs": [
+          { "question": "string", "A": "string", "B": "string", "C": "string", "D": "string", "answer": "A/B/C/D" }
+        ]
+      }
+  
+      CONTENT:
+      ${extractedText}
+      `;
+  
+      const result = await model.generateContent(prompt);
+      const responseText = result.response.text();
+      const aiData = JSON.parse(responseText);
+  
+      // 2. Sequelize: Save material to database
+      const newMaterial = await CourseMaterial.create({
+        course_id: parseInt(course_id, 10), // Ensures it's parsed as an integer for PostgreSQL
+        title,
+        material_url: filePath
+      });
+  
+      res.status(201).json({
+        message: 'Material uploaded successfully',
+        material: newMaterial,
+        aiGeneratedContent: aiData
+      });
+  
+    } catch (err) {
+      console.error("Error processing material route:", err.message);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+      res.status(500).json({ error: 'Server error during processing: ' + err.message });
+    }
+});
+
+// ------------------------------------
+// ENROLL STUDENT
+// ------------------------------------
+app.post('/enroll', authenticateToken, async (req, res) => {
+  try {
+    const studentId = req.user.id;
+    const { course_id } = req.body;
+
+    // Sequelize: Create enrollment record
+    await Enrollment.create({
+      student_id: studentId,
+      course_id: course_id
+    });
+
+    res.json({ message: 'Enrolled successfully' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// ------------------------------------
+// CREATE QUIZ
+// ------------------------------------
+app.post('/quizzes', authenticateToken, async (req, res) => {
+  try {
+    const { course_id, title } = req.body;
+
+    // Sequelize: Create a new quiz
+    const quiz = await Quiz.create({
+      course_id,
+      title
+    });
+
+    res.status(201).json(quiz);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// ------------------------------------
+// ADD QUESTIONS
+// ------------------------------------
+app.post('/questions', authenticateToken, async (req, res) => {
+  try {
+    const { quiz_id, question, option_a, option_b, option_c, option_d, correct_answer } = req.body;
+
+    // Sequelize: Add question to the quiz
+    const newQuestion = await Question.create({
+      quiz_id,
+      question,
+      option_a,
+      option_b,
+      option_c,
+      option_d,
+      correct_answer
+    });
+
+    res.status(201).json(newQuestion);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// ------------------------------------
+// START THE SERVER & SYNC DATABASE
+// ------------------------------------
+const PORT = process.env.PORT || 3000;
+
+
+sequelize.sync({ alter : true }) 
+  .then(() => {
+    console.log('Database dropped and synchronized successfully.');
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });

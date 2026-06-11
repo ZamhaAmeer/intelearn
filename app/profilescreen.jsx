@@ -1,4 +1,5 @@
 import * as ImagePicker from 'expo-image-picker';
+import { API_BASE_URL } from '../config';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
@@ -65,7 +66,7 @@ const handlePhoneChange = (text) => {
 
 const handleSaveChanges = async () => {
   try {
-    const response = await fetch('http://172.20.10.3:3000/update-profile', {
+    const response = await fetch(`${API_BASE_URL}/update-profile`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -182,7 +183,7 @@ const handleSaveChanges = async () => {
               <View style={styles.imageWrapper}>
                 <TouchableOpacity onPress={handleChangePhoto}>
                   <Image 
-                    source={require("../../assets/images/pr2.jpg")} 
+                    source={require("../assets/images/pr2.jpg")} 
                     style={styles.profileImage}
                   />
                 </TouchableOpacity>

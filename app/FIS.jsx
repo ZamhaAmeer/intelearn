@@ -1,4 +1,5 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'; // Added useLocalSearchParams
+import { API_BASE_URL } from '../config';
 import { ChevronRight } from 'lucide-react-native';
 import React, { useEffect, useRef, useState } from 'react'; // Added useEffect
 import {
@@ -111,7 +112,7 @@ export default function CourseScreen() {
       try {
         // REPLACE with your actual local IP address (e.g., 192.168.1.x)
         // If testing on an Android emulator, use 10.0.2.2 instead of localhost
-        const response = await fetch(`http://172.20.10.3:3000/courses/${courseId}`, {
+        const response = await fetch(`${API_BASE_URL}/courses/${courseId}`, {
           method: 'GET',
           headers: {
             // You need to retrieve the actual token you saved during login (e.g., from AsyncStorage)

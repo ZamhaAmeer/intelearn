@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { API_BASE_URL } from '../config';
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
@@ -56,7 +57,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
   }
   try {
     
-    const response = await fetch('http://172.20.10.3:3000/register', {
+    const response = await fetch(`${API_BASE_URL}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -106,7 +107,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
   return (
     <View style={styles.container}>
        <ImageBackground
-        source={require("../../assets/images/header-curve.png")}
+        source={require("../assets/images/header-curve.png")}
         style={styles.headerBackground}
         resizeMode="stretch"
       >
