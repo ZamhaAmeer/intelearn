@@ -36,15 +36,6 @@ export default function PrivacyScreen() {
 
 
   return (
-      <TouchableOpacity activeOpacity={0.8} onPress={onToggle}>
-        <Animated.View style={[styles.trackStyle, rTrackStyle]}>
-          <Animated.View style={[styles.thumbStyle, rThumbStyle]} />
-        </Animated.View>
-      </TouchableOpacity>
-    );
-  };
-  
-  return (
     <View style={styles.masterContainer}>
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
     
@@ -137,6 +128,7 @@ export default function PrivacyScreen() {
     
     </View>
   );
+}
 
 
 //const Section = ({ title, text }: { title: string, text: string }) => 
