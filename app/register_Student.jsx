@@ -2,17 +2,17 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
-  Alert,
-  Dimensions,
-  ImageBackground,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
+    Alert,
+    Dimensions,
+    ImageBackground,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from "react-native";
 
 const { height } = Dimensions.get("window");
@@ -106,7 +106,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
   return (
     <View style={styles.container}>
        <ImageBackground
-        source={require("../../assets/images/header-curve.png")}
+        source={require('../src/assets/images/header-curve.png")}
         style={styles.headerBackground}
         resizeMode="stretch"
       >
@@ -275,7 +275,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
             
             <View style={styles.footer}>
               <Text style={styles.footerText}>Already have an account?</Text>
-              <TouchableOpacity onPress={() => router.push("/loginpage(student)")}>
+              <TouchableOpacity onPress={() => router.push("/loginpage_Student")}>
                 <Text style={styles.loginText}>Login</Text>
               </TouchableOpacity>
             </View>

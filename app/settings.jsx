@@ -2,18 +2,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  Alert,
-  Dimensions,
-  Image,
-  Modal,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Switch,
-  Text,
-  TouchableOpacity,
-  View
+    ActivityIndicator,
+    Alert,
+    Dimensions,
+    Image,
+    Modal,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    Switch,
+    Text,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -123,7 +123,7 @@ export default function SettingsScreen() {
             <View style={styles.menuList}>
               <MenuOption iconName="home-variant" title="Home" onPress={() => {setMenuVisible(false); router.replace('/coursedetails')}} />
               <MenuOption iconName="account" title="Profile" onPress={() => {setMenuVisible(false); router.replace('/profilescreen_student')}} />
-              <MenuOption iconName="view-dashboard" title="Dashboard" onPress={() => {setMenuVisible(false); router.replace('/dashboard')}} />
+              <MenuOption iconName="view-dashboard" title="Dashboard" onPress={() => {setMenuVisible(false); router.replace('/dashboard_student')}} />
               <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/minigamesection')}} />
               <MenuOption iconName="cog" title="Settings" active onPress={() => {setMenuVisible(false); toggleMenu();}} />
             </View>
@@ -132,7 +132,7 @@ export default function SettingsScreen() {
               onPress={async () => {
                 setMenuVisible(false); 
                 await AsyncStorage.removeItem('userEmail');
-                router.replace('/loginpage(student)');
+                router.replace('/loginpage_Student)');
               }}
             >
               <Text style={styles.logoutText}> Log Out   <Icon name="logout" size={24} color="grey" /></Text>
@@ -159,7 +159,7 @@ export default function SettingsScreen() {
             onPress={() => router.push('/profilescreen_student')}
           >
             <Image 
-              source={profileImage ? { uri: profileImage } : require("../../assets/images/pr2.jpg")} 
+              source={profileImage ? { uri: profileImage } : require('../src/assets/images/pr2.jpg")} 
               style={styles.avatar} 
             />
             <View style={styles.profileInfo}>

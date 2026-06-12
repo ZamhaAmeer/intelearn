@@ -1,5 +1,5 @@
+import { Ionicons } from "@expo/vector-icons"; // For the close (X) icon
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Ionicons } from "@expo/vector-icons"; 
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -30,62 +30,76 @@ export default function LoginPage() {
   const [isModalVisible, setModalVisible] = useState(false);
   const router = useRouter();
 
-  const handleLogin = async () => {
-    // Basic frontend validation
-    if (!email || !password) {
-      Alert.alert("Error", "Please enter both email and password.");
-      return;
-    }
+ const handleLogin = async () => {
+  // Basic frontend validation
+  if (!email || !password) {
+    Alert.alert("Error", "Please enter both email and password.");
+    return;
+  }
 
-    console.log("Attempting login for:", email);
+  const trimmedEmail = email.trim().toLowerCase();
 
-    try {
-      
-      const response = await fetch("http://10.19.66.72:3000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+  // 1. STOPS students if their emails contain "std" or registration numbers (e.g., EU/IS/...)
+  // Adjust this pattern if student emails have a specific format like eg2021001@ms.sab.ac.lk
+  const isStudentFormat = /[a-zA-Z]{2,3}\d{4,}/i.test(trimmedEmail) || trimmedEmail.includes("std");
+  
+  // 2. STRICT Lecturer Pattern (Matches only standard names directly before @ms.sab.ac.lk)
+  const lecturerEmailRegex = /^[a-z]+[a-z0-9._-]*@ms\.sab\.ac\.lk$/;
 
-      const rawText = await response.text();
+  if (isStudentFormat || !lecturerEmailRegex.test(trimmedEmail)) {
+    Alert.alert(
+      "Access Denied", 
+      "This login page is strictly for Lecturers. Please use your official faculty credentials."
+    );
+    return; // Completely blocks the process
+  }
 
-      // Debugging logs to see exactly what the server said
+  console.log("Attempting lecturer login for:", trimmedEmail);
+
+  try {
+    const response = await fetch("http://172.20.10.3:3000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: trimmedEmail, password }), // Send sanitized email
+    });
+
+    const rawText = await response.text();
+
     console.log("Server Status Code:", response.status);
     console.log("RAW SERVER RESPONSE:", rawText);
 
-    // 3. Now safely try to convert it to JSON
-      let data;
-      try {
-        data = JSON.parse(rawText);
-      } catch (parseError) {
-        console.error("Failed to parse JSON. The server sent HTML instead.");
-        Alert.alert("Server Error", "Check your Expo terminal to see the raw HTML response.");
-        return; 
-      }
+    let data;
+    try {
+      data = JSON.parse(rawText);
+    } catch (parseError) {
+      console.error("Failed to parse JSON.");
+      Alert.alert("Server Error", "Something went wrong on the server side.");
+      return; 
+    }
 
-      // 3. The Logic Check
     if (response.status === 200) {
+      console.log("Success! Navigating to course details...");
+      
+      // --- ADDED NEW LINES BELOW TO CACHE THE LECTURER PROFILE ID SESSION ---
+      await AsyncStorage.setItem('lecturerEmail', trimmedEmail);
+      // ----------------------------------------------------------------------
 
-  await AsyncStorage.setItem('userEmail', email);
-
-  console.log("Saved Email:", email);
-
-  router.push("./coursedetails");
-}
-     else {
-      // If status is 401 (Unauthorized) or 400 (Bad Request), show the error and DO NOT navigate
+      await AsyncStorage.setItem('token', data.token);
+      await AsyncStorage.setItem('fullName', data.full_name || 'Lecturer');
+      
+      router.push("./coursedetailsforlecturer");
+    } else {
       console.log("Login rejected by server.");
       Alert.alert("Login Failed", data.error || "Incorrect email or password");
     }
 
   } catch (error) {
     console.error("Network or Fetch Error:", error);
-    Alert.alert("Network Error", "Could not connect to the backend server. Is it running?");
+    Alert.alert("Network Error", "Could not connect to the backend server.");
   }
 };
-
 
   return (
     <KeyboardAvoidingView 
@@ -95,7 +109,7 @@ export default function LoginPage() {
     <View style={styles.container}>
       {/* Purple Header Section using your curve image */}
       <ImageBackground
-        source={require("../src/assets/images/header-curve.png")}
+        source={require('../src/assets/images/header-curve.png")}
         style={styles.headerBackground}
         resizeMode="stretch"
       >
@@ -103,7 +117,7 @@ export default function LoginPage() {
         {/* 3. Back Button positioned absolutely */}
         <View style={styles.backButtonContainer}>
           <TouchableOpacity 
-            onPress={() => router.replace('/choosingpage')} 
+            onPress={() => router.replace('/choosingpage')} // Goes back to Choosing Page
             style={styles.backButton}
           >
             <Ionicons name="chevron-back" size={30} color="white" />
@@ -111,7 +125,7 @@ export default function LoginPage() {
         </View>
         <View style={styles.logoContainer}>
           <Image
-            source={require("../src/assets/images/logo.png")}
+            source={require('../src/assets/images/logo.png")}
             style={styles.logoImage}
             resizeMode="contain"
           />
@@ -124,7 +138,7 @@ export default function LoginPage() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-              
+      
 
 
       <View style={styles.content}>
@@ -160,7 +174,7 @@ export default function LoginPage() {
                 placeholderTextColor="#A0A0A0"
                 value={password}
                 onChangeText={setPassword}
-                secureTextEntry={!showPassword} 
+                secureTextEntry={!showPassword} // Toggle visibility here
               />
               <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
                 <Ionicons 
@@ -198,7 +212,7 @@ export default function LoginPage() {
           {/* Footer */}
           <View style={styles.footer}>
             <Text style={styles.footerText}>Don't have an account?</Text>
-            <TouchableOpacity onPress={() => router.push("/register_Student")}>
+            <TouchableOpacity onPress={() => router.push("/register(lecturer)")}>
               <Text style={styles.signUpText}>Create an account</Text>
             </TouchableOpacity>
           </View>
@@ -235,7 +249,7 @@ const styles = StyleSheet.create({
     tintColor: "white",
     marginTop: 50
   },
-    logoText: {
+  logoText: {
     color: "#FFF",
     fontSize: 26,
     fontWeight: "bold",
@@ -252,7 +266,7 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     zIndex: 1, 
   },
-    welcomeTitle: {
+  welcomeTitle: {
     fontSize: 24,
     fontWeight: "bold",
     color: "#0B0C10",
@@ -273,7 +287,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 5,
   },
-    inputGroup: {
+  inputGroup: {
     marginBottom: 15,
   },
   label: {
@@ -296,7 +310,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 5,
   },
-    checkboxRow: {
+  checkboxRow: {
     flexDirection: "row",
     alignItems: "center",
   },
@@ -310,7 +324,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-    checkboxChecked: {
+  checkboxChecked: {
     backgroundColor: "#5B3CC2",
     borderColor: "#5B3CC2",
   },
@@ -327,7 +341,7 @@ const styles = StyleSheet.create({
     color: "#201A26",
     fontWeight: "500",
   },
-    loginButton: {
+  loginButton: {
     backgroundColor: "#5B3CC2",
     borderRadius: 18,
     paddingVertical: 15,
@@ -343,7 +357,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 40,
   },
-    backButtonContainer: {
+  backButtonContainer: {
     position: 'absolute',
     top: 40,
     left: 10,
@@ -363,21 +377,22 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 5,
   },
-    scrollView: {
+  scrollView: {
     flex: 1,
-    marginTop: -181, 
+    marginTop: -181, // Move the negative margin from 'content' to here
   },
   scrollContent: {
-    paddingBottom: 40, 
+    paddingBottom: 40, // Adds space at the bottom so it's not cramped
   },
   content: {
     flex: 1,
     paddingHorizontal: 30,
+    // Removed marginTop: -160 from here as it's now on the ScrollView
   },
   inputGroup: {
     marginBottom: 15,
   },
-    label: {
+  label: {
     fontSize: 14,
     fontWeight: "600",
     color: "#333",
@@ -392,7 +407,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingHorizontal: 14,
   },
-    flexInput: {
+  flexInput: {
     flex: 1,
     paddingVertical: 14,
     fontSize: 16,

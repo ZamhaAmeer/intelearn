@@ -1,60 +1,63 @@
 import { useRouter } from 'expo-router';
-import { ArrowRight, Bell, BookOpen, Clock, Search, SlidersHorizontal } from 'lucide-react-native';
+import { ArrowRight, Bell, BookOpen, Clock, Search, SlidersHorizontal, Users } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
-  Dimensions,
-  Modal,
-  Pressable,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
+    Dimensions,
+    Modal,
+    Pressable,
+    SafeAreaView,
+    ScrollView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import ReAnimated, {
-  interpolateColor,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring
+    interpolateColor,
+    useAnimatedStyle,
+    useSharedValue,
+    withSpring
 } from 'react-native-reanimated';
 import Svg, { Path } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
-const TIMELINE_DATA = [
+// Data altered for Lecturer tasks
+const LECTURER_TIMELINE_DATA = [
   {
     id: '1',
     date: 'SUNDAY, 17 MAY 2026',
-    time: '16:00',
-    title: 'Third Project Progress Journal Submission',
+    time: '14:00',
+    title: 'Grade Capstone Project Journal Submissions',
     course: 'Capstone Project',
-    status: 'Due Soon',
+    status: 'Action Required',
     urgency: 'high',
+    actionText: 'Grade',
   },
   {
     id: '2',
     date: 'MONDAY, 18 MAY 2026',
-    time: '12:00',
-    title: 'Quiz 02',
+    time: '09:00',
+    title: 'Live Lecture: Module 04 Auditing Frameworks',
     course: 'IT Auditing',
-    status: 'Incomplete',
+    status: 'Upcoming Class',
     urgency: 'medium',
+    actionText: 'Start',
   },
   {
     id: '3',
-    date: 'SATURDAY, 23 MAY 2026',
-    time: '18:00',
-    title: 'Assignment 02 Report Submission',
+    date: 'WEDNESDAY, 20 MAY 2026',
+    time: '23:59',
+    title: 'Review and Publish Quiz 02 Results',
     course: 'IT Auditing',
-    status: 'Upcoming',
+    status: 'Scheduled',
     urgency: 'low',
+    actionText: 'Review',
   },
 ];
-
 
 const SunIcon = ({ color }) => (
   <Svg width="22" height="22" viewBox="0 0 512 512">
@@ -108,14 +111,13 @@ const MenuOption = ({ iconName, title, active, onPress }) => (
   </Pressable>
 );
 
-
-export default function Dashboard() {
+export default function LecturerDashboard() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [isMenuVisible, setMenuVisible] = useState(false);
   const [isDark, setIsDark] = useState(false);
 
-  const filteredData = TIMELINE_DATA.filter(
+  const filteredData = LECTURER_TIMELINE_DATA.filter(
     (item) =>
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.course.toLowerCase().includes(searchQuery.toLowerCase())
@@ -138,48 +140,65 @@ export default function Dashboard() {
     <View style={[styles.container, isDark && { backgroundColor: '#121212' }]}>
       <StatusBar barStyle="light-content" backgroundColor={isDark ? '#1A1A1A' : '#4E33B3'} />
 
-      
+      {/* Top Header Section */}
       <View style={[styles.header, isDark && { backgroundColor: '#1A1A1A' }]}>
         <SafeAreaView>
           <View style={styles.headerTop}>
             <TouchableOpacity onPress={toggleMenu} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
               <Icon name="menu" size={30} color="white" />
             </TouchableOpacity>
+            
+    
+            
             <TouchableOpacity style={styles.notificationBtn}>
               <Bell color="#FFF" size={24} />
               <View style={styles.notificationDot} />
             </TouchableOpacity>
           </View>
-          <Text style={styles.headerTitle}>Dashboard</Text>
+          <Text style={styles.headerTitle}>Faculty Portal</Text>
+          <Text style={styles.headerSubtitle}>Welcome back, Professor</Text>
         </SafeAreaView>
       </View>
 
-    
-      <View style={[styles.surfaceCard, isDark && { backgroundColor: '#121212' }]}>
-        <View style={[styles.searchWrapper, isDark && { backgroundColor: '#2A2A2A' }]}>
+      {/* Main Panel Content Card */}
+      <View style={[styles.surfaceCard, isDark && { backgroundColor: '#1E1E1E' }]}>
+        <View style={[styles.searchWrapper, isDark && { backgroundColor: '#2D2D2D' }]}>
           <Search color={isDark ? "#888" : "#AA99E5"} size={20} style={styles.searchIcon} />
           <TextInput
             style={[styles.searchInput, isDark && { color: '#FFF' }]}
-            placeholder="Search activities or courses..."
+            placeholder="Search classes, schedules or tasks..."
             placeholderTextColor={isDark ? "#666" : "#A594F9"}
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
         </View>
 
-  
+        {/* Dynamic Metrics Bar unique to Lecturer Setup */}
+        <View style={styles.metricsRow}>
+          <View style={[styles.metricBox, isDark && { backgroundColor: '#2D2D2D', borderColor: '#333' }]}>
+            <Users size={16} color="#4E33B3" />
+            <Text style={[styles.metricNumber, isDark && { color: '#FFF' }]}>142</Text>
+            <Text style={styles.metricLabel}>Total Students</Text>
+          </View>
+          <View style={[styles.metricBox, isDark && { backgroundColor: '#2D2D2D', borderColor: '#333' }]}>
+            <Clock size={16} color="#4E33B3" />
+            <Text style={[styles.metricNumber, isDark && { color: '#FFF' }]}>4</Text>
+            <Text style={styles.metricLabel}>Hours Today</Text>
+          </View>
+        </View>
+
         <View style={styles.timelineHeader}>
           <View>
-            <Text style={[styles.timelineTitle, isDark && { color: '#FFF' }]}>Your Timeline</Text>
-            <Text style={styles.timelineSubtitle}>{filteredData.length} active updates</Text>
+            <Text style={[styles.timelineTitle, isDark && { color: '#FFF' }]}>Teaching Schedule</Text>
+            <Text style={styles.timelineSubtitle}>{filteredData.length} upcoming items</Text>
           </View>
           <TouchableOpacity style={[styles.filterButton, isDark && { backgroundColor: '#333' }]}>
             <SlidersHorizontal color={isDark ? "#FFF" : "#4E33B3"} size={14} style={{ marginRight: 6 }} />
-            <Text style={[styles.filterButtonText, isDark && { color: '#FFF' }]}>Next 30 days</Text>
+            <Text style={[styles.filterButtonText, isDark && { color: '#FFF' }]}>This Week</Text>
           </TouchableOpacity>
         </View>
 
-      
+        {/* Schedule List Timeline Feed */}
         <ScrollView 
           style={styles.feedScroll} 
           contentContainerStyle={{ paddingBottom: 130 }}
@@ -191,20 +210,20 @@ export default function Dashboard() {
               return (
                 <View key={item.id} style={styles.timelineRow}>
                   
-                  
+                  {/* Vertical Axis Path */}
                   <View style={styles.axisColumn}>
                     <View style={[styles.axisNode, { backgroundColor: theme.indicator }]} />
                     {index !== filteredData.length - 1 && <View style={[styles.axisTrack, isDark && { backgroundColor: '#333' }]} />}
                   </View>
 
-                  
+                  {/* Card Container block */}
                   <Pressable 
                     style={({ pressed }) => [
                       styles.feedCard, 
-                      isDark && { backgroundColor: '#1A1A1A', borderColor: '#2A2A2A' },
+                      isDark && { backgroundColor: '#252525', borderColor: '#333' },
                       pressed && (isDark ? styles.cardPressedDark : styles.cardPressed)
                     ]}
-                    onPress={() => alert(`Navigating to submission for: ${item.title}`)}
+                    onPress={() => alert(`Opening overview panel for: ${item.title}`)}
                   >
                     <View style={styles.cardTopBar}>
                       <View style={styles.metaRow}>
@@ -212,21 +231,24 @@ export default function Dashboard() {
                         <Text style={styles.cardTime}>{item.time} • </Text>
                         <Text style={styles.cardDate}>{item.date}</Text>
                       </View>
+                    </View>
+
+                    <Text style={[styles.assignmentTitle, isDark && { color: '#FFF' }]}>{item.title}</Text>
+
+                    <View style={styles.badgeWrapperLayout}>
                       <View style={[styles.statusBadge, { backgroundColor: theme.bg }]}>
                         <Text style={[styles.badgeText, { color: theme.text }]}>{item.status}</Text>
                       </View>
                     </View>
 
-                    <Text style={[styles.assignmentTitle, isDark && { color: '#FFF' }]}>{item.title}</Text>
-
-                    <View style={[styles.cardFooter, isDark && { borderTopColor: '#2A2A2A' }]}>
+                    <View style={[styles.cardFooter, isDark && { borderTopColor: '#333' }]}>
                       <View style={styles.courseTag}>
                         <BookOpen size={12} color="#4E33B3" style={{ marginRight: 6 }} />
                         <Text style={[styles.courseTitle, isDark && { color: '#B39DDB' }]} numberOfLines={1}>{item.course}</Text>
                       </View>
                       
                       <View style={styles.actionLink}>
-                        <Text style={[styles.actionLinkText, isDark && { color: '#B39DDB' }]}>Submit</Text>
+                        <Text style={[styles.actionLinkText, isDark && { color: '#B39DDB' }]}>{item.actionText}</Text>
                         <ArrowRight size={14} color={isDark ? "#B39DDB" : "#4E33B3"} />
                       </View>
                     </View>
@@ -237,13 +259,13 @@ export default function Dashboard() {
             })
           ) : (
             <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>Clear schedule! No tasks match your search.</Text>
+              <Text style={styles.emptyText}>No pending items on your schedule template.</Text>
             </View>
           )}
         </ScrollView>
       </View>
 
-      
+      {/* Side Navigation Modal Drawer */}
       <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
         <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={toggleMenu}>
           <View style={[styles.sideMenu, isDark && { backgroundColor: '#1A1A1A' }]} onStartShouldSetResponder={() => true}>
@@ -251,18 +273,16 @@ export default function Dashboard() {
               <TouchableOpacity onPress={toggleMenu}>
                 <Icon name="menu" size={30} color={isDark ? "white" : "#333"} />
               </TouchableOpacity>
-            
             </View>
 
             <View style={styles.menuList}>
-              <MenuOption iconName="home-variant" title="Home" onPress={() => {setMenuVisible(false); router.replace('/coursedetails')}} />
-              <MenuOption iconName="account" title="Profile" onPress={() => {setMenuVisible(false); router.replace('/profilescreen_student')}} />
-              <MenuOption iconName="view-dashboard" title="Dashboard" active onPress={() => {setMenuVisible(false); router.replace('/dashboard')}}  />
-              <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/minigamesection')}} />
-              <MenuOption iconName="cog" title="Settings" onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
+              <MenuOption iconName="home-variant" title="Home" active onPress={() => { setMenuVisible(false); router.replace('/coursedetailsforlecturer'); }} />
+              <MenuOption iconName="account" title="Profile" onPress={() => { setMenuVisible(false); router.replace('/profilescreen_lecturer'); }} />
+              <MenuOption iconName="view-dashboard" title="Dashboard" onPress={() => { setMenuVisible(false); router.replace('/dashboard_lecturer'); }}/>
+              <MenuOption iconName="cog" title="Settings" onPress={() => { setMenuVisible(false); router.replace('/settingslec'); }} />
             </View>
             
-            <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}>
+            <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(staff)') }}>
               <Text style={styles.logoutText}> Log Out    <Icon name="logout" size={24} color="grey" /></Text>
             </TouchableOpacity>
           </View>
@@ -273,9 +293,8 @@ export default function Dashboard() {
   );
 }
 
-
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#4E33B3' },
+  container: { flex: 1, backgroundColor: '#4E33B3' }, // Purple configuration base
   header: { backgroundColor: '#4E33B3', paddingHorizontal: 24, paddingBottom: 20 },
   headerTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 },
   notificationBtn: { padding: 4, position: 'relative' },
@@ -284,13 +303,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF5252', borderRadius: 4, borderWidth: 1.5, borderColor: '#4E33B3',
   },
   headerTitle: { fontSize: 30, fontWeight: '800', color: '#FFF', marginTop: 15, letterSpacing: -0.5 },
+  headerSubtitle: { fontSize: 14, color: '#E8E4FF', fontWeight: '500', marginTop: 2 },
   surfaceCard: {
     flex: 1, backgroundColor: '#FEFDF0', borderTopLeftRadius: 32, borderTopRightRadius: 32,
     paddingHorizontal: 24, paddingTop: 24,
   },
-  searchWrapper: { flexDirection: 'row', backgroundColor: '#E8E4FF', borderRadius: 20, alignItems: 'center', height: 50, paddingHorizontal: 16, marginBottom: 24 },
+  searchWrapper: { flexDirection: 'row', backgroundColor: '#E8E4FF', borderRadius: 20, alignItems: 'center', height: 50, paddingHorizontal: 16, marginBottom: 20 },
   searchIcon: { marginRight: 12 },
   searchInput: { flex: 1, fontSize: 15, color: '#311B92', fontWeight: '500' },
+  
+  // Custom metrics layout configuration for Faculty members
+  metricsRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 },
+  metricBox: { flex: 0.48, backgroundColor: '#FFF', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#F4F2E4', shadowColor: '#4E33B3', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.02, shadowRadius: 4, elevation: 1 },
+  metricNumber: { fontSize: 18, fontWeight: '800', color: '#1A1A1A', marginTop: 4 },
+  metricLabel: { fontSize: 11, color: '#757575', marginTop: 2, fontWeight: '500' },
+
   timelineHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
   timelineTitle: { fontSize: 20, fontWeight: '800', color: '#1A1A1A' },
   timelineSubtitle: { fontSize: 12, color: '#757575', fontWeight: '500', marginTop: 2 },
@@ -306,15 +333,17 @@ const styles = StyleSheet.create({
     shadowColor: '#4E33B3', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.04, shadowRadius: 10, elevation: 2,
   },
   cardPressed: { transform: [{ scale: 0.99 }], backgroundColor: '#FAFAF5' },
-  cardPressedDark: { transform: [{ scale: 0.99 }], backgroundColor: '#222' },
+  cardPressedDark: { transform: [{ scale: 0.99 }], backgroundColor: '#2D2D2D' },
   cardTopBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
   metaRow: { flexDirection: 'row', alignItems: 'center' },
   cardTime: { fontSize: 12, color: '#7E57C2', fontWeight: '700' },
   cardDate: { fontSize: 11, fontWeight: '600', color: '#888' },
   statusBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10 },
   badgeText: { fontSize: 10, fontWeight: '700' },
-  assignmentTitle: { fontSize: 15, fontWeight: '700', color: '#1A1A1A', lineHeight: 20, marginBottom: 12 },
+  assignmentTitle: { fontSize: 15, fontWeight: '700', color: '#1C1C1C', lineHeight: 22, marginBottom: 8 },
   cardFooter: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderTopWidth: 1, borderTopColor: '#FDFCEF', paddingTop: 10 },
+  badgeWrapperLayout: { flexDirection: 'row', marginBottom: 14 },
+  statusBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
   courseTag: { flexDirection: 'row', alignItems: 'center', flex: 0.75 },
   courseTitle: { fontSize: 12, color: '#4E33B3', fontWeight: '600' },
   actionLink: { flexDirection: 'row', alignItems: 'center' },

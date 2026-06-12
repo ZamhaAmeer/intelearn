@@ -1,241 +1,328 @@
-import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import { useRouter } from 'expo-router';
+import React, { useEffect, useState } from 'react';
 import {
+  ActivityIndicator,
   Alert,
   Dimensions,
   Image,
-  ImageBackground,
-  KeyboardAvoidingView,
-  Platform,
+  Modal,
+  Pressable,
   ScrollView,
   StyleSheet,
+  Switch,
   Text,
-  TextInput,
   TouchableOpacity,
   View
-} from "react-native";
+} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import ForgotPasswordModal from "./forgotpassword";
+const { width } = Dimensions.get('window');
 
-const { height } = Dimensions.get("window");
-
-export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-
-  const [isModalVisible, setModalVisible] = useState(false);
+export default function LecturerSettingsScreen() {
   const router = useRouter();
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-      Alert.alert("Error", "Please enter both email and password.");
-      return;
-    }
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [profileImage, setProfileImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-    const trimmedEmail = email.trim().toLowerCase();
+  const [isMenuVisible, setMenuVisible] = useState(false);
+  const toggleMenu = () => setMenuVisible(!isMenuVisible);
 
-    // Enforce strict format: standard strings before @ms.sab.ac.lk 
-    // and proactively blocks student numbers like EU/IS/2022/... or "std" identifiers
-    const isStudentFormat = /[a-zA-Z]{2,3}\d{4,}/i.test(trimmedEmail) || trimmedEmail.includes("std");
-    const lecturerEmailRegex = /^[a-z]+[a-z0-9._-]*@ms\.sab\.ac\.lk$/;
+  // Lecturer-specific state preferences
+  const [autoGenerateQuiz, setAutoGenerateQuiz] = useState(true);
+  const [pushNotifications, setPushNotifications] = useState(true);
+  const [weeklyAnalytics, setWeeklyAnalytics] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
 
-    if (isStudentFormat || !lecturerEmailRegex.test(trimmedEmail)) {
-      Alert.alert(
-        "Access Denied", 
-        "This login page is strictly for Lecturers. Please use your official faculty credentials."
-      );
-      return; 
-    }
+  useEffect(() => {
+    const checkSessionAndFetch = async () => {
+      try {
+        // MATCHED: Reading 'lecturerEmail' populated by LoginPage
+        const storedEmail = await AsyncStorage.getItem('lecturerEmail');
+        
+        if (storedEmail) {
+          await fetchLecturerData(storedEmail);
+        } else {
+          setIsLoading(false);
+          Alert.alert(
+            "Session Missing",
+            "Please sign in again to configure your application parameters.",
+            [{ text: "Login", onPress: () => router.replace('/loginpage(lecturer)') }]
+          );
+        }
+      } catch (e) {
+        console.error("Settings profile link setup failed:", e);
+        setIsLoading(false);
+      }
+    };
 
-    console.log("Attempting lecturer login for:", trimmedEmail);
+    checkSessionAndFetch();
+  }, []);
 
+  const fetchLecturerData = async (userEmail) => {
     try {
-      const response = await fetch("http://172.20.10.3:3000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: trimmedEmail, password }),
+      setIsLoading(true);
+      const url = `http://172.20.10.3:3000/get-profile?email=${encodeURIComponent(userEmail)}`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
       });
 
-      const rawText = await response.text();
-
-      console.log("Server Status Code:", response.status);
-      console.log("RAW SERVER RESPONSE:", rawText);
-
-      let data;
-      try {
-        data = JSON.parse(rawText);
-      } catch (parseError) {
-        console.error("Failed to parse JSON.");
-        Alert.alert("Server Error", "Something went wrong on the server side.");
-        return; 
-      }
-
-      if (response.status === 200) {
-        console.log("Success! Saving details and navigating...");
-        
-        // Save token, name, and email strings cleanly to local storage
-        await AsyncStorage.setItem('token', data.token);
-        await AsyncStorage.setItem('fullName', data.full_name || 'Lecturer');
-        await AsyncStorage.setItem('email', trimmedEmail); 
-        
-        router.push("./coursedetailsforlecturer");
+      if (response.ok) {
+        const data = await response.json();
+        setFullName(data.full_name || 'INTELEARN Lecturer');
+        setEmail(data.email || userEmail);
       } else {
-        console.log("Login rejected by server.");
-        Alert.alert("Login Failed", data.error || "Incorrect email or password");
+        console.error("Database sync drop context mismatch inside parameters configuration.");
+        // Fallback context values if the request drops but session email is real
+        setFullName('Faculty Member');
+        setEmail(userEmail);
       }
-
     } catch (error) {
-      console.error("Network or Fetch Error:", error);
-      Alert.alert("Network Error", "Could not connect to the backend server. Is it running?");
+      console.error("Network interface connection failure downstream:", error);
+      // Ensure the text fallback updates if network times out completely
+      setFullName('Faculty Member');
+      setEmail(userEmail);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  return (
-    <KeyboardAvoidingView 
-      style={{ flex: 1, backgroundColor: "transparent" }} 
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+  const MenuOption = ({ iconName, title, active, onPress }) => (
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.menuItem,
+        active && styles.activeMenuItem,
+        pressed && styles.pressedMenuItem 
+      ]}
     >
-      <View style={styles.container}>
-        <ImageBackground
-          source={require("../../assets/images/header-curve.png")}
-          style={styles.headerBackground}
-          resizeMode="stretch"
-        >
-          <View style={styles.backButtonContainer}>
-            <TouchableOpacity 
-              onPress={() => router.replace('/choosingpage')} 
-              style={styles.backButton}
-            >
-              <Ionicons name="chevron-back" size={30} color="white" />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.logoContainer}>
-            <Image
-              source={require("../../assets/images/logo.png")}
-              style={styles.logoImage}
-              resizeMode="contain"
-            />
-            <Text style={styles.logoText}>INTELEARN</Text>
-          </View>
-        </ImageBackground>
+      {({ pressed }) => (
+        <>
+          <Icon name={iconName} size={22} color={active || pressed ? "#4E33B3" : "#7E57C2"} style={styles.menuItemIcon} />
+          <Text style={[styles.menuItemText, (active || pressed) && styles.activeMenuText]}>{title}</Text>
+        </>
+      )}
+    </Pressable>
+  );
 
-        <ScrollView 
-          style={styles.scrollView} 
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-        >
-          <View style={styles.content}>
-            <View style={styles.welcomeSection}>
-              <Text style={styles.welcomeTitle}>Welcome to INTELEARN</Text>
-              <Text style={styles.welcomeSubtitle}>Learn smart, Grow fast</Text>
-            </View>
-
-            <View style={styles.formCard}>
-              <View style={styles.inputGroup}>
-                <Text style={styles.label}>Email Address*</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="example@email.com"
-                  placeholderTextColor="#A0A0A0"
-                  value={email}
-                  onChangeText={setEmail}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                />
-              </View>
-
-              <View style={styles.inputGroup}>
-                <Text style={styles.label}>Password*</Text>
-                <View style={styles.passwordInputWrapper}>
-                  <TextInput
-                    style={styles.flexInput}
-                    placeholder="........"
-                    placeholderTextColor="#A0A0A0"
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry={!showPassword} 
-                  />
-                  <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                    <Ionicons 
-                      name={showPassword ? "eye-outline" : "eye-off-outline"} 
-                      size={22} 
-                      color="#A0A0A0" 
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-              <View style={styles.row}>
-                <TouchableOpacity 
-                  style={styles.checkboxRow} 
-                  onPress={() => setRememberMe(!rememberMe)}
-                >
-                  <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
-                    {rememberMe && <Text style={styles.checkmark}>✓</Text>}
-                  </View>
-                  <Text style={styles.checkboxLabel}>Remember Me</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={() => setModalVisible(true)}>
-                  <Text style={styles.forgotText}>Forgot Password?</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-              <Text style={styles.loginButtonText}>Login</Text>
-            </TouchableOpacity>
-
-            <View style={styles.footer}>
-              <Text style={styles.footerText}>Don't have an account?</Text>
-              <TouchableOpacity onPress={() => router.push("/register(lecturer)")}>
-                <Text style={styles.signUpText}>Create an account</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </ScrollView>
-        <ForgotPasswordModal visible={isModalVisible} onClose={() => setModalVisible(false)} />
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#4E33B3" />
       </View>
-    </KeyboardAvoidingView>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      
+      {/* Side Navigation Drawer */}
+      <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
+        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={toggleMenu}>
+          <View style={styles.sideMenu} onStartShouldSetResponder={() => true}>
+            <View style={styles.menuHeader}>
+              <TouchableOpacity onPress={toggleMenu}><Icon name="menu" size={30} color="#333" /></TouchableOpacity>
+            </View>
+            <View style={styles.menuList}>
+              <MenuOption iconName="home-variant" title="Home" onPress={() => {setMenuVisible(false); router.replace('/coursedetailsforlecturer')}} />
+              <MenuOption iconName="account" title="Profile" onPress={() => {setMenuVisible(false); router.replace('/profilescreen_lecturer')}} />
+              <MenuOption iconName="view-dashboard" title="Dashboard" onPress={() => {setMenuVisible(false); router.replace('/dashboard_lecturer')}} />
+              <MenuOption iconName="cog" title="Settings" active onPress={() => {setMenuVisible(false); router.replace('/settingslec')}}  />
+            </View>
+            <TouchableOpacity 
+              style={styles.logoutButton} 
+              onPress={async () => {
+                setMenuVisible(false); 
+                // Clean all lecturer context markers on log out
+                await AsyncStorage.removeItem('lecturerEmail');
+                await AsyncStorage.removeItem('token');
+                await AsyncStorage.removeItem('fullName');
+                router.replace('/loginpage_Lecturer)');
+              }}
+            >
+              <Text style={styles.logoutText}> Log Out   <Icon name="logout" size={24} color="grey" /></Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
+      
+      {/* Top Header */}
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.menuButton} onPress={toggleMenu}>
+          <Icon name="menu" size={30} color="white" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Settings</Text>
+      </View>
+
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+        
+        {/* Account Section */}
+        <Text style={styles.sectionHeader}>FACULTY ACCOUNT</Text>
+        <View style={styles.sectionCard}>
+          <TouchableOpacity 
+            style={styles.profileRow} 
+            onPress={() => router.push('/profilescreen_lecturer')}
+          >
+            <Image 
+              source={profileImage ? { uri: profileImage } : require('../src/assets/images/pr2.jpg")} 
+              style={styles.avatar} 
+            />
+            <View style={styles.profileInfo}>
+              <Text style={styles.profileName} numberOfLines={1}>{fullName}</Text>
+              <Text style={styles.profileEmail} numberOfLines={1}>{email}</Text>
+            </View>
+            <Text style={styles.arrow}>❯</Text>
+          </TouchableOpacity>
+          
+          <View style={styles.separator} />
+          
+          <TouchableOpacity style={styles.itemRow}>
+            <View style={[styles.iconBox, { backgroundColor: '#E8E4FF' }]}>
+              <Text style={{color: '#4E33B3'}}>🏅</Text>
+            </View>
+            <Text style={styles.itemLabel}>Institution Access Plan</Text>
+            <View style={styles.premiumBadge}>
+              <Text style={styles.premiumText}>FACULTY</Text>
+            </View>
+            <Text style={styles.arrow}>❯</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* AI Educator Preferences */}
+        <Text style={styles.sectionHeader}>AI GENERATION PREFERENCES</Text>
+        <View style={styles.sectionCard}>
+          <SettingItem icon="🧠" label="AI Assistant Tone" hasArrow />
+          <View style={styles.separator} />
+          <View style={styles.itemRow}>
+            <View style={[styles.iconBox, { backgroundColor: '#E8E4FF' }]}>
+              <Text>📝</Text>
+            </View>
+            <Text style={styles.itemLabel}>Auto-generate Question Banks</Text>
+            <Switch
+              value={autoGenerateQuiz}
+              onValueChange={setAutoGenerateQuiz}
+              trackColor={{ false: '#767577', true: '#4E33B3' }}
+              thumbColor={'#fff'}
+            />
+          </View>
+          <View style={styles.separator} />
+          <SettingItem icon="文A" label="Preferred Evaluation Language" valueText="English (US)" hasArrow />
+        </View>
+
+        {/* Notification Settings */}
+        <Text style={styles.sectionHeader}>NOTIFICATIONS</Text>
+        <View style={styles.sectionCard}>
+          <View style={styles.itemRow}>
+             <View style={[styles.iconBox, { backgroundColor: '#E8E4FF' }]}><Text>🔔</Text></View>
+             <Text style={styles.itemLabel}>Push Notifications</Text>
+             <Switch value={pushNotifications} onValueChange={setPushNotifications} trackColor={{ false: '#767577', true: '#4E33B3' }} />
+          </View>
+          <View style={styles.separator} />
+          <View style={styles.itemRow}>
+             <View style={[styles.iconBox, { backgroundColor: '#E8E4FF' }]}><Text>📊</Text></View>
+             <Text style={styles.itemLabel}>Weekly Batch Analytics Report</Text>
+             <Switch value={weeklyAnalytics} onValueChange={setWeeklyAnalytics} trackColor={{ false: '#767577', true: '#4E33B3' }} />
+          </View>
+        </View>
+
+        {/* Core App Settings */}
+        <Text style={styles.sectionHeader}>APP SETTINGS</Text>
+        <View style={styles.sectionCard}>
+          <View style={styles.itemRow}>
+             <View style={[styles.iconBox, { backgroundColor: '#E8E4FF' }]}><Text>🌙</Text></View>
+             <Text style={styles.itemLabel}>Dark Mode</Text>
+             <Switch value={darkMode} onValueChange={setDarkMode} trackColor={{ false: '#767577', true: '#4E33B3' }} />
+          </View>
+          <View style={styles.separator} />
+          <TouchableOpacity 
+            style={styles.itemRow}
+            onPress={async () => {
+              // Clean lecturer items explicitly on logout link
+              await AsyncStorage.removeItem('lecturerEmail');
+              await AsyncStorage.removeItem('token');
+              await AsyncStorage.removeItem('fullName');
+              router.replace('/loginpage(lecturer)');
+            }}
+          >
+             <View style={[styles.iconBox, { backgroundColor: '#FFE8E8' }]}><Text>🚪</Text></View>
+             <Text style={[styles.itemLabel, { color: '#FF4B4B' }]}>Sign Out</Text>
+          </TouchableOpacity>
+        </View>
+
+      </ScrollView>
+    </View>
   );
 }
 
+const SettingItem = ({ icon, label, valueText, hasArrow }) => (
+  <TouchableOpacity style={styles.itemRow}>
+    <View style={[styles.iconBox, { backgroundColor: '#E8E4FF' }]}>
+      <Text>{icon}</Text>
+    </View>
+    <Text style={styles.itemLabel}>{label}</Text>
+    {valueText && <Text style={styles.valueText}>{valueText}</Text>}
+    {hasArrow && <Text style={styles.arrow}>❯</Text>}
+  </TouchableOpacity>
+);
+
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#FFFFF0" },
-  headerBackground: { width: "100%", height: height * 0.5, justifyContent: "center", alignItems: "center" },
-  logoContainer: { alignItems: "center", marginTop: -250 },
-  logoImage: { width: 170, height: 170, tintColor: "white", marginTop: 50 },
-  logoText: { color: "#FFF", fontSize: 26, fontWeight: "bold", letterSpacing: 1, marginTop: -50 },
-  scrollView: { flex: 1, marginTop: -181 },
-  scrollContent: { paddingBottom: 40 },
-  content: { flex: 1, paddingHorizontal: 30 },
-  welcomeSection: { alignItems: "center", marginBottom: 50, zIndex: 1 },
-  welcomeTitle: { fontSize: 24, fontWeight: "bold", color: "#0B0C10", marginTop: 20 },
-  welcomeSubtitle: { fontSize: 18, color: "rgba(0, 0, 0, 0.6)", marginTop: 5 },
-  formCard: { backgroundColor: "white", borderRadius: 15, padding: 20, elevation: 5, shadowColor: "#000", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 10 },
-  inputGroup: { marginBottom: 15 },
-  label: { fontSize: 14, fontWeight: "600", color: "#333", marginBottom: 8 },
-  input: { backgroundColor: "rgba(242, 231, 231, 0.2)", borderWidth: 1, borderColor: "#E5E5E5", borderRadius: 12, padding: 12, fontSize: 14 },
-  passwordInputWrapper: { flexDirection: 'row', alignItems: 'center', backgroundColor: "#F9F9F9", borderWidth: 1, borderColor: "#EEE", borderRadius: 12, paddingHorizontal: 14 },
-  flexInput: { flex: 1, paddingVertical: 14, fontSize: 16, color: "#000" },
-  row: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 5 },
-  checkboxRow: { flexDirection: "row", alignItems: "center" },
-  checkbox: { width: 18, height: 18, borderWidth: 1, borderColor: "#000", borderRadius: 4, marginRight: 8, alignItems: "center", justifyContent: "center" },
-  checkboxChecked: { backgroundColor: "#5B3CC2", borderColor: "#5B3CC2" },
-  checkmark: { color: "white", fontSize: 12 },
-  checkboxLabel: { fontSize: 12, color: "#5C5C57" },
-  forgotText: { fontSize: 12, color: "#201A26", fontWeight: "500" },
-  loginButton: { backgroundColor: "#5B3CC2", borderRadius: 18, paddingVertical: 15, alignItems: "center", marginTop: 30 },
-  loginButtonText: { color: "#FFFFF0", fontSize: 18, fontWeight: "bold" },
-  footer: { alignItems: "center", marginTop: 40 },
-  backButtonContainer: { position: 'absolute', top: 40, left: 10, zIndex: 10 },
-  backButton: { padding: 10 },
-  footerText: { color: "#000", fontSize: 15, fontWeight: "300" },
-  signUpText: { color: "#3716A4", fontSize: 14, fontWeight: "bold", marginTop: 5 }
+  container: { flex: 1, backgroundColor: '#FEFDF0' },
+  loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FEFDF0' },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    justifyContent: 'flex-start',
+  },
+  sideMenu: { width: width * 0.7, height: '100%', backgroundColor: 'white', padding: 20, borderTopRightRadius: 20, borderBottomRightRadius: 20, elevation: 10 },
+  menuHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 40, marginTop: 20 },
+  menuList: { flex: 1 },
+  menuItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14, paddingHorizontal: 15, borderRadius: 12, marginBottom: 8 },
+  activeMenuItem: { backgroundColor: '#E8E4FF' },
+  pressedMenuItem: { backgroundColor: '#D1C4E9', transform: [{ scale: 0.97 }] },
+  menuItemIcon: { marginRight: 15 },
+  menuItemText: { fontSize: 16, color: '#333', fontWeight: '500' },
+  activeMenuText: { color: '#4E33B3', fontWeight: 'bold' },
+  logoutButton: { borderTopWidth: 1, borderTopColor: '#eee', paddingVertical: 20, alignItems: 'center' },
+  logoutText: { fontSize: 18, color: 'grey' },
+
+  header: {
+    backgroundColor: '#4E33B3',
+    height: 140,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: -30,
+  },
+  menuButton: { position: 'absolute', left: 20, top: 40, marginTop: 40 },
+  headerTitle: { color: 'white', fontSize: 24, fontWeight: 'bold', marginTop: 50 },
+  scrollContent: { padding: 20 },
+  sectionHeader: { fontSize: 14, fontWeight: 'bold', color: '#888', marginBottom: 10, marginTop: 20 },
+  sectionCard: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    borderWidth: 1,
+    borderColor: '#eee',
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+  },
+  profileRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 20 },
+  avatar: { width: 60, height: 60, borderRadius: 30 },
+  profileInfo: { flex: 1, marginLeft: 15 },
+  profileName: { fontSize: 18, fontWeight: 'bold', color: '#1A1A1A' },
+  profileEmail: { fontSize: 13, color: '#888', marginTop: 2 },
+  itemRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 15 },
+  iconBox: { width: 40, height: 40, borderRadius: 10, justifyContent: 'center', alignItems: 'center' },
+  itemLabel: { flex: 1, fontSize: 16, marginLeft: 15, color: '#333' },
+  arrow: { fontSize: 18, color: '#333', marginLeft: 10 },
+  separator: { height: 1, backgroundColor: '#eee', width: '100%' },
+  premiumBadge: { backgroundColor: '#C3B9EA', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10 },
+  premiumText: { color: '#4E33B3', fontSize: 12, fontWeight: 'bold' },
+  valueText: { color: '#888', fontSize: 14 },
 });

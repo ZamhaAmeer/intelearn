@@ -1,4 +1,4 @@
-import * as ImagePicker from 'expo-image-picker'; // 1. Import the picker
+import * as ImagePicker from 'expo-image-picker';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
@@ -6,133 +6,114 @@ import {
     Dimensions,
     Image,
     KeyboardAvoidingView,
-    Modal,
     Platform,
-    Pressable,
     ScrollView,
     StyleSheet,
     Text,
     TextInput,
     TouchableOpacity,
-    View,
+    View
 } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const { width } = Dimensions.get('window');
 
 export default function ProfileScreen() {
   const params = useLocalSearchParams();
   const [fullName, setFullName] = useState(params?.fullName || '');
-  const [userName, setUserName] = useState('');
+  const [userName, setUserName] = useState(params?.userName || '');
   const [email, setEmail] = useState(params?.email || '');
-  const [phone, setPhone] = useState('');
-  const [bio, setBio] = useState('');
-  const [department, setDepartment] = useState('cis'); 
-  const [gender, setGender] = useState('male');
+  const [phone, setPhone] = useState(params?.phone || '');
+  const [bio, setBio] = useState(params?.bio || '');
+  const [department, setDepartment] = useState(params?.department || 'cis'); 
+  const [gender, setGender] = useState(params?.gender || 'male');
   const router = useRouter();
 
   useEffect(() => {
-    if (params?.fullName) {
-      setFullName(params.fullName);
-    }
-    if (params?.email) {
-      setEmail(params.email);
-    }
+    if (params?.fullName) setFullName(params.fullName);
+    if (params?.email) setEmail(params.email);
+    if (params?.userName) setUserName(params.userName);
+    if (params?.phone) setPhone(params.phone);
+    if (params?.bio) setBio(params.bio);
+    if (params?.department) setDepartment(params.department);
+    if (params?.gender) setGender(params.gender);
   }, [params]);
 
   const [isMenuVisible, setMenuVisible] = useState(false);
   const toggleMenu = () => setMenuVisible(!isMenuVisible);
   
-  // 3. State to store the selected image URI
-  const [profileImage, setProfileImage] = useState('https://via.placeholder.com/150');
+  const [profileImage, setProfileImage] = useState(null);
+
   const departmentData = [
-  { label: 'CIS', value: 'cis' },
-  { label: 'IS', value: 'is' },
-  { label: 'DS', value: 'ds' },
-  { label: 'SE', value: 'se' },
-];
+    { label: 'CIS', value: 'cis' },
+    { label: 'IS', value: 'is' },
+    { label: 'DS', value: 'ds' },
+    { label: 'SE', value: 'se' },
+  ];
 
-const genderData = [
-  { label: 'Male', value: 'male' },
-  { label: 'Female', value: 'female' },
-  { label: 'Other', value: 'other' },
-];
+  const genderData = [
+    { label: 'Male', value: 'male' },
+    { label: 'Female', value: 'female' },
+    { label: 'Other', value: 'other' },
+  ];
 
-const handlePhoneChange = (text) => {
+  const handlePhoneChange = (text) => {
     const numericValue = text.replace(/[^0-9]/g, '');
     setPhone(numericValue);
   };
 
-const MenuOption = ({ iconName, title, active, onPress }) => (
-  <Pressable
-    onPress={onPress}
-    style={({ pressed }) => [
-      styles.menuItem,
-      active && styles.activeMenuItem,
-      pressed && styles.pressedMenuItem 
-    ]}
-  >
-    {({ pressed }) => (
-      <>
-        <Icon name={iconName} size={22} color={active || pressed ? "#4E33B3" : "#7E57C2"} style={styles.menuItemIcon} />
-        <Text style={[styles.menuItemText, (active || pressed) && styles.activeMenuText]}>{title}</Text>
-      </>
-    )}
-  </Pressable>
-);
+  const handleSaveChanges = async () => {
+    try {
+      const response = await fetch('http://172.20.10.3:3000/update-profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          full_name: fullName,
+          username: userName,
+          email: email,
+          phone: phone,
+          bio: bio,
+          department: department,
+          gender: gender
+        }),
+      });
 
-const handleSaveChanges = async () => {
-  try {
-    const response = await fetch('http://172.20.10.3:3000/update-profile', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        full_name: fullName,
-        username: userName,
-        email: email,
-        phone: phone,
-        bio: bio,
-        department: department,
-        gender: gender
-      }),
-    });
+      const data = await response.json();
 
-    const contentType = response.headers.get("content-type");
-    if (!contentType || !contentType.includes("application/json")) {
-        const errorText = await response.text();
-        console.error("Received non-JSON response:", errorText);
-        throw new Error("Server returned non-JSON response");
-    }
-
-    const data = await response.json();
-    
-
-    if (response.ok) {
-      Alert.alert(
-        "Success", 
-        "Profile updated successfully! Please log in again.", 
-        [
-          {
-            text: "OK",
-            onPress: () => {
-              // Redirect to the login page
-              router.replace('/loginpage_Student'); 
+      if (response.ok) {
+        Alert.alert(
+          "Success", 
+          "Profile updated successfully!", 
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                // Route directly back to View Screen while pushing updated details
+                router.replace({
+                  pathname: '/loginpage_Lecturer', 
+                  params: { 
+                    email: email, 
+                    fullName: fullName,
+                    userName: userName,
+                    phone: phone,
+                    bio: bio,
+                    department: department,
+                    gender: gender
+                  }
+                }); 
+              }
             }
-          }
-        ]
-      );
-    } else {
-      Alert.alert("Error", data.error || "Something went wrong");
+          ]
+        );
+      } else {
+        Alert.alert("Error", data.error || "Something went wrong");
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Error", "Could not connect to server");
     }
-  } catch (error) {
-    console.error(error);
-    Alert.alert("Error", "Could not connect to server");
-  }
-};
+  };
 
-
-  // 4. Function to handle Image Selection
   const handleChangePhoto = () => {
     Alert.alert(
       "Select Profile Picture",
@@ -182,61 +163,27 @@ const handleSaveChanges = async () => {
 
   return (
     <View style={styles.container}>
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}
-      >
-       <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
-               <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={toggleMenu}>
-                 <View style={styles.sideMenu}>
-                   <View style={styles.menuHeader}>
-                     <Text style={styles.moonIcon}>🌙</Text>
-                   </View>
-                   <View style={styles.menuList}>
-                     <MenuOption iconName="home-variant" title="Home" onPress={() => {setMenuVisible(false); router.replace('/coursedetails')}} />
-                     <MenuOption iconName="account" title="Profile"  active onPress={() => {setMenuVisible(false); router.replace('/profilescreen')}} />
-                     <MenuOption iconName="view-dashboard" title="Dashboard" />
-                     <MenuOption iconName="controller-classic" title="Games" />
-                     <MenuOption iconName="shield-check" title="Privacy" onPress={() => {setMenuVisible(false); router.replace('/privacy')}}/>
-                     <MenuOption iconName="cog" title="Settings" onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
-                   </View>
-                   <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage_Student') }}>
-                     <Text style={styles.logoutText}> Log Out   <Icon name="logout" size={24} color="grey" /></Text>
-                   </TouchableOpacity>
-                 </View>
-               </TouchableOpacity>
-             </Modal>
-
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
-          
           <View style={styles.header}>
-          <TouchableOpacity style={styles.menuButton} onPress={() => setMenuVisible(true)}>
-            <Icon name="menu" size={30} color="white" />
-          </TouchableOpacity>
             <Text style={styles.headerTitle}>Profile information</Text>
           </View>
 
           <View style={styles.contentCard}>
             <View style={styles.profileImageSection}>
               <View style={styles.imageWrapper}>
-                {/* 5. Update Image source to use the state */}
                 <TouchableOpacity onPress={handleChangePhoto}>
                   <Image 
-                    source={require('../src/assets/images/pr2.jpg")} 
+                    source={profileImage ? { uri: profileImage } : require('../src/assets/images/pr2.jpg")} 
                     style={styles.profileImage}
                   />
                 </TouchableOpacity>
               </View>
-              {/* 6. Link the button to the function */}
-              <TouchableOpacity 
-                style={styles.changePhotoButton} 
-                onPress={handleChangePhoto}
-              >
+              <TouchableOpacity style={styles.changePhotoButton} onPress={handleChangePhoto}>
                 <Text style={styles.changePhotoText}>📷 Change photo</Text>
               </TouchableOpacity>
             </View>
 
-            {/* ... rest of your form code ... */}
             <View style={styles.form}>
               <Text style={styles.label}>Full Name</Text>
               <TextInput style={styles.input} value={fullName} onChangeText={setFullName} />
@@ -245,85 +192,57 @@ const handleSaveChanges = async () => {
               <TextInput style={styles.input} value={userName} onChangeText={setUserName} />
 
               <Text style={styles.label}>Email Address</Text>
-              <TextInput style={styles.input} value={email} onChangeText={setEmail} keyboardType="email-address" />
+              <TextInput style={styles.input} value={email} editable={false} keyboardType="email-address" />
 
-             <Text style={styles.label}>Phone Number</Text>
-              <TextInput 
-                style={styles.input} 
-                value={phone} 
-                onChangeText={handlePhoneChange} 
-                keyboardType="numeric"
-                placeholder="Optional (Numbers Only)" 
-                placeholderTextColor="#ccc" 
-              />
+              <Text style={styles.label}>Phone Number</Text>
+              <TextInput style={styles.input} value={phone} onChangeText={handlePhoneChange} keyboardType="numeric" />
+
               <View style={styles.row}>
-          
-          {/* Department Dropdown */}
-          <View style={styles.halfInput}>
-            <Text style={styles.label}>Department</Text>
-            <Dropdown
-              style={styles.dropdown}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              data={departmentData}
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Select"
-              value={department}
-              onChange={item => setDepartment(item.value)}
-            />
-          </View>
+                <View style={styles.halfInput}>
+                  <Text style={styles.label}>Department</Text>
+                  <Dropdown
+                    style={styles.dropdown}
+                    data={departmentData}
+                    labelField="label"
+                    valueField="value"
+                    value={department}
+                    onChange={item => setDepartment(item.value)}
+                  />
+                </View>
 
-          {/* Gender Dropdown */}
-          <View style={styles.halfInput}>
-            <Text style={styles.label}>Gender</Text>
-            <Dropdown
-              style={styles.dropdown}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              data={genderData}
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Select"
-              value={gender}
-              onChange={item => setGender(item.value)}
-            />
-          </View>
-        </View>
+                <View style={styles.halfInput}>
+                  <Text style={styles.label}>Gender</Text>
+                  <Dropdown
+                    style={styles.dropdown}
+                    data={genderData}
+                    labelField="label"
+                    valueField="value"
+                    value={gender}
+                    onChange={item => setGender(item.value)}
+                  />
+                </View>
+              </View>
 
               <Text style={styles.label}>BIO</Text>
-              <TextInput 
-                style={[styles.input, styles.bioInput]} 
-                value={bio} 
-                onChangeText={setBio} 
-                multiline 
-                numberOfLines={4} 
-              />
+              <TextInput style={[styles.input, styles.bioInput]} value={bio} onChangeText={setBio} multiline numberOfLines={4} />
             </View>
 
-            {/* Action Buttons */}
             <View style={styles.buttonRow}>
-              <TouchableOpacity style={styles.saveButton}onPress={handleSaveChanges}>
+              <TouchableOpacity style={styles.saveButton} onPress={handleSaveChanges}>
                 <Text style={styles.saveButtonText}>Save Changes</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.cancelButton} onPress={() => router.replace('/register_Student')}>
+              <TouchableOpacity style={styles.cancelButton} onPress={() => router.replace('/register_Lecturer')}>
                 <Text style={styles.cancelButtonText}>Cancel</Text>
               </TouchableOpacity>
             </View>
-          
-
-            
           </View>
-
         </ScrollView>
       </KeyboardAvoidingView>
     </View>
   );
 }
 
-// ... Keep your existing styles ...
+
 const styles = StyleSheet.create({
     container: {
     flex: 1,
