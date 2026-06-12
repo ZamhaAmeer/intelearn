@@ -207,7 +207,7 @@ const MenuOption = ({ iconName, title, active, onPress }) => (
                 {/* 5. Update Image source to use the state */}
                 <TouchableOpacity onPress={handleChangePhoto}>
                   <Image 
-                    source={require('../src/assets/images/pr2.jpg")} 
+                    source={require("../src/assets/images/pr2.jpg")} 
                     style={styles.profileImage}
                   />
                 </TouchableOpacity>
