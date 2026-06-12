@@ -167,7 +167,7 @@ export default function LecturerSettingsScreen() {
             onPress={() => router.push('/profilescreen_lecturer')}
           >
             <Image 
-              source={profileImage ? { uri: profileImage } : require('../src/assets/images/pr2.jpg")} 
+              source={profileImage ? { uri: profileImage } : require("../src/assets/images/pr2.jpg")} 
               style={styles.avatar} 
             />
             <View style={styles.profileInfo}>

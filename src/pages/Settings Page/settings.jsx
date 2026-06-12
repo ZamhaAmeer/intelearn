@@ -91,7 +91,7 @@ export default function SettingsScreen() {
             onPress={() => router.push('/profilescreen')}
           >
             <Image 
-              source={require('../src/assets/images/pr2.jpg")} 
+              source={require("../src/assets/images/pr2.jpg")} 
               style={styles.avatar} 
             />
             <View style={styles.profileInfo}>

@@ -215,7 +215,7 @@ export default function LecturerProfileViewScreen() {
         <View style={styles.avatarCardSection}>
           <View style={styles.avatarOutlineRing}>
             <Image
-              source={profileImage ? { uri: profileImage } : require('../src/assets/images/pr2.jpg")}
+              source={profileImage ? { uri: profileImage } : require("../src/assets/images/pr2.jpg")}
               style={styles.avatarImage}
             />
           </View>
