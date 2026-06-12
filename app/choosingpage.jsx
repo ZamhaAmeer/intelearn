@@ -29,7 +29,11 @@ const ChoosingPage = () => {
         Replace with your actual asset path.
       */}
       <ImageBackground 
+<<<<<<< HEAD
+        source={require("../src/assets/images/header-curve.png")} 
+=======
         source={require('../src/assets/images/header-curve.png')} 
+>>>>>>> e98ebc5214b7acba9e6831dc776403e332be250b
         style={styles.headerImageBackground}
         resizeMode="stretch" // This ensures the curve stretches across the full width
       >
