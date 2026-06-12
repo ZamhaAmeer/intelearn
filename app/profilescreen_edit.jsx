@@ -229,7 +229,7 @@ export default function ProfileScreen() {
                 {/* 🔑 FIXED: Dynamic Image URI source toggler using state */}
                 <TouchableOpacity onPress={handleChangePhoto}>
                   <Image 
-                    source={profileImage.startsWith('http') || profileImage.startsWith('file') ? { uri: profileImage } : require('../src/assets/images/pr2.jpg")} 
+                    source={profileImage.startsWith('http') || profileImage.startsWith('file') ? { uri: profileImage } : require("../src/assets/images/pr2.jpg")} 
                     style={styles.profileImage}
                   />
                 </TouchableOpacity>

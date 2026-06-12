@@ -92,7 +92,7 @@ const SplashScreen = () => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       <ImageBackground
-        source={require('../src/assets/images/background.png")}
+        source={require("../src/assets/images/background.png")}
         style={StyleSheet.absoluteFill}
         resizeMode="cover"
       >
@@ -108,7 +108,7 @@ const SplashScreen = () => {
 
         <View style={styles.content}>
           <Animated.View style={{ opacity: logoOpacity, transform: [{ scale: logoScale }], alignItems: "center" }}>
-            <Image source={require('../src/assets/images/logo1.png")} style={styles.logo} resizeMode="contain" />
+            <Image source={require("../src/assets/images/logo1.png")} style={styles.logo} resizeMode="contain" />
           </Animated.View>
 
           <Animated.Text style={[styles.title, { opacity: titleOpacity, transform: [{ translateY: titleTranslateY }] }]}>
