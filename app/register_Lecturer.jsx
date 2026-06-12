@@ -108,7 +108,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
   return (
       <View style={styles.container}>
          <ImageBackground
-          source={require("../src/assets/images/header-curve.png")}
+          source={require('../src/assets/images/header-curve.png")}
           style={styles.headerBackground}
           resizeMode="stretch"
         >
