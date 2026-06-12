@@ -174,7 +174,7 @@ export default function ProfileScreen() {
               <View style={styles.imageWrapper}>
                 <TouchableOpacity onPress={handleChangePhoto}>
                   <Image 
-                    source={profileImage ? { uri: profileImage } : require("../src/assets/images/pr2.jpg")} 
+                    source={profileImage ? { uri: profileImage } : require('../src/assets/images/pr2.jpg")} 
                     style={styles.profileImage}
                   />
                 </TouchableOpacity>
