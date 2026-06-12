@@ -1,5 +1,5 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from "@expo/vector-icons"; // For the close (X) icon
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -37,11 +37,22 @@ export default function LoginPage() {
       return;
     }
 
+    const studentEmailRegex = /^\d{2}[a-zA-Z]{3}\d{4}@ms\.sab\.ac\.lk$/i;
+    if (!studentEmailRegex.test(email.trim())) {
+      Alert.alert(
+        "Invalid Email", 
+        "Students must log in with their official university email (e.g., 22fis0574@ms.sab.ac.lk)."
+      );
+      return; // Stops the login process
+    }
+
     console.log("Attempting login for:", email);
 
     try {
-      
-      const response = await fetch("http://10.19.66.72:3000/login", {
+      // NOTE: Replace 'YOUR_BACKEND_IP' with your computer's local IP address 
+      // (e.g., 192.168.1.100) if testing on a physical device, or 10.0.2.2 for Android Emulator. 
+      // Do not use 'localhost' in React Native.
+      const response = await fetch("http://172.20.10.3:3000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -67,14 +78,13 @@ export default function LoginPage() {
 
       // 3. The Logic Check
     if (response.status === 200) {
-
-  await AsyncStorage.setItem('userEmail', email);
-
-  console.log("Saved Email:", email);
-
-  router.push("./coursedetails");
-}
-     else {
+      // ONLY navigate if the server explicitly gave a 200 OK status
+      console.log("Success! Navigating to course details...");
+      await AsyncStorage.setItem('userEmail', email.trim().toLowerCase());
+      await AsyncStorage.setItem('token', data.token);
+      await AsyncStorage.setItem('fullName', data.full_name || 'Student');
+      router.push("./coursedetails");
+    } else {
       // If status is 401 (Unauthorized) or 400 (Bad Request), show the error and DO NOT navigate
       console.log("Login rejected by server.");
       Alert.alert("Login Failed", data.error || "Incorrect email or password");
@@ -95,7 +105,7 @@ export default function LoginPage() {
     <View style={styles.container}>
       {/* Purple Header Section using your curve image */}
       <ImageBackground
-        source={require("../src/assets/images/header-curve.png")}
+        source={require('../src/assets/images/header-curve.png")}
         style={styles.headerBackground}
         resizeMode="stretch"
       >
@@ -111,7 +121,7 @@ export default function LoginPage() {
         </View>
         <View style={styles.logoContainer}>
           <Image
-            source={require("../src/assets/images/logo.png")}
+            source={require('../src/assets/images/logo.png")}
             style={styles.logoImage}
             resizeMode="contain"
           />
@@ -198,12 +208,12 @@ export default function LoginPage() {
           {/* Footer */}
           <View style={styles.footer}>
             <Text style={styles.footerText}>Don't have an account?</Text>
-            <TouchableOpacity onPress={() => router.push("/register_Student")}>
+            <TouchableOpacity onPress={() => router.push("/register(student)")}>
               <Text style={styles.signUpText}>Create an account</Text>
             </TouchableOpacity>
           </View>
         </View>
-          
+  
         </ScrollView>
         <ForgotPasswordModal 
           visible={isModalVisible} 
@@ -225,7 +235,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-    logoContainer: {
+  logoContainer: {
     alignItems: "center",
     marginTop: -250,
   },
@@ -242,7 +252,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     marginTop: -50
   },
-    content: {
+  content: {
     flex: 1,
     paddingHorizontal: 30,
     marginTop: -160,
@@ -258,7 +268,7 @@ const styles = StyleSheet.create({
     color: "#0B0C10",
     marginTop: 20,
   },
-    welcomeSubtitle: {
+  welcomeSubtitle: {
     fontSize: 18,
     color: "rgba(0, 0, 0, 0.6)",
     marginTop: 5,
@@ -273,7 +283,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 5,
   },
-    inputGroup: {
+  inputGroup: {
     marginBottom: 15,
   },
   label: {
@@ -296,7 +306,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 5,
   },
-    checkboxRow: {
+  checkboxRow: {
     flexDirection: "row",
     alignItems: "center",
   },
@@ -314,7 +324,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#5B3CC2",
     borderColor: "#5B3CC2",
   },
-    checkmark: {
+  checkmark: {
     color: "white",
     fontSize: 12,
   },
@@ -334,7 +344,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 30,
   },
-    loginButtonText: {
+  loginButtonText: {
     color: "#FFFFF0",
     fontSize: 18,
     fontWeight: "bold",
@@ -349,7 +359,7 @@ const styles = StyleSheet.create({
     left: 10,
     zIndex: 10,
   },
-    backButton: {
+  backButton: {
     padding: 10,
   },
   footerText: {
@@ -363,21 +373,22 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 5,
   },
-    scrollView: {
+  scrollView: {
     flex: 1,
-    marginTop: -181, 
+    marginTop: -181, // Move the negative margin from 'content' to here
   },
   scrollContent: {
-    paddingBottom: 40, 
+    paddingBottom: 40, // Adds space at the bottom so it's not cramped
   },
   content: {
     flex: 1,
     paddingHorizontal: 30,
+    // Removed marginTop: -160 from here as it's now on the ScrollView
   },
   inputGroup: {
     marginBottom: 15,
   },
-    label: {
+  label: {
     fontSize: 14,
     fontWeight: "600",
     color: "#333",

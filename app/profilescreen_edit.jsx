@@ -2,23 +2,21 @@ import * as ImagePicker from 'expo-image-picker';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  Alert,
-  Dimensions,
-  Image,
-  KeyboardAvoidingView,
-  Modal,
-  Platform,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
+    ActivityIndicator,
+    Alert,
+    Dimensions,
+    Image,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+// 🔑 Import AsyncStorage to extract the active session email
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
@@ -27,7 +25,7 @@ export default function ProfileScreen() {
   const params = useLocalSearchParams();
   const router = useRouter();
 
-  
+  // --- STATES FOR DATA ---
   const [fullName, setFullName] = useState('');
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
@@ -42,16 +40,16 @@ export default function ProfileScreen() {
 
   const toggleMenu = () => setMenuVisible(!isMenuVisible);
 
-  
+  // --- RECONCILE AND LOAD PROFILE DATA ---
   useEffect(() => {
     const loadProfileData = async () => {
       try {
-        
+        // 1. If we have params passed directly via navigation, check them first
         if (params && params.email) {
           setEmail(params.email);
           await fetchUserData(params.email);
         } else {
-          
+          // 2. Otherwise, look up our persistent storage fallback session key
           const storedEmail = await AsyncStorage.getItem('userEmail');
           if (storedEmail) {
             setEmail(storedEmail);
@@ -71,7 +69,7 @@ export default function ProfileScreen() {
     loadProfileData();
   }, []);
 
-  
+  // --- DATABASE DATA SYNC FETCH ---
   const fetchUserData = async (targetEmail) => {
     try {
       const url = `http://172.20.10.3:3000/get-profile?email=${encodeURIComponent(targetEmail)}`;
@@ -107,23 +105,7 @@ export default function ProfileScreen() {
     { label: 'Other', value: 'other' },
   ];
 
-  const MenuOption = ({ iconName, title, active, onPress }) => (
-    <Pressable
-      onPress={onPress}
-      style={({ pressed }) => [
-        styles.menuItem,
-        active && styles.activeMenuItem,
-        pressed && styles.pressedMenuItem 
-      ]}
-    >
-      {({ pressed }) => (
-        <>
-          <Icon name={iconName} size={22} color={active || pressed ? "#4E33B3" : "#7E57C2"} style={styles.menuItemIcon} />
-          <Text style={[styles.menuItemText, (active || pressed) && styles.activeMenuText]}>{title}</Text>
-        </>
-      )}
-    </Pressable>
-  );
+  
 
   const handleSaveChanges = async () => {
     try {
@@ -133,7 +115,7 @@ export default function ProfileScreen() {
         body: JSON.stringify({
           full_name: fullName,
           username: userName,
-          email: email, 
+          email: email, // Critical link column
           phone: phone,
           bio: bio,
           department: department,
@@ -158,7 +140,7 @@ export default function ProfileScreen() {
             {
               text: "OK",
               onPress: () => {
-                router.replace('/coursedetails'); 
+                router.replace('/coursedetailsforlecturer'); 
               }
             }
           ]
@@ -233,22 +215,21 @@ export default function ProfileScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}
       >
-              
+       
 
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.header}>
-            <TouchableOpacity style={styles.menuButton} onPress={() => setMenuVisible(true)}>
-              <Icon name="menu" size={30} color="white" />
-            </TouchableOpacity>
+            
             <Text style={styles.headerTitle}>Profile information</Text>
           </View>
 
           <View style={styles.contentCard}>
             <View style={styles.profileImageSection}>
               <View style={styles.imageWrapper}>
+                {/* 🔑 FIXED: Dynamic Image URI source toggler using state */}
                 <TouchableOpacity onPress={handleChangePhoto}>
                   <Image 
-                    source={profileImage.startsWith('http') || profileImage.startsWith('file') ? { uri: profileImage } : require("../../assets/images/pr2.jpg")} 
+                    source={profileImage.startsWith('http') || profileImage.startsWith('file') ? { uri: profileImage } : require('../src/assets/images/pr2.jpg")} 
                     style={styles.profileImage}
                   />
                 </TouchableOpacity>
@@ -268,7 +249,7 @@ export default function ProfileScreen() {
               <Text style={styles.label}>User Name</Text>
               <TextInput style={styles.input} value={userName} onChangeText={setUserName} />
 
-            
+              {/* Keep Email field read-only to avoid database query breakdown issues */}
               <Text style={styles.label}>Email Address (Read-Only)</Text>
               <TextInput style={[styles.input, { backgroundColor: '#F3F4F6', color: '#6B7280' }]} value={email} editable={false} />
 
@@ -323,7 +304,8 @@ export default function ProfileScreen() {
               <TouchableOpacity style={styles.saveButton} onPress={handleSaveChanges}>
                 <Text style={styles.saveButtonText}>Save Changes</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.cancelButton} onPress={() => router.replace('/coursedetails')}>
+              {/* 🔑 FIXED: Wire up cancel to bounce back safely */}
+              <TouchableOpacity style={styles.cancelButton} onPress={() => router.replace('/coursedetailsforlecturer')}>
                 <Text style={styles.cancelButtonText}>Cancel</Text>
               </TouchableOpacity>
             </View>

@@ -30,105 +30,105 @@ const { width, height } = Dimensions.get('window');
 // 1. DATA DEFINITION
 const COURSES = [
   // --- SEMESTER I ---
-  { id: '1', title: 'Fundamentals of IS', tags: 'Digital Transformation • Business Process', code: 'IS1101', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/FIS.jpg'), color: '#FFCCBC' },
-  { id: '2', title: 'Structured Programming(T)', tags: 'C Syntax • Logic & Control', code: 'IS1102', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/STRT.jpg'), color: '#C8E6C9' },
-  { id: '3', title: 'Structured Programming(P)', tags: 'Compilation • Data Structures', code: 'IS1103', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/STRP.jpg'), color: '#CFD8DC' },
-  { id: '4', title: 'Theories of IS', tags: 'Organizational Behavior • Frameworks', code: 'IS1104', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/TIS.jpg'), color: '#B3E5FC' },
-  { id: '5', title: 'Computer System Organization', tags: 'CPU Architecture • Memory Hierarchy', code: 'IS1105', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#D1C4E9' },
-  { id: '6', title: 'Foundations of Web Technologies', tags: 'HTML • CSS • Client-Side', code: 'IS1106', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/WB.jpeg'), color: '#FFE082' },
-  { id: '7', title: 'Personal Productivity with IT', tags: 'Tools • Documentation • Efficiency', code: 'IS1107', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/PPIT.jpeg'), color: '#F8BBD0' },
-  { id: '8', title: 'Fundamentals of Mathematics', tags: 'Algebra • Logic • Matrices', code: 'IS1108', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/FOM.jpeg'), color: '#DCEDC8' },
-  { id: '9', title: 'Statistics & Probability Theory', tags: 'Data • Inference • Analysis', code: 'IS1109', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/Stat.png'), color: '#B2EBF2' },
-  { id: '10', title: 'Communication Skills I', tags: 'Written • Verbal • Professional', code: 'IS1110', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../../assets/images/comskills1.jpeg'), color: '#E1BEE7' },
-  { id: '11', title: 'Academic Integrity', tags: 'Ethics • Plagiarism • Research', code: 'IS1111', type: 'Compulsory (Non-GPA)', credits: '1 Credit', image: require('../../assets/images/AcIt1.jpeg'), color: '#FFECB3' },
-  { id: '12', title: 'General English I', tags: 'Grammar • Comprehension • Vocabulary', code: 'IS-EGP-1101', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../../assets/images/GE1.png'), color: '#C5CAE9' },
+  { id: '1', title: 'Fundamentals of IS', tags: 'Digital Transformation • Business Process', code: 'IS1101', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/FIS.jpg'), color: '#FFCCBC' },
+  { id: '2', title: 'Structured Programming(T)', tags: 'C Syntax • Logic & Control', code: 'IS1102', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/STRT.jpg'), color: '#C8E6C9' },
+  { id: '3', title: 'Structured Programming(P)', tags: 'Compilation • Data Structures', code: 'IS1103', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/STRP.jpg'), color: '#CFD8DC' },
+  { id: '4', title: 'Theories of IS', tags: 'Organizational Behavior • Frameworks', code: 'IS1104', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/TIS.jpg'), color: '#B3E5FC' },
+  { id: '5', title: 'Computer System Organization', tags: 'CPU Architecture • Memory Hierarchy', code: 'IS1105', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#D1C4E9' },
+  { id: '6', title: 'Foundations of Web Technologies', tags: 'HTML • CSS • Client-Side', code: 'IS1106', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/WB.jpeg'), color: '#FFE082' },
+  { id: '7', title: 'Personal Productivity with IT', tags: 'Tools • Documentation • Efficiency', code: 'IS1107', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/PPIT.jpeg'), color: '#F8BBD0' },
+  { id: '8', title: 'Fundamentals of Mathematics', tags: 'Algebra • Logic • Matrices', code: 'IS1108', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/FOM.jpeg'), color: '#DCEDC8' },
+  { id: '9', title: 'Statistics & Probability Theory', tags: 'Data • Inference • Analysis', code: 'IS1109', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/Stat.png'), color: '#B2EBF2' },
+  { id: '10', title: 'Communication Skills I', tags: 'Written • Verbal • Professional', code: 'IS1110', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../src/assets/images/comskills1.jpeg'), color: '#E1BEE7' },
+  { id: '11', title: 'Academic Integrity', tags: 'Ethics • Plagiarism • Research', code: 'IS1111', type: 'Compulsory (Non-GPA)', credits: '1 Credit', image: require('../src/assets/images/AcIt1.jpeg'), color: '#FFECB3' },
+  { id: '12', title: 'General English I', tags: 'Grammar • Comprehension • Vocabulary', code: 'IS-EGP-1101', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../src/assets/images/GE1.png'), color: '#C5CAE9' },
 
   // --- SEMESTER II ---
-  { id: '13', title: 'Object Oriented Programming', tags: 'Classes • Inheritance • Polymorphism', code: 'IS2101', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/OOP.jpg'), color: '#F0F4C3' },
-  { id: '14', title: 'Object Oriented Programming Practicum', tags: 'Java • IDE • Real-world coding', code: 'IS2102', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/OOPPrac.jpeg'), color: '#D7CCC8' },
-  { id: '15', title: 'Emerging IS Technologies', tags: 'Cloud • DevOps • Blockchain', code: 'IS2103', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/EIS.jpeg'), color: '#BBDEFB' },
-  { id: '16', title: 'Database Systems', tags: 'SQL • ER Modeling • Normalization', code: 'IS2104', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/DBS.jpeg'), color: '#C8E6C9' },
-  { id: '17', title: 'Database Management Systems Practicum', tags: 'Queries • Joins • Implementation', code: 'IS2105', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/DBMS.jpg'), color: '#E1BEE7' },
-  { id: '18', title: 'System Analysis & Design', tags: 'SDLC • UML • Planning', code: 'IS2106', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/SAD.jpeg'), color: '#FFCCBC' },
-  { id: '19', title: 'Social & Professional Issues', tags: 'Ethics • Law • Intellectual Property', code: 'IS2107', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/SPI.jpg'), color: '#CFD8DC' },
-  { id: '20', title: 'Human Computer Interaction', tags: 'UI/UX • Usability • Design', code: 'IS2108', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/HCI.jpg'), color: '#B3E5FC' },
-  { id: '21', title: 'Information Assurance & Security', tags: 'CIA Triad • Encryption • Threats', code: 'IS2109', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/images.jpeg'), color: '#D1C4E9' },
-  { id: '22', title: 'Software Project Initiation & Planning', tags: 'Project Charter • WBS • Scoping', code: 'IS2110', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/SIP.jpg'), color: '#FFCDD2' },
-  { id: '23', title: 'Advanced Mathematics', tags: 'Calculus • Graph Theory', code: 'IS2111', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/AdvM.jpg'), color: '#F5F5F5' },
-  { id: '24', title: 'Communication Skills II', tags: 'Presentations • Reports • Memos', code: 'IS2112', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../../assets/images/comskills2.png'), color: '#E0F2F1' },
-  { id: '25', title: 'General English II', tags: 'Business Comm • Advanced Grammar', code: 'IS-EGP-1201', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../../assets/images/GE2.jpg'), color: '#FFF9C4' },
+  { id: '13', title: 'Object Oriented Programming', tags: 'Classes • Inheritance • Polymorphism', code: 'IS2101', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/OOP.jpg'), color: '#F0F4C3' },
+  { id: '14', title: 'Object Oriented Programming Practicum', tags: 'Java • IDE • Real-world coding', code: 'IS2102', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/OOPPrac.jpeg'), color: '#D7CCC8' },
+  { id: '15', title: 'Emerging IS Technologies', tags: 'Cloud • DevOps • Blockchain', code: 'IS2103', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/EIS.jpeg'), color: '#BBDEFB' },
+  { id: '16', title: 'Database Systems', tags: 'SQL • ER Modeling • Normalization', code: 'IS2104', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/DBS.jpeg'), color: '#C8E6C9' },
+  { id: '17', title: 'Database Management Systems Practicum', tags: 'Queries • Joins • Implementation', code: 'IS2105', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/DBMS.jpg'), color: '#E1BEE7' },
+  { id: '18', title: 'System Analysis & Design', tags: 'SDLC • UML • Planning', code: 'IS2106', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/SAD.jpeg'), color: '#FFCCBC' },
+  { id: '19', title: 'Social & Professional Issues', tags: 'Ethics • Law • Intellectual Property', code: 'IS2107', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/SPI.jpg'), color: '#CFD8DC' },
+  { id: '20', title: 'Human Computer Interaction', tags: 'UI/UX • Usability • Design', code: 'IS2108', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/HCI.jpg'), color: '#B3E5FC' },
+  { id: '21', title: 'Information Assurance & Security', tags: 'CIA Triad • Encryption • Threats', code: 'IS2109', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/images.jpeg'), color: '#D1C4E9' },
+  { id: '22', title: 'Software Project Initiation & Planning', tags: 'Project Charter • WBS • Scoping', code: 'IS2110', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/SIP.jpg'), color: '#FFCDD2' },
+  { id: '23', title: 'Advanced Mathematics', tags: 'Calculus • Graph Theory', code: 'IS2111', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/AdvM.jpg'), color: '#F5F5F5' },
+  { id: '24', title: 'Communication Skills II', tags: 'Presentations • Reports • Memos', code: 'IS2112', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../src/assets/images/comskills2.png'), color: '#E0F2F1' },
+  { id: '25', title: 'General English II', tags: 'Business Comm • Advanced Grammar', code: 'IS-EGP-1201', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../src/assets/images/GE2.jpg'), color: '#FFF9C4' },
 
   // --- SEMESTER III ---
-  { id: '26', title: 'Object Oriented Analysis & Design', tags: 'UML Modeling • Design Patterns', code: 'IS3101', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/OOAD.jpeg'), color: '#FFECB3' },
-  { id: '27', title: 'Data Structures & Algorithms', tags: 'Trees • Graphs • Sorting', code: 'IS3102', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/DSA.jpeg'), color: '#E1F5FE' },
-  { id: '28', title: 'IT Governance', tags: 'COBIT • Compliance • Frameworks', code: 'IS3103', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/ITG.jpeg'), color: '#E8F5E9' },
-  { id: '29', title: 'Software Engineering', tags: 'Lifecycles • Requirements • Testing', code: 'IS3104', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/SE.jpg'), color: '#F3E5F5' },
-  { id: '30', title: 'IS Risk Management', tags: 'Assessment • Mitigation • Strategy', code: 'IS3105', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/ISRM.jpeg'), color: '#FFF3E0' },
-  { id: '31', title: 'IS Sustainability', tags: 'Green IT • Lifecycle • Environmental', code: 'IS3106', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/ISSt.jpeg'), color: '#E0F7FA' },
-  { id: '32', title: 'Management Information Systems', tags: 'Enterprise • CRM • SCM', code: 'IS3107', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/MIS.jpeg'), color: '#FBE9E7' },
-  { id: '33', title: 'E-Business', tags: 'E-commerce • Strategy • Infrastructure', code: 'IS3108', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/EB.jpg'), color: '#E8EAF6' },
-  { id: '34', title: 'Digital Innovation', tags: 'Transformation • Disruptive Tech', code: 'IS3109', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/DI.png'), color: '#F1F8E9' },
-  { id: '35', title: 'Academic English I', tags: 'Research Writing • Comprehension', code: 'IS-EAP-2101', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../../assets/images/ACE1.jpg'), color: '#FFEBEE' },
+  { id: '26', title: 'Object Oriented Analysis & Design', tags: 'UML Modeling • Design Patterns', code: 'IS3101', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/OOAD.jpeg'), color: '#FFECB3' },
+  { id: '27', title: 'Data Structures & Algorithms', tags: 'Trees • Graphs • Sorting', code: 'IS3102', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/DSA.jpeg'), color: '#E1F5FE' },
+  { id: '28', title: 'IT Governance', tags: 'COBIT • Compliance • Frameworks', code: 'IS3103', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/ITG.jpeg'), color: '#E8F5E9' },
+  { id: '29', title: 'Software Engineering', tags: 'Lifecycles • Requirements • Testing', code: 'IS3104', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/SE.jpg'), color: '#F3E5F5' },
+  { id: '30', title: 'IS Risk Management', tags: 'Assessment • Mitigation • Strategy', code: 'IS3105', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/ISRM.jpeg'), color: '#FFF3E0' },
+  { id: '31', title: 'IS Sustainability', tags: 'Green IT • Lifecycle • Environmental', code: 'IS3106', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/ISSt.jpeg'), color: '#E0F7FA' },
+  { id: '32', title: 'Management Information Systems', tags: 'Enterprise • CRM • SCM', code: 'IS3107', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/MIS.jpeg'), color: '#FBE9E7' },
+  { id: '33', title: 'E-Business', tags: 'E-commerce • Strategy • Infrastructure', code: 'IS3108', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/EB.jpg'), color: '#E8EAF6' },
+  { id: '34', title: 'Digital Innovation', tags: 'Transformation • Disruptive Tech', code: 'IS3109', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/DI.png'), color: '#F1F8E9' },
+  { id: '35', title: 'Academic English I', tags: 'Research Writing • Comprehension', code: 'IS-EAP-2101', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../src/assets/images/ACE1.jpg'), color: '#FFEBEE' },
 
   // --- SEMESTER IV ---
-  { id: '36', title: 'IT Auditing', tags: 'Compliance • Controls • Frameworks', code: 'IS4101', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/IT-audit.jpg'), color: '#F8BBD0' },
-  { id: '37', title: 'Web Application Development', tags: 'Full-stack • PHP • Frameworks', code: 'IS4102', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/WB.jpeg'), color: '#C5CAE9' },
-  { id: '38', title: 'Operating Systems', tags: 'Processes • Memory • Concurrency', code: 'IS4103', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/OS.jpeg'), color: '#D1C4E9' },
-  { id: '39', title: 'System Administration and Maintenance', tags: 'Linux • Scripts • Infrastructure', code: 'IS4104', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/SAS.jpeg'), color: '#B3E5FC' },
-  { id: '40', title: 'IT Procurement Management', tags: 'Contracts • Tenders • Sourcing', code: 'IS4105', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/IS4105.jpeg'), color: '#DCEDC8' },
-  { id: '41', title: 'Software Architecture', tags: 'Patterns • Microservices • Design', code: 'IS4106', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/IS4106.jpg'), color: '#FFECB3' },
-  { id: '42', title: 'Professionalism & Ethics in Computing', tags: 'Code of Conduct • Ethics', code: 'IS4107', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/IS4107.jpg'), color: '#F0F4C3' },
-  { id: '43', title: 'IS Strategies', tags: 'Alignment • Business Goals • Planning', code: 'IS4108', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/IS4108.jpg'), color: '#E1F5FE' },
-  { id: '44', title: 'Agile Software Development', tags: 'Scrum • Kanban • Sprints', code: 'IS4109', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/IS4109.jpg'), color: '#E8F5E9' },
-  { id: '45', title: 'Capstone Project', tags: 'Implementation • Problem Solving', code: 'IS4110', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/IS4110.jpg'), color: '#FFCCBC' },
-  { id: '46', title: 'Academic English II', tags: 'Presentation • Professional Writing', code: 'IS-EAP-2201', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../../assets/images/ACE2.jpeg'), color: '#FFF9C4' },
+  { id: '36', title: 'IT Auditing', tags: 'Compliance • Controls • Frameworks', code: 'IS4101', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/IT-audit.jpg'), color: '#F8BBD0' },
+  { id: '37', title: 'Web Application Development', tags: 'Full-stack • PHP • Frameworks', code: 'IS4102', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/WB.jpeg'), color: '#C5CAE9' },
+  { id: '38', title: 'Operating Systems', tags: 'Processes • Memory • Concurrency', code: 'IS4103', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/OS.jpeg'), color: '#D1C4E9' },
+  { id: '39', title: 'System Administration and Maintenance', tags: 'Linux • Scripts • Infrastructure', code: 'IS4104', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/SAS.jpeg'), color: '#B3E5FC' },
+  { id: '40', title: 'IT Procurement Management', tags: 'Contracts • Tenders • Sourcing', code: 'IS4105', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/IS4105.jpeg'), color: '#DCEDC8' },
+  { id: '41', title: 'Software Architecture', tags: 'Patterns • Microservices • Design', code: 'IS4106', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/IS4106.jpg'), color: '#FFECB3' },
+  { id: '42', title: 'Professionalism & Ethics in Computing', tags: 'Code of Conduct • Ethics', code: 'IS4107', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/IS4107.jpg'), color: '#F0F4C3' },
+  { id: '43', title: 'IS Strategies', tags: 'Alignment • Business Goals • Planning', code: 'IS4108', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/IS4108.jpg'), color: '#E1F5FE' },
+  { id: '44', title: 'Agile Software Development', tags: 'Scrum • Kanban • Sprints', code: 'IS4109', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/IS4109.jpg'), color: '#E8F5E9' },
+  { id: '45', title: 'Capstone Project', tags: 'Implementation • Problem Solving', code: 'IS4110', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/IS4110.jpg'), color: '#FFCCBC' },
+  { id: '46', title: 'Academic English II', tags: 'Presentation • Professional Writing', code: 'IS-EAP-2201', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../src/assets/images/ACE2.jpeg'), color: '#FFF9C4' },
 
   // --- SEMESTER V ---
-  { id: '47', title: 'Entrepreneurship & Innovation', tags: 'Startups • Ideation • Business Models', code: 'IS5101', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/CSO.jpeg'), color: '#BBDEFB' },
-  { id: '48', title: 'Enterprise Architecture', tags: 'TOGAF • Systems Integration', code: 'IS5102', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/CSO.jpeg'), color: '#D7CCC8' },
-  { id: '49', title: 'High Performance Computing', tags: 'Parallel Processing • GPU • Scaling', code: 'IS5103', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#E0F2F1' },
-  { id: '50', title: 'Software Process Management', tags: 'CMMI • Quality • Process Improvement', code: 'IS5104', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/CSO.jpeg'), color: '#FCE4EC' },
-  { id: '51', title: 'Business Process Management', tags: 'Workflows • Modeling • Optimization', code: 'IS5105', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#E8EAF6' },
-  { id: '52', title: 'UI/UX Practicum', tags: 'Prototyping • Wireframes • Usability', code: 'IS5106', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/CSO.jpeg'), color: '#FFF3E0' },
-  { id: '53', title: 'Project Management Practicum', tags: 'Scheduling • Resources • Execution', code: 'IS5107', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/CSO.jpeg'), color: '#E0F7FA' },
-  { id: '54', title: 'Business Intelligence', tags: 'Data Mining • Analytics • Dashboards', code: 'IS5108', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#F1F8E9' },
-  { id: '55', title: 'IS Project for Community', tags: 'Social Impact • Real-world Sol', code: 'IS5109', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/CSO.jpeg'), color: '#FBE9E7' },
-  { id: '56', title: 'Business English', tags: 'Corporate Comm • Proposals', code: 'IS-EBP-3101', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#EFEBE9' },
-  { id: '57', title: 'Advanced Database Systems', tags: 'Distributed Data • Query Optimization', code: 'IS5110', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#FFF8E1' },
-  { id: '58', title: 'Data Communication & Networks', tags: 'Protocols • Routing • Topologies', code: 'IS5111', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#F3E5F5' },
-  { id: '59', title: 'Design Patterns & Anti-patterns', tags: 'GoF Patterns • Refactoring', code: 'IS5112', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#E8F5E9' },
-  { id: '60', title: 'Software Quality Assurance', tags: 'Testing • Metrics • Automation', code: 'IS5113', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#E1F5FE' },
-  { id: '61', title: 'Data Mining & Analytics', tags: 'Big Data • Predictive • Algorithms', code: 'IS5114', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#F0F4C3' },
+  { id: '47', title: 'Entrepreneurship & Innovation', tags: 'Startups • Ideation • Business Models', code: 'IS5101', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#BBDEFB' },
+  { id: '48', title: 'Enterprise Architecture', tags: 'TOGAF • Systems Integration', code: 'IS5102', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#D7CCC8' },
+  { id: '49', title: 'High Performance Computing', tags: 'Parallel Processing • GPU • Scaling', code: 'IS5103', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E0F2F1' },
+  { id: '50', title: 'Software Process Management', tags: 'CMMI • Quality • Process Improvement', code: 'IS5104', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#FCE4EC' },
+  { id: '51', title: 'Business Process Management', tags: 'Workflows • Modeling • Optimization', code: 'IS5105', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E8EAF6' },
+  { id: '52', title: 'UI/UX Practicum', tags: 'Prototyping • Wireframes • Usability', code: 'IS5106', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#FFF3E0' },
+  { id: '53', title: 'Project Management Practicum', tags: 'Scheduling • Resources • Execution', code: 'IS5107', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#E0F7FA' },
+  { id: '54', title: 'Business Intelligence', tags: 'Data Mining • Analytics • Dashboards', code: 'IS5108', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#F1F8E9' },
+  { id: '55', title: 'IS Project for Community', tags: 'Social Impact • Real-world Sol', code: 'IS5109', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#FBE9E7' },
+  { id: '56', title: 'Business English', tags: 'Corporate Comm • Proposals', code: 'IS-EBP-3101', type: 'Compulsory (Non-GPA)', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#EFEBE9' },
+  { id: '57', title: 'Advanced Database Systems', tags: 'Distributed Data • Query Optimization', code: 'IS5110', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#FFF8E1' },
+  { id: '58', title: 'Data Communication & Networks', tags: 'Protocols • Routing • Topologies', code: 'IS5111', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#F3E5F5' },
+  { id: '59', title: 'Design Patterns & Anti-patterns', tags: 'GoF Patterns • Refactoring', code: 'IS5112', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E8F5E9' },
+  { id: '60', title: 'Software Quality Assurance', tags: 'Testing • Metrics • Automation', code: 'IS5113', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E1F5FE' },
+  { id: '61', title: 'Data Mining & Analytics', tags: 'Big Data • Predictive • Algorithms', code: 'IS5114', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#F0F4C3' },
 
   // --- SEMESTER VI ---
-  { id: '61a', title: 'Industrial Training', tags: 'Internship • Industry Exposure', code: 'IS6101', type: 'Compulsory', credits: '6 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#CFD8DC' },
+  { id: '61a', title: 'Industrial Training', tags: 'Internship • Industry Exposure', code: 'IS6101', type: 'Compulsory', credits: '6 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#CFD8DC' },
 
   // --- SEMESTER VII ---
-  { id: '62', title: 'Research Methodologies', tags: 'Research Design • Literature Review', code: 'IS7101', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#E1BEE7' },
-  { id: '63', title: 'IT Law', tags: 'Cyber Law • Regulations • Policy', code: 'IS7102', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/CSO.jpeg'), color: '#FFE082' },
-  { id: '64', title: 'Business Process Simulation', tags: 'Queuing Theory • Modeling Tools', code: 'IS7103', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#C8E6C9' },
-  { id: '65', title: 'Enterprise Modelling Ontologies', tags: 'Semantic Web • Knowledge Representation', code: 'IS7104', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#FFCCBC' },
-  { id: '66', title: 'Organizational Behavior & Management', tags: 'Leadership • Culture • Motivation', code: 'IS7105', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/CSO.jpeg'), color: '#B3E5FC' },
-  { id: '67', title: 'Cloud Computing', tags: 'AWS • Azure • Microservices', code: 'IS7106', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#D1C4E9' },
-  { id: '68', title: 'Mobile Application Development', tags: 'Android • iOS • Cross-platform', code: 'IS7107', type: 'Elective', credits: '1 Credit', image: require('../../assets/images/CSO.jpeg'), color: '#FFCDD2' },
-  { id: '69', title: 'Web Service Technologies', tags: 'REST • SOAP • APIs', code: 'IS7108', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#F5F5F5' },
-  { id: '70', title: 'Geographical Information Systems', tags: 'Mapping • Spatial Data • ArcGIS', code: 'IS7109', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#DCEDC8' },
-  { id: '71', title: 'Statistical Distribution & Inferences', tags: 'Probability • Testing • Data', code: 'IS7110', type: 'Elective', credits: '1 Credit', image: require('../../assets/images/CSO.jpeg'), color: '#E0F2F1' },
-  { id: '72', title: 'Advanced Programming Practicum', tags: 'Optimization • Problem Solving', code: 'IS7111', type: 'Elective', credits: '1 Credit', image: require('../../assets/images/CSO.jpeg'), color: '#FFF9C4' },
-  { id: '73', title: 'Machine Learning', tags: 'AI • Deep Learning • Neural Nets', code: 'IS7112', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#E1F5FE' },
+  { id: '62', title: 'Research Methodologies', tags: 'Research Design • Literature Review', code: 'IS7101', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E1BEE7' },
+  { id: '63', title: 'IT Law', tags: 'Cyber Law • Regulations • Policy', code: 'IS7102', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#FFE082' },
+  { id: '64', title: 'Business Process Simulation', tags: 'Queuing Theory • Modeling Tools', code: 'IS7103', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#C8E6C9' },
+  { id: '65', title: 'Enterprise Modelling Ontologies', tags: 'Semantic Web • Knowledge Representation', code: 'IS7104', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#FFCCBC' },
+  { id: '66', title: 'Organizational Behavior & Management', tags: 'Leadership • Culture • Motivation', code: 'IS7105', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#B3E5FC' },
+  { id: '67', title: 'Cloud Computing', tags: 'AWS • Azure • Microservices', code: 'IS7106', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#D1C4E9' },
+  { id: '68', title: 'Mobile Application Development', tags: 'Android • iOS • Cross-platform', code: 'IS7107', type: 'Elective', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#FFCDD2' },
+  { id: '69', title: 'Web Service Technologies', tags: 'REST • SOAP • APIs', code: 'IS7108', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#F5F5F5' },
+  { id: '70', title: 'Geographical Information Systems', tags: 'Mapping • Spatial Data • ArcGIS', code: 'IS7109', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#DCEDC8' },
+  { id: '71', title: 'Statistical Distribution & Inferences', tags: 'Probability • Testing • Data', code: 'IS7110', type: 'Elective', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#E0F2F1' },
+  { id: '72', title: 'Advanced Programming Practicum', tags: 'Optimization • Problem Solving', code: 'IS7111', type: 'Elective', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#FFF9C4' },
+  { id: '73', title: 'Machine Learning', tags: 'AI • Deep Learning • Neural Nets', code: 'IS7112', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E1F5FE' },
 
   // --- SEMESTER VIII ---
-  { id: '74', title: 'Research Project in IS', tags: 'Thesis • Investigation • Discovery', code: 'IS8101', type: 'Compulsory', credits: '8 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#FCE4EC' },
-  { id: '75', title: 'Business/IT Alignment', tags: 'Strategy • Operations • Sync', code: 'IS8102', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#E8F5E9' },
-  { id: '76', title: 'Human Resource Management', tags: 'Recruitment • Performance • Culture', code: 'IS8103', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#FFF3E0' },
-  { id: '77', title: 'Scientific Communication', tags: 'Publications • Journals • Writing', code: 'IS8104', type: 'Compulsory', credits: '1 Credit', image: require('../../assets/images/CSO.jpeg'), color: '#E8EAF6' },
-  { id: '78', title: 'IS Economics', tags: 'Markets • Tech Value • Investment', code: 'IS8105', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#F1F8E9' },
-  { id: '79', title: 'Computer System Security', tags: 'Defense • Cyber • Access Control', code: 'IS8106', type: 'Compulsory', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#FBE9E7' },
-  { id: '80', title: 'Supply Chain Management', tags: 'Logistics • Operations • Distribution', code: 'IS8107', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#E0F7FA' },
-  { id: '81', title: 'Advanced Computer Networks', tags: 'IPv6 • Routing • Network Sec', code: 'IS8108', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#FFF8E1' },
-  { id: '82', title: 'Process Mining', tags: 'Event Logs • Optimization • Discovery', code: 'IS8109', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#F3E5F5' },
-  { id: '83', title: 'Digital Business Model', tags: 'Disruption • E-Commerce • Value', code: 'IS8110', type: 'Elective', credits: '1 Credit', image: require('../../assets/images/CSO.jpeg'), color: '#E1F5FE' },
-  { id: '84', title: 'Game Development', tags: 'Unity • 3D Design • Physics', code: 'IS8111', type: 'Elective', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#F0F4C3' }
+  { id: '74', title: 'Research Project in IS', tags: 'Thesis • Investigation • Discovery', code: 'IS8101', type: 'Compulsory', credits: '8 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#FCE4EC' },
+  { id: '75', title: 'Business/IT Alignment', tags: 'Strategy • Operations • Sync', code: 'IS8102', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E8F5E9' },
+  { id: '76', title: 'Human Resource Management', tags: 'Recruitment • Performance • Culture', code: 'IS8103', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#FFF3E0' },
+  { id: '77', title: 'Scientific Communication', tags: 'Publications • Journals • Writing', code: 'IS8104', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#E8EAF6' },
+  { id: '78', title: 'IS Economics', tags: 'Markets • Tech Value • Investment', code: 'IS8105', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#F1F8E9' },
+  { id: '79', title: 'Computer System Security', tags: 'Defense • Cyber • Access Control', code: 'IS8106', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#FBE9E7' },
+  { id: '80', title: 'Supply Chain Management', tags: 'Logistics • Operations • Distribution', code: 'IS8107', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E0F7FA' },
+  { id: '81', title: 'Advanced Computer Networks', tags: 'IPv6 • Routing • Network Sec', code: 'IS8108', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#FFF8E1' },
+  { id: '82', title: 'Process Mining', tags: 'Event Logs • Optimization • Discovery', code: 'IS8109', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#F3E5F5' },
+  { id: '83', title: 'Digital Business Model', tags: 'Disruption • E-Commerce • Value', code: 'IS8110', type: 'Elective', credits: '1 Credit', image: require('../src/assets/images/CSO.jpeg'), color: '#E1F5FE' },
+  { id: '84', title: 'Game Development', tags: 'Unity • 3D Design • Physics', code: 'IS8111', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#F0F4C3' }
 ];
 
 const getSemesterFromCode = (code) => {
@@ -287,7 +287,7 @@ export default function CourseDetailsScreen() {
           type: 'Compulsory', 
           credits: c.semester ? `${c.semester} Semester` : 'N/A',
           // Use uploaded image path or fall back to standard asset placeholder
-          image: c.image_url ? { uri: `http://172.20.10.3:3000/${c.image_url}` } : require('../../assets/images/CSO.jpeg'), 
+          image: c.image_url ? { uri: `http://172.20.10.3:3000/${c.image_url}` } : require('../src/assets/images/CSO.jpeg'), 
           semesterCode: c.semester // Helper field for grouping
         }));
 
@@ -572,98 +572,268 @@ export default function CourseDetailsScreen() {
                       item={course} 
                       onView={(item) => {
                         switch (item.code) {
-                          case 'IS1101': router.push('/FIS'); break;
-                          case 'IS1102': router.push('/structured-t'); break;
-                          case 'IS1103': router.push('/structured-p'); break;
-                          case 'IS1104': router.push('/theories-is'); break;
-                          case 'IS1105': router.push('/comp-org'); break;
-                          case 'IS1106': router.push('/foundations-web-tech'); break;
-                          case 'IS1107': router.push('/personal-productivity'); break;
-                          case 'IS1108': router.push('/fundamentals-maths'); break;
-                          case 'IS1109': router.push('/stats-probability'); break;
-                          case 'IS1110': router.push('/comm-skills-1'); break;
-                          case 'IS1111': router.push('/academic-integrity'); break;
-                          case 'IS-EGP-1101': router.push('/gen-english-1'); break;
+                          case 'IS1101':
+                            router.push({ pathname: '/IS1101', params: { code: 'IS1101' } });
+                            break;
+                          case 'IS1102':
+                            router.push({ pathname: '/IS1102', params: { code: 'IS1102' } });
+                            break;
+                          case 'IS1103':
+                            router.push({ pathname: '/IS1103', params: { code: 'IS1103' } });
+                            break;
+                          case 'IS1104':
+                            router.push({ pathname: '/IS1104', params: { code: 'IS1104' } });
+                            break;
+                          case 'IS1105':
+                            router.push({ pathname: '/IS1105', params: { code: 'IS1105' } });
+                            break;
+                          case 'IS1106':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS1106' } });
+                            break;
+                          case 'IS1107':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS1107' } });
+                            break;
+                          case 'IS1108':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS1108' } });
+                            break;
+                          case 'IS1109':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS1109' } });
+                            break;
+                          case 'IS1110':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS1110' } });
+                            break;
+                          case 'IS1111':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS1111' } });
+                            break;
+                          case 'IS-EGP-1101':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS-EGP-1101' } });
+                            break;
 
-                          case 'IS2101': router.push('/oop'); break;
-                          case 'IS2102': router.push('/oop-p'); break;
-                          case 'IS2103': router.push('/emerging-tech'); break;
-                          case 'IS2104': router.push('/dbms'); break;
-                          case 'IS2105': router.push('/dbms-p'); break;
-                          case 'IS2106': router.push('/sad'); break;
-                          case 'IS2107': router.push('/social-prof-issues'); break;
-                          case 'IS2108': router.push('/hci'); break;
-                          case 'IS2109': router.push('/info-assurance-sec'); break;
-                          case 'IS2110': router.push('/sw-project-planning'); break;
-                          case 'IS2111': router.push('/adv-maths'); break;
-                          case 'IS2112': router.push('/comm-skills-2'); break;
-                          case 'IS-EGP-1201': router.push('/gen-english-2'); break;
+                          case 'IS2101':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS2101' } });
+                            break;
+                          case 'IS2102':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS2102' } });
+                            break;
+                          case 'IS2103':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS2103' } });
+                            break;
+                          case 'IS2104':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS2104' } });
+                            break;
+                          case 'IS2105':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS2105' } });
+                            break;
+                          case 'IS2106':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS2106' } });
+                            break;
+                          case 'IS2107':
+                            router.push({ pathname: '/IS2107', params: { code: 'IS2107' } });
+                            break;
+                          case 'IS2108':
+                            router.push({ pathname: '/IS2108', params: { code: 'IS2108' } });
+                            break;
+                          case 'IS2109':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS2109' } });
+                            break;
+                          case 'IS2110':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS2110' } });
+                            break;
+                          case 'IS2111':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS2111' } });
+                            break;
+                          case 'IS2112':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS2112' } });
+                            break;
+                          case 'IS-EGP-1201':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS-EGP-1201' } });
+                            break;
 
-                          case 'IS3101': router.push('/ooad'); break;
-                          case 'IS3102': router.push('/dsa'); break;
-                          case 'IS3103': router.push('/it-governance'); break;
-                          case 'IS3104': router.push('/software-eng'); break;
-                          case 'IS3105': router.push('/is-risk-mgt'); break;
-                          case 'IS3106': router.push('/is-sustainability'); break;
-                          case 'IS3107': router.push('/mis'); break;
-                          case 'IS3108': router.push('/e-business'); break;
-                          case 'IS3109': router.push('/digital-innovation'); break;
-                          case 'IS-EAP-2101': router.push('/acad-english-1'); break;
+                          case 'IS3101':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS3101' } });
+                            break;
+                          case 'IS3102':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS3102' } });
+                            break;
+                          case 'IS3103':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS3103' } });
+                            break;
+                          case 'IS3104':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS3104' } });
+                            break;
+                          case 'IS3105':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS3105' } });
+                            break;
+                          case 'IS3106':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS3106' } });
+                            break;
+                          case 'IS3107':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS3107' } });
+                            break;
+                          case 'IS3108':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS3108' } });
+                            break;
+                          case 'IS3109':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS3109' } });
+                            break;
+                          case 'IS-EAP-2101':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS-EAP-2101' } });
+                            break;
 
-                          case 'IS4101': router.push('/it-auditing'); break;
-                          case 'IS4102': router.push('/web-app-dev'); break;
-                          case 'IS4103': router.push('/operating-systems'); break;
-                          case 'IS4104': router.push('/sys-admin'); break;
-                          case 'IS4105': router.push('/it-procurement'); break;
-                          case 'IS4106': router.push('/sw-architecture'); break;
-                          case 'IS4107': router.push('/prof-ethics'); break;
-                          case 'IS4108': router.push('/is-strategies'); break;
-                          case 'IS4109': router.push('/agile'); break;
-                          case 'IS4110': router.push('/capstone'); break;
-                          case 'IS-EAP-2201': router.push('/acad-english-2'); break;
+                          case 'IS4101':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS4101' } });
+                            break;
+                          case 'IS4102':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS4102' } });
+                            break;
+                          case 'IS4103':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS4103' } });
+                            break;
+                          case 'IS4104':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS4104' } });
+                            break;
+                          case 'IS4105':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS4105' } });
+                            break;
+                          case 'IS4106':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS4106' } });
+                            break;
+                          case 'IS4107':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS4107' } });
+                            break;
+                          case 'IS4108':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS4108' } });
+                            break;
+                          case 'IS4109':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS4109' } });
+                            break;
+                          case 'IS4110':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS4110' } });
+                            break;
+                          case 'IS-EAP-2201':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS-EAP-2201' } });
+                            break;
 
-                          case 'IS5101': router.push('/entrepreneurship'); break;
-                          case 'IS5102': router.push('/enterprise-arch'); break;
-                          case 'IS5103': router.push('/hpc'); break;
-                          case 'IS5104': router.push('/sw-process-mgt'); break;
-                          case 'IS5105': router.push('/bpm'); break;
-                          case 'IS5106': router.push('/ui-ux-prac'); break;
-                          case 'IS5107': router.push('/proj-mgt-prac'); break;
-                          case 'IS5108': router.push('/business-intelligence'); break;
-                          case 'IS5109': router.push('/community-proj'); break;
-                          case 'IS-EBP-3101': router.push('/business-english'); break;
-                          case 'IS5110': router.push('/adv-dbms'); break;
-                          case 'IS5111': router.push('/data-comm-networks'); break;
-                          case 'IS5112': router.push('/design-patterns'); break;
-                          case 'IS5113': router.push('/sqa'); break;
-                          case 'IS5114': router.push('/data-mining'); break;
-                          
-                          case 'IS6101': router.push('/industrial-training'); break;
+                          case 'IS5101':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5101' } });
+                            break;
+                          case 'IS5102':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5102' } });
+                            break;
+                          case 'IS5103':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5103' } });
+                            break;
+                          case 'IS5104':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5104' } });
+                            break;
+                          case 'IS5105':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5105' } });
+                            break;
+                          case 'IS5106':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5106' } });
+                            break;
+                          case 'IS5107':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5107' } });
+                            break;
+                          case 'IS5108':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5108' } });
+                            break;
+                          case 'IS5109':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5109' } });
+                            break;
+                          case 'IS-EBP-3101':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS-EBP-3101' } });
+                            break;
+                          case 'IS5110':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5110' } });
+                            break;
+                          case 'IS5111':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5111' } });
+                            break;
+                          case 'IS5112':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5112' } });
+                            break;
+                          case 'IS5113':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5113' } });
+                            break;
+                          case 'IS5114':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5114' } });
+                            break;
 
-                          case 'IS7101': router.push('/research-methodologies'); break;
-                          case 'IS7102': router.push('/it-law'); break;
-                          case 'IS7103': router.push('/process-simulation'); break;
-                          case 'IS7104': router.push('/enterprise-ontologies'); break;
-                          case 'IS7105': router.push('/org-behavior'); break;
-                          case 'IS7106': router.push('/cloud-computing'); break;
-                          case 'IS7107': router.push('/mobile-app-dev'); break;
-                          case 'IS7108': router.push('/web-services'); break;
-                          case 'IS7109': router.push('/gis'); break;
-                          case 'IS7110': router.push('/stats-inference'); break;
-                          case 'IS7111': router.push('/adv-prog-prac'); break;
-                          case 'IS7112': router.push('/machine-learning'); break;
+                          case 'IS6101':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS6101' } });
+                            break;
 
-                          case 'IS8101': router.push('/research-project'); break;
-                          case 'IS8102': router.push('/it-alignment'); break;
-                          case 'IS8103': router.push('/hrm'); break;
-                          case 'IS8104': router.push('/sci-communication'); break;
-                          case 'IS8105': router.push('/is-economics'); break;
-                          case 'IS8106': router.push('/comp-sys-security'); break;
-                          case 'IS8107': router.push('/supply-chain-mgt'); break;
-                          case 'IS8108': router.push('/adv-networks'); break;
-                          case 'IS8109': router.push('/process-mining'); break;
-                          case 'IS8110': router.push('/digital-bus-model'); break;
-                          case 'IS8111': router.push('/game-development'); break;
+                          case 'IS7101':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7101' } });
+                            break;
+                          case 'IS7102':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7102' } });
+                            break;
+                          case 'IS7103':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7103' } });
+                            break;
+                          case 'IS7104':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7104' } });
+                            break;
+                          case 'IS7105':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7105' } });
+                            break;
+                          case 'IS7106':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7106' } });
+                            break;
+                          case 'IS7107':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7107' } });
+                            break;
+                          case 'IS7108':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7108' } });
+                            break;
+                          case 'IS7109':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7109' } });
+                            break;
+                          case 'IS7110':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7110' } });
+                            break;
+                          case 'IS7111':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7111' } });
+                            break;
+                          case 'IS7112':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7112' } });
+                            break;
+
+                          case 'IS8101':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8101' } });
+                            break;
+                          case 'IS8102':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8102' } });
+                            break;
+                          case 'IS8103':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8103' } });
+                            break;
+                          case 'IS8104':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8104' } });
+                            break;
+                          case 'IS8105':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8105' } });
+                            break;
+                          case 'IS8106':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8106' } });
+                            break;
+                          case 'IS8107':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8107' } });
+                            break;
+                          case 'IS8108':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8108' } });
+                            break;
+                          case 'IS8109':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8109' } });
+                            break;
+                          case 'IS8110':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8110' } });
+                            break;
+                          case 'IS8111':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8111' } });
+                            break;
 
                           default:
                             router.push('/coursecontent');
@@ -743,11 +913,11 @@ export default function CourseDetailsScreen() {
             <View style={styles.menuList}>
               <MenuOption iconName="home-variant" title="Home" active onPress={() => {setMenuVisible(false); router.replace('/coursedetails')}} />
               <MenuOption iconName="account" title="Profile" onPress={() => {setMenuVisible(false); router.replace('/profilescreen_student')}} />
-              <MenuOption iconName="view-dashboard" title="Dashboard" onPress={() => {setMenuVisible(false); router.replace('/dashboard')}} />
+              <MenuOption iconName="view-dashboard" title="Dashboard" onPress={() => {setMenuVisible(false); router.replace('/dashboard_student')}} />
               <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/minigamesection')}} />
               <MenuOption iconName="cog" title="Settings" onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
             </View>
-            <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}>
+            <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage_Student)') }}>
               <Text style={styles.logoutText}> Log Out    <Icon name="logout" size={24} color="grey" /></Text>
             </TouchableOpacity>
           </View>

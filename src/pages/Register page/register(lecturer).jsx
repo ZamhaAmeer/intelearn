@@ -33,7 +33,7 @@ export default function RegisterPage() {
     <View style={styles.container}>
       {/* Header Section */}
       <ImageBackground
-        source={require("../../assets/images/header-curve.png")}
+        source={require('../src/assets/images/header-curve.png")}
         style={styles.headerBackground}
         resizeMode="stretch"
       >

@@ -27,6 +27,16 @@ export default function ProfileViewScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
 
+  const { 
+    email: paramEmail, 
+    fullName: paramFullName, 
+    userName: paramUserName, 
+    phone: paramPhone, 
+    bio: paramBio, 
+    department: paramDepartment, 
+    gender: paramGender 
+  } = params;
+
 
   const [fullName, setFullName] = useState('');
   const [userName, setUserName] = useState('');
@@ -89,7 +99,11 @@ export default function ProfileViewScreen() {
     };
 
     checkSessionAndFetch();
-  }, [params]);
+      return () => {
+            isMounted = false;
+          };
+        }, [paramEmail, paramFullName, paramUserName, paramPhone, paramBio, paramDepartment, paramGender]);
+
 
   const fetchUserData = async (userEmail) => {
     try {
@@ -193,7 +207,7 @@ export default function ProfileViewScreen() {
         <View style={styles.avatarCardSection}>
           <View style={styles.avatarOutlineRing}>
             <Image
-              source={profileImage ? { uri: profileImage } : require("../../assets/images/pr2.jpg")}
+              source={profileImage ? { uri: profileImage } : require('../src/assets/images/pr2.jpg")}
               style={styles.avatarImage}
             />
           </View>
