@@ -156,7 +156,7 @@ export default function LecturerProfileViewScreen() {
     Alert.alert(
       "Lecturer Session Required",
       "Please sign in with your lecturer credentials to access this view panel.",
-      [{ text: "Login", onPress: () => router.replace('/loginpage(lecturer)') }]
+      [{ text: "Login", onPress: () => router.replace('/loginPage_Lecturer') }]
     );
   };
 

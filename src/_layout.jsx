@@ -45,14 +45,14 @@ export default function TabLayout() {
       />
 
        <Tabs.Screen
-        name="loginpage(student)" // Ensure this matches your filename exactly
+        name="loginpage_Student)" // Ensure this matches your filename exactly
         options={{
           href: null, // Hides the icon so users can't click it to get here
           tabBarStyle: { display: 'none' }, // Hides the bar on this screen
         }}
       />
       <Tabs.Screen
-        name="loginpage(lecturer)" // Ensure this matches your filename exactly
+        name="loginPage_Lecturer)" // Ensure this matches your filename exactly
         options={{
           href: null, // Hides the icon so users can't click it to get here
           tabBarStyle: { display: 'none' }, // Hides the bar on this screen

@@ -88,7 +88,7 @@ export default function ProfileViewScreen() {
             Alert.alert(
               "Session Missing",
               "Please sign in again to access your profile data info.",
-              [{ text: "Login", onPress: () => router.replace('/loginpage(student)') }]
+              [{ text: "Login", onPress: () => router.replace('/loginpage_Student') }]
             );
           }
         }

@@ -90,7 +90,7 @@ export default function ProfileScreen() {
               onPress: () => {
                 // Route directly back to View Screen while pushing updated details
                 router.replace({
-                  pathname: '/loginpage_Lecturer', 
+                  pathname: '/loginPage_Lecturer', 
                   params: { 
                     email: email, 
                     fullName: fullName,

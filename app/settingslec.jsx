@@ -49,7 +49,7 @@ export default function LecturerSettingsScreen() {
           Alert.alert(
             "Session Missing",
             "Please sign in again to configure your application parameters.",
-            [{ text: "Login", onPress: () => router.replace('/loginpage(lecturer)') }]
+            [{ text: "Login", onPress: () => router.replace('/loginPage_Lecturer') }]
           );
         }
       } catch (e) {
@@ -140,7 +140,7 @@ export default function LecturerSettingsScreen() {
                 await AsyncStorage.removeItem('lecturerEmail');
                 await AsyncStorage.removeItem('token');
                 await AsyncStorage.removeItem('fullName');
-                router.replace('/loginpage_Lecturer)');
+                router.replace('/loginPage_Lecturer)');
               }}
             >
               <Text style={styles.logoutText}> Log Out   <Icon name="logout" size={24} color="grey" /></Text>
@@ -244,7 +244,7 @@ export default function LecturerSettingsScreen() {
               await AsyncStorage.removeItem('lecturerEmail');
               await AsyncStorage.removeItem('token');
               await AsyncStorage.removeItem('fullName');
-              router.replace('/loginpage(lecturer)');
+              router.replace('/loginPage_Lecturer');
             }}
           >
              <View style={[styles.iconBox, { backgroundColor: '#FFE8E8' }]}><Text>🚪</Text></View>

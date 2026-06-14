@@ -145,7 +145,7 @@ const MenuOption = ({ icon, title, active }) => (
                       </View>
                       
         
-                    <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}>
+                    <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage_Student)') }}>
                      <Text style={styles.logoutText}><Icon name="logout" size={24} color="red" /> Log Out</Text>
                     </TouchableOpacity>
                   </View>

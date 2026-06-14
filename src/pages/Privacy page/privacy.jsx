@@ -158,7 +158,7 @@ export default function PrivacyScreen() {
           <TouchableOpacity 
             style={[styles.agreeBtn, !hasAgreed && styles.agreeBtnDisabled]}
             disabled={!hasAgreed}
-            onPress={() => router.replace('/loginpage(student)')}
+            onPress={() => router.replace('/loginpage_Student)')}
           >
             <Text style={styles.agreeBtnText}>I AGREE & CONFIRM</Text>
           </TouchableOpacity>
@@ -183,7 +183,7 @@ export default function PrivacyScreen() {
                   <MenuOption iconName="shield-check" title="Privacy" onPress={() => {setMenuVisible(false); router.replace('/privacy')}} />
                   <MenuOption iconName="cog" title="Settings" onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
                 </View>
-                <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}>
+                <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage_Student)') }}>
                   <Text style={styles.logoutText}> Log Out    <Icon name="logout" size={24} color="grey" /></Text>
                 </TouchableOpacity>
               </View>

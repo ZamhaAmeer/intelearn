@@ -68,7 +68,7 @@ export default function SettingsScreen() {
 
             <TouchableOpacity 
               style={styles.logoutButton} 
-              onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}
+              onPress={() => {setMenuVisible(false); router.replace('/loginpage_Student)') }}
             >
               <Text style={styles.logoutText}><Icon name="logout" size={24} color="red" /> Log Out</Text>
             </TouchableOpacity>
@@ -94,7 +94,7 @@ export default function SettingsScreen() {
             onPress={() => router.push('/profilescreen')}
           >
             <Image 
-              source={require('../src/assets/images/pr2.jpg")} 
+              source={require("../src/assets/images/pr2.jpg")} 
               style={styles.avatar} 
             />
             <View style={styles.profileInfo}>

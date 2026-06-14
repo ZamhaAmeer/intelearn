@@ -47,7 +47,7 @@ export default function SettingsScreen() {
           Alert.alert(
             "Session Missing",
             "Please sign in again to configure your application parameters.",
-            [{ text: "Login", onPress: () => router.replace('/loginpage(student)') }]
+            [{ text: "Login", onPress: () => router.replace('/loginpage_Student') }]
           );
         }
       } catch (e) {
@@ -233,7 +233,7 @@ export default function SettingsScreen() {
             style={styles.itemRow}
             onPress={async () => {
               await AsyncStorage.removeItem('userEmail');
-              router.replace('/loginpage(student)');
+              router.replace('/loginpage_Student)');
             }}
           >
              <View style={[styles.iconBox, { backgroundColor: '#FFE8E8' }]}><Text>🚪</Text></View>

@@ -282,7 +282,7 @@ export default function LecturerDashboard() {
               <MenuOption iconName="cog" title="Settings" onPress={() => { setMenuVisible(false); router.replace('/settingslec'); }} />
             </View>
             
-            <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(staff)') }}>
+            <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginPage_Lecturer') }}>
               <Text style={styles.logoutText}> Log Out    <Icon name="logout" size={24} color="grey" /></Text>
             </TouchableOpacity>
           </View>

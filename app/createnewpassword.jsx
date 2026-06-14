@@ -51,7 +51,7 @@ export default function ResetPasswordScreen() {
       {/* Added Back Button Here */}
             <TouchableOpacity 
               style={styles.backButton} 
-              onPress={() => router.push('/loginpage(student)')}
+              onPress={() => router.push('/loginpage_Student')}
             >
               <Feather name="chevron-left" size={32} color="#FFFFFF" />
             </TouchableOpacity>
@@ -194,7 +194,7 @@ export default function ResetPasswordScreen() {
               style={styles.returnButton}
               onPress={() => {
                 setIsModalVisible(false);
-                router.replace('/loginPage_Student');
+                router.replace('/loginpage_Student');
               }}
             >
               <Text style={styles.returnButtonText}>Return to Login</Text>
