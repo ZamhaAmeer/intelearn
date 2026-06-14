@@ -200,7 +200,7 @@ export default function PrivacyScreen() {
   );
 }
 
-const Section = ({ title, text }: { title: string, text: string }) => (
+const Section = ({ title, text }) => (
   <View style={styles.sectionContainer}>
     <Text style={styles.sectionTitle}>{title}</Text>
     <Text style={styles.sectionBody}>{text}</Text>
