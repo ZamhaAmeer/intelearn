@@ -59,7 +59,7 @@ const ChoosingPage = () => {
             {/* Student Option */}
             <TouchableOpacity 
               style={styles.optionButton}
-              onPress={() => router.push("./loginPage_Student")} // Adjust paths as needed
+              onPress={() => router.push("./loginpage_Student")} // Adjust paths as needed
             >
               <Ionicons name="school" size={35} color="black" style={styles.icon} />
               <Text style={styles.optionText}>I am a Student</Text>
