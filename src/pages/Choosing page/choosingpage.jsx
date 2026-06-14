@@ -14,7 +14,7 @@ import {
 // Get screen height to scale the header appropriately
 const { height } = Dimensions.get('window');
 
-const ChoosingPage = () => {
+const choosingpage = () => {
   const router = useRouter();
 
   const handleNavigation = () => {
@@ -35,7 +35,7 @@ const ChoosingPage = () => {
       >
         <View style={styles.logoContainer}>
             <Image 
-                source={require('../src/assets/images/logo.png")} // Use your logo asset
+                source={require("../src/assets/images/logo.png")} // Use your logo asset
                 style={styles.logoImage}
                 resizeMode="contain"
             />
@@ -177,4 +177,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChoosingPage;
+export default choosingpage;

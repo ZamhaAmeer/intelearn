@@ -14,7 +14,7 @@ import {
 // Get screen height to scale the header appropriately
 const { height } = Dimensions.get('window');
 
-const ChoosingPage = () => {
+const choosingpage = () => {
   const router = useRouter();
 
   const handleNavigation = () => {
@@ -177,4 +177,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChoosingPage;
+export default choosingpage;
