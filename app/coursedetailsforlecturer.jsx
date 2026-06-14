@@ -157,7 +157,7 @@ export default function TeacherCoursesScreen() {
               <MenuOption iconName="cog" title="Settings" onPress={() => { setMenuVisible(false); router.replace('/settings'); }} />
             </View>
 
-            <TouchableOpacity style={styles.logoutButton} onPress={() => { setMenuVisible(false); router.replace('/loginPage_Lecturer)'); }}>
+            <TouchableOpacity style={styles.logoutButton} onPress={() => { setMenuVisible(false); router.replace('/loginPage_Lecturer'); }}>
               <Text style={styles.logoutText}> Log Out    <MaterialCommunityIcons name="logout" size={24} color="grey" /></Text>
             </TouchableOpacity>
 
