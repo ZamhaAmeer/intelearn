@@ -114,7 +114,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
         >
           <View style={styles.backButtonContainer}>
             <TouchableOpacity 
-              onPress={() => router.replace('/loginpage(lecturer)')} 
+              onPress={() => router.replace('/loginPage_lecturer')} 
               style={styles.backButton}
             >
               <Ionicons name="chevron-back" size={30} color="white" />
