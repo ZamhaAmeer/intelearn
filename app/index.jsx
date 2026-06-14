@@ -85,7 +85,7 @@ const SplashScreen = () => {
   }, []);
 
   const handleGetStarted = () => {
-    router.replace("/choosingPage");
+    router.replace("/choosingpage");
   };
 
   return (
