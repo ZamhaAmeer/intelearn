@@ -57,7 +57,7 @@ export default function LoginPage() {
   console.log("Attempting lecturer login for:", trimmedEmail);
 
   try {
-    const response = await fetch("http://172.20.10.3:3000/login", {
+    const response = await fetch("http://10.65.93.226:3000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

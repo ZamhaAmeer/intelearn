@@ -58,7 +58,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
     }
     try {
       
-      const response = await fetch('http://172.20.10.3:3000/register', {
+      const response = await fetch('http://10.65.93.226:3000/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -275,7 +275,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
               
               <View style={styles.footer}>
                 <Text style={styles.footerText}>Already have an account?</Text>
-                <TouchableOpacity onPress={() => router.replace("/loginPage_Lecturer)")}>
+                <TouchableOpacity onPress={() => router.push("/loginPage_Lecturer)")}>
                   <Text style={styles.loginText}>Login</Text>
                 </TouchableOpacity>
               </View>
