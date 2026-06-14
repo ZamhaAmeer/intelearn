@@ -122,7 +122,7 @@ const ChatScreen = () => {
                 <View style={styles.headerContent}>
                     <View style={styles.headerProfile}>
                         <TouchableOpacity 
-                            onPress={() => router.push('/courseDetails')} 
+                            onPress={() => router.push('/coursedetails')} 
                             style={styles.backButton}
                         >
                             <Ionicons name="chevron-back" size={30} color="white" />

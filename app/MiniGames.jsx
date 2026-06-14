@@ -107,7 +107,7 @@ export default function App() {
       onPanResponderRelease: (evt, gestureState) => {
         // If swiped right by more than 60 pixels, navigate Home
         if (gestureState.dx > 60) {
-          router.replace('/courseDetails');
+          router.replace('/coursedetails');
         }
       },
     })

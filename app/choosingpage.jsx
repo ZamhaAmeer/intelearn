@@ -77,7 +77,7 @@ const choosingpage = () => {
             {/* Guest Option */}
             <TouchableOpacity 
               style={styles.optionButton}
-              onPress={() => router.push("./courseDetailsForGuest")}
+              onPress={() => router.push("./coursedetailsforguest")}
             >
               <Ionicons name="person-outline" size={35} color="black" style={styles.icon} />
               <Text style={styles.optionText}>I am a Guest</Text>

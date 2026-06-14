@@ -177,7 +177,7 @@ const MenuOption = ({ iconName, title, active, onPress }) => (
                     </View>
         
                     <View style={styles.menuList}>
-                      <MenuOption iconName="home-variant" title="Home" onPress={() => {setMenuVisible(false); router.replace('/courseDetails')}} />
+                      <MenuOption iconName="home-variant" title="Home" onPress={() => {setMenuVisible(false); router.replace('/coursedetails')}} />
                       <MenuOption iconName="account" title="Profile" active onPress={() => {setMenuVisible(false); router.replace('/profileScreen')}} />
                       <MenuOption iconName="view-dashboard" title="Dashboard" />
                       <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/miniGames')}}/>
