@@ -1,5 +1,5 @@
-import { router } from 'expo-router';
-import React, { useRef } from 'react';
+
+import React, { useRef, useState } from 'react';
 import {
   Dimensions,
   PanResponder,
@@ -8,8 +8,12 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  Image,
+  Modal,
+  Pressable
 } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const { width } = Dimensions.get('window');
 
@@ -20,9 +24,29 @@ const BrainIcon = () => (
   </View>
 );
 
-const ZipGameIcon = () => (
-  <View style={[styles.gameIconBlock, { backgroundColor: '#111' }]}>
-    <View style={styles.zipShape} />
+const PacManIcon = () => (
+  <View style={[styles.gameIconBlock, { backgroundColor: '#000', justifyContent: 'center', alignItems: 'center' }]}>
+    <View style={{ width: 24, height: 24, borderRadius: 12, backgroundColor: '#FFD700' }} />
+    <View style={{
+      position: 'absolute',
+      right: 6,
+      width: 0,
+      height: 0,
+      borderTopWidth: 10,
+      borderTopColor: 'transparent',
+      borderBottomWidth: 10,
+      borderBottomColor: 'transparent',
+      borderRightWidth: 12,
+      borderRightColor: '#000',
+    }} />
+  </View>
+);
+
+const BubbleShooterIcon = () => (
+  <View style={[styles.gameIconBlock, { backgroundColor: '#1e1e2f' }]}>
+    <View style={{width: 20, height: 20, borderRadius: 10, backgroundColor: '#ff0055', position: 'absolute', top: 5, left: 10}} />
+    <View style={{width: 20, height: 20, borderRadius: 10, backgroundColor: '#00ff55', position: 'absolute', top: 15, left: 20}} />
+    <View style={{width: 20, height: 20, borderRadius: 10, backgroundColor: '#00ffff', position: 'absolute', top: 22, left: 5}} />
   </View>
 );
 
@@ -35,17 +59,12 @@ const TangoIcon = () => (
   </View>
 );
 
-const CrossclimbIcon = () => (
-  <View style={[styles.gameIconBlock, { backgroundColor: '#E3F2F1', justifyContent: 'space-evenly', paddingVertical: 8 }]}>
-    <View style={{ width: '80%', height: 6, backgroundColor: '#64C4D1', alignSelf: 'center' }} />
-    <View style={{ width: '100%', height: 6, backgroundColor: '#F4BCA9' }} />
-    <View style={{ width: '80%', height: 6, backgroundColor: '#64C4D1', alignSelf: 'center' }} />
-  </View>
-);
-
-const PinpointIcon = () => (
-  <View style={[styles.gameIconBlock, { backgroundColor: '#5D9CEC' }]}>
-    <View style={{ width: '100%', height: '50%', backgroundColor: '#4A89DC', position: 'absolute', bottom: 0, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }} />
+const FlappyBirdIcon = () => (
+  <View style={[styles.gameIconBlock, { backgroundColor: '#71C5CF' }]}>
+    <Image 
+      source={{ uri: 'https://upload.wikimedia.org/wikipedia/en/0/0a/Flappy_Bird_icon.png' }} 
+      style={{ width: '100%', height: '100%', resizeMode: 'cover' }} 
+    />
   </View>
 );
 
@@ -53,9 +72,15 @@ const PinpointIcon = () => (
 const GAMES = [
   {
     id: '1',
-    title: 'Zip Game',
-    subtitle: 'Perfect for stress relief',
-    Icon: ZipGameIcon,
+    title: 'Pac-Man',
+    subtitle: 'Classic arcade fun',
+    Icon: PacManIcon,
+  },
+  {
+    id: '5',
+    title: 'Bubble Shooter',
+    subtitle: 'Pop to relax',
+    Icon: BubbleShooterIcon,
   },
   {
     id: '2',
@@ -65,21 +90,32 @@ const GAMES = [
   },
   {
     id: '3',
-    title: 'Crossclimb',
-    subtitle: 'Sharpen your mind',
-    Icon: CrossclimbIcon,
-  },
-  {
-    id: '4',
-    title: 'Pinpoint',
-    subtitle: 'Instant calm',
-    Icon: PinpointIcon,
+    title: 'Flappy Bird',
+    subtitle: 'Tap to fly',
+    Icon: FlappyBirdIcon,
   },
 ];
 
+const MenuOption = ({ iconName, title, active, onPress }) => (
+  <Pressable
+    onPress={onPress}
+    style={({ pressed }) => [
+      styles.menuOption,
+      active && styles.menuOptionActive,
+      pressed && { opacity: 0.7 }
+    ]}
+  >
+    <Icon name={iconName} size={22} color={active ? "#4E33B3" : "#7E57C2"} />
+    <Text style={[styles.menuOptionText, active && styles.menuOptionTextActive]}>{title}</Text>
+  </Pressable>
+);
 
+import { useRouter } from 'expo-router';
 
 export default function App() {
+  const router = useRouter();
+  const [isMenuVisible, setMenuVisible] = useState(false);
+  const toggleMenu = () => setMenuVisible(!isMenuVisible);
 
   const panResponder = useRef(
     PanResponder.create({
@@ -120,6 +156,9 @@ export default function App() {
         
         {/* Fixed Header Section (Includes Background and Brain) */}
         <View style={styles.headerWrapper}>
+          <TouchableOpacity style={styles.menuIconButton} onPress={toggleMenu}>
+            <Icon name="menu" size={30} color="white" />
+          </TouchableOpacity>
           <View style={styles.headerBackground}>
             <Text style={styles.headerTitle}>Mindful Break</Text>
           </View>
@@ -153,7 +192,21 @@ export default function App() {
                   </View>
                 </View>
                 
-                <TouchableOpacity style={styles.playButton} activeOpacity={0.8}>
+                <TouchableOpacity 
+                  style={styles.playButton} 
+                  activeOpacity={0.8}
+                  onPress={() => {
+                    if (game.id === '1') {
+                      router.push('/PacManGame');
+                    } else if (game.id === '2') {
+                      router.push('/TangoGame');
+                    } else if (game.id === '3') {
+                      router.push('/FlappyBirdGame');
+                    } else if (game.id === '5') {
+                      router.push('/BubbleShooterGame');
+                    }
+                  }}
+                >
                   <Text style={styles.playButtonText}>Play now</Text>
                 </TouchableOpacity>
               </View>
@@ -163,6 +216,31 @@ export default function App() {
         </ScrollView>
       </View>
       </View>
+
+      {/* SIDE MENU MODAL */}
+      <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
+        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={toggleMenu}>
+          <View style={styles.sideMenu}>
+            <View style={styles.menuHeader}>
+              <TouchableOpacity onPress={toggleMenu}>
+                <Icon name="menu" size={30} color="#333" />
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.menuList}>
+              <MenuOption iconName="home-variant" title="Home" onPress={() => { setMenuVisible(false); router.replace('/coursedetails'); }} />
+              <MenuOption iconName="account" title="Profile" onPress={() => { setMenuVisible(false); router.replace('/profilescreen_student'); }} />
+              <MenuOption iconName="view-dashboard" title="Dashboard" onPress={() => { setMenuVisible(false); router.replace('/dashboard'); }} />
+              <MenuOption iconName="controller-classic" title="Games" active onPress={() => { setMenuVisible(false); router.replace('/MiniGames'); }} />
+              <MenuOption iconName="cog" title="Settings" onPress={() => { setMenuVisible(false); router.replace('/settings'); }} />
+            </View>
+            <TouchableOpacity style={styles.logoutButton} onPress={() => { setMenuVisible(false); router.replace('/loginpage_Student'); }}>
+              <Text style={styles.logoutText}> Log Out    <Icon name="logout" size={24} color="grey" /></Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
+
     </SafeAreaView>
     
   );
@@ -369,18 +447,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E0E0E0',
   },
-  zipShape: {
-    width: 24,
-    height: 24,
-    borderColor: '#FF1493',
-    borderWidth: 4,
-    borderBottomColor: '#00FFFF',
-    borderRightColor: '#FF4500',
-    borderRadius: 6,
-    alignSelf: 'center',
-    marginTop: 10,
-    transform: [{ rotate: '45deg' }],
-  },
+
   tangoSquare: {
     width: '50%',
     height: '50%',

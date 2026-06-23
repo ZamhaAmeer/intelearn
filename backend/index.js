@@ -488,7 +488,7 @@ app.get('/lecturer/courses', authenticateToken, async (req, res) => {
       return {
         id: plainCourse.id,
         title: plainCourse.title,
-        image: plainCourse.image_url ? `http://172.20.10.3:3000/${plainCourse.image_url}` : 'https://via.placeholder.com/150',
+        image: plainCourse.image_url ? `http://192.168.1.6:3000/${plainCourse.image_url}` : 'https://via.placeholder.com/150',
         year: plainCourse.academic_year || 'N/A',
         sem: plainCourse.semester ? `${plainCourse.semester} Sem` : 'N/A',
         dept: req.user.department || 'IT Department', // Pulls from logged-in lecturer profile context

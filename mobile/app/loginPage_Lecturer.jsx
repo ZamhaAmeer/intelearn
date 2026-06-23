@@ -70,6 +70,9 @@ export default function LoginPage() {
     if (response.status === 200) {
 
   await AsyncStorage.setItem('userEmail', email);
+  if (data.token) {
+    await AsyncStorage.setItem('token', data.token);
+  }
 
   console.log("Saved Email:", email);
 

@@ -147,20 +147,20 @@ const getSemesterFromCode = (code) => {
   if (code.startsWith('IS6')) return '6th Sem';
   if (code.startsWith('IS7')) return '7th Sem';
   if (code.startsWith('IS8')) return '8th Sem';
-  
+
   return 'Unknown';
 };
 
 // 2. SUB-COMPONENTS
 const SunIcon = ({ color }) => (
   <Svg width="22" height="22" viewBox="0 0 512 512">
-    <Path fill={color} d="M256,104c-83.813,0-152,68.187-152,152s68.187,152,152,152s152-68.187,152-152S339.813,104,256,104z M256,368c-61.757,0-112-50.243-112-112s50.243-112,112-112s112,50.243,112,112S317.757,368,256,368z M256,72c11.046,0,20-8.954,20-20V20c0-11.046-8.954-20-20-20s-20,8.954-20,20v32C236,63.046,244.954,72,256,72z M256,440c-11.046,0-20,8.954-20,20v32c0,11.046,8.954,20,20,20s20-8.954,20-20v-32C276,448.954,267.046,440,256,440z M440,256c0-11.046,8.954-20,20-20h32c11.046,0,20,8.954,20,20s-8.954,20-20,20h-32C448.954,276,440,267.046,440,256z M72,256c0,11.046-8.954,20-20,20H20c-11.046,0-20-8.954-20-20s8.954-20,20-20h32C63.046,236,72,244.954,72,256z"/>
+    <Path fill={color} d="M256,104c-83.813,0-152,68.187-152,152s68.187,152,152,152s152-68.187,152-152S339.813,104,256,104z M256,368c-61.757,0-112-50.243-112-112s50.243-112,112-112s112,50.243,112,112S317.757,368,256,368z M256,72c11.046,0,20-8.954,20-20V20c0-11.046-8.954-20-20-20s-20,8.954-20,20v32C236,63.046,244.954,72,256,72z M256,440c-11.046,0-20,8.954-20,20v32c0,11.046,8.954,20,20,20s20-8.954,20-20v-32C276,448.954,267.046,440,256,440z M440,256c0-11.046,8.954-20,20-20h32c11.046,0,20,8.954,20,20s-8.954,20-20,20h-32C448.954,276,440,267.046,440,256z M72,256c0,11.046-8.954,20-20,20H20c-11.046,0-20-8.954-20-20s8.954-20,20-20h32C63.046,236,72,244.954,72,256z" />
   </Svg>
 );
 
 const MoonIcon = ({ color }) => (
   <Svg width="20" height="20" viewBox="0 0 512 512">
-    <Path fill={color} d="M410,329.2c-73.4,0-132.8-59.4-132.8-132.8c0-33.8,12.6-64.6,33.4-88.1c-14.7-3.4-30.1-5.3-46-5.3c-110,0-199.1,89.2-199.1,199.1S154.6,501.2,264.6,501.2c78.8,0,147-45.7,179.3-111.9C434,329.1,422.3,329.2,410,329.2z"/>
+    <Path fill={color} d="M410,329.2c-73.4,0-132.8-59.4-132.8-132.8c0-33.8,12.6-64.6,33.4-88.1c-14.7-3.4-30.1-5.3-46-5.3c-110,0-199.1,89.2-199.1,199.1S154.6,501.2,264.6,501.2c78.8,0,147-45.7,179.3-111.9C434,329.1,422.3,329.2,410,329.2z" />
   </Svg>
 );
 
@@ -179,11 +179,11 @@ const ThemeToggle = ({ isDark, onToggle }) => {
     <Pressable onPress={onToggle}>
       <ReAnimated.View style={[styles.toggleTrack, rTrackStyle]}>
         <View style={styles.toggleIconsLayer}>
-           <SunIcon color="#999" />
-           <MoonIcon color="#999" />
+          <SunIcon color="#999" />
+          <MoonIcon color="#999" />
         </View>
         <ReAnimated.View style={[styles.toggleThumb, rThumbStyle]}>
-           {isDark ? <MoonIcon color="white" /> : <SunIcon color="white" />}
+          {isDark ? <MoonIcon color="white" /> : <SunIcon color="white" />}
         </ReAnimated.View>
       </ReAnimated.View>
     </Pressable>
@@ -196,7 +196,7 @@ const MenuOption = ({ iconName, title, active, onPress }) => (
     style={({ pressed }) => [
       styles.menuItem,
       active && styles.activeMenuItem,
-      pressed && styles.pressedMenuItem 
+      pressed && styles.pressedMenuItem
     ]}
   >
     <Icon name={iconName} size={22} color={active ? "#4E33B3" : "#7E57C2"} style={styles.menuItemIcon} />
@@ -227,7 +227,7 @@ export default function CourseDetailsScreen() {
   const [isDark, setIsDark] = useState(false);
   const [isChatbotOptionsVisible, setChatbotOptionsVisible] = useState(false);
   const [isNotifVisible, setNotifVisible] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(''); 
+  const [searchQuery, setSearchQuery] = useState('');
   const [notifications, setNotifications] = useState(3);
   const [activePopupTab, setActivePopupTab] = useState('notifications');
   const router = useRouter();
@@ -236,7 +236,7 @@ export default function CourseDetailsScreen() {
   const [loading, setLoading] = useState(true);
 
   const scrollY = useRef(new Animated.Value(0)).current;
-  const scrollRef = useRef(null); 
+  const scrollRef = useRef(null);
   const headerHeight = useRef(100);
   const sectionOffsets = useRef({});
 
@@ -246,7 +246,7 @@ export default function CourseDetailsScreen() {
   const toggleMenu = () => setMenuVisible(!isMenuVisible);
   const toggleChatbot = () => setChatbotOptionsVisible(!isChatbotOptionsVisible);
 
-  const filteredCourses = COURSES.filter(course => 
+  const filteredCourses = COURSES.filter(course =>
     course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     course.tags.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -266,7 +266,7 @@ export default function CourseDetailsScreen() {
     const fetchAllCourses = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
-        
+
         // This hits your app.get('/courses') endpoint in index.js
         const response = await fetch(`${API_BASE_URL}/courses`, {
           headers: {
@@ -276,7 +276,7 @@ export default function CourseDetailsScreen() {
         });
 
         if (!response.ok) throw new Error('Failed to fetch global courses catalog');
-        
+
         const dbCourses = await response.json();
 
         // Map database fields to match what your CourseCard UI expects
@@ -285,10 +285,10 @@ export default function CourseDetailsScreen() {
           title: c.title,
           tags: c.description || 'No description available',
           code: c.id ? `IS-${c.id}` : 'DYNAMIC', // Fallback display code
-          type: 'Compulsory', 
+          type: 'Compulsory',
           credits: c.semester ? `${c.semester} Semester` : 'N/A',
           // Use uploaded image path or fall back to standard asset placeholder
-          image: c.image_url ? { uri: `${API_BASE_URL}/${c.image_url}` } : require('../assets/images/CSO.jpeg'), 
+          image: c.image_url ? { uri: `${API_BASE_URL}/${c.image_url}` } : require('../assets/images/CSO.jpeg'),
           semesterCode: c.semester // Helper field for grouping
         }));
 
@@ -310,11 +310,11 @@ export default function CourseDetailsScreen() {
   // ==============================================================
   const handleTabPress = (sem) => {
     setActiveSem(sem);
-    
+
     setTimeout(() => {
       // 1. Get the known Header Height or fallback to a standard 280px
       const safeHeaderHeight = headerHeight.current || 280;
-      
+
       // 2. Get the Y location from React Native (if it loaded)
       let yOffset = sectionOffsets.current[sem];
 
@@ -348,10 +348,10 @@ export default function CourseDetailsScreen() {
     }, 50);
   };
 
- const openPopup = (tab) => {
+  const openPopup = (tab) => {
     setActivePopupTab(tab);
     setNotifVisible(true);
-  } 
+  }
 
   // --- POPUP VIEWS RENDERING FUNCTIONS ---
   const renderNotificationsContent = () => (
@@ -389,7 +389,7 @@ export default function CourseDetailsScreen() {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.bottomActionBtn} onPress={() => {setNotifVisible(false); setNotifications(0);}}>
+      <TouchableOpacity style={styles.bottomActionBtn} onPress={() => { setNotifVisible(false); setNotifications(0); }}>
         <Text style={styles.bottomActionText}>MARK ALL AS READ</Text>
       </TouchableOpacity>
     </View>
@@ -404,7 +404,7 @@ export default function CourseDetailsScreen() {
           <Icon name="chevron-right" size={24} color="#555" />
         </View>
       </View>
-      
+
       {/* Days Row */}
       <View style={styles.calDaysRow}>
         {['MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU'].map((day, i) => (
@@ -430,15 +430,15 @@ export default function CourseDetailsScreen() {
             setNotifVisible(false);
           }}>
             <View style={[styles.calDateItem, styles.calDateHighlightPurpleLight]}>
-              <Text style={[styles.calDateText, {color: '#6F42C1'}]}>7</Text>
-              <View style={[styles.calDateDot, {backgroundColor: '#6F42C1'}]} />
+              <Text style={[styles.calDateText, { color: '#6F42C1' }]}>7</Text>
+              <View style={[styles.calDateDot, { backgroundColor: '#6F42C1' }]} />
             </View>
           </TouchableOpacity>
           <Text style={styles.calDateText}>8</Text>
           <Text style={styles.calDateText}>9</Text>
           <View style={[styles.calDateItem, styles.calDateHighlightPinkLight]}>
-             <Text style={[styles.calDateText, {color: '#D81B60'}]}>10</Text>
-             <View style={[styles.calDateDot, {backgroundColor: '#D81B60'}]} />
+            <Text style={[styles.calDateText, { color: '#D81B60' }]}>10</Text>
+            <View style={[styles.calDateDot, { backgroundColor: '#D81B60' }]} />
           </View>
           <Text style={styles.calDateText}>11</Text>
           <Text style={styles.calDateText}>12</Text>
@@ -446,7 +446,7 @@ export default function CourseDetailsScreen() {
         <View style={styles.calDateRow}>
           <Text style={styles.calDateText}>13</Text>
           <View style={[styles.calDateItem, styles.calDateHighlightPurpleDark]}>
-             <Text style={[styles.calDateText, {color: 'white'}]}>14</Text>
+            <Text style={[styles.calDateText, { color: 'white' }]}>14</Text>
           </View>
           <Text style={styles.calDateText}>15</Text>
           <Text style={styles.calDateText}>16</Text>
@@ -468,16 +468,16 @@ export default function CourseDetailsScreen() {
       {/* Tomorrow Event Card */}
       <View style={styles.calEventCard}>
         <View style={styles.calEventIconWrap}>
-           <Icon name="calendar-text-outline" size={24} color="#6F42C1" />
+          <Icon name="calendar-text-outline" size={24} color="#6F42C1" />
         </View>
         <View style={styles.calEventInfo}>
-           <Text style={styles.calEventLabel}>TOMORROW</Text>
-           <Text style={styles.calEventTitle}>IS Final Review Session</Text>
+          <Text style={styles.calEventLabel}>TOMORROW</Text>
+          <Text style={styles.calEventTitle}>IS Final Review Session</Text>
         </View>
       </View>
 
       <TouchableOpacity style={styles.bottomActionBtn} onPress={() => setNotifVisible(false)}>
-        <Text style={[styles.bottomActionText, {color: '#777'}]}>VIEW FULL SCHEDULE</Text>
+        <Text style={[styles.bottomActionText, { color: '#777' }]}>VIEW FULL SCHEDULE</Text>
       </TouchableOpacity>
     </View>
   );
@@ -503,9 +503,9 @@ export default function CourseDetailsScreen() {
         </TouchableOpacity>
       </View>
 
-      <Animated.ScrollView 
+      <Animated.ScrollView
         ref={scrollRef}
-        contentContainerStyle={styles.scrollList} 
+        contentContainerStyle={styles.scrollList}
         showsVerticalScrollIndicator={false}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true })}
         scrollEventThrottle={16}
@@ -514,7 +514,7 @@ export default function CourseDetailsScreen() {
           <View style={[styles.headerContentSection, isDark && { backgroundColor: '#1A1A1A' }]}>
             <Animated.View style={{ opacity: mainTitleOpacity }}>
               <Text style={styles.headerTitle}>Course</Text>
-              <Svg height="45" width="200" style={{marginTop: -5}}>
+              <Svg height="45" width="200" style={{ marginTop: -5 }}>
                 <Defs>
                   <LinearGradient id="grad" x1="0" y1="0" x2="1" y2="0">
                     <Stop offset="0" stopColor="#9B86EE" stopOpacity="1" />
@@ -525,13 +525,13 @@ export default function CourseDetailsScreen() {
                 <SvgText fill="url(#grad)" fontSize="38" fontWeight="bold" x="0" y="35">Details</SvgText>
               </Svg>
             </Animated.View>
-            
+
             <View style={styles.searchSection}>
-              <TextInput 
-                style={styles.input} 
-                placeholder="Explore your future" 
-                placeholderTextColor="#888" 
-                value={searchQuery} 
+              <TextInput
+                style={styles.input}
+                placeholder="Explore your future"
+                placeholderTextColor="#888"
+                value={searchQuery}
                 onChangeText={setSearchQuery}
               />
             </View>
@@ -541,8 +541,8 @@ export default function CourseDetailsScreen() {
           <View style={styles.tabsWrapper}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.tabsScroll}>
               {semesters.map((sem, index) => (
-                <TouchableOpacity 
-                  key={index} 
+                <TouchableOpacity
+                  key={index}
                   onPress={() => handleTabPress(sem)}
                   style={[styles.tabButton, activeSem === sem && styles.activeTabButton]}
                 >
@@ -557,20 +557,20 @@ export default function CourseDetailsScreen() {
         <View style={styles.cardListWrapper}>
           {filteredCourses.length > 0 ? (
             groupedCourses.map(group => {
-              if (group.data.length === 0) return null; 
+              if (group.data.length === 0) return null;
               return (
-                <View 
-                  key={group.title} 
-                  onLayout={(e) => { 
-                    sectionOffsets.current[group.title] = e.nativeEvent.layout.y; 
+                <View
+                  key={group.title}
+                  onLayout={(e) => {
+                    sectionOffsets.current[group.title] = e.nativeEvent.layout.y;
                   }}
                 >
                   <Text style={styles.sectionHeader}>{group.title}</Text>
-                  
+
                   {group.data.map((course) => (
-                    <CourseCard 
-                      key={course.id} 
-                      item={course} 
+                    <CourseCard
+                      key={course.id}
+                      item={course}
                       onView={(item) => {
                         switch (item.code) {
                           case 'IS1101': router.push('/FIS'); break;
@@ -638,7 +638,7 @@ export default function CourseDetailsScreen() {
                           case 'IS5112': router.push('/design-patterns'); break;
                           case 'IS5113': router.push('/sqa'); break;
                           case 'IS5114': router.push('/data-mining'); break;
-                          
+
                           case 'IS6101': router.push('/industrial-training'); break;
 
                           case 'IS7101': router.push('/research-methodologies'); break;
@@ -670,7 +670,7 @@ export default function CourseDetailsScreen() {
                             router.push('/coursecontent');
                             break;
                         }
-                      }} 
+                      }}
                     />
                   ))}
                 </View>
@@ -678,8 +678,8 @@ export default function CourseDetailsScreen() {
             })
           ) : (
             <View style={styles.emptyContainer}>
-               <Icon name="magnify-close" size={50} color="#BBB" />
-               <Text style={styles.emptyText}>No results found.</Text>
+              <Icon name="magnify-close" size={50} color="#BBB" />
+              <Text style={styles.emptyText}>No results found.</Text>
             </View>
           )}
         </View>
@@ -689,18 +689,18 @@ export default function CourseDetailsScreen() {
       <Modal transparent visible={isNotifVisible} animationType="slide" onRequestClose={() => setNotifVisible(false)}>
         <TouchableOpacity style={styles.notifOverlay} activeOpacity={1} onPress={() => setNotifVisible(false)}>
           <View style={styles.popupMainContainer} onStartShouldSetResponder={() => true}>
-            
+
             {/* Top Toggle Area */}
             <View style={styles.popupToggleRow}>
-              <TouchableOpacity 
-                style={[styles.popupToggleBtn, activePopupTab === 'notifications' && styles.popupToggleBtnActive]} 
+              <TouchableOpacity
+                style={[styles.popupToggleBtn, activePopupTab === 'notifications' && styles.popupToggleBtnActive]}
                 onPress={() => setActivePopupTab('notifications')}
               >
                 <Icon name={activePopupTab === 'notifications' ? "bell" : "bell-outline"} size={22} color={activePopupTab === 'notifications' ? 'white' : '#6F42C1'} />
               </TouchableOpacity>
-              
-              <TouchableOpacity 
-                style={[styles.popupToggleBtn, activePopupTab === 'calendar' && styles.popupToggleBtnActive]} 
+
+              <TouchableOpacity
+                style={[styles.popupToggleBtn, activePopupTab === 'calendar' && styles.popupToggleBtnActive]}
                 onPress={() => setActivePopupTab('calendar')}
               >
                 <Icon name={activePopupTab === 'calendar' ? "calendar" : "calendar-month-outline"} size={22} color={activePopupTab === 'calendar' ? 'white' : '#6F42C1'} />
@@ -713,7 +713,7 @@ export default function CourseDetailsScreen() {
           </View>
         </TouchableOpacity>
       </Modal>
-      
+
       {/* NOTIFICATION MODAL */}
       <Modal transparent visible={isNotifVisible} animationType="slide" onRequestClose={() => setNotifVisible(false)}>
         <TouchableOpacity style={styles.notifOverlay} activeOpacity={1} onPress={() => setNotifVisible(false)}>
@@ -723,7 +723,7 @@ export default function CourseDetailsScreen() {
               <Icon name="book-open-variant" size={20} color="#4E33B3" />
               <Text style={styles.notifText}>New lecture added in Web Dev</Text>
             </View>
-            <TouchableOpacity style={styles.closeNotifBtn} onPress={() => {setNotifVisible(false); setNotifications(0);}}>
+            <TouchableOpacity style={styles.closeNotifBtn} onPress={() => { setNotifVisible(false); setNotifications(0); }}>
               <Text style={styles.closeNotifText}>Mark all as read</Text>
             </TouchableOpacity>
           </View>
@@ -738,17 +738,17 @@ export default function CourseDetailsScreen() {
               <TouchableOpacity onPress={toggleMenu}>
                 <Icon name="menu" size={30} color={isDark ? "white" : "#333"} />
               </TouchableOpacity>
-              
+
             </View>
 
             <View style={styles.menuList}>
-              <MenuOption iconName="home-variant" title="Home" active onPress={() => {setMenuVisible(false); router.replace('/coursedetails')}} />
-              <MenuOption iconName="account" title="Profile" onPress={() => {setMenuVisible(false); router.replace('/profilescreen_student')}} />
-              <MenuOption iconName="view-dashboard" title="Dashboard" onPress={() => {setMenuVisible(false); router.replace('/dashboard')}} />
-              <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/minigamesection')}} />
-              <MenuOption iconName="cog" title="Settings" onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
+              <MenuOption iconName="home-variant" title="Home" active onPress={() => { setMenuVisible(false); router.replace('/coursedetails') }} />
+              <MenuOption iconName="account" title="Profile" onPress={() => { setMenuVisible(false); router.replace('/profilescreen_student') }} />
+              <MenuOption iconName="view-dashboard" title="Dashboard" onPress={() => { setMenuVisible(false); router.replace('/dashboard') }} />
+              <MenuOption iconName="controller-classic" title="Games" onPress={() => { setMenuVisible(false); router.replace('/MiniGames') }} />
+              <MenuOption iconName="cog" title="Settings" onPress={() => { setMenuVisible(false); router.replace('/settings') }} />
             </View>
-            <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}>
+            <TouchableOpacity style={styles.logoutButton} onPress={() => { setMenuVisible(false); router.replace('/loginpage(student)') }}>
               <Text style={styles.logoutText}> Log Out    <Icon name="logout" size={24} color="grey" /></Text>
             </TouchableOpacity>
           </View>
@@ -759,12 +759,12 @@ export default function CourseDetailsScreen() {
       <Modal transparent visible={isChatbotOptionsVisible} animationType="fade" onRequestClose={toggleChatbot}>
         <TouchableOpacity style={styles.chatbotOverlay} activeOpacity={1} onPress={toggleChatbot}>
           <View style={styles.chatbotPopup}>
-            <TouchableOpacity style={styles.charOption} onPress={() => {setChatbotOptionsVisible(false); router.replace('/chatbotmaya') }}>
-               <Text style={{fontSize: 30}}>👩‍💼</Text><Text style={styles.charText}>Maya</Text>
+            <TouchableOpacity style={styles.charOption} onPress={() => { setChatbotOptionsVisible(false); router.replace('/chatbotmaya') }}>
+              <Text style={{ fontSize: 30 }}>👩‍💼</Text><Text style={styles.charText}>Maya</Text>
             </TouchableOpacity>
             <View style={styles.charSeparator} />
-            <TouchableOpacity style={styles.charOption} onPress={() => {setChatbotOptionsVisible(false); router.replace('/chatbotdhruv') }}>
-               <Text style={{fontSize: 30}}>👨‍🎓</Text><Text style={styles.charText}>Dhruv</Text>
+            <TouchableOpacity style={styles.charOption} onPress={() => { setChatbotOptionsVisible(false); router.replace('/chatbotdhruv') }}>
+              <Text style={{ fontSize: 30 }}>👨‍🎓</Text><Text style={styles.charText}>Dhruv</Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
@@ -792,11 +792,11 @@ const styles = StyleSheet.create({
   input: { color: '#000' },
   cardListWrapper: { padding: 20 },
 
-  scrollList: { 
+  scrollList: {
     flexGrow: 1,
     paddingBottom: 120 // Ensures bottom semesters can definitely scroll to the top
   },
-  
+
   sectionHeader: { fontSize: 18, fontWeight: 'bold', color: '#4E33B3', marginBottom: 15, marginTop: 10, marginLeft: 5 },
 
   toggleTrack: { width: 75, height: 38, borderRadius: 20, padding: 4, justifyContent: 'center' },
@@ -827,16 +827,16 @@ const styles = StyleSheet.create({
 
   notificationContainer: { padding: 5, position: 'relative' },
   badge: {
-    position: 'absolute', right: -2, top: -2, backgroundColor: 'rgba(255, 255, 255, 0.25)', 
+    position: 'absolute', right: -2, top: -2, backgroundColor: 'rgba(255, 255, 255, 0.25)',
     borderRadius: 10, width: 20, height: 20, justifyContent: 'center', alignItems: 'center',
     borderWidth: 1.5, borderColor: 'rgba(255, 255, 255, 0.4)', elevation: 4,
   },
   badgeTextSmall: { color: 'white', fontSize: 11, fontWeight: '900', textShadowColor: 'rgba(0, 0, 0, 0.5)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 1 },
 
-  cardContainer: { flexDirection: 'row', alignItems: 'center', marginBottom: 20},
+  cardContainer: { flexDirection: 'row', alignItems: 'center', marginBottom: 20 },
   imageCircleContainer: { width: 85, height: 85, borderRadius: 42.5, borderWidth: 4, borderColor: 'white', overflow: 'hidden', zIndex: 2, elevation: 8 },
   courseImage: { width: '100%', height: '100%' },
-  infoCard: { flex: 1, backgroundColor: 'white', borderRadius: 20, paddingVertical: 15, paddingLeft: 55, marginLeft: -45, elevation: 4,  shadowColor: '#000',  shadowOffset: { width: 0, height: 2 },  shadowOpacity: 0.1  },
+  infoCard: { flex: 1, backgroundColor: 'white', borderRadius: 20, paddingVertical: 15, paddingLeft: 55, marginLeft: -45, elevation: 4, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1 },
   courseTitle: { fontSize: 17, fontWeight: 'bold' },
   courseTags: { fontSize: 11, color: '#555' },
   badgeRow: { flexDirection: 'row', gap: 6, marginTop: 4 },
@@ -862,11 +862,11 @@ const styles = StyleSheet.create({
   // --- NEW UNIFIED POPUP STYLES ---
   notifOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'center', alignItems: 'center' },
   popupMainContainer: { width: width * 0.9, backgroundColor: '#EFEFEF', borderRadius: 30, paddingTop: 15, elevation: 20, overflow: 'hidden' },
-  
+
   popupToggleRow: { flexDirection: 'row', justifyContent: 'space-evenly', marginHorizontal: 20, marginBottom: 15 },
   popupToggleBtn: { flex: 1, marginHorizontal: 5, paddingVertical: 12, alignItems: 'center', borderRadius: 25 },
   popupToggleBtnActive: { backgroundColor: '#6F42C1' },
-  
+
   popupContentArea: { backgroundColor: '#EFEFEF', paddingBottom: 20 },
 
   // --- NOTIFICATION STYLES ---
@@ -877,21 +877,21 @@ const styles = StyleSheet.create({
   notifDesc: { fontSize: 13, color: '#666', marginTop: 2, lineHeight: 18 },
   notifTime: { fontSize: 11, fontWeight: 'bold', color: '#6F42C1', marginTop: 5 },
   notifTimeRed: { fontSize: 11, fontWeight: 'bold', color: '#D81B60', marginTop: 5 },
-  
+
   // --- CALENDAR STYLES ---
   calHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 25, marginBottom: 15 },
   calMonthText: { fontSize: 18, fontWeight: 'bold', color: '#333' },
   calArrows: { flexDirection: 'row', gap: 15 },
-  
+
   calDaysRow: { flexDirection: 'row', justifyContent: 'space-around', paddingHorizontal: 15, marginBottom: 10 },
   calDayName: { fontSize: 11, fontWeight: 'bold', color: '#999', width: 30, textAlign: 'center' },
-  
+
   calDatesGrid: { paddingHorizontal: 15, marginBottom: 20 },
   calDateRow: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 10 },
   calDateItem: { width: 34, height: 34, justifyContent: 'center', alignItems: 'center', borderRadius: 17 },
   calDateText: { fontSize: 15, color: '#333', width: 34, textAlign: 'center', lineHeight: 34 },
   calDateDim: { color: '#CCC' },
-  
+
   calDateHighlightPurpleLight: { backgroundColor: '#EAE2FD' },
   calDateHighlightPinkLight: { backgroundColor: '#FCE4EC' },
   calDateHighlightPurpleDark: { backgroundColor: '#6F42C1' },
