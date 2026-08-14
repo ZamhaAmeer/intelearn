@@ -145,7 +145,7 @@ const MenuOption = ({ icon, title, active }) => (
                       </View>
                       
         
-                    <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}>
+                    <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage_Student)') }}>
                      <Text style={styles.logoutText}><Icon name="logout" size={24} color="red" /> Log Out</Text>
                     </TouchableOpacity>
                   </View>
@@ -167,7 +167,7 @@ const MenuOption = ({ icon, title, active }) => (
                 {/* 5. Update Image source to use the state */}
                 <TouchableOpacity onPress={handleChangePhoto}>
                   <Image 
-                    source={require("../../assets/images/pr2.jpg")} 
+                    source={require("../src/assets/images/pr2.jpg")} 
                     style={styles.profileImage}
                   />
                 </TouchableOpacity>

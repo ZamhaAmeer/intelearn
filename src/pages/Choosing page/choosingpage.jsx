@@ -14,7 +14,7 @@ import {
 // Get screen height to scale the header appropriately
 const { height } = Dimensions.get('window');
 
-const ChoosingPage = () => {
+const choosingpage = () => {
   const router = useRouter();
 
   const handleNavigation = () => {
@@ -29,13 +29,13 @@ const ChoosingPage = () => {
         Replace with your actual asset path.
       */}
       <ImageBackground 
-        source={require('../../assets/images/header-curve.png')} 
+        source={require('../src/assets/images/header-curve.png')} 
         style={styles.headerImageBackground}
         resizeMode="stretch" // This ensures the curve stretches across the full width
       >
         <View style={styles.logoContainer}>
             <Image 
-                source={require("../../assets/images/logo.png")} // Use your logo asset
+                source={require("../src/assets/images/logo.png")} // Use your logo asset
                 style={styles.logoImage}
                 resizeMode="contain"
             />
@@ -68,7 +68,7 @@ const ChoosingPage = () => {
             {/* Educator Option */}
             <TouchableOpacity 
               style={styles.optionButton}
-              onPress={() => router.push("./loginpage(lecturer)")}
+              onPress={() => router.push("./loginPage_Lecturer)")}
             >
               <Ionicons name="people" size={35} color="black" style={styles.icon} />
               <Text style={styles.optionText}>I am an Educator</Text>
@@ -177,4 +177,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChoosingPage;
+export default choosingpage;

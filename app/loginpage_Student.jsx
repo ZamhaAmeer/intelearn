@@ -1,15 +1,20 @@
 import { Ionicons } from "@expo/vector-icons"; // For the close (X) icon
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
-    Dimensions,
-    Image,
-    ImageBackground,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  Alert,
+  Dimensions,
+  Image,
+  ImageBackground,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from "react-native";
 
 import ForgotPasswordModal from "./forgotpassword";
@@ -20,16 +25,83 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [isModalVisible, setModalVisible] = useState(false);
   const router = useRouter();
 
-  const handleLogin = () => {
-    // Add your login logic here
-    console.log("Login with:", email, password);
-  };
+  const handleLogin = async () => {
+    // Basic frontend validation
+    if (!email || !password) {
+      Alert.alert("Error", "Please enter both email and password.");
+      return;
+    }
+
+    const studentEmailRegex = /^\d{2}[a-zA-Z]{3}\d{4}@ms\.sab\.ac\.lk$/i;
+    if (!studentEmailRegex.test(email.trim())) {
+      Alert.alert(
+        "Invalid Email", 
+        "Students must log in with their official university email (e.g., 22fis0574@ms.sab.ac.lk)."
+      );
+      return; // Stops the login process
+    }
+
+    console.log("Attempting login for:", email);
+
+    try {
+      // NOTE: Replace 'YOUR_BACKEND_IP' with your computer's local IP address 
+      // (e.g., 192.168.1.100) if testing on a physical device, or 10.0.2.2 for Android Emulator. 
+      // Do not use 'localhost' in React Native.
+      const response = await fetch("http://172.20.10.3:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const rawText = await response.text();
+
+      // Debugging logs to see exactly what the server said
+    console.log("Server Status Code:", response.status);
+    console.log("RAW SERVER RESPONSE:", rawText);
+
+    // 3. Now safely try to convert it to JSON
+      let data;
+      try {
+        data = JSON.parse(rawText);
+      } catch (parseError) {
+        console.error("Failed to parse JSON. The server sent HTML instead.");
+        Alert.alert("Server Error", "Check your Expo terminal to see the raw HTML response.");
+        return; 
+      }
+
+      // 3. The Logic Check
+    if (response.status === 200) {
+      // ONLY navigate if the server explicitly gave a 200 OK status
+      console.log("Success! Navigating to course details...");
+      await AsyncStorage.setItem('userEmail', email.trim().toLowerCase());
+      await AsyncStorage.setItem('token', data.token);
+      await AsyncStorage.setItem('fullName', data.full_name || 'Student');
+      router.push("./coursedetails");
+    } else {
+      // If status is 401 (Unauthorized) or 400 (Bad Request), show the error and DO NOT navigate
+      console.log("Login rejected by server.");
+      Alert.alert("Login Failed", data.error || "Incorrect email or password");
+    }
+
+  } catch (error) {
+    console.error("Network or Fetch Error:", error);
+    Alert.alert("Network Error", "Could not connect to the backend server. Is it running?");
+  }
+};
+
 
   return (
+    <KeyboardAvoidingView 
+    style={{ flex: 1, backgroundColor: "transparent" }} 
+    behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
     <View style={styles.container}>
       {/* Purple Header Section using your curve image */}
       <ImageBackground
@@ -56,6 +128,12 @@ export default function LoginPage() {
           <Text style={styles.logoText}>INTELEARN</Text>
         </View>
       </ImageBackground>
+
+      <ScrollView 
+        style={styles.scrollView} 
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
       
 
 
@@ -78,19 +156,30 @@ export default function LoginPage() {
               onChangeText={setEmail}
               keyboardType="email-address"
               autoCapitalize="none"
+              returnKeyType="next"
             />
           </View>
 
+          {/* Password* */}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Password*</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="@#$han&"
-              placeholderTextColor="#A0A0A0"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={true}
-            />
+            <View style={styles.passwordInputWrapper}>
+              <TextInput
+                style={styles.flexInput}
+                placeholder="........"
+                placeholderTextColor="#A0A0A0"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={!showPassword} // Toggle visibility here
+              />
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <Ionicons 
+                  name={showPassword ? "eye-outline" : "eye-off-outline"} 
+                  size={22} 
+                  color="#A0A0A0" 
+                />
+              </TouchableOpacity>
+            </View>
           </View>
 
           {/* Remember Me & Forgot Password */}
@@ -112,24 +201,27 @@ export default function LoginPage() {
         </View>
 
         {/* Login Button */}
-        <TouchableOpacity style={styles.loginButton} onPress={() => router.push("./coursedetails")}>
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
 
-        {/* Footer */}
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>Don't have an account?</Text>
-          <TouchableOpacity onPress={() => router.push("/register_Lecturer")}>
-            <Text style={styles.signUpText}>Create an account</Text>
-          </TouchableOpacity>
+          {/* Footer */}
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>Don't have an account?</Text>
+            <TouchableOpacity onPress={() => router.push("/register_Student")}>
+              <Text style={styles.signUpText}>Create an account</Text>
+            </TouchableOpacity>
+          </View>
         </View>
+  
+        </ScrollView>
         <ForgotPasswordModal 
           visible={isModalVisible} 
           onClose={() => setModalVisible(false)} 
         />
       </View>
-    </View>
-  );
+      </KeyboardAvoidingView>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -167,12 +259,14 @@ const styles = StyleSheet.create({
   },
   welcomeSection: {
     alignItems: "center",
-    marginBottom: 30,
+    marginBottom: 50,
+    zIndex: 1, 
   },
   welcomeTitle: {
     fontSize: 24,
     fontWeight: "bold",
     color: "#0B0C10",
+    marginTop: 20,
   },
   welcomeSubtitle: {
     fontSize: 18,
@@ -278,5 +372,41 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     marginTop: 5,
+  },
+  scrollView: {
+    flex: 1,
+    marginTop: -181, // Move the negative margin from 'content' to here
+  },
+  scrollContent: {
+    paddingBottom: 40, // Adds space at the bottom so it's not cramped
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: 30,
+    // Removed marginTop: -160 from here as it's now on the ScrollView
+  },
+  inputGroup: {
+    marginBottom: 15,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#333",
+    marginBottom: 8,
+  },
+   passwordInputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: "#F9F9F9",
+    borderWidth: 1,
+    borderColor: "#EEE",
+    borderRadius: 12,
+    paddingHorizontal: 14,
+  },
+  flexInput: {
+    flex: 1,
+    paddingVertical: 14,
+    fontSize: 16,
+    color: "#000",
   },
 });

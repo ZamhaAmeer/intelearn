@@ -97,7 +97,7 @@ export default function PrivacyScreen() {
 
       {/* 2. SUB-HEADER */}
       <View style={styles.subHeader}>
-        <TouchableOpacity onPress={() => router.replace('/register(lecturer')} style={styles.backButton}>
+        <TouchableOpacity onPress={() => router.replace('/register_Student')} style={styles.backButton}>
           <Ionicons name="arrow-back" size={22} color="#1A73E8" />
           <Text style={styles.subHeaderTitle}>Privacy & Data Policy</Text>
         </TouchableOpacity>
@@ -140,6 +140,10 @@ export default function PrivacyScreen() {
             text="All scholarly outputs, discussion board contributions, and peer-review submissions transmitted via the VLE are subject to an irrevocable, non-exclusive license granted to Learnora for the purposes of pedagogical analysis and institutional archiving. Users retain moral rights to their work, but acknowledge that the platform may utilize anonymized fragments of such work for the refinement of Large Language Models (LLMs) used in institutional tutoring."
           />
           <Section 
+            title="Section 4.5: Biometric Facial Processing" 
+            text="In alignment with proctoring integrity standards, Learnora employs advanced biometric processing during synchronous assessment periods. This involves the real-time analysis of camera data to verify identity and maintain continuous presence detection. This 'Biometric Facial Processing' protocol captures micro-expression data points to ensure the integrity of the testing environment. Data extracted under this section is processed locally when possible, but high-assurance assessments may require encrypted transmission to institutional security servers for forensic auditing. By proceeding, you authorize the temporary activation of hardware imaging devices for these specific compliance checks."
+          />
+          <Section 
             title="Section 5.1: Third-Party Academic Integrations" 
             text="Learnora leverages a network of secondary service providers for plagiarism detection, e-library indexing, and cloud-based laboratory environments. Personal identifiers—excluding sensitive financial data—may be shared with these entities to ensure a seamless academic experience. Each provider is audited for compliance with the Federal Student Data Privacy Act (FSDPA)."
           />
@@ -164,7 +168,7 @@ export default function PrivacyScreen() {
         <TouchableOpacity 
           style={[styles.agreeBtn, !hasAgreed && styles.agreeBtnDisabled]}
           disabled={!hasAgreed}
-          onPress={() => router.replace('/loginpage(student)')}
+          onPress={() => router.replace('/loginpage_Student')}
         >
           <Text style={styles.agreeBtnText}>I AGREE & CONFIRM</Text>
         </TouchableOpacity>
@@ -190,7 +194,7 @@ export default function PrivacyScreen() {
               <MenuOption iconName="shield-check" title="Privacy" active onPress={() => {setMenuVisible(false); router.replace('/privacy')}} />
               <MenuOption iconName="cog" title="Settings" onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
             </View>
-            <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}>
+            <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage_Student') }}>
               <Text style={styles.logoutText}> Log Out    <Icon name="logout" size={24} color="grey" /></Text>
             </TouchableOpacity>
           </View>
@@ -200,7 +204,7 @@ export default function PrivacyScreen() {
   );
 }
 
-const Section = ({ title, text }: { title: string, text: string }) => (
+const Section = ({ title, text }) => (
   <View style={styles.sectionContainer}>
     <Text style={styles.sectionTitle}>{title}</Text>
     <Text style={styles.sectionBody}>{text}</Text>

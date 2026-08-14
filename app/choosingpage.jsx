@@ -14,12 +14,12 @@ import {
 // Get screen height to scale the header appropriately
 const { height } = Dimensions.get('window');
 
-const ChoosingPage = () => {
+const choosingpage = () => {
   const router = useRouter();
 
   const handleNavigation = () => {
     // Navigate to your login page file
-    router.push('/loginpage'); 
+    router.push('/loginPage'); 
   };
 
   return (
@@ -29,7 +29,7 @@ const ChoosingPage = () => {
         Replace with your actual asset path.
       */}
       <ImageBackground 
-        source={require('../src/assets/images/header-curve.png')} 
+        source={require("../src/assets/images/header-curve.png")} 
         style={styles.headerImageBackground}
         resizeMode="stretch" // This ensures the curve stretches across the full width
       >
@@ -59,7 +59,7 @@ const ChoosingPage = () => {
             {/* Student Option */}
             <TouchableOpacity 
               style={styles.optionButton}
-              onPress={() => router.push("./loginpage(student)")} // Adjust paths as needed
+              onPress={() => router.push("./loginpage_Student")} // Adjust paths as needed
             >
               <Ionicons name="school" size={35} color="black" style={styles.icon} />
               <Text style={styles.optionText}>I am a Student</Text>
@@ -68,7 +68,7 @@ const ChoosingPage = () => {
             {/* Educator Option */}
             <TouchableOpacity 
               style={styles.optionButton}
-              onPress={() => router.push("./loginpage(lecturer)")}
+              onPress={() => router.push("./loginPage_Lecturer")}
             >
               <Ionicons name="people" size={35} color="black" style={styles.icon} />
               <Text style={styles.optionText}>I am an Educator</Text>
@@ -177,4 +177,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChoosingPage;
+export default choosingpage;

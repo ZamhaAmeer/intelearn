@@ -1,15 +1,19 @@
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router'; // Added useLocalSearchParams
 import { ChevronRight } from 'lucide-react-native';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react'; // Added useEffect
 import {
-  Animated, Dimensions, Modal, PanResponder, Pressable,
+  ActivityIndicator,
+  Animated,
+  Dimensions,
+  Modal, PanResponder, Pressable,
   SafeAreaView,
   StatusBar, StyleSheet,
   Text, TouchableOpacity, View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
+
 
 // Sub-components
 const LessonItem = ({ number, title }) => (
@@ -28,6 +32,45 @@ const LessonItem = ({ number, title }) => (
   </TouchableOpacity>
 );
 
+// 2. SUB-COMPONENTS
+const SunIcon = ({ color }) => (
+  <Svg width="22" height="22" viewBox="0 0 512 512">
+    <Path fill={color} d="M256,104c-83.813,0-152,68.187-152,152s68.187,152,152,152s152-68.187,152-152S339.813,104,256,104z M256,368c-61.757,0-112-50.243-112-112s50.243-112,112-112s112,50.243,112,112S317.757,368,256,368z M256,72c11.046,0,20-8.954,20-20V20c0-11.046-8.954-20-20-20s-20,8.954-20,20v32C236,63.046,244.954,72,256,72z M256,440c-11.046,0-20,8.954-20,20v32c0,11.046,8.954,20,20,20s20-8.954,20-20v-32C276,448.954,267.046,440,256,440z M440,256c0-11.046,8.954-20,20-20h32c11.046,0,20,8.954,20,20s-8.954,20-20,20h-32C448.954,276,440,267.046,440,256z M72,256c0,11.046-8.954,20-20,20H20c-11.046,0-20-8.954-20-20s8.954-20,20-20h32C63.046,236,72,244.954,72,256z"/>
+  </Svg>
+);
+
+const MoonIcon = ({ color }) => (
+  <Svg width="20" height="20" viewBox="0 0 512 512">
+    <Path fill={color} d="M410,329.2c-73.4,0-132.8-59.4-132.8-132.8c0-33.8,12.6-64.6,33.4-88.1c-14.7-3.4-30.1-5.3-46-5.3c-110,0-199.1,89.2-199.1,199.1S154.6,501.2,264.6,501.2c78.8,0,147-45.7,179.3-111.9C434,329.1,422.3,329.2,410,329.2z"/>
+  </Svg>
+);
+
+const ThemeToggle = ({ isDark, onToggle }) => {
+  const progress = useSharedValue(isDark ? 1 : 0);
+  useEffect(() => { progress.value = withSpring(isDark ? 1 : 0); }, [isDark]);
+
+  const rTrackStyle = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(progress.value, [0, 1], ['#E0E0E0', '#333333']),
+  }));
+  const rThumbStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: progress.value * 34 }],
+  }));
+
+  return (
+    <Pressable onPress={onToggle}>
+      <ReAnimated.View style={[styles.toggleTrack, rTrackStyle]}>
+        <View style={styles.toggleIconsLayer}>
+           <SunIcon color="#999" />
+           <MoonIcon color="#999" />
+        </View>
+        <ReAnimated.View style={[styles.toggleThumb, rThumbStyle]}>
+           {isDark ? <MoonIcon color="white" /> : <SunIcon color="white" />}
+        </ReAnimated.View>
+      </ReAnimated.View>
+    </Pressable>
+  );
+};
+
 const MenuOption = ({ iconName, title, active, onPress }) => (
   <Pressable
     onPress={onPress}
@@ -42,24 +85,54 @@ const MenuOption = ({ iconName, title, active, onPress }) => (
   </Pressable>
 );
 
-// Simple ThemeToggle for the menu
-const ThemeToggle = ({ isDark, onToggle }) => (
-  <TouchableOpacity onPress={onToggle}>
-    <Icon name={isDark ? "weather-night" : "weather-sunny"} size={24} color={isDark ? "white" : "#333"} />
-  </TouchableOpacity>
-);
-
 export default function CourseScreen() {
   const router = useRouter();
+
+  // If you are passing the course ID from the previous screen, you can grab it here.
+  // For now, we will default to '1' if it's not provided.
+  const { id } = useLocalSearchParams(); 
+  const courseId = id || '1';
   
   // 1. All States and Refs must be inside the function
   const [isMenuVisible, setMenuVisible] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [isNotifVisible, setNotifVisible] = useState(false);
-  const [notifications] = useState(3);
-  
+  const [notifications, setNotifications] = useState(3);
+  const [courseData, setCourseData] = useState(null);
   const scrollY = useRef(new Animated.Value(0)).current;
   const toggleMenu = () => setMenuVisible(!isMenuVisible);
+
+  const [loading, setLoading] = useState(true);
+  const [activePopupTab, setActivePopupTab] = useState('notifications');
+
+  // 3. Fetch Data from Backend
+  useEffect(() => {
+    const fetchCourseData = async () => {
+      try {
+        // REPLACE with your actual local IP address (e.g., 192.168.1.x)
+        // If testing on an Android emulator, use 10.0.2.2 instead of localhost
+        const response = await fetch(`http://172.20.10.3:3000/courses/${courseId}`, {
+          method: 'GET',
+          headers: {
+            // You need to retrieve the actual token you saved during login (e.g., from AsyncStorage)
+            'Authorization': `Bearer YOUR_SAVED_JWT_TOKEN_HERE`, 
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) throw new Error('Failed to fetch data');
+
+        const data = await response.json();
+        setCourseData(data);
+      } catch (error) {
+        console.error("Error fetching course:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourseData();
+  }, [courseId]);
 
   // Animation for sticky title
   const stickyTitleOpacity = scrollY.interpolate({ 
@@ -81,6 +154,158 @@ export default function CourseScreen() {
     })
   ).current;
 
+  // 4. Show loading screen while fetching
+  if (loading) {
+    return (
+      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }, isDark && { backgroundColor: '#121212' }]}>
+        <ActivityIndicator size="large" color="#5E35B1" />
+      </View>
+    );
+  }
+
+  // Fallback if data fails to load
+  if (!courseData) {
+    return (
+      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+        <Text style={{color: isDark ? 'white' : 'black'}}>Course not found.</Text>
+      </View>
+    );
+  }
+
+   const openPopup = (tab) => {
+      setActivePopupTab(tab);
+      setNotifVisible(true);
+    } 
+  
+    // --- POPUP VIEWS RENDERING FUNCTIONS ---
+    const renderNotificationsContent = () => (
+      <View style={styles.popupContentArea}>
+        <View style={styles.notifListItem}>
+          <View style={[styles.notifIconCircle, { backgroundColor: '#E0D4FC' }]}>
+            <Icon name="clipboard-text-outline" size={24} color="#6F42C1" />
+          </View>
+          <View style={styles.notifTextContainer}>
+            <Text style={styles.notifTitle}>New assignment posted</Text>
+            <Text style={styles.notifDesc}>Structured Programming: Unit 4 - Logic Gates</Text>
+            <Text style={styles.notifTime}>2 HOURS AGO</Text>
+          </View>
+        </View>
+  
+        <View style={styles.notifListItem}>
+          <View style={[styles.notifIconCircle, { backgroundColor: '#FCE4EC' }]}>
+            <Icon name="calendar-month-outline" size={24} color="#D81B60" />
+          </View>
+          <View style={styles.notifTextContainer}>
+            <Text style={styles.notifTitle}>Exam date reminder</Text>
+            <Text style={styles.notifDesc}>Fundamentals of IS mid-term scheduled for Oct 12th.</Text>
+            <Text style={styles.notifTimeRed}>YESTERDAY</Text>
+          </View>
+        </View>
+  
+        <View style={styles.notifListItem}>
+          <View style={[styles.notifIconCircle, { backgroundColor: '#EDE7F6' }]}>
+            <Icon name="message-text-outline" size={24} color="#7E57C2" />
+          </View>
+          <View style={styles.notifTextContainer}>
+            <Text style={styles.notifTitle}>New grade available</Text>
+            <Text style={styles.notifDesc}>Assignment 3: Modular Functions - Grade: A-</Text>
+            <Text style={styles.notifTime}>2 DAYS AGO</Text>
+          </View>
+        </View>
+  
+        <TouchableOpacity style={styles.bottomActionBtn} onPress={() => {setNotifVisible(false); setNotifications(0);}}>
+          <Text style={styles.bottomActionText}>MARK ALL AS READ</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  
+    const renderCalendarContent = () => (
+      <View style={styles.popupContentArea}>
+        <View style={styles.calHeader}>
+          <Text style={styles.calMonthText}>November 2023</Text>
+          <View style={styles.calArrows}>
+            <Icon name="chevron-left" size={24} color="#555" />
+            <Icon name="chevron-right" size={24} color="#555" />
+          </View>
+        </View>
+        
+        {/* Days Row */}
+        <View style={styles.calDaysRow}>
+          {['MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU'].map((day, i) => (
+            <Text key={i} style={styles.calDayName}>{day}</Text>
+          ))}
+        </View>
+  
+        {/* Dates Grid (Hardcoded exactly to the image layout for this visual) */}
+        <View style={styles.calDatesGrid}>
+          <View style={styles.calDateRow}>
+            <Text style={[styles.calDateText, styles.calDateDim]}>30</Text>
+            <Text style={[styles.calDateText, styles.calDateDim]}>31</Text>
+            <Text style={styles.calDateText}>1</Text>
+            <Text style={styles.calDateText}>2</Text>
+            <Text style={styles.calDateText}>3</Text>
+            <Text style={styles.calDateText}>4</Text>
+            <Text style={styles.calDateText}>5</Text>
+          </View>
+          <View style={styles.calDateRow}>
+            <Text style={styles.calDateText}>6</Text>
+            <TouchableOpacity onPress={() => {
+              router.push("/assignment_submission");
+              setNotifVisible(false);
+            }}>
+              <View style={[styles.calDateItem, styles.calDateHighlightPurpleLight]}>
+                <Text style={[styles.calDateText, {color: '#6F42C1'}]}>7</Text>
+                <View style={[styles.calDateDot, {backgroundColor: '#6F42C1'}]} />
+              </View>
+            </TouchableOpacity>
+            <Text style={styles.calDateText}>8</Text>
+            <Text style={styles.calDateText}>9</Text>
+            <View style={[styles.calDateItem, styles.calDateHighlightPinkLight]}>
+               <Text style={[styles.calDateText, {color: '#D81B60'}]}>10</Text>
+               <View style={[styles.calDateDot, {backgroundColor: '#D81B60'}]} />
+            </View>
+            <Text style={styles.calDateText}>11</Text>
+            <Text style={styles.calDateText}>12</Text>
+          </View>
+          <View style={styles.calDateRow}>
+            <Text style={styles.calDateText}>13</Text>
+            <View style={[styles.calDateItem, styles.calDateHighlightPurpleDark]}>
+               <Text style={[styles.calDateText, {color: 'white'}]}>14</Text>
+            </View>
+            <Text style={styles.calDateText}>15</Text>
+            <Text style={styles.calDateText}>16</Text>
+            <Text style={styles.calDateText}>17</Text>
+            <Text style={styles.calDateText}>18</Text>
+            <Text style={styles.calDateText}>19</Text>
+          </View>
+          <View style={styles.calDateRow}>
+            <Text style={styles.calDateText}>20</Text>
+            <Text style={styles.calDateText}>21</Text>
+            <Text style={styles.calDateText}>22</Text>
+            <Text style={styles.calDateText}>23</Text>
+            <Text style={styles.calDateText}>24</Text>
+            <Text style={styles.calDateText}>25</Text>
+            <Text style={styles.calDateText}>26</Text>
+          </View>
+        </View>
+  
+        {/* Tomorrow Event Card */}
+        <View style={styles.calEventCard}>
+          <View style={styles.calEventIconWrap}>
+             <Icon name="calendar-text-outline" size={24} color="#6F42C1" />
+          </View>
+          <View style={styles.calEventInfo}>
+             <Text style={styles.calEventLabel}>TOMORROW</Text>
+             <Text style={styles.calEventTitle}>IS Final Review Session</Text>
+          </View>
+        </View>
+  
+        <TouchableOpacity style={styles.bottomActionBtn} onPress={() => setNotifVisible(false)}>
+          <Text style={[styles.bottomActionText, {color: '#777'}]}>VIEW FULL SCHEDULE</Text>
+        </TouchableOpacity>
+      </View>
+    );
+
   return (
     <View style={[styles.container, isDark && { backgroundColor: '#121212' }]} {...panResponder.panHandlers}>
       <StatusBar barStyle="light-content" />
@@ -92,7 +317,10 @@ export default function CourseScreen() {
         </TouchableOpacity>
 
         <Animated.View style={{ opacity: stickyTitleOpacity }}>
-          <Text style={styles.stickyTitleText}>FIS</Text>
+          {/* Dynamically show an abbreviation or title snippet */}
+          <Text style={styles.stickyTitleText}>
+            {courseData.title.substring(0, 15)}...
+          </Text>
         </Animated.View>
 
         <TouchableOpacity onPress={() => setNotifVisible(true)} style={styles.notificationContainer}>
@@ -109,46 +337,108 @@ export default function CourseScreen() {
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true })}
         scrollEventThrottle={16}
       >
+        <View style={{
+          position: 'absolute',
+          top: -1000, 
+          left: 0,
+          right: 0,
+          height: 1100, // Covers the negative top plus the 100 paddingTop
+          backgroundColor: isDark ? '#1A1A1A' : '#5E35B1',
+        }} />
+        
         <View style={[styles.headerContainer, isDark && { backgroundColor: '#1A1A1A' }]}>
           <SafeAreaView>
-            <Text style={styles.headerTitle}>Fundamentals of Information System</Text>
+            {/* DYNAMIC TITLE */}
+            <Text style={styles.headerTitle}>{courseData.title}</Text>
             <View style={styles.moduleBadge1}>
-              <Text style={styles.moduleBadgeText}>IS1101</Text>
+              <Text style={styles.moduleBadgeText}>Course #{courseData.id}</Text>
             </View>
           </SafeAreaView>
         </View>
 
         <View style={styles.contentBody}>
-          <Text style={[styles.sectionTitle, isDark && { color: 'white' }]}>Fundamentals of IS</Text>
+          <Text style={[styles.sectionTitle, isDark && { color: 'white' }]}>About this Course</Text>
+          
+          {/* DYNAMIC DESCRIPTION */}
           <Text style={[styles.description, isDark && { color: 'white' }]}>
-
-            This course will introduce the fundamentals of information systems and the role of information
-
-            processing in today's business environment. An overview is presented on information concepts,
-
-            information systems, business information systems, systems development, competitive advantage,
-
-            careers in information systems, and global challenges in information systems.
-
+            {courseData.description}
           </Text>
+
 
           <View style={styles.lessonHeader}>
             <Text style={[styles.sectionTitle, isDark && { color: 'white' }]}>Lessons</Text>
             <View style={styles.moduleBadge}>
-              <Text style={styles.moduleBadgeText}>11 modules</Text>
+              <Text style={styles.moduleBadgeText}>
+                {courseData.materials ? courseData.materials.length : 0} modules
+              </Text>
             </View>
           </View>
 
-          <LessonItem number="1" title="Course Outline" />
-          <LessonItem number="2" title="Introduction" />
-          <LessonItem number="3" title="Value & Importance of Information" />
-          <LessonItem number="4" title="Information Systems Concepts" />
-          
+          {/* DYNAMIC LESSON LIST */}
+          {courseData.materials && courseData.materials.length > 0 ? (
+            courseData.materials.map((material, index) => (
+              <LessonItem 
+                key={material.id.toString()} 
+                number={(index + 1).toString()} 
+                title={material.title || `Lesson ${index + 1}`} 
+              />
+            ))
+          ) : (
+            <Text style={[styles.description, isDark && { color: 'white' }]}>
+              No materials uploaded yet.
+            </Text>
+          )}
+
           <View style={{ height: 120 }} />
         </View>
       </Animated.ScrollView>
 
-      {/* SIDE MENU MODAL */}
+      {/* NOTIFICATION / CALENDAR POPUP MODAL */}
+            <Modal transparent visible={isNotifVisible} animationType="slide" onRequestClose={() => setNotifVisible(false)}>
+              <TouchableOpacity style={styles.notifOverlay} activeOpacity={1} onPress={() => setNotifVisible(false)}>
+                <View style={styles.popupMainContainer} onStartShouldSetResponder={() => true}>
+                  
+                  {/* Top Toggle Area */}
+                  <View style={styles.popupToggleRow}>
+                    <TouchableOpacity 
+                      style={[styles.popupToggleBtn, activePopupTab === 'notifications' && styles.popupToggleBtnActive]} 
+                      onPress={() => setActivePopupTab('notifications')}
+                    >
+                      <Icon name={activePopupTab === 'notifications' ? "bell" : "bell-outline"} size={22} color={activePopupTab === 'notifications' ? 'white' : '#6F42C1'} />
+                    </TouchableOpacity>
+                    
+                    <TouchableOpacity 
+                      style={[styles.popupToggleBtn, activePopupTab === 'calendar' && styles.popupToggleBtnActive]} 
+                      onPress={() => setActivePopupTab('calendar')}
+                    >
+                      <Icon name={activePopupTab === 'calendar' ? "calendar" : "calendar-month-outline"} size={22} color={activePopupTab === 'calendar' ? 'white' : '#6F42C1'} />
+                    </TouchableOpacity>
+                  </View>
+      
+                  {/* Render Specific Content based on Tab */}
+                  {activePopupTab === 'notifications' ? renderNotificationsContent() : renderCalendarContent()}
+      
+                </View>
+              </TouchableOpacity>
+            </Modal>
+            
+            {/* NOTIFICATION MODAL */}
+            <Modal transparent visible={isNotifVisible} animationType="slide" onRequestClose={() => setNotifVisible(false)}>
+              <TouchableOpacity style={styles.notifOverlay} activeOpacity={1} onPress={() => setNotifVisible(false)}>
+                <View style={styles.notifPanel}>
+                  <Text style={styles.notifHeader}>Recent Notifications</Text>
+                  <View style={styles.notifItem}>
+                    <Icon name="book-open-variant" size={20} color="#4E33B3" />
+                    <Text style={styles.notifText}>New lecture added in Web Dev</Text>
+                  </View>
+                  <TouchableOpacity style={styles.closeNotifBtn} onPress={() => {setNotifVisible(false); setNotifications(0);}}>
+                    <Text style={styles.closeNotifText}>Mark all as read</Text>
+                  </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
+            </Modal>
+      
+            {/* SIDE MENU MODAL */}
             <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
               <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={toggleMenu}>
                 <View style={[styles.sideMenu, isDark && { backgroundColor: '#1A1A1A' }]}>
@@ -157,19 +447,18 @@ export default function CourseScreen() {
                       <Icon name="menu" size={30} color={isDark ? "white" : "#333"} />
                     </TouchableOpacity>
                     
-                    {/* DARK MODE TOGGLE REPLACING 🌙 */}
                     <ThemeToggle isDark={isDark} onToggle={() => setIsDark(!isDark)} />
                   </View>
       
                   <View style={styles.menuList}>
                     <MenuOption iconName="home-variant" title="Home" active onPress={() => {setMenuVisible(false); router.replace('/coursedetails')}} />
                     <MenuOption iconName="account" title="Profile" onPress={() => {setMenuVisible(false); router.replace('/profilescreen')}} />
-                         <MenuOption iconName="view-dashboard" title="Dashboard" />
-                    <MenuOption iconName="controller-classic" title="Games" />
-                    <MenuOption iconName="shield-check" title="Privacy" />
+                    <MenuOption iconName="view-dashboard" title="Dashboard" />
+                    <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/minigamesection')}} />
+                    <MenuOption iconName="shield-check" title="Privacy" onPress={() => {setMenuVisible(false); router.replace('/privacy')}} />
                     <MenuOption iconName="cog" title="Settings" onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
                   </View>
-                  <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}>
+                  <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage_Student') }}>
                     <Text style={styles.logoutText}> Log Out    <Icon name="logout" size={24} color="grey" /></Text>
                   </TouchableOpacity>
                 </View>
@@ -225,4 +514,52 @@ const styles = StyleSheet.create({
   activeMenuText: { color: '#4E33B3', fontWeight: 'bold' },
   logoutButton: { borderTopWidth: 1, borderTopColor: '#eee', paddingVertical: 20, alignItems: 'center' },
   logoutText: { fontSize: 18, color: 'grey' },
+  // --- NEW UNIFIED POPUP STYLES ---
+  notifOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'center', alignItems: 'center' },
+  popupMainContainer: { width: width * 0.9, backgroundColor: '#EFEFEF', borderRadius: 30, paddingTop: 15, elevation: 20, overflow: 'hidden' },
+  
+  popupToggleRow: { flexDirection: 'row', justifyContent: 'space-evenly', marginHorizontal: 20, marginBottom: 15 },
+  popupToggleBtn: { flex: 1, marginHorizontal: 5, paddingVertical: 12, alignItems: 'center', borderRadius: 25 },
+  popupToggleBtnActive: { backgroundColor: '#6F42C1' },
+  
+  popupContentArea: { backgroundColor: '#EFEFEF', paddingBottom: 20 },
+
+  // --- NOTIFICATION STYLES ---
+  notifListItem: { flexDirection: 'row', paddingHorizontal: 20, paddingVertical: 15 },
+  notifIconCircle: { width: 45, height: 45, borderRadius: 22.5, justifyContent: 'center', alignItems: 'center' },
+  notifTextContainer: { flex: 1, marginLeft: 15, justifyContent: 'center' },
+  notifTitle: { fontSize: 16, fontWeight: 'bold', color: '#333' },
+  notifDesc: { fontSize: 13, color: '#666', marginTop: 2, lineHeight: 18 },
+  notifTime: { fontSize: 11, fontWeight: 'bold', color: '#6F42C1', marginTop: 5 },
+  notifTimeRed: { fontSize: 11, fontWeight: 'bold', color: '#D81B60', marginTop: 5 },
+  
+  // --- CALENDAR STYLES ---
+  calHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 25, marginBottom: 15 },
+  calMonthText: { fontSize: 18, fontWeight: 'bold', color: '#333' },
+  calArrows: { flexDirection: 'row', gap: 15 },
+  
+  calDaysRow: { flexDirection: 'row', justifyContent: 'space-around', paddingHorizontal: 15, marginBottom: 10 },
+  calDayName: { fontSize: 11, fontWeight: 'bold', color: '#999', width: 30, textAlign: 'center' },
+  
+  calDatesGrid: { paddingHorizontal: 15, marginBottom: 20 },
+  calDateRow: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 10 },
+  calDateItem: { width: 34, height: 34, justifyContent: 'center', alignItems: 'center', borderRadius: 17 },
+  calDateText: { fontSize: 15, color: '#333', width: 34, textAlign: 'center', lineHeight: 34 },
+  calDateDim: { color: '#CCC' },
+  
+  calDateHighlightPurpleLight: { backgroundColor: '#EAE2FD' },
+  calDateHighlightPinkLight: { backgroundColor: '#FCE4EC' },
+  calDateHighlightPurpleDark: { backgroundColor: '#6F42C1' },
+  calDateDot: { width: 4, height: 4, borderRadius: 2, position: 'absolute', bottom: 4 },
+
+  calEventCard: { backgroundColor: '#FDFBF3', marginHorizontal: 20, padding: 15, borderRadius: 20, flexDirection: 'row', alignItems: 'center', elevation: 2 },
+  calEventIconWrap: { backgroundColor: '#EAE2FD', width: 40, height: 40, borderRadius: 8, justifyContent: 'center', alignItems: 'center' },
+  calEventInfo: { marginLeft: 15 },
+  calEventLabel: { fontSize: 11, fontWeight: 'bold', color: '#6F42C1' },
+  calEventTitle: { fontSize: 15, fontWeight: 'bold', color: '#333', marginTop: 2 },
+
+  // --- BOTTOM BUTTON STYLES ---
+  bottomActionBtn: { marginTop: 10, alignSelf: 'center', paddingVertical: 15 },
+  bottomActionText: { color: '#6F42C1', fontWeight: 'bold', fontSize: 13, letterSpacing: 0.5 },
+
 });

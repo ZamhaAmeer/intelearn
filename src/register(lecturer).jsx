@@ -80,7 +80,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
       <View style={styles.container}>
         {/* Header Section */}
          <ImageBackground
-          source={require("../../assets/images/header-curve.png")}
+          source={require("../src/assets/images/header-curve.png")}
           style={styles.headerBackground}
           resizeMode="stretch"
         >
@@ -230,7 +230,7 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
               {/* Footer */}
               <View style={styles.footer}>
                 <Text style={styles.footerText}>Already have an account?</Text>
-                <TouchableOpacity onPress={() => router.push("/loginpage(student)")}>
+                <TouchableOpacity onPress={() => router.push("/loginpage_Student)")}>
                   <Text style={styles.loginText}>Login</Text>
                 </TouchableOpacity>
               </View>

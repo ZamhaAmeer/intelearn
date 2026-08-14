@@ -33,7 +33,7 @@ export default function LoginPage() {
     <View style={styles.container}>
       {/* Purple Header Section using your curve image */}
       <ImageBackground
-        source={require("../../assets/images/header-curve.png")}
+        source={require("../src/assets/images/header-curve.png")}
         style={styles.headerBackground}
         resizeMode="stretch"
       >
@@ -49,7 +49,7 @@ export default function LoginPage() {
         </View>
         <View style={styles.logoContainer}>
           <Image
-            source={require("../../assets/images/logo.png")}
+            source={require("../src/assets/images/logo.png")}
             style={styles.logoImage}
             resizeMode="contain"
           />
@@ -119,7 +119,7 @@ export default function LoginPage() {
         {/* Footer */}
         <View style={styles.footer}>
           <Text style={styles.footerText}>Don't have an account?</Text>
-          <TouchableOpacity onPress={() => router.push("/register(lecturer)")}>
+          <TouchableOpacity onPress={() => router.push("/register_Lecturer")}>
             <Text style={styles.signUpText}>Create an account</Text>
           </TouchableOpacity>
         </View>

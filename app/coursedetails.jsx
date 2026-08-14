@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 // Reanimated for the smooth button slide
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ReAnimated, {
   interpolateColor,
   useAnimatedStyle,
@@ -22,6 +23,7 @@ import ReAnimated, {
   withSpring
 } from 'react-native-reanimated';
 import Svg, { Defs, LinearGradient, Path, Stop, Text as SvgText } from 'react-native-svg';
+
 
 const { width, height } = Dimensions.get('window');
 
@@ -48,7 +50,6 @@ const COURSES = [
   { id: '16', title: 'Database Systems', tags: 'SQL • ER Modeling • Normalization', code: 'IS2104', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/DBS.jpeg'), color: '#C8E6C9' },
   { id: '17', title: 'Database Management Systems Practicum', tags: 'Queries • Joins • Implementation', code: 'IS2105', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/DBMS.jpg'), color: '#E1BEE7' },
   { id: '18', title: 'System Analysis & Design', tags: 'SDLC • UML • Planning', code: 'IS2106', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/SAD.jpeg'), color: '#FFCCBC' },
-
   { id: '19', title: 'Social & Professional Issues', tags: 'Ethics • Law • Intellectual Property', code: 'IS2107', type: 'Compulsory', credits: '1 Credit', image: require('../src/assets/images/SPI.jpg'), color: '#CFD8DC' },
   { id: '20', title: 'Human Computer Interaction', tags: 'UI/UX • Usability • Design', code: 'IS2108', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/HCI.jpg'), color: '#B3E5FC' },
   { id: '21', title: 'Information Assurance & Security', tags: 'CIA Triad • Encryption • Threats', code: 'IS2109', type: 'Compulsory', credits: '2 Credits', image: require('../src/assets/images/images.jpeg'), color: '#D1C4E9' },
@@ -98,6 +99,7 @@ const COURSES = [
   { id: '59', title: 'Design Patterns & Anti-patterns', tags: 'GoF Patterns • Refactoring', code: 'IS5112', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E8F5E9' },
   { id: '60', title: 'Software Quality Assurance', tags: 'Testing • Metrics • Automation', code: 'IS5113', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#E1F5FE' },
   { id: '61', title: 'Data Mining & Analytics', tags: 'Big Data • Predictive • Algorithms', code: 'IS5114', type: 'Elective', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#F0F4C3' },
+
   // --- SEMESTER VI ---
   { id: '61a', title: 'Industrial Training', tags: 'Internship • Industry Exposure', code: 'IS6101', type: 'Compulsory', credits: '6 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#CFD8DC' },
 
@@ -229,6 +231,9 @@ export default function CourseDetailsScreen() {
   const [activePopupTab, setActivePopupTab] = useState('notifications');
   const router = useRouter();
 
+  const [coursesList, setCoursesList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const scrollY = useRef(new Animated.Value(0)).current;
   const scrollRef = useRef(null); 
   const headerHeight = useRef(100);
@@ -250,8 +255,52 @@ export default function CourseDetailsScreen() {
 
   const groupedCourses = semesters.map(sem => ({
     title: sem,
-    data: filteredCourses.filter(c => getSemesterFromCode(c.code) === sem)
+    data: filteredCourses.filter(c => {
+      const computedSem = getSemesterFromCode(c.code);
+      return computedSem === 'Unknown' ? (c.semesterCode === sem) : (computedSem === sem);
+    })
   }));
+
+  useEffect(() => {
+    const fetchAllCourses = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        
+        // This hits your app.get('/courses') endpoint in index.js
+        const response = await fetch('http://172.20.10.3:3000/courses', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) throw new Error('Failed to fetch global courses catalog');
+        
+        const dbCourses = await response.json();
+
+        // Map database fields to match what your CourseCard UI expects
+        const formatted = dbCourses.map(c => ({
+          id: c.id.toString(),
+          title: c.title,
+          tags: c.description || 'No description available',
+          code: c.id ? `IS-${c.id}` : 'DYNAMIC', // Fallback display code
+          type: 'Compulsory', 
+          credits: c.semester ? `${c.semester} Semester` : 'N/A',
+          // Use uploaded image path or fall back to standard asset placeholder
+          image: c.image_url ? { uri: `http://172.20.10.3:3000/${c.image_url}` } : require('../src/assets/images/CSO.jpeg'), 
+          semesterCode: c.semester // Helper field for grouping
+        }));
+
+        setCoursesList(formatted);
+      } catch (error) {
+        console.error("Error loading interactive courses context:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAllCourses();
+  }, []);
 
   // ==============================================================
   // 🌟 THE MATHEMATICAL FALLBACK FIX 🌟
@@ -523,98 +572,268 @@ export default function CourseDetailsScreen() {
                       item={course} 
                       onView={(item) => {
                         switch (item.code) {
-                          case 'IS1101': router.push('/FIS'); break;
-                          case 'IS1102': router.push('/structured-t'); break;
-                          case 'IS1103': router.push('/structured-p'); break;
-                          case 'IS1104': router.push('/theories-is'); break;
-                          case 'IS1105': router.push('/comp-org'); break;
-                          case 'IS1106': router.push('/foundations-web-tech'); break;
-                          case 'IS1107': router.push('/personal-productivity'); break;
-                          case 'IS1108': router.push('/fundamentals-maths'); break;
-                          case 'IS1109': router.push('/stats-probability'); break;
-                          case 'IS1110': router.push('/comm-skills-1'); break;
-                          case 'IS1111': router.push('/academic-integrity'); break;
-                          case 'IS-EGP-1101': router.push('/gen-english-1'); break;
+                          case 'IS1101':
+                            router.push({ pathname: '/IS1101', params: { code: 'IS1101' } });
+                            break;
+                          case 'IS1102':
+                            router.push({ pathname: '/IS1102', params: { code: 'IS1102' } });
+                            break;
+                          case 'IS1103':
+                            router.push({ pathname: '/IS1103', params: { code: 'IS1103' } });
+                            break;
+                          case 'IS1104':
+                            router.push({ pathname: '/IS1104', params: { code: 'IS1104' } });
+                            break;
+                          case 'IS1105':
+                            router.push({ pathname: '/IS1105', params: { code: 'IS1105' } });
+                            break;
+                          case 'IS1106':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS1106' } });
+                            break;
+                          case 'IS1107':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS1107' } });
+                            break;
+                          case 'IS1108':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS1108' } });
+                            break;
+                          case 'IS1109':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS1109' } });
+                            break;
+                          case 'IS1110':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS1110' } });
+                            break;
+                          case 'IS1111':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS1111' } });
+                            break;
+                          case 'IS-EGP-1101':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS-EGP-1101' } });
+                            break;
 
-                          case 'IS2101': router.push('/oop'); break;
-                          case 'IS2102': router.push('/oop-p'); break;
-                          case 'IS2103': router.push('/emerging-tech'); break;
-                          case 'IS2104': router.push('/dbms'); break;
-                          case 'IS2105': router.push('/dbms-p'); break;
-                          case 'IS2106': router.push('/sad'); break;
-                          case 'IS2107': router.push('/social-prof-issues'); break;
-                          case 'IS2108': router.push('/hci'); break;
-                          case 'IS2109': router.push('/info-assurance-sec'); break;
-                          case 'IS2110': router.push('/sw-project-planning'); break;
-                          case 'IS2111': router.push('/adv-maths'); break;
-                          case 'IS2112': router.push('/comm-skills-2'); break;
-                          case 'IS-EGP-1201': router.push('/gen-english-2'); break;
+                          case 'IS2101':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS2101' } });
+                            break;
+                          case 'IS2102':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS2102' } });
+                            break;
+                          case 'IS2103':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS2103' } });
+                            break;
+                          case 'IS2104':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS2104' } });
+                            break;
+                          case 'IS2105':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS2105' } });
+                            break;
+                          case 'IS2106':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS2106' } });
+                            break;
+                          case 'IS2107':
+                            router.push({ pathname: '/IS2107', params: { code: 'IS2107' } });
+                            break;
+                          case 'IS2108':
+                            router.push({ pathname: '/IS2108', params: { code: 'IS2108' } });
+                            break;
+                          case 'IS2109':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS2109' } });
+                            break;
+                          case 'IS2110':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS2110' } });
+                            break;
+                          case 'IS2111':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS2111' } });
+                            break;
+                          case 'IS2112':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS2112' } });
+                            break;
+                          case 'IS-EGP-1201':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS-EGP-1201' } });
+                            break;
 
-                          case 'IS3101': router.push('/ooad'); break;
-                          case 'IS3102': router.push('/dsa'); break;
-                          case 'IS3103': router.push('/it-governance'); break;
-                          case 'IS3104': router.push('/software-eng'); break;
-                          case 'IS3105': router.push('/is-risk-mgt'); break;
-                          case 'IS3106': router.push('/is-sustainability'); break;
-                          case 'IS3107': router.push('/mis'); break;
-                          case 'IS3108': router.push('/e-business'); break;
-                          case 'IS3109': router.push('/digital-innovation'); break;
-                          case 'IS-EAP-2101': router.push('/acad-english-1'); break;
+                          case 'IS3101':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS3101' } });
+                            break;
+                          case 'IS3102':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS3102' } });
+                            break;
+                          case 'IS3103':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS3103' } });
+                            break;
+                          case 'IS3104':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS3104' } });
+                            break;
+                          case 'IS3105':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS3105' } });
+                            break;
+                          case 'IS3106':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS3106' } });
+                            break;
+                          case 'IS3107':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS3107' } });
+                            break;
+                          case 'IS3108':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS3108' } });
+                            break;
+                          case 'IS3109':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS3109' } });
+                            break;
+                          case 'IS-EAP-2101':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS-EAP-2101' } });
+                            break;
 
-                          case 'IS4101': router.push('/it-auditing'); break;
-                          case 'IS4102': router.push('/web-app-dev'); break;
-                          case 'IS4103': router.push('/operating-systems'); break;
-                          case 'IS4104': router.push('/sys-admin'); break;
-                          case 'IS4105': router.push('/it-procurement'); break;
-                          case 'IS4106': router.push('/sw-architecture'); break;
-                          case 'IS4107': router.push('/prof-ethics'); break;
-                          case 'IS4108': router.push('/is-strategies'); break;
-                          case 'IS4109': router.push('/agile'); break;
-                          case 'IS4110': router.push('/capstone'); break;
-                          case 'IS-EAP-2201': router.push('/acad-english-2'); break;
+                          case 'IS4101':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS4101' } });
+                            break;
+                          case 'IS4102':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS4102' } });
+                            break;
+                          case 'IS4103':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS4103' } });
+                            break;
+                          case 'IS4104':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS4104' } });
+                            break;
+                          case 'IS4105':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS4105' } });
+                            break;
+                          case 'IS4106':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS4106' } });
+                            break;
+                          case 'IS4107':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS4107' } });
+                            break;
+                          case 'IS4108':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS4108' } });
+                            break;
+                          case 'IS4109':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS4109' } });
+                            break;
+                          case 'IS4110':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS4110' } });
+                            break;
+                          case 'IS-EAP-2201':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS-EAP-2201' } });
+                            break;
 
-                          case 'IS5101': router.push('/entrepreneurship'); break;
-                          case 'IS5102': router.push('/enterprise-arch'); break;
-                          case 'IS5103': router.push('/hpc'); break;
-                          case 'IS5104': router.push('/sw-process-mgt'); break;
-                          case 'IS5105': router.push('/bpm'); break;
-                          case 'IS5106': router.push('/ui-ux-prac'); break;
-                          case 'IS5107': router.push('/proj-mgt-prac'); break;
-                          case 'IS5108': router.push('/business-intelligence'); break;
-                          case 'IS5109': router.push('/community-proj'); break;
-                          case 'IS-EBP-3101': router.push('/business-english'); break;
-                          case 'IS5110': router.push('/adv-dbms'); break;
-                          case 'IS5111': router.push('/data-comm-networks'); break;
-                          case 'IS5112': router.push('/design-patterns'); break;
-                          case 'IS5113': router.push('/sqa'); break;
-                          case 'IS5114': router.push('/data-mining'); break;
-                          
-                          case 'IS6101': router.push('/industrial-training'); break;
+                          case 'IS5101':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5101' } });
+                            break;
+                          case 'IS5102':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5102' } });
+                            break;
+                          case 'IS5103':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5103' } });
+                            break;
+                          case 'IS5104':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5104' } });
+                            break;
+                          case 'IS5105':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5105' } });
+                            break;
+                          case 'IS5106':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5106' } });
+                            break;
+                          case 'IS5107':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5107' } });
+                            break;
+                          case 'IS5108':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5108' } });
+                            break;
+                          case 'IS5109':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5109' } });
+                            break;
+                          case 'IS-EBP-3101':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS-EBP-3101' } });
+                            break;
+                          case 'IS5110':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5110' } });
+                            break;
+                          case 'IS5111':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5111' } });
+                            break;
+                          case 'IS5112':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5112' } });
+                            break;
+                          case 'IS5113':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5113' } });
+                            break;
+                          case 'IS5114':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS5114' } });
+                            break;
 
-                          case 'IS7101': router.push('/research-methodologies'); break;
-                          case 'IS7102': router.push('/it-law'); break;
-                          case 'IS7103': router.push('/process-simulation'); break;
-                          case 'IS7104': router.push('/enterprise-ontologies'); break;
-                          case 'IS7105': router.push('/org-behavior'); break;
-                          case 'IS7106': router.push('/cloud-computing'); break;
-                          case 'IS7107': router.push('/mobile-app-dev'); break;
-                          case 'IS7108': router.push('/web-services'); break;
-                          case 'IS7109': router.push('/gis'); break;
-                          case 'IS7110': router.push('/stats-inference'); break;
-                          case 'IS7111': router.push('/adv-prog-prac'); break;
-                          case 'IS7112': router.push('/machine-learning'); break;
+                          case 'IS6101':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS6101' } });
+                            break;
 
-                          case 'IS8101': router.push('/research-project'); break;
-                          case 'IS8102': router.push('/it-alignment'); break;
-                          case 'IS8103': router.push('/hrm'); break;
-                          case 'IS8104': router.push('/sci-communication'); break;
-                          case 'IS8105': router.push('/is-economics'); break;
-                          case 'IS8106': router.push('/comp-sys-security'); break;
-                          case 'IS8107': router.push('/supply-chain-mgt'); break;
-                          case 'IS8108': router.push('/adv-networks'); break;
-                          case 'IS8109': router.push('/process-mining'); break;
-                          case 'IS8110': router.push('/digital-bus-model'); break;
-                          case 'IS8111': router.push('/game-development'); break;
+                          case 'IS7101':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7101' } });
+                            break;
+                          case 'IS7102':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7102' } });
+                            break;
+                          case 'IS7103':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7103' } });
+                            break;
+                          case 'IS7104':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7104' } });
+                            break;
+                          case 'IS7105':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7105' } });
+                            break;
+                          case 'IS7106':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7106' } });
+                            break;
+                          case 'IS7107':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7107' } });
+                            break;
+                          case 'IS7108':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7108' } });
+                            break;
+                          case 'IS7109':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7109' } });
+                            break;
+                          case 'IS7110':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7110' } });
+                            break;
+                          case 'IS7111':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7111' } });
+                            break;
+                          case 'IS7112':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS7112' } });
+                            break;
+
+                          case 'IS8101':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8101' } });
+                            break;
+                          case 'IS8102':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8102' } });
+                            break;
+                          case 'IS8103':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8103' } });
+                            break;
+                          case 'IS8104':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8104' } });
+                            break;
+                          case 'IS8105':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8105' } });
+                            break;
+                          case 'IS8106':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8106' } });
+                            break;
+                          case 'IS8107':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8107' } });
+                            break;
+                          case 'IS8108':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8108' } });
+                            break;
+                          case 'IS8109':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8109' } });
+                            break;
+                          case 'IS8110':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8110' } });
+                            break;
+                          case 'IS8111':
+                            router.push({ pathname: '/CourseScreen', params: { code: 'IS8111' } });
+                            break;
 
                           default:
                             router.push('/coursecontent');
@@ -664,6 +883,21 @@ export default function CourseDetailsScreen() {
         </TouchableOpacity>
       </Modal>
       
+      {/* NOTIFICATION MODAL */}
+      <Modal transparent visible={isNotifVisible} animationType="slide" onRequestClose={() => setNotifVisible(false)}>
+        <TouchableOpacity style={styles.notifOverlay} activeOpacity={1} onPress={() => setNotifVisible(false)}>
+          <View style={styles.notifPanel}>
+            <Text style={styles.notifHeader}>Recent Notifications</Text>
+            <View style={styles.notifItem}>
+              <Icon name="book-open-variant" size={20} color="#4E33B3" />
+              <Text style={styles.notifText}>New lecture added in Web Dev</Text>
+            </View>
+            <TouchableOpacity style={styles.closeNotifBtn} onPress={() => {setNotifVisible(false); setNotifications(0);}}>
+              <Text style={styles.closeNotifText}>Mark all as read</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
 
       {/* SIDE MENU MODAL */}
       <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
@@ -674,17 +908,16 @@ export default function CourseDetailsScreen() {
                 <Icon name="menu" size={30} color={isDark ? "white" : "#333"} />
               </TouchableOpacity>
               
-              <ThemeToggle isDark={isDark} onToggle={() => setIsDark(!isDark)} />
             </View>
 
             <View style={styles.menuList}>
               <MenuOption iconName="home-variant" title="Home" active onPress={() => {setMenuVisible(false); router.replace('/coursedetails')}} />
-              <MenuOption iconName="account" title="Profile" onPress={() => {setMenuVisible(false); router.replace('/profilescreen')}} />
-              <MenuOption iconName="view-dashboard" title="Dashboard" />
-              <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/MiniGames')}} />
+              <MenuOption iconName="account" title="Profile" onPress={() => {setMenuVisible(false); router.replace('/profilescreen_student')}} />
+              <MenuOption iconName="view-dashboard" title="Dashboard" onPress={() => {setMenuVisible(false); router.replace('/dashboard_student')}} />
+              <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/minigamesection')}} />
               <MenuOption iconName="cog" title="Settings" onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
             </View>
-            <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage(student)') }}>
+            <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage_Student)') }}>
               <Text style={styles.logoutText}> Log Out    <Icon name="logout" size={24} color="grey" /></Text>
             </TouchableOpacity>
           </View>

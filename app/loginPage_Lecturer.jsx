@@ -1,7 +1,9 @@
 import { Ionicons } from "@expo/vector-icons"; // For the close (X) icon
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
+  Alert,
   Dimensions,
   Image,
   ImageBackground,
@@ -28,10 +30,76 @@ export default function LoginPage() {
   const [isModalVisible, setModalVisible] = useState(false);
   const router = useRouter();
 
-  const handleLogin = () => {
-    // Add your login logic here
-    console.log("Login with:", email, password);
-  };
+ const handleLogin = async () => {
+  // Basic frontend validation
+  if (!email || !password) {
+    Alert.alert("Error", "Please enter both email and password.");
+    return;
+  }
+
+  const trimmedEmail = email.trim().toLowerCase();
+
+  // 1. STOPS students if their emails contain "std" or registration numbers (e.g., EU/IS/...)
+  // Adjust this pattern if student emails have a specific format like eg2021001@ms.sab.ac.lk
+  const isStudentFormat = /[a-zA-Z]{2,3}\d{4,}/i.test(trimmedEmail) || trimmedEmail.includes("std");
+  
+  // 2. STRICT Lecturer Pattern (Matches only standard names directly before @ms.sab.ac.lk)
+  const lecturerEmailRegex = /^[a-z]+[a-z0-9._-]*@ms\.sab\.ac\.lk$/;
+
+  if (isStudentFormat || !lecturerEmailRegex.test(trimmedEmail)) {
+    Alert.alert(
+      "Access Denied", 
+      "This login page is strictly for Lecturers. Please use your official faculty credentials."
+    );
+    return; // Completely blocks the process
+  }
+
+  console.log("Attempting lecturer login for:", trimmedEmail);
+
+  try {
+    const response = await fetch("http://10.65.93.226:3000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: trimmedEmail, password }), // Send sanitized email
+    });
+
+    const rawText = await response.text();
+
+    console.log("Server Status Code:", response.status);
+    console.log("RAW SERVER RESPONSE:", rawText);
+
+    let data;
+    try {
+      data = JSON.parse(rawText);
+    } catch (parseError) {
+      console.error("Failed to parse JSON.");
+      Alert.alert("Server Error", "Something went wrong on the server side.");
+      return; 
+    }
+
+    if (response.status === 200) {
+      console.log("Success! Navigating to course details...");
+      
+      // --- ADDED NEW LINES BELOW TO CACHE THE LECTURER PROFILE ID SESSION ---
+      await AsyncStorage.setItem('lecturerEmail', trimmedEmail);
+      // ----------------------------------------------------------------------
+
+      await AsyncStorage.setItem('token', data.token);
+      await AsyncStorage.setItem('fullName', data.full_name || 'Lecturer');
+      
+      router.push("./coursedetailsforlecturer");
+    } else {
+      console.log("Login rejected by server.");
+      Alert.alert("Login Failed", data.error || "Incorrect email or password");
+    }
+
+  } catch (error) {
+    console.error("Network or Fetch Error:", error);
+    Alert.alert("Network Error", "Could not connect to the backend server.");
+  }
+};
 
   return (
     <KeyboardAvoidingView 
@@ -137,14 +205,14 @@ export default function LoginPage() {
         </View>
 
         {/* Login Button */}
-        <TouchableOpacity style={styles.loginButton} onPress={() => router.push("/coursedetails")}>
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
 
           {/* Footer */}
           <View style={styles.footer}>
             <Text style={styles.footerText}>Don't have an account?</Text>
-            <TouchableOpacity onPress={() => router.push("/register(student)")}>
+            <TouchableOpacity onPress={() => router.push("/register_Lecturer")}>
               <Text style={styles.signUpText}>Create an account</Text>
             </TouchableOpacity>
           </View>
@@ -195,12 +263,14 @@ const styles = StyleSheet.create({
   },
   welcomeSection: {
     alignItems: "center",
-    marginBottom: 30,
+    marginBottom: 50,
+    zIndex: 1, 
   },
   welcomeTitle: {
     fontSize: 24,
     fontWeight: "bold",
     color: "#0B0C10",
+    marginTop: 20,
   },
   welcomeSubtitle: {
     fontSize: 18,

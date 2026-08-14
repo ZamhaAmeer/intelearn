@@ -96,7 +96,7 @@ export default function ForgotPasswordModal({ visible, onClose }) {
     }, 150); 
   };
 
-  function setIsModalVisible(arg0: boolean) {
+  function setIsModalVisible(arg0) {
     throw new Error('Function not implemented.');
   }
 
@@ -173,7 +173,7 @@ export default function ForgotPasswordModal({ visible, onClose }) {
                     // 2. Navigate to the create new password screen
                     // Using a small timeout ensures the modal closes smoothly before routing
                     setTimeout(() => {
-                      router.replace('/createnewpassword');
+                      router.replace('/createNewPassword');
                     }, 150); 
                   }}
                 >

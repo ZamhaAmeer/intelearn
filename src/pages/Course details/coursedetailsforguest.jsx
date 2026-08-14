@@ -20,11 +20,11 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const { width } = Dimensions.get('window');
 
 const COURSES = [
-  { id: '1', title: 'Fundamentals of IS', tags: 'Digital Transformation • Business Process', code: 'IS1101', type: 'Core', credits: '2 Credits', image: require('../../assets/images/FIS.jpg'), color: '#FFCCBC' },
-  { id: '2', title: 'Structured Programming(T)', tags: 'C Syntax • Logic & Control', code: 'IS1102', type: 'Core', credits: '2 Credits', image: require('../../assets/images/STRT.jpg'), color: '#C8E6C9' },
-  { id: '3', title: 'Structured Programming(P)', tags: 'Compilation • Data Structures', code: 'IS1103', type: 'Core', credits: '1 Credit', image: require('../../assets/images/STRP.jpg'), color: '#CFD8DC' },
-  { id: '4', title: 'Theories of IS', tags: 'Organizational Behavior • Frameworks', code: 'IS1104', type: 'Core', credits: '2 Credits', image: require('../../assets/images/TIS.jpg'), color: '#B3E5FC' },
-  { id: '5', title: 'Computer Organization', tags: 'CPU Architecture • Memory Hierarchy', code: 'IS1105', type: 'Core', credits: '2 Credits', image: require('../../assets/images/CSO.jpeg'), color: '#D1C4E9' },
+  { id: '1', title: 'Fundamentals of IS', tags: 'Digital Transformation • Business Process', code: 'IS1101', type: 'Core', credits: '2 Credits', image: require('../src/assets/images/FIS.jpg'), color: '#FFCCBC' },
+  { id: '2', title: 'Structured Programming(T)', tags: 'C Syntax • Logic & Control', code: 'IS1102', type: 'Core', credits: '2 Credits', image: require('../src/assets/images/STRT.jpg'), color: '#C8E6C9' },
+  { id: '3', title: 'Structured Programming(P)', tags: 'Compilation • Data Structures', code: 'IS1103', type: 'Core', credits: '1 Credit', image: require('../src/assets/images/STRP.jpg'), color: '#CFD8DC' },
+  { id: '4', title: 'Theories of IS', tags: 'Organizational Behavior • Frameworks', code: 'IS1104', type: 'Core', credits: '2 Credits', image: require('../src/assets/images/TIS.jpg'), color: '#B3E5FC' },
+  { id: '5', title: 'Computer Organization', tags: 'CPU Architecture • Memory Hierarchy', code: 'IS1105', type: 'Core', credits: '2 Credits', image: require('../src/assets/images/CSO.jpeg'), color: '#D1C4E9' },
 ];
 
 const MenuOption = ({ icon, title, active }) => (

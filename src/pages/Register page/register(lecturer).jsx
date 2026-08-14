@@ -33,7 +33,7 @@ export default function RegisterPage() {
     <View style={styles.container}>
       {/* Header Section */}
       <ImageBackground
-        source={require("../../assets/images/header-curve.png")}
+        source={require("../src/assets/images/header-curve.png")}
         style={styles.headerBackground}
         resizeMode="stretch"
       >
@@ -118,7 +118,7 @@ export default function RegisterPage() {
             {/* Footer */}
             <View style={styles.footer}>
               <Text style={styles.footerText}>Already have an account?</Text>
-              <TouchableOpacity onPress={() => router.push("/loginpage(lecturer)")}>
+              <TouchableOpacity onPress={() => router.push("/loginPage_Lecturer")}>
                 <Text style={styles.loginText}>Login</Text>
               </TouchableOpacity>
             </View>
