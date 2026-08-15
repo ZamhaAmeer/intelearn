@@ -8,20 +8,23 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const pdfParse = require('pdf-parse');
-const rawPdfParse = require('pdf-parse');
-const parsePdf = typeof rawPdfParse === 'function' ? rawPdfParse : rawPdfParse.default;
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { GoogleGenAI } = require("@google/genai");
 
 // --- NEW SEQUELIZE IMPORTS & MODELS ---
 const sequelize = require('./config/database');
 const User = require('./models/user');
-const Course = require('./models/Course');
+const Course = require('./models/course');
 const CourseMaterial = require('./models/courseMaterial');
 const Enrollment = require('./models/enrollment');
 const Quiz = require('./models/quiz');
 const Question = require('./models/question');
-const QuizAttempt = require('./models/quizAttempt'); 
+const QuizAttempt = require('./models/quizAttempt');
 const AiChat = require('./models/aiChat');
+const Assignment = require('./models/assignments');
+const Notification = require('./models/notification');
+const Submission = require('./models/submission');
+const Note = require('./models/note');
+const recommendationService = require('./services/recommendationService');
 
 // --- DATABASE RELATIONSHIPS ---
 // Lecturer -> Courses
@@ -58,28 +61,33 @@ AiChat.belongsTo(User, { foreignKey: 'student_id' });
 Course.hasMany(AiChat, { foreignKey: 'course_id' });
 AiChat.belongsTo(Course, { foreignKey: 'course_id' });
 
+// Student & Submissions Relationships
+User.hasMany(Submission, { foreignKey: 'student_id' });
+Submission.belongsTo(User, { foreignKey: 'student_id' });
+
+Quiz.hasMany(Submission, { foreignKey: 'quiz_id' });
+Submission.belongsTo(Quiz, { foreignKey: 'quiz_id' });
+
+Assignment.hasMany(Submission, { foreignKey: 'assignment_id' });
+Submission.belongsTo(Assignment, { foreignKey: 'assignment_id' });
+
 // --- APP INITIALIZATION ---
 const app = express();
 app.use(cors());
-app.use(express.json()); 
+app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
 // --- INTELEARN SERVICES CONFIG ---
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-flash",
-  generationConfig: {
-    responseMimeType: "application/json",
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
   }
 });
 
-const transporter = nodemailer.createTransport({
-   service: 'gmail',
-   auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS
-   }
-});
 
 
 // ------------------------------------
