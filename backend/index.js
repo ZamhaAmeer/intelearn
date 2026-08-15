@@ -667,19 +667,68 @@ app.post('/enroll', authenticateToken, async (req, res) => {
 // ------------------------------------
 // CREATE QUIZ
 // ------------------------------------
-app.post('/quizzes', authenticateToken, async (req, res) => {
+app.post('/api/quizzes/create', authenticateToken, async (req, res) => {
   try {
-    const { course_id, title } = req.body;
+    // 🌟 FIX: Pull 'courseId', 'title', and settings parameters from request body
+    const {
+      courseId,
+      title,
+      description,
+      total_marks,
+      passing_marks,
+      duration,
+      dueDate,
+      shuffleQuestions,
+      shuffleAnswers,
+      randomizeOrder,
+      showOnePerPage,
+      allowBacktracking,
+      numAttempts,
+      questions
+    } = req.body;
 
-    // Sequelize: Create a new quiz
+    if (!questions || !Array.isArray(questions) || questions.length === 0) {
+      return res.status(400).json({ error: "A quiz must include at least one question." });
+    }
+
+    // 1. Create the entry in the quizzes table with settings configurations
     const quiz = await Quiz.create({
-      course_id,
-      title
+      course_id: courseId, // 🌟 Map 'courseId' to your database 'course_id' field
+      title,
+      description,
+      total_marks: total_marks ? parseInt(total_marks) : null,
+      passing_marks: passing_marks ? parseInt(passing_marks) : null,
+      duration: duration ? parseInt(duration) : null,
+      due_date: dueDate,
+      shuffle_questions: shuffleQuestions !== undefined ? !!shuffleQuestions : true,
+      shuffle_answers: shuffleAnswers !== undefined ? !!shuffleAnswers : true,
+      randomize_order: randomizeOrder !== undefined ? !!randomizeOrder : true,
+      show_one_per_page: showOnePerPage !== undefined ? !!showOnePerPage : true,
+      allow_backtracking: allowBacktracking !== undefined ? !!allowBacktracking : false,
+      num_attempts: numAttempts ? parseInt(numAttempts) : 1
     });
 
-    res.status(201).json(quiz);
+    // 2. Link each question to the newly created quiz ID
+    const formattedQuestions = questions.map(q => ({
+      quiz_id: quiz.id,
+      question: q.question_text || q.question, // 🌟 Safe fallback for frontend key names
+      option_a: q.option_a,
+      option_b: q.option_b,
+      option_c: q.option_c,
+      option_d: q.option_d,
+      correct_answer: q.correct_option || q.correct_answer // 🌟 Safe fallback for correctness keys
+    }));
+
+    // 3. Batch insert all questions at once
+    await Question.bulkCreate(formattedQuestions);
+
+    res.status(201).json({
+      success: true,
+      message: "Quiz and questions saved successfully!",
+      quizId: quiz.id
+    });
   } catch (err) {
-    console.error(err.message);
+    console.error("Quiz creation error:", err.message);
     res.status(500).json({ error: 'Server error' });
   }
 });
