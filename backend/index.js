@@ -89,25 +89,29 @@ const transporter = nodemailer.createTransport({
 });
 
 
-
 // ------------------------------------
 // JWT AUTH MIDDLEWARE (Unchanged)
 // ------------------------------------
 const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  try {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
 
-  if (!token) {
-    return res.status(401).json({ error: 'Access denied' });
-  }
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) {
-      return res.status(403).json({ error: 'Invalid token' });
+    if (!token) {
+      return res.status(401).json({ error: 'Access denied' });
     }
-    req.user = user;
-    next();
-  });
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+      if (err) {
+        return res.status(403).json({ error: 'Invalid token' });
+      }
+      req.user = user;
+      next();
+    });
+  } catch (error) {
+    console.error("Authentication middleware error:", error);
+    return res.status(500).json({ error: "Authentication error: " + error.message });
+  }
 };
 
 // ------------------------------------
@@ -126,13 +130,22 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({ 
+const upload = multer({
   storage,
   fileFilter: (req, file, cb) => {
-    if (file.mimetype === 'application/pdf') {
+    const allowedTypes = [
+      'application/pdf',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/zip',
+      'application/x-zip-compressed',
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+      'application/vnd.ms-powerpoint',
+      'application/msword'
+    ];
+    if (allowedTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error('Only PDF files are allowed!'), false);
+      cb(new Error('Only PDF, PPTX, DOCX, and ZIP files are allowed!'), false);
     }
   },
   limits: { fileSize: 10 * 1024 * 1024 }
@@ -702,9 +715,9 @@ app.post('/questions', authenticateToken, async (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 
-sequelize.sync({ alter : true }) 
+sequelize.sync({ alter: true })
   .then(() => {
-    console.log('Database dropped and synchronized successfully.');
+    console.log('Database synchronized successfully.');
     app.listen(PORT, '0.0.0.0', () => {
       console.log(`Server running on port ${PORT}`);
     });
