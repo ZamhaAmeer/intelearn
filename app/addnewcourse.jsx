@@ -347,10 +347,12 @@ const AddNewCourse = () => {
           />
         </View>
 
+
         <View style={{ height: 100 }} /> 
       </ScrollView>
 
       {/* Footer Bar */}
+
       <View style={styles.footerBar}>
         <TouchableOpacity style={styles.footerAction} onPress={() => router.back()}>
           <FeatherIcon name="x" size={24} color="#555" />
@@ -403,6 +405,7 @@ const AddNewCourse = () => {
 
 // ... keep your exact same styles object as before intact below
 const styles = StyleSheet.create({
+
   safeArea: { flex: 1, backgroundColor: '#FCFCF5' },
   headerContainer: { backgroundColor: '#FCFCF5', overflow: 'hidden', paddingBottom: 20, marginTop: -60 },
   headerCurve: { backgroundColor: '#6044E4', borderBottomLeftRadius: 50, borderBottomRightRadius: 50, height: 120, paddingTop: 40, paddingHorizontal: 20, alignItems: 'center', flexDirection: 'row' },
@@ -450,6 +453,7 @@ const styles = StyleSheet.create({
   activeMenuOptionText: { color: '#5C45C3', fontWeight: 'bold' },
   logoutButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 20, borderTopWidth: 1, borderTopColor: '#EEE', marginBottom: 20 },
   logoutText: { fontSize: 16, color: 'grey', fontWeight: 'bold' }
+
 });
 
 export default AddNewCourse;

@@ -97,7 +97,9 @@ export default function PrivacyScreen() {
 
       {/* 2. SUB-HEADER */}
       <View style={styles.subHeader}>
+
         <TouchableOpacity onPress={() => router.replace('/register_Lecturer')} style={styles.backButton}>
+
           <Ionicons name="arrow-back" size={22} color="#1A73E8" />
           <Text style={styles.subHeaderTitle}>Privacy & Data Policy</Text>
         </TouchableOpacity>
@@ -164,7 +166,9 @@ export default function PrivacyScreen() {
         <TouchableOpacity 
           style={[styles.agreeBtn, !hasAgreed && styles.agreeBtnDisabled]}
           disabled={!hasAgreed}
+
           onPress={() => router.replace('/loginpage_Student')}
+
         >
           <Text style={styles.agreeBtnText}>I AGREE & CONFIRM</Text>
         </TouchableOpacity>
@@ -190,7 +194,9 @@ export default function PrivacyScreen() {
               <MenuOption iconName="shield-check" title="Privacy" active onPress={() => {setMenuVisible(false); router.replace('/privacy')}} />
               <MenuOption iconName="cog" title="Settings" onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
             </View>
+
             <TouchableOpacity style={styles.logoutButton} onPress={() => {setMenuVisible(false); router.replace('/loginpage_Student') }}>
+
               <Text style={styles.logoutText}> Log Out    <Icon name="logout" size={24} color="grey" /></Text>
             </TouchableOpacity>
           </View>

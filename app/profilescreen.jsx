@@ -186,6 +186,7 @@ const handleSaveChanges = async () => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}
       >
+
        <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
                <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={toggleMenu}>
                  <View style={styles.sideMenu}>
@@ -206,6 +207,7 @@ const handleSaveChanges = async () => {
                  </View>
                </TouchableOpacity>
              </Modal>
+
 
         <ScrollView contentContainerStyle={styles.scrollContent}>
           
