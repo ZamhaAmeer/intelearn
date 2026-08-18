@@ -20,11 +20,11 @@ const Quiz = require('./models/quiz');
 const Question = require('./models/question');
 const QuizAttempt = require('./models/quizAttempt');
 const AiChat = require('./models/aiChat');
-const Assignment = require('./models/assignments');
-const Notification = require('./models/notification');
-const Submission = require('./models/submission');
-const Note = require('./models/note');
-const recommendationService = require('./services/recommendationService');
+// const Assignment = require('./models/assignments');
+// const Notification = require('./models/notification');
+// const Submission = require('./models/submission');
+// const Note = require('./models/note');
+// const recommendationService = require('./services/recommendationService');
 
 // --- DATABASE RELATIONSHIPS ---
 // Lecturer -> Courses
@@ -61,15 +61,15 @@ AiChat.belongsTo(User, { foreignKey: 'student_id' });
 Course.hasMany(AiChat, { foreignKey: 'course_id' });
 AiChat.belongsTo(Course, { foreignKey: 'course_id' });
 
-// Student & Submissions Relationships
-User.hasMany(Submission, { foreignKey: 'student_id' });
-Submission.belongsTo(User, { foreignKey: 'student_id' });
+// Student & Submissions Relationships (Disabled as models are not defined)
+// User.hasMany(Submission, { foreignKey: 'student_id' });
+// Submission.belongsTo(User, { foreignKey: 'student_id' });
 
-Quiz.hasMany(Submission, { foreignKey: 'quiz_id' });
-Submission.belongsTo(Quiz, { foreignKey: 'quiz_id' });
+// Quiz.hasMany(Submission, { foreignKey: 'quiz_id' });
+// Submission.belongsTo(Quiz, { foreignKey: 'quiz_id' });
 
-Assignment.hasMany(Submission, { foreignKey: 'assignment_id' });
-Submission.belongsTo(Assignment, { foreignKey: 'assignment_id' });
+// Assignment.hasMany(Submission, { foreignKey: 'assignment_id' });
+// Submission.belongsTo(Assignment, { foreignKey: 'assignment_id' });
 
 // --- APP INITIALIZATION ---
 const app = express();
@@ -757,6 +757,12 @@ app.post('/questions', authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+// ------------------------------------
+// ADMIN WEB PANEL ROUTES MAPPING
+// ------------------------------------
+const adminRoutes = require('./routes/adminRoutes');
+app.use('/api/admin', adminRoutes);
 
 // ------------------------------------
 // START THE SERVER & SYNC DATABASE
