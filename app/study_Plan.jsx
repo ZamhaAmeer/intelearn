@@ -1,5 +1,6 @@
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useEffect, useRef, useState } from 'react';
+import { useGlobalTheme } from './themeStore';
 import {
     Animated,
     Modal,
@@ -14,6 +15,7 @@ import {
 } from 'react-native';
 
 export default function MyStudyPlan() {
+  const [isDark] = useGlobalTheme();
   // --- Animation State ---
   const progressAnim = useRef(new Animated.Value(0)).current;
   
@@ -39,7 +41,7 @@ export default function MyStudyPlan() {
   });
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, isDark && { backgroundColor: '#121212' }]}>
       <StatusBar barStyle="light-content" />
       
       {/* PURPLE HEADER - Profile Button Removed */}
@@ -53,11 +55,36 @@ export default function MyStudyPlan() {
 
       <ScrollView contentContainerStyle={styles.scrollBody} showsVerticalScrollIndicator={false}>
         
+        {/* TIME SLOTS CREATION CARD */}
+        <View style={[styles.card, isDark && { backgroundColor: '#1E1E1E' }]}>
+          <Text style={[styles.sectionTitle, isDark && { color: '#FFFFFF' }]}>Create Time Slot</Text>
+
+          {/* Time Range Input */}
+          <View style={styles.row}>
+            <View style={styles.inputGroup}>
+              <Text style={[styles.inputLabel, isDark && { color: '#EEEEEE' }]}>START TIME</Text>
+              <TextInput
+                style={[styles.input, isDark && { backgroundColor: '#2A2A2A', color: '#FFF' }]}
+                value={startTime}
+                onChangeText={setStartTime}
+              />
+            </View>
+            <View style={styles.inputGroup}>
+              <Text style={[styles.inputLabel, isDark && { color: '#EEEEEE' }]}>END TIME</Text>
+              <TextInput
+                style={[styles.input, isDark && { backgroundColor: '#2A2A2A', color: '#FFF' }]}
+                value={endTime}
+                onChangeText={setEndTime}
+              />
+            </View>
+          </View>
+        </View>
+
         {/* DATE TABS */}
         <View style={styles.tabs}>
           <TouchableOpacity style={[styles.tab, styles.activeTab]}><Text style={styles.activeTabText}>Today</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.tab}><Text style={styles.tabText}>Tomorrow</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.tab}><Text style={styles.tabText}>May 12</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.tab}><Text style={[styles.tabText, isDark && { color: '#AAA' }]}>Tomorrow</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.tab}><Text style={[styles.tabText, isDark && { color: '#AAA' }]}>May 12</Text></TouchableOpacity>
         </View>
 
         {/* DAILY PROGRESS CARD (ANIMATED) */}
