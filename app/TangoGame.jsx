@@ -218,3 +218,24 @@ const INJECTED_CSS = `
     }
   </style>
 `;
+
+// Insert the styles right before the closing head tag, or append if not found
+let adjustedHtml = tangoHtml.includes('</head>')
+  ? tangoHtml.replace('</head>', INJECTED_CSS + '</head>')
+  : tangoHtml + INJECTED_CSS;
+
+// Move the inline script from <head> to the end of <body> so it can access the #app element
+// Note: 'defer' does not work on inline scripts, so we must physically move it in the HTML
+const scriptStart = '<script type="text/javascript">';
+const scriptEnd = '</script>';
+
+const startIndex = adjustedHtml.indexOf(scriptStart);
+const endIndex = adjustedHtml.indexOf(scriptEnd, startIndex);
+
+if (startIndex !== -1 && endIndex !== -1) {
+  const fullScript = adjustedHtml.substring(startIndex, endIndex + scriptEnd.length);
+  // Remove it from its original position in the head
+  adjustedHtml = adjustedHtml.replace(fullScript, '');
+  // Place it right before the closing body tag so the DOM is ready
+  adjustedHtml = adjustedHtml.replace('</body>', fullScript + '</body>');
+}
