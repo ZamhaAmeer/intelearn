@@ -362,3 +362,32 @@ const styles = StyleSheet.create({
     backgroundColor: '#ECFDF5',
     borderColor: '#A7F3D0',
   },
+  optionLetterCircle: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: '#E5E7EB',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 10,
+  },
+  optionLetterCircleCorrect: {
+    backgroundColor: '#10B981',
+  },
+  optionLetterText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#374151',
+  },
+  optionLetterTextCorrect: {
+    color: '#FFFFFF',
+  },
+  optionValueText: {
+    fontSize: 14,
+    color: '#4B5563',
+    flex: 1,
+  },
+  optionValueTextCorrect: {
+    color: '#065F46',
+    fontWeight: '600',
+  },
