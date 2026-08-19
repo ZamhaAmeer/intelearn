@@ -229,11 +229,6 @@ export default function CourseDetailsScreen() {
   const [activePopupTab, setActivePopupTab] = useState('notifications');
   const router = useRouter();
 
-  const scrollY = useRef(new Animated.Value(0)).current;
-  const scrollRef = useRef(null); 
-  const headerHeight = useRef(100);
-  const sectionOffsets = useRef({});
-
   const stickyTitleOpacity = scrollY.interpolate({ inputRange: [60, 110], outputRange: [0, 1], extrapolate: 'clamp' });
   const mainTitleOpacity = scrollY.interpolate({ inputRange: [0, 80], outputRange: [1, 0], extrapolate: 'clamp' });
 
