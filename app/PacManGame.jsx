@@ -123,3 +123,17 @@ export default function PacManGame() {
 
             true;
           `}
+          onMessage={(event) => {
+            try {
+              const data = JSON.parse(event.nativeEvent.data);
+              if (data.type === 'error') {
+                console.log("PAC MAN WEBVIEW ERROR:", data.message);
+                Alert.alert("Game Error", data.message);
+              } else if (data.type === 'log') {
+                console.log("PAC MAN LOG:", data.message);
+              }
+            } catch (e) {
+              console.log("WEBVIEW MESSAGE (Raw):", event.nativeEvent.data);
+            }
+          }}
+        />
