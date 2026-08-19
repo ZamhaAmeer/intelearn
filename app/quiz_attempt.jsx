@@ -234,3 +234,28 @@ export default function QuizAttemptScreen() {
       </View>
     );
   }
+
+  const renderOption = (qId, keyName, optionText, editable = true) => {
+    const isSelected = selectedAnswers[qId] === keyName;
+    return (
+      <TouchableOpacity
+        key={keyName}
+        style={[
+          styles.optionRow,
+          isDark && { backgroundColor: '#2A2A2A', borderColor: '#333' },
+          isSelected && styles.optionRowSelected,
+          !editable && styles.optionRowReadOnly
+        ]}
+        onPress={() => editable && selectOption(qId, keyName)}
+        disabled={!editable}
+      >
+        <View style={[styles.radioButton, isSelected && styles.radioButtonSelected]}>
+          {isSelected && <View style={styles.radioInner} />}
+        </View>
+        <Text style={[styles.optionText, isDark && { color: '#FFFFFF' }, isSelected && styles.optionTextSelected]}>
+          <Text style={{ fontWeight: 'bold' }}>{keyName.toUpperCase()}: </Text>
+          {optionText}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
