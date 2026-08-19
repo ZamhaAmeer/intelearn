@@ -16,12 +16,14 @@ import {
   View
 } from "react-native";
 
+import { useGlobalTheme } from './themeStore';
 const { height } = Dimensions.get("window");
 
 export default function RegisterPage() {
   const router = useRouter();
-  
-  
+  const [isDark] = useGlobalTheme();
+
+  // State for form inputs
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,91 +31,107 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [agree, setAgree] = useState(false);
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+  const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
 
-  
+  const handleScroll = (event) => {
+    const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
+    const isCloseToBottom = layoutMeasurement.height + contentOffset.y >= contentSize.height - 30;
+    if (isCloseToBottom && !hasScrolledToBottom) {
+      setHasScrolledToBottom(true);
+    }
+  };
+
+  const openPrivacyModal = () => {
+    if (!agree) {
+      setHasScrolledToBottom(false);
+    }
+    setShowPrivacyModal(true);
+  };
+
+  // Password validation states
   const isLengthValid = password.length >= 8;
   const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
 
   const passwordsMatch = password === confirmPassword && confirmPassword.length > 0;
-const showMatchError = confirmPassword.length > 0 && password !== confirmPassword;
+  const showMatchError = confirmPassword.length > 0 && password !== confirmPassword;
 
   const handleRegister = async () => {
+    // 1. Check if fields are empty
+    if (!email || !password || !confirmPassword) {
+      alert('Please fill in all required fields.');
+      return;
+    }
 
-  if (!email || !password || !confirmPassword) {
-    alert('Please fill in all required fields.');
-    return;
-  }
-
-  const studentEmailRegex = /^\d{2}[a-zA-Z]{3}\d{4}@ms\.sab\.ac\.lk$/i;
+    const studentEmailRegex = /^\d{2}[a-zA-Z]{3}\d{4}@ms\.sab\.ac\.lk$/i;
     if (!studentEmailRegex.test(email.trim())) {
       alert('Invalid Email! Please use your official university email (e.g., 22fis0574@ms.sab.ac.lk).');
-      return; 
+      return; // Stops the registration process
     }
 
-  
-  if (password !== confirmPassword) {
-    alert('Passwords do not match!');
-    return;
-  }
-  try {
-    
-    const response = await fetch('http://172.20.10.3:3000/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      
-      body: JSON.stringify({ 
-        full_name: fullName,
-        email: email.trim().toLowerCase(),
-        password: password, 
-        role: 'student' 
-      }),
-    });
+    // 2. Check if passwords match
+    if (password !== confirmPassword) {
+      alert('Passwords do not match!');
+      return;
+    }
+    try {
+      // REPLACE the IP below with your actual IPv4 address
+      const response = await fetch('http://172.22.236.72:3000/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // 3. Send the ACTUAL state variables, not the hardcoded test strings!
+        body: JSON.stringify({
+          full_name: fullName,
+          email: email.trim().toLowerCase(), // .trim() removes accidental spaces
+          password: password,
+          role: 'student' // Since this navigates to the student login, we hardcode 'student' here
+        }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.ok) {
-      console.log('Success! User registered:', data);
-      Alert.alert(
-    "Registration Successful", 
-    "Your account has been created successfully.", 
-    [
-      {
-        text: "OK",
-        onPress: () => {
-          
-          router.push({
-            pathname: '/profilescreen',
-            params: { 
-              fullName: fullName, 
-              email: email.trim().toLowerCase() 
+      if (response.ok) {
+        console.log('Success! User registered:', data);
+        Alert.alert(
+          "Registration Successful",
+          "Your account has been created successfully.",
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                router.push({
+                  pathname: '/profilescreen',
+                  params: {
+                    fullName: fullName,
+                    email: email.trim().toLowerCase()
+                  }
+                });
+              }
             }
-          });
-        }
+          ]
+        );
+      } else {
+        alert(data.error || "Registration failed");
       }
-    ]
-  );
-    } else {
-      console.error('Registration failed:', data.error);
-      alert('Error: ' + data.error);
+    } catch (error) {
+      console.error(error);
+      alert('Could not connect to server');
     }
-  } catch (error) {
-    console.error('Network Error:', error);
-    alert('Could not connect to server');
-  }
-};
+  };
 
   return (
-    <View style={styles.container}>
-       <ImageBackground
+    <View style={[styles.container, isDark && { backgroundColor: '#121212' }]}>
+      {/* Header Section */}
+      <ImageBackground
         source={require("../src/assets/images/header-curve.png")}
         style={styles.headerBackground}
         resizeMode="stretch"
       >
         <View style={styles.backButtonContainer}>
-          <TouchableOpacity 
-            onPress={() => router.replace('/loginpage_Student')} 
+          <TouchableOpacity
+            onPress={() => router.back()}
             style={styles.backButton}
           >
             <Ionicons name="chevron-back" size={30} color="white" />
@@ -124,41 +142,41 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
           <Text style={styles.headerTitle}>Create Your Account</Text>
         </View>
       </ImageBackground>
-      
 
-      <KeyboardAvoidingView 
+
+      <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
       >
         <ScrollView
-                  style={styles.scrollView}  
-                  contentContainerStyle={styles.scrollContainer}
-                  showsVerticalScrollIndicator={false}
-                  keyboardShouldPersistTaps="handled" 
-                >
-                
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollContainer}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled" // Allows tapping outside inputs to dismiss keyboard
+        >
+
 
           <View style={styles.content}>
-            
-          
-            <View style={styles.formCard}>
+
+            {/* Registration Form Card */}
+            <View style={[styles.formCard, isDark && { backgroundColor: '#1E1E1E' }]}>
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>Full Name*</Text>
+                <Text style={[styles.label, isDark && { color: '#EEEEEE' }]}>Full Name*</Text>
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, isDark && { backgroundColor: '#2A2A2A', borderColor: '#333', color: '#FFF' }]}
                   placeholder="John Doe"
-                  placeholderTextColor="#A0A0A0"
+                  placeholderTextColor={isDark ? "#888" : "#A0A0A0"}
                   value={fullName}
                   onChangeText={setFullName}
                 />
               </View>
 
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>Email Address*</Text>
+                <Text style={[styles.label, isDark && { color: '#EEEEEE' }]}>Email Address*</Text>
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, isDark && { backgroundColor: '#2A2A2A', borderColor: '#333', color: '#FFF' }]}
                   placeholder="example@email.com"
-                  placeholderTextColor="#A0A0A0"
+                  placeholderTextColor={isDark ? "#888" : "#A0A0A0"}
                   value={email}
                   onChangeText={setEmail}
                   keyboardType="email-address"
@@ -166,126 +184,240 @@ const showMatchError = confirmPassword.length > 0 && password !== confirmPasswor
                 />
               </View>
 
-              
-                    <View style={styles.inputGroup}>
-                      <Text style={styles.label}>Password*</Text>
-                      <View style={styles.passwordInputWrapper}>
-                        <TextInput
-                          style={styles.flexInput}
-                          placeholder="........"
-                          placeholderTextColor="#A0A0A0"
-                          value={password}
-                          onChangeText={setPassword}
-                          secureTextEntry={!showPassword} // Toggle visibility here
-                        />
-                        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                          <Ionicons 
-                            name={showPassword ? "eye-outline" : "eye-off-outline"} 
-                            size={22} 
-                            color="#A0A0A0" 
-                          />
-                        </TouchableOpacity>
-                      </View>
-                    </View>
+              {/* Password* */}
+              <View style={styles.inputGroup}>
+                <Text style={[styles.label, isDark && { color: '#EEEEEE' }]}>Password*</Text>
+                <View style={[styles.passwordInputWrapper, isDark && { backgroundColor: '#2A2A2A', borderColor: '#333' }]}>
+                  <TextInput
+                    style={[styles.flexInput, isDark && { color: '#FFF' }]}
+                    placeholder="........"
+                    placeholderTextColor={isDark ? "#888" : "#A0A0A0"}
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry={!showPassword} // Toggle visibility here
+                  />
+                  <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                    <Ionicons
+                      name={showPassword ? "eye-outline" : "eye-off-outline"}
+                      size={22}
+                      color={isDark ? "#888" : "#A0A0A0"}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
 
-                
-                    <View style={styles.inputGroup}>
-                      <Text style={styles.label}>Confirm Password*</Text>
-                      <View style={styles.passwordInputWrapper}>
-                        <TextInput
-                          style={styles.flexInput}
-                          placeholder="........"
-                          placeholderTextColor="#A0A0A0"
-                          value={confirmPassword}
-                          onChangeText={setConfirmPassword}
-                          secureTextEntry={!showPassword} // Toggle visibility here
-                        />
-                        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                          <Ionicons 
-                            name={showPassword ? "eye-outline" : "eye-off-outline"} 
-                            size={22} 
-                            color="#A0A0A0" 
-                          />
-                        </TouchableOpacity>
-                                        {showMatchError && (
-                          <Text style={styles.errorText}>Passwords do not match</Text>
-                        )}
-                      </View>
-                    </View>
-               
-                        <View style={styles.requirementsBox}>
-                          <Text style={styles.requirementsTitle}>PASSWORD REQUIREMENTS</Text>
-                          
-                          <View style={styles.requirementRow}>
-                            <Ionicons 
-                              name={isLengthValid ? "checkmark-circle" : "ellipse-outline"} 
-                              size={20} 
-                              // Use a bright green when valid, gray when invalid
-                              color={isLengthValid ? "#10b981" : "#d1d5db"} 
-                            />
-                            <Text style={[
-                              styles.requirementText, 
-                              isLengthValid && styles.requirementTextValid // Apply valid style if true
-                            ]}>
-                              At least 8 characters long
-                            </Text>
-                          </View>
-            
-                          <View style={styles.requirementRow}>
-                            <Ionicons 
-                              name={hasSpecialChar ? "checkmark-circle" : "ellipse-outline"} 
-                              size={20} 
-                              color={hasSpecialChar ? "#10b981" : "#d1d5db"} 
-                            />
-                            <Text style={[
-                              styles.requirementText, 
-                              hasSpecialChar && styles.requirementTextValid
-                            ]}>
-                              Include one special character
-                            </Text>
-                          </View>
-                        </View>
-                   </View>
+              {/* Confirm Password* */}
+              <View style={styles.inputGroup}>
+                <Text style={[styles.label, isDark && { color: '#EEEEEE' }]}>Confirm Password*</Text>
+                <View style={[styles.passwordInputWrapper, isDark && { backgroundColor: '#2A2A2A', borderColor: '#333' }]}>
+                  <TextInput
+                    style={[styles.flexInput, isDark && { color: '#FFF' }]}
+                    placeholder="........"
+                    placeholderTextColor={isDark ? "#888" : "#A0A0A0"}
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+                    secureTextEntry={!showPassword} // Toggle visibility here
+                  />
+                  <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                    <Ionicons
+                      name={showPassword ? "eye-outline" : "eye-off-outline"}
+                      size={22}
+                      color={isDark ? "#888" : "#A0A0A0"}
+                    />
+                  </TouchableOpacity>
+                  {showMatchError && (
+                    <Text style={styles.errorText}>Passwords do not match</Text>
+                  )}
+                </View>
+              </View>
+              {/* Password Requirements Box */}
+              <View style={[styles.requirementsBox, isDark && { backgroundColor: '#2A2440', borderColor: '#4C35A5' }]}>
+                <Text style={[styles.requirementsTitle, isDark && { color: '#B39DDB' }]}>PASSWORD REQUIREMENTS</Text>
 
-                  
+                <View style={styles.requirementRow}>
+                  <Ionicons
+                    name={isLengthValid ? "checkmark-circle" : "ellipse-outline"}
+                    size={20}
+                    // Use a bright green when valid, gray when invalid
+                    color={isLengthValid ? "#10b981" : (isDark ? "#666" : "#d1d5db")}
+                  />
+                  <Text style={[
+                    styles.requirementText,
+                    isDark && { color: '#AAAAAA' },
+                    isLengthValid && (isDark ? { color: '#A5D6A7' } : styles.requirementTextValid) // Apply valid style if true
+                  ]}>
+                    At least 8 characters long
+                  </Text>
+                </View>
+
+                <View style={styles.requirementRow}>
+                  <Ionicons
+                    name={hasSpecialChar ? "checkmark-circle" : "ellipse-outline"}
+                    size={20}
+                    color={hasSpecialChar ? "#10b981" : (isDark ? "#666" : "#d1d5db")}
+                  />
+                  <Text style={[
+                    styles.requirementText,
+                    isDark && { color: '#AAAAAA' },
+                    hasSpecialChar && (isDark ? { color: '#A5D6A7' } : styles.requirementTextValid)
+                  ]}>
+                    Include one special character
+                  </Text>
+                </View>
+              </View>
+            </View>
+
+            {/* Privacy Policy Checkbox Row */}
             <View style={styles.privacyRow}>
-              <TouchableOpacity 
-                style={[styles.checkbox, agree && styles.checkboxChecked]} 
-                onPress={() => setAgree(!agree)}
+              <TouchableOpacity
+                style={[styles.checkbox, isDark && { borderColor: '#666' }, agree && styles.checkboxChecked]}
+                onPress={() => agree ? setAgree(false) : openPrivacyModal()}
               >
                 {agree && <Ionicons name="checkmark" size={14} color="white" />}
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => router.push("/privacy")}>
-                <Text style={styles.privacyText}>
-                  I agree to the <Text style={styles.privacyLink}>Privacy Policy</Text>
+              <TouchableOpacity onPress={openPrivacyModal}>
+                <Text style={[styles.privacyText, isDark && { color: '#AAAAAA' }]}>
+                  I agree to the <Text style={[styles.privacyLink, isDark && { color: '#B39DDB' }]}>Privacy Policy</Text>
                 </Text>
               </TouchableOpacity>
             </View>
 
-           
-
-            
-            <TouchableOpacity 
-              style={[styles.registerButton, !agree && styles.registerButtonDisabled]} 
+            {/* Register Button */}
+            <TouchableOpacity
+              style={[styles.registerButton, !agree && styles.registerButtonDisabled]}
               onPress={handleRegister}
-              disabled={!agree} 
+              disabled={!agree} // Disables the button if agree is false
             >
               <Text style={styles.registerButtonText}>Register</Text>
             </TouchableOpacity>
 
-            
+            {/* Footer */}
             <View style={styles.footer}>
-              <Text style={styles.footerText}>Already have an account?</Text>
-              <TouchableOpacity onPress={() => router.push("/loginpage_Student")}>
-                <Text style={styles.loginText}>Login</Text>
+              <Text style={[styles.footerText, isDark && { color: '#AAAAAA' }]}>Already have an account?</Text>
+              <TouchableOpacity onPress={() => router.push("/loginpage(student)")}>
+                <Text style={[styles.loginText, isDark && { color: '#B39DDB' }]}>Login</Text>
               </TouchableOpacity>
             </View>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+
+      {/* Privacy Policy Modal */}
+      <Modal
+        visible={showPrivacyModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowPrivacyModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Ionicons name="shield-checkmark" size={24} color="#5D3FD3" style={{ marginRight: 8 }} />
+                <Text style={styles.modalTitle}>Privacy & Data Policy</Text>
+              </View>
+              <TouchableOpacity onPress={() => setShowPrivacyModal(false)}>
+                <Ionicons name="close" size={24} color="#666" />
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView
+              style={styles.modalScrollView}
+              showsVerticalScrollIndicator={true}
+              onScroll={handleScroll}
+              scrollEventThrottle={16}
+            >
+              <Text style={styles.protocolTag}>INSTITUTIONAL PROTOCOL</Text>
+
+              <Text style={styles.mainPolicyTitle}>
+                Terms of Academic Service & Data Privacy
+              </Text>
+
+              <Text style={styles.introPolicyText}>
+                Please review the Learnora digital governance framework. These statutes define the bilateral obligations between the institution and the student body regarding digital engagement.
+              </Text>
+
+              <View style={styles.policySectionContainer}>
+                <Text style={styles.policySectionTitle}>Section 1.0: Preamble</Text>
+                <Text style={styles.policyText}>
+                  This document constitutes a binding legal agreement governing the use of the Learnora Virtual Learning Environment (VLE). By authenticating your credentials, you acknowledge the sovereignty of these clauses in all academic and administrative digital interactions within the platform ecosystem.
+                </Text>
+              </View>
+
+              <View style={styles.policySectionContainer}>
+                <Text style={styles.policySectionTitle}>Section 1.2: VLE Activity Logging</Text>
+                <Text style={styles.policyText}>
+                  The Learnora architecture maintains an immutable ledger of all user interactions. This includes, but is not limited to: login frequency, duration of resource access, navigational heatmaps, and asynchronous participation metrics. These data points are synthesized to evaluate student engagement and predict academic outcomes. Under this clause, users concede that inactivity for periods exceeding 14 academic days may trigger automatic intervention protocols from the Office of Academic Affairs.
+                </Text>
+              </View>
+
+              <View style={styles.policySectionContainer}>
+                <Text style={styles.policySectionTitle}>Section 2.0: Intellectual Property of Contributions</Text>
+                <Text style={styles.policyText}>
+                  All scholarly outputs, discussion board contributions, and peer-review submissions transmitted via the VLE are subject to an irrevocable, non-exclusive license granted to Learnora for the purposes of pedagogical analysis and institutional archiving. Users retain moral rights to their work, but acknowledge that the platform may utilize anonymized fragments of such work for the refinement of Large Language Models (LLMs) used in institutional tutoring.
+                </Text>
+              </View>
+
+              <View style={styles.policySectionContainer}>
+                <Text style={styles.policySectionTitle}>Section 4.5: Biometric Facial Processing</Text>
+                <Text style={styles.policyText}>
+                  In alignment with proctoring integrity standards, Learnora employs advanced biometric processing during synchronous assessment periods. This involves the real-time analysis of camera data to verify identity and maintain continuous presence detection. This 'Biometric Facial Processing' protocol captures micro-expression data points to ensure the integrity of the testing environment. Data extracted under this section is processed locally when possible, but high-assurance assessments may require encrypted transmission to institutional security servers for forensic auditing. By proceeding, you authorize the temporary activation of hardware imaging devices for these specific compliance checks.
+                </Text>
+              </View>
+
+              <View style={styles.policySectionContainer}>
+                <Text style={styles.policySectionTitle}>Section 5.1: Third-Party Academic Integrations</Text>
+                <Text style={styles.policyText}>
+                  Learnora leverages a network of secondary service providers for plagiarism detection, e-library indexing, and cloud-based laboratory environments. Personal identifiers—excluding sensitive financial data—may be shared with these entities to ensure a seamless academic experience. Each provider is audited for compliance with the Federal Student Data Privacy Act (FSDPA).
+                </Text>
+              </View>
+
+              <View style={styles.policySectionContainer}>
+                <Text style={styles.policySectionTitle}>Section 6.0: Termination of Access</Text>
+                <Text style={styles.policyText}>
+                  Failure to comply with the ethical conduct standards outlined in the Student Handbook, or a breach of the digital security protocols established herein, may result in the immediate revocation of VLE access. Reinstatement is subject to a formal hearing before the Digital Ethics Committee.
+                </Text>
+              </View>
+
+              <View style={styles.footerInfo}>
+                <Text style={styles.versionText}>Document Version: 2024.Q3.Institutional.Rev04</Text>
+                <Text style={styles.versionText}>Last Updated: September 14, 2024</Text>
+              </View>
+            </ScrollView>
+
+            <View style={styles.modalFooter}>
+              <TouchableOpacity
+                style={styles.declineButton}
+                onPress={() => {
+                  setAgree(false);
+                  setShowPrivacyModal(false);
+                }}
+              >
+                <Text style={styles.declineButtonText}>Decline</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.confirmButton,
+                  !hasScrolledToBottom && styles.confirmButtonDisabled
+                ]}
+                disabled={!hasScrolledToBottom}
+                onPress={() => {
+                  setAgree(true);
+                  setShowPrivacyModal(false);
+                }}
+              >
+                <Ionicons name="checkmark-circle" size={18} color="white" style={{ marginRight: 6 }} />
+                <Text style={styles.confirmButtonText}>I AGREE & CONTINUE</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
+
 
 export const styles = StyleSheet.create({
   container: {
