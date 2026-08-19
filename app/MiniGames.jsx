@@ -82,6 +82,9 @@ const GAMES = [
 ];
 
 export default function App() {
+  const [isDark] = useGlobalTheme();
+  const params = useLocalSearchParams();
+  const returnRoute = params?.returnRoute || '/coursedetails';
 
   const panResponder = useRef(
     PanResponder.create({
