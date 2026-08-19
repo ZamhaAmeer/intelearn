@@ -182,17 +182,17 @@ export default function ProfileViewScreen() {
 
   if (isLoading) {
     return (
-      <View style={styles.loadingContainer}>
+      <View style={[styles.loadingContainer, isDark && { backgroundColor: '#121518' }]}>
         <ActivityIndicator size="large" color="#4E33B3" />
       </View>
     );
   }
 
   return (
-    <View style={styles.container} {...panResponder.panHandlers}>
+    <View style={[styles.container, isDark && { backgroundColor: '#121518' }]} {...panResponder.panHandlers}>
       <StatusBar barStyle="light-content" backgroundColor="#4E33B3" />
-      
-      
+
+
       <Animated.View style={[styles.header, { height: headerHeight, paddingTop: headerPaddingTop, paddingLeft: headerPaddingLeft }]}>
         <View style={styles.headerTitleContainer}>
           <Animated.Text style={[styles.headerTitle, { fontSize: headerTitleSize }]}>
@@ -201,10 +201,10 @@ export default function ProfileViewScreen() {
         </View>
       </Animated.View>
 
-    
-      <Animated.ScrollView 
-        style={styles.scrollContentWrapper} 
-        contentContainerStyle={[styles.scrollContainer, { paddingTop: HEADER_MAX_HEIGHT + 15 }]} 
+
+      <Animated.ScrollView
+        style={styles.scrollContentWrapper}
+        contentContainerStyle={[styles.scrollContainer, { paddingTop: HEADER_MAX_HEIGHT + 15 }]}
         showsVerticalScrollIndicator={false}
         bounces={false}
         scrollEventThrottle={16}
@@ -213,7 +213,7 @@ export default function ProfileViewScreen() {
           { useNativeDriver: false }
         )}
       >
-      
+
         <View style={styles.avatarCardSection}>
           <View style={styles.avatarOutlineRing}>
             <Image
@@ -221,82 +221,82 @@ export default function ProfileViewScreen() {
               style={styles.avatarImage}
             />
           </View>
-          <Text style={styles.profileNameText} numberOfLines={1}>{fullName}</Text>
-          <Text style={styles.profileTaglineText}>@{userName || 'student'}</Text>
+          <Text style={[styles.profileNameText, isDark && { color: '#FFFFFF' }]} numberOfLines={1}>{fullName}</Text>
+          <Text style={[styles.profileTaglineText, isDark && { color: '#8E7AF4' }]}>@{userName || 'student'}</Text>
         </View>
 
-      
-        <View style={styles.detailsSectionSurface}>
-          <View style={styles.dataFieldBlock}>
+
+        <View style={[styles.detailsSectionSurface, isDark && { backgroundColor: '#1B2226', borderColor: '#29323A' }]}>
+          <View style={[styles.dataFieldBlock, isDark && { borderBottomColor: '#29323A' }]}>
             <View style={styles.labelRow}>
-              <Icon name="account-outline" size={18} color="#7E57C2" />
+              <Icon name="account-outline" size={18} color={isDark ? "#8E7AF4" : "#7E57C2"} />
               <Text style={styles.fieldLabelText}>FULL NAME</Text>
             </View>
-            <Text style={styles.fieldValueText}>{fullName}</Text>
+            <Text style={[styles.fieldValueText, isDark && { color: '#FFFFFF' }]}>{fullName}</Text>
           </View>
 
-          <View style={styles.dataFieldBlock}>
+          <View style={[styles.dataFieldBlock, isDark && { borderBottomColor: '#29323A' }]}>
             <View style={styles.labelRow}>
-              <Icon name="card-account-details-outline" size={18} color="#7E57C2" />
+              <Icon name="card-account-details-outline" size={18} color={isDark ? "#8E7AF4" : "#7E57C2"} />
               <Text style={styles.fieldLabelText}>USER NAME</Text>
             </View>
-            <Text style={styles.fieldValueText}>{userName}</Text>
+            <Text style={[styles.fieldValueText, isDark && { color: '#FFFFFF' }]}>{userName}</Text>
           </View>
 
-          <View style={styles.dataFieldBlock}>
+          <View style={[styles.dataFieldBlock, isDark && { borderBottomColor: '#29323A' }]}>
             <View style={styles.labelRow}>
-              <Icon name="email-outline" size={18} color="#7E57C2" />
+              <Icon name="email-outline" size={18} color={isDark ? "#8E7AF4" : "#7E57C2"} />
               <Text style={styles.fieldLabelText}>EMAIL ADDRESS</Text>
             </View>
-            <Text style={styles.fieldValueText}>{email}</Text>
+            <Text style={[styles.fieldValueText, isDark && { color: '#FFFFFF' }]}>{email}</Text>
           </View>
 
-          <View style={styles.dataFieldBlock}>
+          <View style={[styles.dataFieldBlock, isDark && { borderBottomColor: '#29323A' }]}>
             <View style={styles.labelRow}>
-              <Icon name="phone-outline" size={18} color="#7E57C2" />
+              <Icon name="phone-outline" size={18} color={isDark ? "#8E7AF4" : "#7E57C2"} />
               <Text style={styles.fieldLabelText}>PHONE NUMBER</Text>
             </View>
-            <Text style={styles.fieldValueText}>{phone}</Text>
+            <Text style={[styles.fieldValueText, isDark && { color: '#FFFFFF' }]}>{phone}</Text>
           </View>
 
           <View style={styles.rowFieldsContainer}>
-            <View style={[styles.dataFieldBlock, { flex: 1, marginRight: 16 }]}>
+            <View style={[styles.dataFieldBlock, { flex: 1, marginRight: 16 }, isDark && { borderBottomColor: '#29323A' }]}>
               <View style={styles.labelRow}>
-                <Icon name="school-outline" size={18} color="#7E57C2" />
+                <Icon name="school-outline" size={18} color={isDark ? "#8E7AF4" : "#7E57C2"} />
                 <Text style={styles.fieldLabelText}>DEPARTMENT</Text>
               </View>
-              <Text style={styles.fieldValueText}>{formatDepartment(department)}</Text>
+              <Text style={[styles.fieldValueText, isDark && { color: '#FFFFFF' }]}>{formatDepartment(department)}</Text>
             </View>
-            <View style={[styles.dataFieldBlock, { flex: 1 }]}>
+            <View style={[styles.dataFieldBlock, { flex: 1 }, isDark && { borderBottomColor: '#29323A' }]}>
               <View style={styles.labelRow}>
-                <Icon name="gender-male-female" size={18} color="#7E57C2" />
+                <Icon name="gender-male-female" size={18} color={isDark ? "#8E7AF4" : "#7E57C2"} />
                 <Text style={styles.fieldLabelText}>GENDER</Text>
               </View>
-              <Text style={styles.fieldValueText}>{formatGender(gender)}</Text>
+              <Text style={[styles.fieldValueText, isDark && { color: '#FFFFFF' }]}>{formatGender(gender)}</Text>
             </View>
           </View>
 
           <View style={[styles.dataFieldBlock, { borderBottomWidth: 0, paddingBottom: 5 }]}>
             <View style={styles.labelRow}>
-              <Icon name="text-account" size={18} color="#7E57C2" />
+              <Icon name="text-account" size={18} color={isDark ? "#8E7AF4" : "#7E57C2"} />
               <Text style={styles.fieldLabelText}>BIOGRAPHY</Text>
             </View>
-            <Text style={styles.bioContentText}>{bio}</Text>
+            <Text style={[styles.bioContentText, isDark && { color: '#8A959E' }]}>{bio}</Text>
           </View>
         </View>
 
-        
+
         <View style={styles.actionContainer}>
-          <TouchableOpacity 
-            style={styles.primaryActionButton} 
-            onPress={() => router.push({ pathname: '/profilescreen_edit', params: { email: email, fullName: fullName } })} 
+          <TouchableOpacity
+            style={styles.primaryActionButton}
+            onPress={() => router.push({ pathname: '/profilescreenEdit', params: { email: email, fullName: fullName } })}
           >
             <Text style={styles.primaryActionText}>Edit Profile</Text>
             <Icon name="pencil" size={18} color="#FFFFFF" style={{ marginLeft: 8 }} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.secondaryActionButton} onPress={() => router.replace('/coursedetails')}>
-            <Text style={styles.secondaryActionText}>Return Home</Text>
+          <TouchableOpacity style={[styles.secondaryActionButton, isDark && { backgroundColor: '#1F2937' }]} onPress={() => router.replace('/coursedetails')}>
+            <Text style={[styles.secondaryActionText, isDark && { color: '#A0AEC0' }]}>Return Home</Text>
           </TouchableOpacity>
         </View>
       </Animated.ScrollView>
@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: '#4E33B3',
-    paddingRight: 24, 
+    paddingRight: 24,
     zIndex: 1000,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
@@ -322,19 +322,19 @@ const styles = StyleSheet.create({
   },
   headerTitleContainer: {
     width: '100%',
-    alignItems: 'center', 
+    alignItems: 'center',
     justifyContent: 'center',
   },
-  headerTitle: { 
-    fontWeight: 'bold', 
+  headerTitle: {
+    fontWeight: 'bold',
     color: '#FFFFFF',
     letterSpacing: -0.5,
     textAlign: 'center',
   },
-  
+
   scrollContentWrapper: { flex: 1 },
   scrollContainer: { paddingBottom: 40 },
-  
+
   avatarCardSection: { alignItems: 'center', marginTop: 10, marginBottom: 24 },
   avatarOutlineRing: {
     width: 110, height: 110, borderRadius: 55, borderWidth: 4, borderColor: '#FFF',
@@ -344,7 +344,7 @@ const styles = StyleSheet.create({
   avatarImage: { width: '100%', height: '100%' },
   profileNameText: { fontSize: 22, fontWeight: '800', color: '#1A1A1A', marginTop: 14, paddingHorizontal: 20, textAlign: 'center' },
   profileTaglineText: { fontSize: 13, color: '#7E57C2', fontWeight: '600', marginTop: 2 },
-  
+
   detailsSectionSurface: {
     backgroundColor: '#FFF', marginHorizontal: 24, borderRadius: 24, padding: 20, borderWidth: 1, borderColor: '#F4F2E4',
     shadowColor: '#4E33B3', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.04, shadowRadius: 12, elevation: 3,
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
   fieldValueText: { fontSize: 15, color: '#1A1A1A', fontWeight: '600', paddingLeft: 26 },
   rowFieldsContainer: { flexDirection: 'row', justifyContent: 'space-between' },
   bioContentText: { fontSize: 14, color: '#555', lineHeight: 22, paddingLeft: 26, marginTop: 2 },
-  
+
   actionContainer: { paddingHorizontal: 24, marginTop: 24 },
   primaryActionButton: {
     backgroundColor: '#4E33B3', borderRadius: 20, height: 52, flexDirection: 'row', alignItems: 'center',
