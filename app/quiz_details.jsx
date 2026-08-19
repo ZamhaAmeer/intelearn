@@ -123,3 +123,74 @@ export default function QuizDetailsScreen() {
         <View style={styles.questionsHeader}>
           <Text style={styles.questionsTitle}>Questions ({(quiz.questions || []).length})</Text>
         </View>
+
+{/* Questions List */}
+        {(quiz.questions || []).length === 0 ? (
+          <Text style={styles.noQuestionsText}>No questions in this quiz.</Text>
+        ) : (
+          quiz.questions.map((q, idx) => (
+            <View key={q.id ? q.id.toString() : String(idx)} style={styles.questionCard}>
+              <View style={styles.questionHeaderRow}>
+                <Text style={styles.questionNumber}>Question {idx + 1}</Text>
+              </View>
+              <Text style={styles.questionText}>{q.question}</Text>
+
+              {/* Options */}
+              {q.option_a || q.option_b || q.option_c || q.option_d ? (
+                <View style={styles.optionsList}>
+                  {['A', 'B', 'C', 'D'].map((letter) => {
+                    const optionVal = q[`option_${letter.toLowerCase()}`];
+                    if (!optionVal) return null;
+                    const isCorrect = String(q.correct_answer).toUpperCase() === letter;
+
+                    return (
+                      <View
+                        key={letter}
+                        style={[
+                          styles.optionItem,
+                          isCorrect && styles.optionItemCorrect
+                        ]}
+                      >
+                        <View
+                          style={[
+                            styles.optionLetterCircle,
+                            isCorrect && styles.optionLetterCircleCorrect
+                          ]}
+                        >
+                          <Text
+                            style={[
+                              styles.optionLetterText,
+                              isCorrect && styles.optionLetterTextCorrect
+                            ]}
+                          >
+                            {letter}
+                          </Text>
+                        </View>
+                        <Text
+                          style={[
+                            styles.optionValueText,
+                            isCorrect && styles.optionValueTextCorrect
+                          ]}
+                        >
+                          {optionVal}
+                        </Text>
+                        {isCorrect && (
+                          <MaterialCommunityIcons name="check-bold" size={16} color="#10B981" style={{ marginLeft: 'auto' }} />
+                        )}
+                      </View>
+                    );
+                  })}
+                </View>
+              ) : (
+                <View style={styles.openQuestionBlock}>
+                  <Text style={styles.correctAnswerLabel}>Correct Answer:</Text>
+                  <Text style={styles.correctAnswerText}>{q.correct_answer || 'N/A'}</Text>
+                </View>
+              )}
+            </View>
+          ))
+        )}
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
