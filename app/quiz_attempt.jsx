@@ -468,3 +468,53 @@ const styles = StyleSheet.create({
     borderBottomColor: '#EDEBE6',
     elevation: 2,
   },
+  backBtn: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#1E1B4B',
+    flex: 1,
+    textAlign: 'center',
+  },
+  scrollContent: {
+    padding: 16,
+  },
+  infoCard: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: '#E6DFD3',
+    marginBottom: 20,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  iconCircle: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    backgroundColor: '#EBF3FF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 15,
+  },
+  infoDetails: {
+    flex: 1,
+  },
+  assignTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#1E1B4B',
+  },
+  assignCode: {
+    fontSize: 12,
+    color: '#9CA3AF',
+    fontWeight: '500',
+    marginTop: 2,
+  },
