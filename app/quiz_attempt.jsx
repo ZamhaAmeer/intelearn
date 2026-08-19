@@ -173,3 +173,46 @@ export default function QuizAttemptScreen() {
       setSubmitting(false);
     }
   };
+
+    const handleRemoveSubmission = async () => {
+    Alert.alert(
+      "Confirm Delete",
+      "Are you sure you want to remove your quiz attempt? This will clear your record in the database, allowing you to start fresh.",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Remove",
+          style: "destructive",
+          onPress: async () => {
+            setSubmitting(true);
+            try {
+              const token = await AsyncStorage.getItem('token');
+              const response = await fetch(`http://172.22.236.72:3000/api/student/submit/${submission.id}`, {
+                method: 'DELETE',
+                headers: {
+                  'Authorization': `Bearer ${token}`,
+                  'Content-Type': 'application/json'
+                }
+              });
+
+              if (response.ok) {
+                Alert.alert("Removed", "Quiz attempt deleted successfully!");
+                setSubmission(null);
+                setSelectedAnswers({});
+                setIsEditing(false);
+                setAttemptStarted(false);
+                fetchQuizAndSubmission();
+              } else {
+                const result = await response.json();
+                throw new Error(result.error || "Delete failed");
+              }
+            } catch (error) {
+              Alert.alert("Error", error.message);
+            } finally {
+              setSubmitting(false);
+            }
+          }
+        }
+      ]
+    );
+  };
