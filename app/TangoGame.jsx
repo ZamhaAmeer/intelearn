@@ -368,3 +368,35 @@ export default function TangoGame() {
     `;
     webViewRef.current?.injectJavaScript(jsCode);
   };
+
+   return (
+    <SafeAreaView style={[styles.safeArea, isDarkMode && styles.safeAreaDark]}>
+      <BreakTimerOverlay returnRoute={returnRoute} />
+      <View style={styles.container}>
+        <WebView
+          ref={webViewRef}
+          originWhitelist={['*']}
+          source={{ html: adjustedHtml, baseUrl: 'http://localhost/' }}
+          style={[styles.webview, isDarkMode && styles.webviewDark]}
+          javaScriptEnabled={true}
+          domStorageEnabled={true}
+          bounces={false}
+          showsVerticalScrollIndicator={true}
+          showsHorizontalScrollIndicator={false}
+          scrollEnabled={true}
+          setBuiltInZoomControls={false}
+          androidLayerType="hardware"
+          overScrollMode="never"
+          mediaPlaybackRequiresUserAction={false}
+          onMessage={(event) => {
+            try {
+              const data = JSON.parse(event.nativeEvent.data);
+              if (data.type === 'error') {
+                console.log("WEBVIEW ERROR:", data.message);
+                Alert.alert("Game Error", data.message);
+              }
+            } catch (e) {
+              console.log("WEBVIEW LOG:", event.nativeEvent.data);
+            }
+          }}
+        />
