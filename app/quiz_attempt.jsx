@@ -518,3 +518,30 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginTop: 2,
   },
+divider: {
+    height: 1,
+    backgroundColor: '#E6DFD3',
+    marginVertical: 15,
+  },
+  descriptionLabel: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#1E1B4B',
+    marginBottom: 8,
+  },
+  description: {
+    fontSize: 14,
+    color: '#4B5563',
+    lineHeight: 20,
+    marginBottom: 15,
+  },
+  badgeRow: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  badge: {
+    backgroundColor: '#F3F4F6',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+  },
