@@ -161,4 +161,23 @@ const styles = StyleSheet.create({
   buttonText: { fontSize: 18, fontWeight: "bold", color: "#2b0a90" },
 });
 
+//notifications
+async function registerForPushNotificationsAsync() {
+
+  if (Device.isDevice) {
+
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+
+    let finalStatus = existingStatus;
+
+    if (existingStatus !== 'granted') {
+
+      const { status } =
+        await Notifications.requestPermissionsAsync();
+
+      finalStatus = status;
+    }
+
+
 export default SplashScreen;
