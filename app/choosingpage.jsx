@@ -53,15 +53,15 @@ const ChoosingPage = () => {
           <Text style={[styles.tagline, isDark && { color: '#AAA' }]}>Learn smart, Grow fast</Text>
         </View>
 
-        {/* Path Section */}
+         {/* Path Section */}
         <View style={styles.pathSection}>
-          <Text style={styles.pathTitle}>Engrave your path</Text>
+          <Text style={[styles.pathTitle, isDark && { color: '#FFF' }]}>Engrave your path</Text>
           
           <View style={styles.optionsContainer}>
             {/* Student Option */}
             <TouchableOpacity 
-              style={styles.optionButton}
-              onPress={() => router.push("./loginpage_Student")} // Adjust paths as needed
+              style={[styles.optionButton, isDark && { backgroundColor: '#2A2A2A' }]}
+              onPress={() => router.push("./loginpage(student)")} // Adjust paths as needed
             >
               <Ionicons name="school" size={35} color="black" style={styles.icon} />
               <Text style={styles.optionText}>I am a Student</Text>
