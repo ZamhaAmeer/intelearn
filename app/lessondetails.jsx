@@ -413,3 +413,80 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 2,
     },
+        questionCardTitle: {
+        fontSize: 15,
+        fontWeight: '700',
+        color: '#1A1A1A',
+        marginBottom: 12,
+        lineHeight: 20,
+    },
+    optionsList: {
+        gap: 8,
+    },
+    optionItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: 6,
+        paddingHorizontal: 10,
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: '#F1F5F9',
+    },
+    optionItemCorrect: {
+        borderColor: '#10B981',
+        backgroundColor: '#ECFDF5',
+    },
+    optionBadge: {
+        width: 26,
+        height: 26,
+        borderRadius: 13,
+        backgroundColor: '#F1F5F9',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10,
+    },
+    optionBadgeCorrect: {
+        backgroundColor: '#10B981',
+    },
+    optionBadgeText: {
+        fontSize: 13,
+        fontWeight: 'bold',
+        color: '#475569',
+    },
+    optionText: {
+        fontSize: 14,
+        color: '#334155',
+        flex: 1,
+    },
+    optionTextCorrect: {
+        color: '#065F46',
+        fontWeight: '600',
+    },
+    correctIcon: {
+        marginLeft: 8,
+    },
+    adaptedCard: {
+        backgroundColor: '#F3E8FF',
+        borderRadius: 16,
+        padding: 16,
+        marginBottom: 20,
+        borderWidth: 1,
+        borderColor: '#D8B4FE',
+    },
+    adaptedCardHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 6,
+    },
+    adaptedCardTitle: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: '#5D3FD3',
+        letterSpacing: 0.5,
+    },
+    adaptedCardSub: {
+        fontSize: 13,
+        color: '#555',
+        lineHeight: 18,
+    }
+});
