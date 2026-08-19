@@ -165,3 +165,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000000',
   },
+  backButton: {
+    position: 'absolute',
+    top: 16,
+    left: 16,
+    width: 44,
+    height: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    borderRadius: 22,
+  },
+});
