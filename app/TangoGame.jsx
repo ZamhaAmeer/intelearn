@@ -400,3 +400,30 @@ export default function TangoGame() {
             }
           }}
         />
+
+        {/* Back Button */}
+        <TouchableOpacity
+          style={[styles.backButton, isDarkMode && styles.backButtonDark]}
+          onPress={() => router.push('/MiniGames')}
+          activeOpacity={0.8}
+        >
+          <Ionicons name="arrow-back" size={32} color={isDarkMode ? '#FFFFFF' : '#000000'} />
+        </TouchableOpacity>
+
+        {/* Floating Dark Mode Toggle Button */}
+        <TouchableOpacity
+          style={[styles.floatingButton, isDarkMode && styles.floatingButtonDark]}
+          onPress={toggleDarkMode}
+          activeOpacity={0.8}
+        >
+          <Ionicons
+            name={isDarkMode ? 'sunny' : 'moon'}
+            size={24}
+            color={isDarkMode ? '#FDFBF4' : '#111827'}
+          />
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  );
+}
+
