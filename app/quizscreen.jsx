@@ -75,3 +75,76 @@ export default function QuizScreen() {
             answer: "B"
         }
     ];
+
+    const questions = (parsedQuestions && parsedQuestions.length > 0) ? parsedQuestions : fallbackQuestions;
+
+    // --- STATE MANAGEMENT ---
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [selectedOption, setSelectedOption] = useState(null);
+    const [isSubmitted, setIsSubmitted] = useState(false);
+
+    // --- NEW: RESET STATE WHEN LESSON CHANGES ---
+    useEffect(() => {
+        setCurrentIndex(0);        // Reset to the first question
+        setSelectedOption(null);   // Clear any selected answer
+        setIsSubmitted(false);     // Reset the submission status
+    }, [lessonTitle]);           // This runs every time 'lessonTitle' changes
+
+    const currentQ = questions[currentIndex];
+    const progressPercentage = ((currentIndex + 1) / questions.length) * 100;
+
+    const handleGoBack = () => {
+        // FORCE the router to go to lessondetails and pass the data back.
+        // We completely bypass router.back() because Tabs handle history differently.
+        router.replace({
+            pathname: '/lessondetails',
+            params: {
+                courseTitle: courseTitle,
+                lessonTitle: lessonTitle,
+                description: description,
+                mcqs: mcqs,
+                url: url,
+                parentRoute: parentRoute
+            }
+        });
+    };
+
+    // --- HANDLERS ---
+    const handleSelectOption = (letter) => {
+        // Prevent changing answer after submission
+        if (!isSubmitted) {
+            setSelectedOption(letter);
+        }
+    };
+
+    const handleActionBtn = () => {
+        if (!selectedOption) {
+            Alert.alert("Hold on!", "Please select an answer before submitting.");
+            return;
+        }
+
+        if (!isSubmitted) {
+            // Submit the answer
+            setIsSubmitted(true);
+        } else {
+            // Next Question Logic
+            if (currentIndex < questions.length - 1) {
+                setCurrentIndex(currentIndex + 1);
+                setSelectedOption(null);
+                setIsSubmitted(false);
+            } else {
+                // Quiz Finished
+                Alert.alert("Quiz Complete!", "You have finished all 5 questions.", [
+                    { text: "Go Back", onPress: handleGoBack }
+                ]);
+            }
+        }
+    };
+
+    const renderStars = () => (
+        Array(5).fill(0).map((_, i) => (
+            <Icon key={i} name="star" size={16} color="#FFD700" style={{ marginRight: 4 }} />
+        ))
+    );
+
+   
