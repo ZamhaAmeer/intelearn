@@ -212,3 +212,39 @@ export default function RiddlesScreen() {
             }
         }
     };
+
+        // --- FINISHED STATE ---
+    if (isFinished) {
+        return (
+            <View style={[styles.safeArea, isDark && { backgroundColor: '#121212' }]}>
+                <StatusBar barStyle="light-content" backgroundColor="#4C35A5" />
+                <ConfettiContainer active={showConfetti} keyId={confettiKey} />
+
+                <View style={styles.headerContainer}>
+                    <Text style={styles.courseTitle}>Riddles Completed!</Text>
+                </View>
+
+                <View style={[styles.finishedContainer, isDark && { backgroundColor: '#121212' }]}>
+                    <View style={[styles.scoreCard, isDark && { backgroundColor: '#1E1E1E', borderColor: '#2A2A2A' }]}>
+                        <Text style={styles.trophyIcon}>🏆</Text>
+                        <Text style={[styles.scoreTitle, isDark && { color: '#FFFFFF' }]}>Riddle Challenge Results</Text>
+                        <Text style={styles.scoreNumber}>{score} / {questions.length}</Text>
+                        <Text style={[styles.scoreSubtitle, isDark && { color: '#AAAAAA' }]}>
+                            {score === questions.length
+                                ? "Outstanding! You solved every single riddle!"
+                                : score >= 3
+                                    ? "Great job! Your brain is super sharp!"
+                                    : "Good effort! Keep practicing to master riddles."}
+                        </Text>
+                    </View>
+
+                    <TouchableOpacity style={styles.primaryBtn} onPress={handleGoBack}>
+                        <Text style={styles.primaryBtnText}>
+                            {params?.lessonTitle ? "Continue to Lesson Material" : "Return to Course Module"}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        );
+    }
+
