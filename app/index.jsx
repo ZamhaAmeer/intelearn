@@ -192,6 +192,16 @@ async function registerForPushNotificationsAsync() {
       const token = tokenData.data;
 
       console.log("TOKEN:");
-    console.log(token);
+      console.log(token);
+
+      await fetch('http://172.22.236.72:3000/save-token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        token: token,
+      }),
+    });
 
 export default SplashScreen;
