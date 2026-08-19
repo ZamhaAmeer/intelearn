@@ -105,25 +105,26 @@ export default function ProfileViewScreen() {
       }
     };
 
-
     checkSessionAndFetch();
-      return () => {
-            isMounted = false;
-          };
-        }, [paramEmail, paramFullName, paramUserName, paramPhone, paramBio, paramDepartment, paramGender]);
+    return () => {
+      isMounted = false;
+    };
+  }, [paramEmail, paramFullName, paramUserName, paramPhone, paramBio, paramDepartment, paramGender]);
 
 
-  const fetchUserData = async (userEmail) => {
+  const fetchUserData = async (userEmail, isMounted) => {
     try {
-      setIsLoading(true);
-      const url = `http://172.20.10.3:3000/get-profile?email=${encodeURIComponent(userEmail)}`;
+      if (isMounted) setIsLoading(true);
+      const url = `http://172.22.236.72:3000/get-profile?email=${encodeURIComponent(userEmail)}`;
       const response = await fetch(url, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
-      }); 
-      
+      });
+
+      const data = await response.json();
+      if (!isMounted) return;
+
       if (response.ok) {
-        const data = await response.json();
         setFullName(data.full_name || 'Not Provided');
         setUserName(data.username || 'Not Assigned');
         setEmail(data.email || userEmail);
@@ -132,13 +133,14 @@ export default function ProfileViewScreen() {
         setDepartment(data.department || 'cis');
         setGender(data.gender || 'male');
       } else {
-        const errorData = await response.json();
-        Alert.alert("Profile Sync Fail", errorData.error || "Could not retrieve user entries.");
+        Alert.alert("Profile Sync Fail", data.error || "Could not retrieve user entries.");
       }
     } catch (error) {
-      Alert.alert("Connection Failure", "Could not synchronize with the remote sequence node.");
+      if (isMounted) {
+        Alert.alert("Connection Failure", "Could not synchronize with the remote sequence node.");
+      }
     } finally {
-      setIsLoading(false);
+      if (isMounted) setIsLoading(false);
     }
   };
 
@@ -152,7 +154,7 @@ export default function ProfileViewScreen() {
     return values[genderCode?.toLowerCase()] || genderCode || 'Not Set';
   };
 
-  
+
   const headerHeight = scrollY.interpolate({
     inputRange: [0, HEADER_SCROLL_DISTANCE],
     outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
@@ -171,10 +173,10 @@ export default function ProfileViewScreen() {
     extrapolate: 'clamp',
   });
 
-  
+
   const headerPaddingLeft = scrollY.interpolate({
     inputRange: [0, HEADER_SCROLL_DISTANCE],
-    outputRange: [24, 0], 
+    outputRange: [24, 0],
     extrapolate: 'clamp',
   });
 
