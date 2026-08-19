@@ -391,3 +391,21 @@ const styles = StyleSheet.create({
     color: '#065F46',
     fontWeight: '600',
   },
+  openQuestionBlock: {
+    marginTop: 4,
+    backgroundColor: '#F3F4F6',
+    padding: 12,
+    borderRadius: 8,
+  },
+  correctAnswerLabel: {
+    fontSize: 12,
+    color: '#6B7280',
+    fontWeight: '600',
+  },
+  correctAnswerText: {
+    fontSize: 14,
+    color: '#1F2937',
+    fontWeight: '600',
+    marginTop: 2,
+  }
+});
