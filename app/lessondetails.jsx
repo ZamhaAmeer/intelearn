@@ -204,3 +204,107 @@ export default function LessonDetailScreen() {
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: '#FEFDF0', // Light yellowish-cream background matching coursedetails
+    },
+    headerContainer: {
+        backgroundColor: '#4E33B3', // Deep purple matching coursedetails
+        borderBottomLeftRadius: 35,
+        borderBottomRightRadius: 35,
+        paddingTop: 50, // Adjust for iOS notch/Android status bar if needed
+        paddingBottom: 30,
+        paddingHorizontal: 25,
+    },
+    menuButton: {
+        marginBottom: 20,
+    },
+    courseTitle: {
+        fontSize: 26,
+        fontWeight: 'bold',
+        color: 'white',
+        lineHeight: 34,
+        marginBottom: 10,
+    },
+    starsContainer: {
+        flexDirection: 'row',
+    },
+    starIcon: {
+        marginRight: 4,
+    },
+    navRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 30,
+        marginTop: 20,
+        marginBottom: 20,
+    },
+    navPill: {
+        backgroundColor: '#4E33B3',
+        paddingVertical: 12,
+        paddingHorizontal: 35,
+        borderRadius: 25,
+        elevation: 4, // Android shadow
+        shadowColor: '#000', // iOS shadow
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+    },
+    navPillText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    chapterRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingRight: 20, // Keeps the button from touching the right edge
+        marginBottom: 15,
+    },
+    chapterBadge: {
+        backgroundColor: '#EBEBEB',
+        alignSelf: 'flex-start',
+        paddingVertical: 10,
+        paddingHorizontal: 25,
+        borderTopRightRadius: 25,
+        borderBottomRightRadius: 25,
+        marginBottom: 15,
+    },
+    chapterBadgeText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#1a1a1a',
+    },
+    // --- NEW: PDF BUTTON STYLES ---
+    pdfButton: {
+        flexDirection: 'row',
+        backgroundColor: '#E53935', // A clean "PDF Red" color
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        borderRadius: 20,
+        alignItems: 'center',
+        elevation: 4,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+    },
+    pdfIcon: {
+        marginRight: 6,
+    },
+    pdfButtonText: {
+        color: 'white',
+        fontSize: 14,
+        fontWeight: 'bold',
+        letterSpacing: 0.5,
+    },
+    contentContainer: {
+        flex: 1,
+        backgroundColor: '#EAEAEA', // Light grey block
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        marginHorizontal: 15,
+    },
