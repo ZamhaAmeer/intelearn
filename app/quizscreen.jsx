@@ -147,4 +147,83 @@ export default function QuizScreen() {
         ))
     );
 
-   
+    return (
+        <View style={styles.safeArea}>
+            <StatusBar barStyle="light-content" backgroundColor="#4C35A5" />
+
+            {/* --- HEADER SECTION --- */}
+            <View style={styles.headerContainer}>
+                <TouchableOpacity style={styles.menuButton} onPress={handleGoBack}>
+                    <Icon name="chevron-left" size={36} color="white" />
+                </TouchableOpacity>
+
+                <Text style={styles.courseTitle}>{courseTitle || "Course Quiz"}</Text>
+            </View>
+
+            <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+
+                {/* --- PROGRESS BAR SECTION --- */}
+                <View style={styles.progressHeader}>
+                    <Text style={[styles.progressLabel, isDark && { color: '#B39DDB' }]}>Quiz Progress</Text>
+                    <Text style={[styles.progressStep, isDark && { color: '#AAAAAA' }]}>Question {currentIndex + 1} of {questions.length}</Text>
+                </View>
+                <View style={[styles.progressTrack, isDark && { backgroundColor: '#2A2A2A' }]}>
+                    <LinearGradient
+                        colors={['#4E33B3', '#9B86EE']}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 0 }}
+                        style={[styles.progressFill, { width: `${progressPercentage}%` }]}
+                    />
+                </View>
+
+                {/* --- QUESTION SECTION --- */}
+                <Text style={[styles.questionText, isDark && { color: '#FFFFFF' }]}>
+                    {currentIndex + 1}. {currentQ.question}
+                </Text>
+                <Text style={[styles.subText, isDark && { color: '#AAAAAA' }]}>Select one correct answer from the options below</Text>
+
+                {/* --- OPTIONS SECTION --- */}
+                <View style={styles.optionsContainer}>
+                    {['A', 'B', 'C', 'D'].map((letter) => {
+                        const isSelected = selectedOption === letter;
+                        const isCorrectAnswer = currentQ.answer === letter;
+
+                        let containerStyle = [styles.optionCard, isDark && { backgroundColor: '#1E1E1E', borderColor: '#2A2A2A' }];
+                        let badgeStyle = [styles.optionBadge, isDark && { backgroundColor: '#2A2A2A', borderColor: '#333' }];
+                        let showCheckmark = false;
+
+                        if (isSubmitted) {
+                            if (isCorrectAnswer) {
+                                containerStyle = [styles.optionCard, styles.optionCorrectCard, isDark && { backgroundColor: '#1C3829', borderColor: '#00C853' }];
+                                showCheckmark = true;
+                            } else if (isSelected && !isCorrectAnswer) {
+                                containerStyle = [styles.optionCard, styles.optionWrongCard, isDark && { backgroundColor: '#3E1C2B', borderColor: '#F44336' }];
+                            }
+                        } else if (isSelected) {
+                            containerStyle = [styles.optionCard, styles.optionSelectedCard, isDark && { backgroundColor: '#2A2440', borderColor: '#6B52D1' }];
+                            badgeStyle = [styles.optionBadge, styles.optionBadgeSelected];
+                        }
+
+                        return (
+                            <TouchableOpacity
+                                key={letter}
+                                style={containerStyle}
+                                activeOpacity={0.7}
+                                onPress={() => handleSelectOption(letter)}
+                            >
+                                <View style={badgeStyle}>
+                                    <Text style={[styles.badgeText, isDark && { color: '#FFF' }, isSelected && !isSubmitted && { color: 'white' }]}>
+                                        {letter}
+                                    </Text>
+                                </View>
+                                <Text style={[styles.optionText, isDark && { color: '#FFFFFF' }]}>{currentQ[letter]}</Text>
+
+                                {showCheckmark && (
+                                    <Icon name="check-bold" size={24} color="#00C853" style={styles.checkIcon} />
+                                )}
+                            </TouchableOpacity>
+                        );
+                    })}
+                </View>
+            
+            </ScrollView>
