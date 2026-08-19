@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
 
-  // Remaining Styles (updated for alignment/sizing)
+   // Remaining Styles (updated for alignment/sizing)
   content: {
     flex: 1,
     marginTop: -175, // Negative margin to bring content close to the wave dip
@@ -179,4 +179,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default choosingpage;
+export default ChoosingPage;
