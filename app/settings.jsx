@@ -18,69 +18,87 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
 
+const LANGUAGES = [
+  { code: 'English', label: 'English (US)', flag: '🇺🇸' },
+  { code: 'Tamil', label: 'Tamil (தமிழ்)', flag: '🇱🇰' },
+  { code: 'Sinhala', label: 'Sinhala (සිංහල)', flag: '🇱🇰' }
+];
+
 export default function SettingsScreen() {
   const router = useRouter();
 
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [profileImage, setProfileImage] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
+  // Navigation Menu State
   const [isMenuVisible, setMenuVisible] = useState(false);
   const toggleMenu = () => setMenuVisible(!isMenuVisible);
 
+  // States for toggle switches
   const [autoSummarize, setAutoSummarize] = useState(true);
   const [pushNotifications, setPushNotifications] = useState(true);
-  const [weeklySummary, setWeeklySummary] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useGlobalTheme();
 
+  // Preferred AI Language State
+  const [selectedLanguage, setSelectedLanguage] = useState('English');
+  const [isLangModalVisible, setLangModalVisible] = useState(false);
+
+  // Profile data states
+  const [profileName, setProfileName] = useState('Alex Rivera');
+  const [profileEmail, setProfileEmail] = useState('alex.rivera@edu-mail.com');
 
   useEffect(() => {
-    const checkSessionAndFetch = async () => {
+    let isMounted = true;
+
+    const loadSettingsData = async () => {
       try {
+        // Load saved preferred language
+        const savedLang = await AsyncStorage.getItem('aiLanguage');
+        if (savedLang && isMounted) {
+          setSelectedLanguage(savedLang);
+        }
+
         const storedEmail = await AsyncStorage.getItem('userEmail');
         if (storedEmail) {
-          await fetchUserData(storedEmail);
-        } else {
-          setIsLoading(false);
-          Alert.alert(
-            "Session Missing",
-            "Please sign in again to configure your application parameters.",
-            [{ text: "Login", onPress: () => router.replace('/loginpage_Student') }]
-          );
+          const url = `http://172.22.236.72:3000/get-profile?email=${encodeURIComponent(storedEmail.trim())}`;
+          const response = await fetch(url, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+          });
+          if (response.ok) {
+            const data = await response.json();
+            if (isMounted) {
+              setProfileName(data.full_name || 'Alex Rivera');
+              setProfileEmail(data.email || storedEmail);
+            }
+          }
         }
-      } catch (e) {
-        console.error("Settings profile link setup failed:", e);
-        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching user data in settings:", error);
       }
     };
 
-    checkSessionAndFetch();
+    loadSettingsData();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  const fetchUserData = async (userEmail) => {
+  const handleSelectLanguage = async (lang) => {
+    setSelectedLanguage(lang.code);
     try {
-      setIsLoading(true);
-      const url = `http://172.20.10.3:3000/get-profile?email=${encodeURIComponent(userEmail)}`;
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setFullName(data.full_name || 'INTELEARN User');
-        setEmail(data.email || userEmail);
-      } else {
-        console.error("Database sync drop context mismatch inside parameters configuration.");
-        setFullName('Not Provided');
-        setEmail(userEmail);
-      }
-    } catch (error) {
-      console.error("Network interface connection failure downstream:", error);
-    } finally {
-      setIsLoading(false);
+      await AsyncStorage.setItem('aiLanguage', lang.code);
+    } catch (e) {
+      console.error("Error saving language preference:", e);
     }
+    setLangModalVisible(false);
+  };
+
+  const handleDarkModeToggle = async (val) => {
+    setDarkMode(val);
+  };
+
+  const getLanguageLabel = () => {
+    if (selectedLanguage === 'Tamil') return 'Tamil (தமிழ்)';
+    if (selectedLanguage === 'Sinhala') return 'Sinhala (සිංහල)';
+    return 'English (US)';
   };
 
   const MenuOption = ({ iconName, title, active, onPress }) => (
@@ -89,109 +107,116 @@ export default function SettingsScreen() {
       style={({ pressed }) => [
         styles.menuItem,
         active && styles.activeMenuItem,
-        pressed && styles.pressedMenuItem 
+        pressed && styles.pressedMenuItem
       ]}
     >
-      {({ pressed }) => (
-        <>
-          <Icon name={iconName} size={22} color={active || pressed ? "#4E33B3" : "#7E57C2"} style={styles.menuItemIcon} />
-          <Text style={[styles.menuItemText, (active || pressed) && styles.activeMenuText]}>{title}</Text>
-        </>
-      )}
+      <Icon name={iconName} size={22} color={active ? "#4E33B3" : "#7E57C2"} style={styles.menuItemIcon} />
+      <Text style={[styles.menuItemText, active && styles.activeMenuText]}>{title}</Text>
     </Pressable>
   );
 
-  if (isLoading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#4E33B3" />
-      </View>
-    );
-  }
-
   return (
-    <View style={styles.container}>
-      
-      
+    <View style={[styles.container, darkMode && { backgroundColor: '#121212' }]}>
+
+      {/* Side Menu Modal */}
       <Modal transparent visible={isMenuVisible} animationType="fade" onRequestClose={toggleMenu}>
         <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={toggleMenu}>
-          <View style={styles.sideMenu} onStartShouldSetResponder={() => true}>
+          <View style={[styles.sideMenu, darkMode && { backgroundColor: '#1E1E1E' }]}>
             <View style={styles.menuHeader}>
-              <TouchableOpacity onPress={toggleMenu}><Icon name="menu" size={30} color="#333" /></TouchableOpacity>
+              <TouchableOpacity onPress={toggleMenu}>
+                <Icon name="menu" size={30} color={darkMode ? "white" : "#333"} />
+              </TouchableOpacity>
             </View>
+
             <View style={styles.menuList}>
-              <MenuOption iconName="home-variant" title="Home" onPress={() => {setMenuVisible(false); router.replace('/coursedetails')}} />
-              <MenuOption iconName="account" title="Profile" onPress={() => {setMenuVisible(false); router.replace('/profilescreen_student')}} />
-              <MenuOption iconName="view-dashboard" title="Dashboard" onPress={() => {setMenuVisible(false); router.replace('/dashboard_student')}} />
-              <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/minigamesection')}} />
-              <MenuOption iconName="cog" title="Settings" active onPress={() => {setMenuVisible(false); toggleMenu();}} />
+              <MenuOption iconName="home-variant" title="Home" onPress={() => { setMenuVisible(false); router.replace('/coursedetails'); }} />
+              <MenuOption iconName="account" title="Profile" onPress={() => { setMenuVisible(false); router.replace('/profilescreen_Student'); }} />
+              <MenuOption iconName="view-dashboard" title="Dashboard" onPress={() => { setMenuVisible(false); router.replace('/dashboard_student'); }} />
+              <MenuOption iconName="shield-check" title="Privacy" onPress={() => { setMenuVisible(false); router.replace('/privacy'); }} />
+              <MenuOption iconName="cog" title="Settings" active onPress={() => { setMenuVisible(false); router.replace('/settings'); }} />
             </View>
-            <TouchableOpacity 
-              style={styles.logoutButton} 
-              onPress={async () => {
-                setMenuVisible(false); 
-                await AsyncStorage.removeItem('userEmail');
-                router.replace('/loginpage_Student)');
-              }}
-            >
-              <Text style={styles.logoutText}> Log Out   <Icon name="logout" size={24} color="grey" /></Text>
+            <TouchableOpacity style={[styles.logoutButton, darkMode && { borderTopColor: '#333' }]} onPress={() => { setMenuVisible(false); router.replace('/loginpage(student)'); }}>
+              <Text style={[styles.logoutText, darkMode && { color: '#AAA' }]}> Log Out    <Icon name="logout" size={24} color={darkMode ? "#AAA" : "grey"} /></Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
       </Modal>
-      
-      
+
+      {/* LANGUAGE SELECTION MODAL */}
+      <Modal transparent visible={isLangModalVisible} animationType="slide" onRequestClose={() => setLangModalVisible(false)}>
+        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={() => setLangModalVisible(false)}>
+          <View style={[styles.langModalPanel, darkMode && { backgroundColor: '#1E1E1E' }]} onStartShouldSetResponder={() => true}>
+            <Text style={[styles.langModalTitle, darkMode && { color: '#FFF' }]}>Select Preferred AI Language</Text>
+            <Text style={[styles.langModalSub, darkMode && { color: '#AAA' }]}>Chatbot Dhruv & Maya will converse with you in your selected language.</Text>
+
+            {LANGUAGES.map((lang) => {
+              const isSelected = selectedLanguage === lang.code;
+              return (
+                <TouchableOpacity
+                  key={lang.code}
+                  style={[
+                    styles.langOptionCard,
+                    isSelected && styles.langOptionSelected,
+                    darkMode && { backgroundColor: '#2A2A2A', borderColor: '#3A3A3A' },
+                    isSelected && darkMode && { backgroundColor: '#2A2440', borderColor: '#B39DDB' }
+                  ]}
+                  onPress={() => handleSelectLanguage(lang)}
+                >
+                  <Text style={{ fontSize: 24, marginRight: 12 }}>{lang.flag}</Text>
+                  <Text style={[styles.langOptionText, isSelected && styles.langOptionTextSelected, darkMode && { color: '#EEE' }, isSelected && darkMode && { color: '#B39DDB' }]}>
+                    {lang.label}
+                  </Text>
+                  {isSelected && (
+                    <Ionicons name="checkmark-circle" size={22} color={darkMode ? "#B39DDB" : "#4E33B3"} style={{ marginLeft: 'auto' }} />
+                  )}
+                </TouchableOpacity>
+              );
+            })}
+
+            <TouchableOpacity style={styles.closeLangModalBtn} onPress={() => setLangModalVisible(false)}>
+              <Text style={[styles.closeLangModalText, darkMode && { color: '#AAA' }]}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
+
+      {/* --- HEADER SECTION --- */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.menuButton} onPress={toggleMenu}>
-          <Icon name="menu" size={30} color="white" />
+          <Ionicons name="menu" size={30} color="white" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Settings</Text>
       </View>
 
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        
-        
-        <Text style={styles.sectionHeader}>ACCOUNT</Text>
-        <View style={styles.sectionCard}>
-          <TouchableOpacity 
-            style={styles.profileRow} 
-            onPress={() => router.push('/profilescreen_student')}
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+
+        {/* ACCOUNT SECTION */}
+        <Text style={[styles.sectionHeader, darkMode && { color: '#B39DDB' }]}>ACCOUNT</Text>
+        <View style={[styles.sectionCard, darkMode && { backgroundColor: '#1A1A1A', borderColor: '#2A2A2A' }]}>
+          <TouchableOpacity
+            style={styles.profileRow}
+            onPress={() => router.push('/profilescreen_Student')}
           >
-            <Image 
-              source={profileImage ? { uri: profileImage } : require("../src/assets/images/pr2.jpg")} 
-              style={styles.avatar} 
+            <Image
+              source={require("../src/assets/images/pr2.jpg")}
+              style={styles.avatar}
             />
             <View style={styles.profileInfo}>
-              <Text style={styles.profileName} numberOfLines={1}>{fullName}</Text>
-              <Text style={styles.profileEmail} numberOfLines={1}>{email}</Text>
+              <Text style={[styles.profileName, darkMode && { color: '#FFF' }]}>{profileName}</Text>
+              <Text style={[styles.profileEmail, darkMode && { color: '#AAA' }]}>{profileEmail}</Text>
             </View>
-            <Text style={styles.arrow}>❯</Text>
-          </TouchableOpacity>
-          
-          <View style={styles.separator} />
-          
-          <TouchableOpacity style={styles.itemRow}>
-            <View style={[styles.iconBox, { backgroundColor: '#E8E4FF' }]}>
-              <Text style={{color: '#4E33B3'}}>🏅</Text>
-            </View>
-            <Text style={styles.itemLabel}>Subscription Plan</Text>
-            <View style={styles.premiumBadge}>
-              <Text style={styles.premiumText}>PREMIUM</Text>
-            </View>
-            <Text style={styles.arrow}>❯</Text>
+            <Ionicons name="chevron-forward" size={20} color={darkMode ? "#AAA" : "#888"} />
           </TouchableOpacity>
         </View>
 
-        
-        <Text style={styles.sectionHeader}>AI PREFERENCES</Text>
-        <View style={styles.sectionCard}>
-          <SettingItem icon="🧠" label="AI Tutor Personality" hasArrow />
-          <View style={styles.separator} />
+        {/* AI PREFERENCES SECTION */}
+        <Text style={[styles.sectionHeader, darkMode && { color: '#B39DDB' }]}>AI PREFERENCES</Text>
+        <View style={[styles.sectionCard, darkMode && { backgroundColor: '#1A1A1A', borderColor: '#2A2A2A' }]}>
           <View style={styles.itemRow}>
-            <View style={[styles.iconBox, { backgroundColor: '#E8E4FF' }]}>
-              <Text>📖</Text>
+            <View style={[styles.iconBox, { backgroundColor: darkMode ? '#2A2A2A' : '#E8E4FF' }]}>
+              <Ionicons name="book" size={20} color={darkMode ? '#B39DDB' : '#4E33B3'} />
             </View>
-            <Text style={styles.itemLabel}>Auto-summarization</Text>
+            <Text style={[styles.itemLabel, darkMode && { color: '#FFF' }]}>Auto-summarization</Text>
             <Switch
               value={autoSummarize}
               onValueChange={setAutoSummarize}
@@ -200,43 +225,58 @@ export default function SettingsScreen() {
             />
           </View>
           <View style={styles.separator} />
-          <SettingItem icon="文A" label="Preferred AI Language" valueText="English (US)" hasArrow />
+
+          <SettingItem
+            iconName="language"
+            label="Preferred AI Language"
+            valueText={getLanguageLabel()}
+            hasArrow
+            onPress={() => setLangModalVisible(true)}
+            darkMode={darkMode}
+          />
         </View>
 
-    
-        <Text style={styles.sectionHeader}>NOTIFICATIONS</Text>
-        <View style={styles.sectionCard}>
+        {/* NOTIFICATIONS SECTION */}
+        <Text style={[styles.sectionHeader, darkMode && { color: '#B39DDB' }]}>NOTIFICATIONS</Text>
+        <View style={[styles.sectionCard, darkMode && { backgroundColor: '#1A1A1A', borderColor: '#2A2A2A' }]}>
           <View style={styles.itemRow}>
-             <View style={[styles.iconBox, { backgroundColor: '#E8E4FF' }]}><Text>🔔</Text></View>
-             <Text style={styles.itemLabel}>Push Notifications</Text>
-             <Switch value={pushNotifications} onValueChange={setPushNotifications} trackColor={{ false: '#767577', true: '#4E33B3' }} />
-          </View>
-          <View style={styles.separator} />
-          <View style={styles.itemRow}>
-             <View style={[styles.iconBox, { backgroundColor: '#E8E4FF' }]}><Text>📊</Text></View>
-             <Text style={styles.itemLabel}>Weekly Study Summary</Text>
-             <Switch value={weeklySummary} onValueChange={setWeeklySummary} trackColor={{ false: '#767577', true: '#4E33B3' }} />
+            <View style={[styles.iconBox, { backgroundColor: darkMode ? '#2A2A2A' : '#E8E4FF' }]}>
+              <Ionicons name="notifications" size={20} color={darkMode ? '#B39DDB' : '#4E33B3'} />
+            </View>
+            <Text style={[styles.itemLabel, darkMode && { color: '#FFF' }]}>Push Notifications</Text>
+            <Switch value={pushNotifications} onValueChange={setPushNotifications} trackColor={{ false: '#767577', true: '#4E33B3' }} />
           </View>
         </View>
 
-      
-        <Text style={styles.sectionHeader}>APP SETTINGS</Text>
-        <View style={styles.sectionCard}>
+        {/* APP SETTINGS */}
+        <Text style={[styles.sectionHeader, darkMode && { color: '#B39DDB' }]}>APP SETTINGS</Text>
+        <View style={[styles.sectionCard, darkMode && { backgroundColor: '#1A1A1A', borderColor: '#2A2A2A' }]}>
           <View style={styles.itemRow}>
-             <View style={[styles.iconBox, { backgroundColor: '#E8E4FF' }]}><Text>🌙</Text></View>
-             <Text style={styles.itemLabel}>Dark Mode</Text>
-             <Switch value={darkMode} onValueChange={setDarkMode} trackColor={{ false: '#767577', true: '#4E33B3' }} />
+            <View style={[styles.iconBox, { backgroundColor: darkMode ? '#2A2A2A' : '#E8E4FF' }]}>
+              <Ionicons name="moon" size={20} color={darkMode ? '#B39DDB' : '#4E33B3'} />
+            </View>
+            <Text style={[styles.itemLabel, darkMode && { color: '#FFF' }]}>Dark Mode</Text>
+            <Switch value={darkMode} onValueChange={handleDarkModeToggle} trackColor={{ false: '#767577', true: '#4E33B3' }} />
           </View>
           <View style={styles.separator} />
-          <TouchableOpacity 
+
+          <SettingItem
+            iconName="shield-checkmark"
+            label="Privacy"
+            hasArrow
+            onPress={() => router.push('/privacy')}
+            darkMode={darkMode}
+          />
+
+          <View style={styles.separator} />
+          <TouchableOpacity
             style={styles.itemRow}
-            onPress={async () => {
-              await AsyncStorage.removeItem('userEmail');
-              router.replace('/loginpage_Student)');
-            }}
+            onPress={() => router.replace('/loginpage(student)')}
           >
-             <View style={[styles.iconBox, { backgroundColor: '#FFE8E8' }]}><Text>🚪</Text></View>
-             <Text style={[styles.itemLabel, { color: '#FF4B4B' }]}>Sign Out</Text>
+            <View style={[styles.iconBox, { backgroundColor: '#FFE8E8' }]}>
+              <Ionicons name="log-out" size={20} color="#FF4B4B" />
+            </View>
+            <Text style={[styles.itemLabel, { color: '#FF4B4B' }]}>Sign Out</Text>
           </TouchableOpacity>
         </View>
 
@@ -245,17 +285,18 @@ export default function SettingsScreen() {
   );
 }
 
-
-const SettingItem = ({ icon, label, valueText, hasArrow }) => (
-  <TouchableOpacity style={styles.itemRow}>
-    <View style={[styles.iconBox, { backgroundColor: '#E8E4FF' }]}>
-      <Text>{icon}</Text>
+// Helper component for Setting Rows
+const SettingItem = ({ iconName, label, valueText, hasArrow, onPress, darkMode }) => (
+  <TouchableOpacity style={styles.itemRow} onPress={onPress}>
+    <View style={[styles.iconBox, { backgroundColor: darkMode ? '#2A2A2A' : '#E8E4FF' }]}>
+      <Ionicons name={iconName} size={20} color={darkMode ? '#B39DDB' : '#4E33B3'} />
     </View>
-    <Text style={styles.itemLabel}>{label}</Text>
-    {valueText && <Text style={styles.valueText}>{valueText}</Text>}
-    {hasArrow && <Text style={styles.arrow}>❯</Text>}
+    <Text style={[styles.itemLabel, darkMode && { color: '#FFF' }]}>{label}</Text>
+    {valueText && <Text style={[styles.valueText, darkMode && { color: '#B39DDB' }]}>{valueText}</Text>}
+    {hasArrow && <Ionicons name="chevron-forward" size={18} color={darkMode ? "#AAA" : "#888"} />}
   </TouchableOpacity>
 );
+
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FEFDF0' },
