@@ -239,3 +239,40 @@ if (startIndex !== -1 && endIndex !== -1) {
   // Place it right before the closing body tag so the DOM is ready
   adjustedHtml = adjustedHtml.replace('</body>', fullScript + '</body>');
 }
+
+const ERROR_CATCHER = `
+<script>
+  // Force 1x pixel ratio for massive performance boost on low-end androids
+  Object.defineProperty(window, 'devicePixelRatio', { get: () => 1 });
+  
+  window.onerror = function(msg, url, line, col, err) {
+    window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'error', message: msg + ' at ' + line + ':' + col }));
+  };
+  
+  // Override matchMedia to trick Svelte into thinking the device is fundamentally in Light Mode
+  const originalMatchMedia = window.matchMedia;
+  window.matchMedia = function(query) {
+    if (query === '(prefers-color-scheme: dark)') {
+      return { matches: false, media: query, onchange: null, addListener: function(){}, removeListener: function(){}, addEventListener: function(){}, removeEventListener: function(){}, dispatchEvent: function(){ return false; } };
+    }
+    return originalMatchMedia(query);
+  };
+  
+  // Brutally enforce React Native's desired state using a MutationObserver
+  window.__REACT_NATIVE_DARK_MODE__ = false;
+  document.documentElement.classList.remove('dark');
+  
+  const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if (mutation.attributeName === 'class') {
+        var hasDark = document.documentElement.classList.contains('dark');
+        if (hasDark && !window.__REACT_NATIVE_DARK_MODE__) {
+          document.documentElement.classList.remove('dark');
+        } else if (!hasDark && window.__REACT_NATIVE_DARK_MODE__) {
+          document.documentElement.classList.add('dark');
+        }
+      }
+    });
+  });
+  observer.observe(document.documentElement, { attributes: true });
+  
