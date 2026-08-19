@@ -150,3 +150,18 @@ export default function PacManGame() {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#000000',
+  },
+  container: {
+    flex: 1,
+    overflow: 'hidden',
+    backgroundColor: '#000000',
+  },
+  webview: {
+    flex: 1,
+    backgroundColor: '#000000',
+  },
