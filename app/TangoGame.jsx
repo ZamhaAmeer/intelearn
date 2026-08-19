@@ -309,3 +309,21 @@ const ERROR_CATCHER = `
     osc.start();
     osc.stop(audioCtx.currentTime + duration);
   }
+
+  // Global click listener for interaction sounds
+  document.addEventListener('pointerdown', function(e) {
+    initAudio();
+    
+    // Check if it's a button click
+    if (e.target.closest('button') || e.target.closest('select')) {
+      playPop(800, 0.08);
+      return;
+    }
+    
+    // Check if it's a game tile click
+    if (e.target.closest('.game-tile') || e.target.tagName.toLowerCase() === 'svg' || e.target.tagName.toLowerCase() === 'path') {
+      playPop(400, 0.1);
+    }
+  }, true); // use capture to intercept before svelte stops propagation
+</script>
+`;
