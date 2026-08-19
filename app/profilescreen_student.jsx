@@ -28,14 +28,14 @@ export default function ProfileViewScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
 
-  const { 
-    email: paramEmail, 
-    fullName: paramFullName, 
-    userName: paramUserName, 
-    phone: paramPhone, 
-    bio: paramBio, 
-    department: paramDepartment, 
-    gender: paramGender 
+  const {
+    email: paramEmail,
+    fullName: paramFullName,
+    userName: paramUserName,
+    phone: paramPhone,
+    bio: paramBio,
+    department: paramDepartment,
+    gender: paramGender
   } = params;
 
 
@@ -48,11 +48,12 @@ export default function ProfileViewScreen() {
   const [gender, setGender] = useState('');
   const [profileImage, setProfileImage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDark, setIsDark] = useGlobalTheme();
 
-  
+
   const scrollY = useRef(new Animated.Value(0)).current;
 
-  
+
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: (evt, gestureState) => {
