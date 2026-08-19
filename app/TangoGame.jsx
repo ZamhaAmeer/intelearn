@@ -351,3 +351,20 @@ export default function TangoGame() {
     `;
     webViewRef.current?.injectJavaScript(jsCode);
   }, [isGlobalDark]);
+
+  const toggleDarkMode = () => {
+    const nextMode = !isDarkMode;
+    setIsDarkMode(nextMode);
+
+    // Inject JS to toggle the dark mode class inside the WebView
+    const jsCode = `
+      window.__REACT_NATIVE_DARK_MODE__ = ${nextMode};
+      if (${nextMode}) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      true;
+    `;
+    webViewRef.current?.injectJavaScript(jsCode);
+  };
