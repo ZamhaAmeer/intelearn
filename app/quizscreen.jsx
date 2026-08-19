@@ -227,3 +227,19 @@ export default function QuizScreen() {
                 </View>
             
             </ScrollView>
+
+            {/* --- ACTION BUTTON --- */}
+            <View style={[styles.bottomContainer, isDark && { backgroundColor: '#121212' }]}>
+                <TouchableOpacity style={styles.submitBtn} onPress={handleActionBtn}>
+                    <Text style={styles.submitBtnText}>
+                        {!isSubmitted
+                            ? "Submit Answer"
+                            : currentIndex === questions.length - 1
+                                ? "Finish Quiz"
+                                : "Next Question"}
+                    </Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
+}
