@@ -92,3 +92,30 @@ export default function QuizDetailsScreen() {
                 <Text style={styles.metaValue}>{quiz.total_marks || 'N/A'}</Text>
               </View>
             </View>
+
+            
+            <View style={styles.metaItem}>
+              <MaterialCommunityIcons name="flag-outline" size={20} color="#4E33B3" />
+              <View style={styles.metaTextContainer}>
+                <Text style={styles.metaLabel}>Passing Marks</Text>
+                <Text style={styles.metaValue}>{quiz.passing_marks || 'N/A'}</Text>
+              </View>
+            </View>
+
+            <View style={styles.metaItem}>
+              <MaterialCommunityIcons name="clock-outline" size={20} color="#4E33B3" />
+              <View style={styles.metaTextContainer}>
+                <Text style={styles.metaLabel}>Duration</Text>
+                <Text style={styles.metaValue}>{quiz.duration ? `${quiz.duration} mins` : 'N/A'}</Text>
+              </View>
+            </View>
+
+            <View style={styles.metaItem}>
+              <MaterialCommunityIcons name="calendar-range" size={20} color="#4E33B3" />
+              <View style={styles.metaTextContainer}>
+                <Text style={styles.metaLabel}>Due Date</Text>
+                <Text style={styles.metaValue}>{quiz.due_date || quiz.dueDate || 'N/A'}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
