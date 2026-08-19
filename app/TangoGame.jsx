@@ -427,3 +427,56 @@ export default function TangoGame() {
   );
 }
 
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#FDFBF4'
+  },
+  safeAreaDark: {
+    backgroundColor: '#111827'
+  },
+  container: {
+    flex: 1,
+    overflow: 'hidden'
+  },
+  webview: {
+    flex: 1,
+    backgroundColor: '#FDFBF4'
+  },
+  webviewDark: {
+    backgroundColor: '#111827'
+  },
+  backButton: {
+    position: 'absolute',
+    top: 16,
+    left: 4,
+    width: 44,
+    height: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+  },
+  backButtonDark: {
+    /* No additional styling needed for transparent dark mode back button */
+  },
+  floatingButton: {
+    position: 'absolute',
+    bottom: 24,
+    right: 24,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
+  },
+  floatingButtonDark: {
+    backgroundColor: '#1F2937',
+  }
+});
+
