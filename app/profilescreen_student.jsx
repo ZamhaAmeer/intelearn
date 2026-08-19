@@ -70,35 +70,41 @@ export default function ProfileViewScreen() {
   ).current;
 
   useEffect(() => {
+    let isMounted = true;
     const checkSessionAndFetch = async () => {
       try {
         if (params && params.email && params.fullName) {
-          setFullName(params.fullName);
-          setUserName(params.userName || '');
-          setEmail(params.email);
-          setPhone(params.phone || '');
-          setBio(params.bio || '');
-          setDepartment(params.department || 'cis');
-          setGender(params.gender || 'male');
-          setIsLoading(false);
+          if (isMounted) {
+            setFullName(params.fullName);
+            setUserName(params.userName || '');
+            setEmail(params.email);
+            setPhone(params.phone || '');
+            setBio(params.bio || '');
+            setDepartment(params.department || 'cis');
+            setGender(params.gender || 'male');
+            setIsLoading(false);
+          }
         } else {
           const storedEmail = await AsyncStorage.getItem('userEmail');
           if (storedEmail) {
-            await fetchUserData(storedEmail);
+            await fetchUserData(storedEmail, isMounted);
           } else {
-            setIsLoading(false);
-            Alert.alert(
-              "Session Missing",
-              "Please sign in again to access your profile data info.",
-              [{ text: "Login", onPress: () => router.replace('/loginpage_Student') }]
-            );
+            if (isMounted) {
+              setIsLoading(false);
+              Alert.alert(
+                "Session Missing",
+                "Please sign in again to access your profile data info.",
+                [{ text: "Login", onPress: () => router.replace('/loginpage(student)') }]
+              );
+            }
           }
         }
       } catch (e) {
         console.error("Initialization failed:", e);
-        setIsLoading(false);
+        if (isMounted) setIsLoading(false);
       }
     };
+
 
     checkSessionAndFetch();
       return () => {
