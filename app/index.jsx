@@ -204,4 +204,12 @@ async function registerForPushNotificationsAsync() {
       }),
     });
 
+  } else {
+
+    alert('Use physical device');
+
+  }
+
+}
+
 export default SplashScreen;
