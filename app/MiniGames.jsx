@@ -118,10 +118,11 @@ export default function App() {
     })
   ).current;
 
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.mainContainer} {...panResponder.panHandlers}>
-      <View style={styles.mainContainer}>
+ return (
+    <SafeAreaView style={[styles.safeArea, isDark && { backgroundColor: '#121212' }]}>
+      <BreakTimerOverlay returnRoute={returnRoute} />
+      <View style={[styles.mainContainer, isDark && { backgroundColor: '#121212' }]} {...panResponder.panHandlers}>
+      <View style={[styles.mainContainer, isDark && { backgroundColor: '#121212' }]}>
         
         {/* Fixed Header Section (Includes Background and Brain) */}
         <View style={styles.headerWrapper}>
@@ -138,27 +139,31 @@ export default function App() {
           
           {/* Top Info Section */}
           <View style={styles.infoSection}>
-            <Text style={styles.mainHeading}>Time for a quick reset ?</Text>
-            <Text style={styles.description}>
+            <Text style={[styles.mainHeading, isDark && { color: '#FFFFFF' }]}>Time for a quick reset ?</Text>
+            <Text style={[styles.description, isDark && { color: '#AAAAAA' }]}>
               We noticed you might need a breather. Taking just 5 minutes to recharge can boost your focus by up to 40%
             </Text>
           </View>
 
           {/* Games List Section */}
           <View style={styles.listSection}>
-            <Text style={styles.sectionTitle}>CHOOSE YOUR VIBE</Text>
+            <Text style={[styles.sectionTitle, isDark && { color: '#B39DDB' }]}>CHOOSE YOUR VIBE</Text>
             
             {GAMES.map((game) => (
-              <View key={game.id} style={styles.card}>
+              <View key={game.id} style={[styles.card, isDark && { backgroundColor: '#1E1E1E', borderColor: '#2A2A2A' }]}>
                 <View style={styles.cardLeft}>
                   <game.Icon />
                   <View style={styles.textContainer}>
-                    <Text style={styles.gameTitle}>{game.title}</Text>
-                    <Text style={styles.gameSubtitle}>{game.subtitle}</Text>
+                    <Text style={[styles.gameTitle, isDark && { color: '#FFFFFF' }]}>{game.title}</Text>
+                    <Text style={[styles.gameSubtitle, isDark && { color: '#AAAAAA' }]}>{game.subtitle}</Text>
                   </View>
                 </View>
                 
-                <TouchableOpacity style={styles.playButton} activeOpacity={0.8}>
+                <TouchableOpacity 
+                  style={styles.playButton} 
+                  activeOpacity={0.8}
+                  onPress={() => router.push({ pathname: game.route, params: { returnRoute } })}
+                >
                   <Text style={styles.playButtonText}>Play now</Text>
                 </TouchableOpacity>
               </View>
