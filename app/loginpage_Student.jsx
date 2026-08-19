@@ -394,7 +394,7 @@ const styles = StyleSheet.create({
     color: "#333",
     marginBottom: 8,
   },
-   passwordInputWrapper: {
+  passwordInputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: "#F9F9F9",
