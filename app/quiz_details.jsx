@@ -93,7 +93,6 @@ export default function QuizDetailsScreen() {
               </View>
             </View>
 
-            
             <View style={styles.metaItem}>
               <MaterialCommunityIcons name="flag-outline" size={20} color="#4E33B3" />
               <View style={styles.metaTextContainer}>
@@ -118,4 +117,9 @@ export default function QuizDetailsScreen() {
               </View>
             </View>
           </View>
+        </View>
+
+         {/* Questions Header */}
+        <View style={styles.questionsHeader}>
+          <Text style={styles.questionsTitle}>Questions ({(quiz.questions || []).length})</Text>
         </View>
