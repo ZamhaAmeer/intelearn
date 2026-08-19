@@ -59,3 +59,21 @@ export default function PacManGame() {
                 opacity: 0 !important; 
                 pointer-events: none !important; 
               }
+
+              /* Make loading bar small and quick */
+              .loading-bar-container, #loading-bar-container { height: 5px !important; width: 40% !important; margin: 0 auto !important; }
+              .loading-bar, #loading-bar { transition-duration: 0.05s !important; background-color: yellow !important; }
+            \`;
+            document.head.appendChild(style);
+
+            // Auto-start game and hide menu
+            const attemptStart = setInterval(() => {
+              const startBtn = document.getElementById('game-start');
+              // Only click if it's actually visible
+              if (startBtn && window.getComputedStyle(startBtn).display !== 'none') {
+                startBtn.click();
+                clearInterval(attemptStart);
+                const menu = document.getElementById('main-menu-container');
+                if (menu) menu.style.display = 'none';
+              }
+            }, 50);
