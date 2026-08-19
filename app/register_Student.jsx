@@ -418,21 +418,20 @@ export default function RegisterPage() {
   );
 }
 
-
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFCF0", 
+    backgroundColor: "#FFFCF0", // Cream background
 
   },
   headerBackground: {
     width: "100%",
     height: height * 0.3,
     justifyContent: "center",
-    alignItems: "center", 
-    backgroundColor: "transparent", 
+    alignItems: "center",
+    backgroundColor: "transparent",
   },
-  
+
   backButtonContainer: {
     position: 'absolute',
     top: 40,
@@ -455,8 +454,8 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 30,
     marginTop: 25,
     paddingBottom: 40,
-    position: "relative", 
-    zIndex: 1,            
+    position: "relative", // <-- ADD THIS
+    zIndex: 1,            // <-- KEEP THIS
     elevation: 10,
   },
   formCard: {
@@ -524,8 +523,8 @@ export const styles = StyleSheet.create({
     marginTop: 40,
   },
   registerButtonDisabled: {
-    backgroundColor: "#A0A0A0", 
-    opacity: 0.7, 
+    backgroundColor: "#A0A0A0", // Gray out the button
+    opacity: 0.7, // Make it look slightly faded
   },
   registerButtonText: {
     color: "white",
@@ -559,6 +558,7 @@ export const styles = StyleSheet.create({
     marginBottom: 12,
     letterSpacing: 0.5,
   },
+  // ... existing styles ...
   requirementRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -567,15 +567,15 @@ export const styles = StyleSheet.create({
   requirementText: {
     marginLeft: 8,
     fontSize: 14,
-    color: '#6b7280',
+    color: '#6b7280', // Default gray text
   },
   requirementTextValid: {
-    color: '#10b981', 
-    fontWeight: '500', 
+    color: '#10b981', // Turns green when the condition is met
+    fontWeight: '500',
   },
   scrollView: {
     flex: 1,
-    marginTop: -110, 
+    marginTop: -110, // Pulls the white card up over the bottom edge of the purple curve
   },
   scrollContainer: {
     flexGrow: 1,
@@ -601,5 +601,141 @@ export const styles = StyleSheet.create({
     marginTop: 5,
     fontWeight: '500',
     marginLeft: 4,
+  },
+  protocolTag: {
+    fontSize: 11,
+    color: '#5D3FD3',
+    fontWeight: '800',
+    letterSpacing: 1.5,
+    marginBottom: 8,
+  },
+  mainPolicyTitle: {
+    fontSize: 20,
+    fontWeight: '800',
+    color: '#0D1B60',
+    lineHeight: 26,
+    marginBottom: 12,
+  },
+  introPolicyText: {
+    fontSize: 13,
+    color: '#5C677D',
+    lineHeight: 19,
+    marginBottom: 16,
+  },
+  policySectionContainer: {
+    marginBottom: 16,
+  },
+  policySectionTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#1A237E',
+    marginBottom: 4,
+  },
+  policyText: {
+    fontSize: 13,
+    color: '#555',
+    lineHeight: 19,
+  },
+  footerInfo: {
+    marginTop: 10,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: '#EEE',
+    marginBottom: 15,
+  },
+  versionText: {
+    fontSize: 11,
+    color: '#888',
+    fontStyle: 'italic',
+  },
+  scrollHintBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FEF3C7',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    marginBottom: 10,
+  },
+  scrollHintText: {
+    fontSize: 12,
+    color: '#92400E',
+    fontWeight: '600',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  modalContent: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    width: "100%",
+    maxHeight: "82%",
+    padding: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    elevation: 10,
+  },
+  modalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingBottom: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#EEE",
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  modalScrollView: {
+    marginVertical: 10,
+  },
+  modalFooter: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: "#EEE",
+    gap: 10,
+  },
+  declineButton: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: "#CCC",
+    alignItems: "center",
+  },
+  declineButtonText: {
+    color: "#666",
+    fontSize: 14,
+    fontWeight: "600",
+  },
+  confirmButton: {
+    flex: 1.6,
+    backgroundColor: "#5D3FD3",
+    paddingVertical: 12,
+    borderRadius: 25,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  confirmButtonDisabled: {
+    backgroundColor: "#A0A0A0",
+    opacity: 0.6,
+  },
+  confirmButtonText: {
+    color: "white",
+    fontSize: 13,
+    fontWeight: "bold",
   },
 });
