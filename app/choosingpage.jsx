@@ -63,8 +63,8 @@ const ChoosingPage = () => {
               style={[styles.optionButton, isDark && { backgroundColor: '#2A2A2A' }]}
               onPress={() => router.push("./loginpage(student)")} // Adjust paths as needed
             >
-              <Ionicons name="school" size={35} color="black" style={styles.icon} />
-              <Text style={styles.optionText}>I am a Student</Text>
+              <Ionicons name="school" size={35} color={isDark ? "white" : "black"} style={styles.icon} />
+              <Text style={[styles.optionText, isDark && { color: '#FFF' }]}>I am a Student</Text>
             </TouchableOpacity>
 
             {/* Educator Option */}
