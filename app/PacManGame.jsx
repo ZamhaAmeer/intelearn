@@ -77,3 +77,49 @@ export default function PacManGame() {
                 if (menu) menu.style.display = 'none';
               }
             }, 50);
+
+            // Robust Swipe to Keyboard Converter
+            let touchStartX = 0;
+            let touchStartY = 0;
+            
+            document.addEventListener('touchstart', (e) => {
+              touchStartX = e.touches[0].clientX;
+              touchStartY = e.touches[0].clientY;
+            }, { passive: false });
+            
+            document.addEventListener('touchmove', (e) => {
+              e.preventDefault();
+              if (!touchStartX || !touchStartY) return;
+              
+              let touchEndX = e.touches[0].clientX;
+              let touchEndY = e.touches[0].clientY;
+              let dx = touchEndX - touchStartX;
+              let dy = touchEndY - touchStartY;
+              
+              if (Math.abs(dx) > 25 || Math.abs(dy) > 25) {
+                let key = '';
+                let keyCode = 0;
+                if (Math.abs(dx) > Math.abs(dy)) {
+                  key = dx > 0 ? 'ArrowRight' : 'ArrowLeft';
+                  keyCode = dx > 0 ? 39 : 37;
+                } else {
+                  key = dy > 0 ? 'ArrowDown' : 'ArrowUp';
+                  keyCode = dy > 0 ? 40 : 38;
+                }
+                
+                const eventDown = new KeyboardEvent('keydown', { key: key, code: key, keyCode: keyCode, which: keyCode, bubbles: true });
+                window.dispatchEvent(eventDown);
+                document.dispatchEvent(eventDown);
+                
+                touchStartX = touchEndX;
+                touchStartY = touchEndY;
+              }
+            }, { passive: false });
+            
+            document.addEventListener('touchend', () => {
+              touchStartX = 0;
+              touchStartY = 0;
+            });
+
+            true;
+          `}
