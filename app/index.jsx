@@ -189,4 +189,6 @@ async function registerForPushNotificationsAsync() {
         projectId: 'YOUR_PROJECT_ID',
       });
 
+      const token = tokenData.data;
+
 export default SplashScreen;
