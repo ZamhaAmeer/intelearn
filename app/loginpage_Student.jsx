@@ -111,79 +111,76 @@ export default function LoginPage() {
           style={styles.headerBackground}
           resizeMode="stretch"
         >
-
-
-        {/* 3. Back Button positioned absolutely */}
-        <View style={styles.backButtonContainer}>
-          <TouchableOpacity 
-            onPress={() => router.replace('/choosingpage')} // Goes back to Choosing Page
-            style={styles.backButton}
-          >
-            <Ionicons name="chevron-back" size={30} color="white" />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.logoContainer}>
-          <Image
-            source={require("../src/assets/images/logo.png")}
-            style={styles.logoImage}
-            resizeMode="contain"
-          />
-          <Text style={styles.logoText}>INTELEARN</Text>
-        </View>
-      </ImageBackground>
-
-      <ScrollView 
-        style={styles.scrollView} 
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-      
-
-
-      <View style={styles.content}>
-        {/* Welcome Section */}
-        <View style={styles.welcomeSection}>
-          <Text style={styles.welcomeTitle}>Welcome to INTELEARN</Text>
-          <Text style={styles.welcomeSubtitle}>Learn smart, Grow fast</Text>
-        </View>
-
-        {/* Login Form Card */}
-        <View style={styles.formCard}>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Email Address*</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="example@email.com"
-              placeholderTextColor="#A0A0A0"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              returnKeyType="next"
+          
+{/* 3. Back Button positioned absolutely */}
+          <View style={styles.backButtonContainer}>
+            <TouchableOpacity
+              onPress={() => router.replace('/choosingpage')} // Goes back to Choosing Page
+              style={styles.backButton}
+            >
+              <Ionicons name="chevron-back" size={30} color="white" />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.logoContainer}>
+            <Image
+              source={require("../src/assets/images/logo.png")}
+              style={styles.logoImage}
+              resizeMode="contain"
             />
+            <Text style={styles.logoText}>INTELEARN</Text>
           </View>
+        </ImageBackground>
 
-          {/* Password* */}
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Password*</Text>
-            <View style={styles.passwordInputWrapper}>
-              <TextInput
-                style={styles.flexInput}
-                placeholder="........"
-                placeholderTextColor="#A0A0A0"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={!showPassword} // Toggle visibility here
-              />
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                <Ionicons 
-                  name={showPassword ? "eye-outline" : "eye-off-outline"} 
-                  size={22} 
-                  color="#A0A0A0" 
-                />
-              </TouchableOpacity>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+
+          <View style={styles.content}>
+            {/* Welcome Section */}
+            <View style={styles.welcomeSection}>
+              <Text style={[styles.welcomeTitle, isDark && { color: '#FFFFFF' }]}>Welcome to INTELEARN</Text>
+              <Text style={[styles.welcomeSubtitle, isDark && { color: '#AAAAAA' }]}>Learn smart, Grow fast</Text>
             </View>
-          </View>
+
+            {/* Login Form Card */}
+            <View style={[styles.formCard, isDark && { backgroundColor: '#1E1E1E' }]}>
+              <View style={styles.inputGroup}>
+                <Text style={[styles.label, isDark && { color: '#EEEEEE' }]}>Email Address*</Text>
+                <TextInput
+                  style={[styles.input, isDark && { backgroundColor: '#2A2A2A', borderColor: '#333', color: '#FFF' }]}
+                  placeholder="example@email.com"
+                  placeholderTextColor={isDark ? "#888" : "#A0A0A0"}
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  returnKeyType="next"
+                />
+              </View>
+
+              {/* Password* */}
+              <View style={styles.inputGroup}>
+                <Text style={[styles.label, isDark && { color: '#EEEEEE' }]}>Password*</Text>
+                <View style={[styles.passwordInputWrapper, isDark && { backgroundColor: '#2A2A2A', borderColor: '#333' }]}>
+                  <TextInput
+                    style={[styles.flexInput, isDark && { color: '#FFF' }]}
+                    placeholder="........"
+                    placeholderTextColor={isDark ? "#888" : "#A0A0A0"}
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry={!showPassword} // Toggle visibility here
+                  />
+                  <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                    <Ionicons
+                      name={showPassword ? "eye-outline" : "eye-off-outline"}
+                      size={22}
+                      color={isDark ? "#888" : "#A0A0A0"}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
 
           {/* Remember Me & Forgot Password */}
           <View style={styles.row}>
