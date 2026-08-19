@@ -127,7 +127,7 @@ export default function SubmissionScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#FCFDF8', 
+    backgroundColor: '#FCFDF8', // Light cream background
   },
   topHeader: {
     backgroundColor: '#4B2CBA',
