@@ -76,9 +76,9 @@ const ChoosingPage = () => {
               <Text style={[styles.optionText, isDark && { color: '#FFF' }]}>I am an Educator</Text>
             </TouchableOpacity>
 
-            {/* Guest Option */}
+           {/* Guest Option */}
             <TouchableOpacity 
-              style={styles.optionButton}
+              style={[styles.optionButton, isDark && { backgroundColor: '#2A2A2A' }]}
               onPress={() => router.push("./coursedetailsforguest")}
             >
               <Ionicons name="person-outline" size={35} color="black" style={styles.icon} />
