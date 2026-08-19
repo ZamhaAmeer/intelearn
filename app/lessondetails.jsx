@@ -104,3 +104,103 @@ export default function LessonDetailScreen() {
                         <Icon name="download-outline" size={24} color={isDark ? "#B39DDB" : "#4E33B3"} />
                     </TouchableOpacity>
                 )}
+
+                {/* Description Text */}
+                {description && description !== 'undefined' ? (
+                    <View style={[styles.dynamicDescContainer, isDark && { backgroundColor: '#1E1E1E', borderColor: '#2A2A2A' }]}>
+                        <Text style={[styles.sectionHeading, isDark && { color: '#FFFFFF' }]}>Lesson Notes & Material</Text>
+                        <Text style={[styles.dynamicDescText, isDark && { color: '#DDDDDD' }]}>{description}</Text>
+                    </View>
+                ) : (
+                    /* Default Static Material Fallback if no description passed */
+                    <View>
+                        {/* Section Header */}
+                        <Text style={[styles.sectionTitle, isDark && { color: '#B39DDB' }]}>Introduction to Information Systems</Text>
+
+                        {/* Bullet 1 */}
+                        <View style={styles.bulletRow}>
+                            <Icon name="circle-slice-8" size={16} color={isDark ? "#B39DDB" : "#1a1a1a"} style={styles.bulletIcon} />
+                            <Text style={[styles.mainText, isDark && { color: '#FFFFFF' }]}>Key Concepts Covered in this Module</Text>
+                        </View>
+                        {[
+                            "Definition of Data vs Information vs Knowledge",
+                            "Components of an Information System (Hardware, Software, Data, People, Processes)",
+                            "Role of Information Systems in modern business and digital transformation"
+                        ].map((item, index) => (
+                            <View key={index} style={styles.checkRow}>
+                                <Icon name="check" size={18} color={isDark ? "#81C784" : "#1a1a1a"} style={styles.checkIcon} />
+                                <Text style={[styles.checkText, isDark && { color: '#DDDDDD' }]}>{item}</Text>
+                            </View>
+                        ))}
+
+                        {/* Definition Bullet */}
+                        <View style={[styles.bulletRow, { marginTop: 15 }]}>
+                            <Icon name="circle-slice-8" size={16} color={isDark ? "#B39DDB" : "#1a1a1a"} style={styles.bulletIcon} />
+                            <Text style={[styles.mainText, isDark && { color: '#FFFFFF' }]}>Information Systems (IS)</Text>
+                        </View>
+                        <View style={styles.checkRow}>
+                            <Icon name="check" size={18} color={isDark ? "#81C784" : "#1a1a1a"} style={styles.checkIcon} />
+                            <Text style={[styles.checkText, isDark && { color: '#DDDDDD' }]}>
+                                Definition: An information system is a set of interrelated components that collect, manipulate, and disseminate data and information and provide feedback to meet an objective.
+                            </Text>
+                        </View>
+                    </View>
+                )}
+
+                {/* Extracted Practice Questions */}
+                {parsedQuestions && parsedQuestions.length > 0 && (
+                    <View style={styles.questionsContainer}>
+                        <Text style={styles.questionsTitle}>Practice Questions (AI Extracted)</Text>
+                        {parsedQuestions.map((q, idx) => (
+                            <View key={idx} style={styles.questionCard}>
+                                <Text style={styles.questionCardTitle}>
+                                    {idx + 1}. {q.question || q.question_text}
+                                </Text>
+                                <View style={styles.optionsList}>
+                                    {['A', 'B', 'C', 'D'].map((opt) => {
+                                        const optionText = q[opt] || q[`option_${opt.toLowerCase()}`];
+                                        const isCorrect = q.answer === opt || q.correct_answer === opt;
+                                        if (!optionText) return null;
+                                        return (
+                                            <View key={opt} style={[styles.optionItem, isCorrect && styles.optionItemCorrect]}>
+                                                <View style={[styles.optionBadge, isCorrect && styles.optionBadgeCorrect]}>
+                                                    <Text style={[styles.optionBadgeText, isCorrect && { color: 'white' }]}>{opt}</Text>
+                                                </View>
+                                                <Text style={[styles.optionText, isCorrect && styles.optionTextCorrect]}>{optionText}</Text>
+                                                {isCorrect && (
+                                                    <Icon name="check-circle" size={18} color="#10B981" style={styles.correctIcon} />
+                                                )}
+                                            </View>
+                                        );
+                                    })}
+                                </View>
+                            </View>
+                        ))}
+                    </View>
+                )}
+            </ScrollView>
+
+            {/* --- ATTEMPT QUIZ BUTTON --- */}
+            <View style={styles.bottomContainer}>
+                <TouchableOpacity
+                    style={styles.quizButton}
+                    onPress={() => {
+                        router.push({
+                            pathname: '/quizscreen',
+                            params: {
+                                courseTitle: courseTitle,
+                                mcqs: mcqs,
+                                lessonTitle: lessonTitle, // <--- Add this
+                                description: description, // <--- Add this
+                                url: url,
+                                parentRoute: parentRoute // <--- Add this
+                            }
+                        });
+                    }}
+                >
+                    <Text style={styles.quizButtonText}>Attempt Quiz</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
+}
