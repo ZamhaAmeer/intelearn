@@ -276,3 +276,36 @@ const ERROR_CATCHER = `
   });
   observer.observe(document.documentElement, { attributes: true });
   
+  // Svelte dynamically renders the button, and Tailwind might hash the classes.
+  // We use an interval to hunt for the button and manually assign it a secure ID for our CSS.
+  setInterval(function() {
+    var btns = document.querySelectorAll('button');
+    for (var i = 0; i < btns.length; i++) {
+      if (btns[i].textContent.toLowerCase().indexOf('new') !== -1) {
+        btns[i].id = 'custom-new-game-btn';
+      }
+    }
+  }, 500);
+
+  // --- AUDIO SYNTHESIS ---
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  let audioCtx;
+  function initAudio() {
+    if (!audioCtx) audioCtx = new AudioContext();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+  }
+  
+  function playPop(freq = 600, duration = 0.1) {
+    if (!audioCtx) return;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(freq / 2, audioCtx.currentTime + duration);
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+  }
