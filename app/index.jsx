@@ -191,4 +191,7 @@ async function registerForPushNotificationsAsync() {
 
       const token = tokenData.data;
 
+      console.log("TOKEN:");
+    console.log(token);
+
 export default SplashScreen;
