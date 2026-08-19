@@ -53,31 +53,33 @@ const TangoIcon = () => (
 const GAMES = [
   {
     id: '1',
-    title: 'Zip Game',
-    subtitle: 'Perfect for stress relief',
-    Icon: ZipGameIcon,
+    title: 'Bubble Shooter',
+    subtitle: 'Pop bubbles and clear the board',
+    Icon: BubbleShooterIcon,
+    route: '/BubbleShooterGame',
   },
   {
     id: '2',
-    title: 'Tango',
-    subtitle: 'Blast away boredom',
-    Icon: TangoIcon,
+    title: 'Flappy Bird',
+    subtitle: 'Fly through obstacles & test timing',
+    Icon: FlappyBirdIcon,
+    route: '/FlappyBirdGame',
   },
   {
     id: '3',
-    title: 'Crossclimb',
-    subtitle: 'Sharpen your mind',
-    Icon: CrossclimbIcon,
+    title: 'Pac-Man',
+    subtitle: 'Classic arcade maze action',
+    Icon: PacManIcon,
+    route: '/PacManGame',
   },
   {
     id: '4',
-    title: 'Pinpoint',
-    subtitle: 'Instant calm',
-    Icon: PinpointIcon,
+    title: 'Tango',
+    subtitle: 'Grid puzzle logic challenge',
+    Icon: TangoIcon,
+    route: '/TangoGame',
   },
 ];
-
-
 
 export default function App() {
 
