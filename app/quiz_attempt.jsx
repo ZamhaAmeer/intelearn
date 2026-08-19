@@ -216,3 +216,21 @@ export default function QuizAttemptScreen() {
       ]
     );
   };
+
+    const [isDark] = useGlobalTheme();
+
+  if (loading) {
+    return (
+      <View style={[styles.center, isDark && { backgroundColor: '#121212' }]}>
+        <ActivityIndicator size="large" color="#4E33B3" />
+      </View>
+    );
+  }
+
+  if (!quiz) {
+    return (
+      <View style={[styles.center, isDark && { backgroundColor: '#121212' }]}>
+        <Text style={[styles.errorText, isDark && { color: '#AAAAAA' }]}>Quiz not found.</Text>
+      </View>
+    );
+  }
