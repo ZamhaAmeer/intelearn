@@ -79,3 +79,97 @@ export default function QuizAttemptScreen() {
       [questionId]: optionKey
     }));
   };
+
+    const computeScore = () => {
+    let score = 0;
+    if (!quiz || !quiz.questions) return 0;
+
+    quiz.questions.forEach(q => {
+      const selected = selectedAnswers[q.id];
+      const correct = q.correct_answer;
+      if (selected && correct && selected.trim().toUpperCase() === correct.trim().toUpperCase()) {
+        score++;
+      }
+    });
+
+    const percent = Math.round((score / quiz.questions.length) * 100);
+    return percent;
+  };
+
+  const handleSubmit = async () => {
+    // Validate that all questions are answered
+    if (quiz.questions && Object.keys(selectedAnswers).length < quiz.questions.length) {
+      Alert.alert("Incomplete Attempt", "Please answer all questions before submitting.");
+      return;
+    }
+
+    setSubmitting(true);
+    const scoreVal = computeScore();
+
+    try {
+      const token = await AsyncStorage.getItem('token');
+      const response = await fetch('http://172.22.236.72:3000/api/student/submit', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          quizId: id,
+          answers: selectedAnswers,
+          score: scoreVal
+        })
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        Alert.alert("Quiz Completed", `You scored ${scoreVal}%! Submission saved.`);
+        setAttemptStarted(false);
+        fetchQuizAndSubmission();
+      } else {
+        throw new Error(result.error || "Submission failed");
+      }
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleEditUpdate = async () => {
+    if (quiz.questions && Object.keys(selectedAnswers).length < quiz.questions.length) {
+      Alert.alert("Incomplete Attempt", "Please answer all questions before updating.");
+      return;
+    }
+
+    setSubmitting(true);
+    const scoreVal = computeScore();
+
+    try {
+      const token = await AsyncStorage.getItem('token');
+      const response = await fetch(`http://172.22.236.72:3000/api/student/submit/${submission.id}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          answers: selectedAnswers,
+          score: scoreVal
+        })
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        Alert.alert("Quiz Updated", `Attempt updated! New score is ${scoreVal}%.`);
+        setIsEditing(false);
+        fetchQuizAndSubmission();
+      } else {
+        throw new Error(result.error || "Update failed");
+      }
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
