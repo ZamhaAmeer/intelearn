@@ -284,3 +284,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
+    metaTextContainer: {
+    marginLeft: 10,
+  },
+  metaLabel: {
+    fontSize: 11,
+    color: '#9CA3AF',
+    textTransform: 'uppercase',
+    fontWeight: '600',
+  },
+  metaValue: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#374151',
+    marginTop: 2,
+  },
