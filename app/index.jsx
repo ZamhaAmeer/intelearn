@@ -184,4 +184,9 @@ async function registerForPushNotificationsAsync() {
       return;
     }
 
+    const tokenData =
+      await Notifications.getExpoPushTokenAsync({
+        projectId: 'YOUR_PROJECT_ID',
+      });
+
 export default SplashScreen;
