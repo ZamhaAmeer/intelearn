@@ -18,10 +18,12 @@ import {
 } from "react-native";
 
 import ForgotPasswordModal from "./forgotpassword";
+import { useGlobalTheme } from './themeStore';
 
 const { height } = Dimensions.get("window");
 
 export default function LoginPage() {
+  const [isDark] = useGlobalTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -40,7 +42,7 @@ export default function LoginPage() {
     const studentEmailRegex = /^\d{2}[a-zA-Z]{3}\d{4}@ms\.sab\.ac\.lk$/i;
     if (!studentEmailRegex.test(email.trim())) {
       Alert.alert(
-        "Invalid Email", 
+        "Invalid Email",
         "Students must log in with their official university email (e.g., 22fis0574@ms.sab.ac.lk)."
       );
       return; // Stops the login process
@@ -49,10 +51,8 @@ export default function LoginPage() {
     console.log("Attempting login for:", email);
 
     try {
-      // NOTE: Replace 'YOUR_BACKEND_IP' with your computer's local IP address 
-      // (e.g., 192.168.1.100) if testing on a physical device, or 10.0.2.2 for Android Emulator. 
-      // Do not use 'localhost' in React Native.
-      const response = await fetch("http://172.20.10.3:3000/login", {
+
+      const response = await fetch("http://172.22.236.72:3000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,52 +63,55 @@ export default function LoginPage() {
       const rawText = await response.text();
 
       // Debugging logs to see exactly what the server said
-    console.log("Server Status Code:", response.status);
-    console.log("RAW SERVER RESPONSE:", rawText);
+      console.log("Server Status Code:", response.status);
+      console.log("RAW SERVER RESPONSE:", rawText);
 
-    // 3. Now safely try to convert it to JSON
+      // 3. Now safely try to convert it to JSON
       let data;
       try {
         data = JSON.parse(rawText);
       } catch (parseError) {
         console.error("Failed to parse JSON. The server sent HTML instead.");
         Alert.alert("Server Error", "Check your Expo terminal to see the raw HTML response.");
-        return; 
+        return;
       }
 
       // 3. The Logic Check
-    if (response.status === 200) {
-      // ONLY navigate if the server explicitly gave a 200 OK status
-      console.log("Success! Navigating to course details...");
-      await AsyncStorage.setItem('userEmail', email.trim().toLowerCase());
-      await AsyncStorage.setItem('token', data.token);
-      await AsyncStorage.setItem('fullName', data.full_name || 'Student');
-      router.push("./coursedetails");
-    } else {
-      // If status is 401 (Unauthorized) or 400 (Bad Request), show the error and DO NOT navigate
-      console.log("Login rejected by server.");
-      Alert.alert("Login Failed", data.error || "Incorrect email or password");
-    }
+      if (response.status === 200) {
 
-  } catch (error) {
-    console.error("Network or Fetch Error:", error);
-    Alert.alert("Network Error", "Could not connect to the backend server. Is it running?");
-  }
-};
+        await AsyncStorage.setItem('userEmail', email);
+        await AsyncStorage.setItem('token', data.token);
+
+        console.log("Saved Email:", email);
+
+        router.push("./coursedetails");
+      }
+      else {
+        // If status is 401 (Unauthorized) or 400 (Bad Request), show the error and DO NOT navigate
+        console.log("Login rejected by server.");
+        Alert.alert("Login Failed", data.error || "Incorrect email or password");
+      }
+
+    } catch (error) {
+      console.error("Network or Fetch Error:", error);
+      Alert.alert("Network Error", "Could not connect to the backend server. Is it running?");
+    }
+  };
 
 
   return (
-    <KeyboardAvoidingView 
-    style={{ flex: 1, backgroundColor: "transparent" }} 
-    behavior={Platform.OS === "ios" ? "padding" : "height"}
+    <KeyboardAvoidingView
+      style={{ flex: 1, backgroundColor: "transparent" }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-    <View style={styles.container}>
-      {/* Purple Header Section using your curve image */}
-      <ImageBackground
-        source={require("../src/assets/images/header-curve.png")}
-        style={styles.headerBackground}
-        resizeMode="stretch"
-      >
+      <View style={[styles.container, isDark && { backgroundColor: '#121212' }]}>
+        {/* Purple Header Section using your curve image */}
+        <ImageBackground
+          source={require("../src/assets/images/header-curve.png")}
+          style={styles.headerBackground}
+          resizeMode="stretch"
+        >
+
 
         {/* 3. Back Button positioned absolutely */}
         <View style={styles.backButtonContainer}>
