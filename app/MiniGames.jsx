@@ -15,16 +15,28 @@ import {
 
 const { width } = Dimensions.get('window');
 
-// --- Placeholder Icon Components ---
+// --- Icon Components ---
 const BrainIcon = () => (
   <View style={styles.brainIconContainer}>
     <Text style={styles.brainEmoji}>🧠</Text>
   </View>
 );
 
-const ZipGameIcon = () => (
-  <View style={[styles.gameIconBlock, { backgroundColor: '#111' }]}>
-    <View style={styles.zipShape} />
+const BubbleShooterIcon = () => (
+  <View style={[styles.gameIconBlock, { backgroundColor: '#7E57C2', justifyContent: 'center', alignItems: 'center' }]}>
+    <Text style={{ fontSize: 24 }}>🫧</Text>
+  </View>
+);
+
+const FlappyBirdIcon = () => (
+  <View style={[styles.gameIconBlock, { backgroundColor: '#71C5CF', justifyContent: 'center', alignItems: 'center' }]}>
+    <Text style={{ fontSize: 24 }}>🐤</Text>
+  </View>
+);
+
+const PacManIcon = () => (
+  <View style={[styles.gameIconBlock, { backgroundColor: '#1A1A2E', justifyContent: 'center', alignItems: 'center' }]}>
+    <Text style={{ fontSize: 24 }}>🟡</Text>
   </View>
 );
 
@@ -34,20 +46,6 @@ const TangoIcon = () => (
     <View style={[styles.tangoSquare, { backgroundColor: '#FFF', borderTopRightRadius: 8 }]} />
     <View style={[styles.tangoSquare, { backgroundColor: '#FFF', borderBottomLeftRadius: 8 }]} />
     <View style={[styles.tangoSquare, { backgroundColor: '#F6A830', borderBottomRightRadius: 8 }]} />
-  </View>
-);
-
-const CrossclimbIcon = () => (
-  <View style={[styles.gameIconBlock, { backgroundColor: '#E3F2F1', justifyContent: 'space-evenly', paddingVertical: 8 }]}>
-    <View style={{ width: '80%', height: 6, backgroundColor: '#64C4D1', alignSelf: 'center' }} />
-    <View style={{ width: '100%', height: 6, backgroundColor: '#F4BCA9' }} />
-    <View style={{ width: '80%', height: 6, backgroundColor: '#64C4D1', alignSelf: 'center' }} />
-  </View>
-);
-
-const PinpointIcon = () => (
-  <View style={[styles.gameIconBlock, { backgroundColor: '#5D9CEC' }]}>
-    <View style={{ width: '100%', height: '50%', backgroundColor: '#4A89DC', position: 'absolute', bottom: 0, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }} />
   </View>
 );
 
