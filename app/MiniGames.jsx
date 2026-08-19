@@ -1,5 +1,7 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import React, { useRef } from 'react';
+import BreakTimerOverlay from '../src/components/BreakTimerOverlay';
+import { useGlobalTheme } from './themeStore';
 import {
   Dimensions,
   PanResponder,
