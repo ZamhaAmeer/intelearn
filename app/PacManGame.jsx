@@ -42,3 +42,20 @@ export default function PacManGame() {
               window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'log', message: args.join(' ') }));
               originalLog.apply(console, args);
             };
+
+            // Hide ads and side nav
+            const style = document.createElement('style');
+            style.innerHTML = \`
+              nav, #leftad, #rightad, header { display: none !important; }
+              #full-page-container { width: 100vw !important; height: 100vh !important; }
+              #game-container { transform: scale(1.2); transform-origin: top center; }
+              #sound-button, .sound-button { margin-right: 20px !important; transform: translateX(-15px) !important; }
+              #movement-buttons, .movement-buttons { display: none !important; }
+              
+              /* Aggressive Ad Blocking */
+              iframe, ins, ins.adsbygoogle, [id*="google_ads"], [id*="ad-"], [class*="ad-"], #leftad, #rightad { 
+                display: none !important; 
+                visibility: hidden !important; 
+                opacity: 0 !important; 
+                pointer-events: none !important; 
+              }
