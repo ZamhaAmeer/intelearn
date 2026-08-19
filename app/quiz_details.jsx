@@ -327,3 +327,38 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 1,
   },
+  questionHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  questionNumber: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#4E33B3',
+  },
+  questionText: {
+    fontSize: 15,
+    color: '#1F2937',
+    lineHeight: 22,
+    fontWeight: '600',
+    marginBottom: 14,
+  },
+  optionsList: {
+    marginTop: 4,
+  },
+  optionItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    backgroundColor: '#F9FAFB',
+    marginBottom: 8,
+  },
+  optionItemCorrect: {
+    backgroundColor: '#ECFDF5',
+    borderColor: '#A7F3D0',
+  },
