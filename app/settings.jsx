@@ -297,17 +297,17 @@ const SettingItem = ({ iconName, label, valueText, hasArrow, onPress, darkMode }
   </TouchableOpacity>
 );
 
-
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FEFDF0' },
-  loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FEFDF0' },
+  // --- SIDE MENU STYLES ---
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.3)',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  sideMenu: { width: width * 0.7, height: '100%', backgroundColor: 'white', padding: 20, borderTopRightRadius: 20, borderBottomRightRadius: 20, elevation: 10 },
-  menuHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 40, marginTop: 20 },
+  sideMenu: { width: width * 0.6, height: '100%', backgroundColor: 'white', padding: 20, borderTopRightRadius: 20, borderBottomRightRadius: 20, elevation: 10, alignSelf: 'flex-start' },
+  menuHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 40, marginTop: 20, alignItems: 'center' },
   menuList: { flex: 1 },
   menuItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14, paddingHorizontal: 15, borderRadius: 12, marginBottom: 8 },
   activeMenuItem: { backgroundColor: '#E8E4FF' },
@@ -316,8 +316,9 @@ const styles = StyleSheet.create({
   menuItemText: { fontSize: 16, color: '#333', fontWeight: '500' },
   activeMenuText: { color: '#4E33B3', fontWeight: 'bold' },
   logoutButton: { borderTopWidth: 1, borderTopColor: '#eee', paddingVertical: 20, alignItems: 'center' },
-  logoutText: { fontSize: 18, color: 'grey' },
+  logoutText: { fontSize: 18, fontWeight: '400', color: 'grey' },
 
+  // --- SETTINGS STYLES ---
   header: {
     backgroundColor: '#4E33B3',
     height: 140,
@@ -327,32 +328,79 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: -30,
   },
-  menuButton: { position: 'absolute', left: 20, top: 40, marginTop: 40 },
+  menuButton: { position: 'absolute', left: 20, top: 40, marginTop: 40, },
   headerTitle: { color: 'white', fontSize: 24, fontWeight: 'bold', marginTop: 50 },
   scrollContent: { padding: 20 },
-  sectionHeader: { fontSize: 14, fontWeight: 'bold', color: '#888', marginBottom: 10, marginTop: 20 },
-  sectionCard: {
+  sectionHeader: { fontSize: 12, fontWeight: 'bold', color: '#888', marginTop: 15, marginBottom: 8, marginLeft: 5 },
+  sectionCard: { backgroundColor: 'white', borderRadius: 16, paddingHorizontal: 16, paddingVertical: 4, elevation: 2, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 3 },
+  profileRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 12 },
+  avatar: { width: 44, height: 44, borderRadius: 22, marginRight: 12 },
+  profileInfo: { flex: 1 },
+  profileName: { fontSize: 16, fontWeight: 'bold', color: '#333' },
+  profileEmail: { fontSize: 12, color: '#888', marginTop: 2 },
+  itemRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14 },
+  iconBox: { width: 36, height: 36, borderRadius: 10, justifyContent: 'center', alignItems: 'center', marginRight: 12 },
+  itemLabel: { flex: 1, fontSize: 15, color: '#333', fontWeight: '500' },
+  valueText: { fontSize: 13, color: '#888', marginRight: 6 },
+  separator: { height: 1, backgroundColor: '#F0F0F0' },
+
+  // --- LANGUAGE MODAL STYLES ---
+  langModalPanel: {
+    width: '85%',
     backgroundColor: 'white',
-    borderRadius: 20,
-    paddingHorizontal: 15,
-    borderWidth: 1,
-    borderColor: '#eee',
-    elevation: 2,
+    borderRadius: 24,
+    padding: 24,
+    elevation: 10,
     shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
   },
-  profileRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 20 },
-  avatar: { width: 60, height: 60, borderRadius: 30 },
-  profileInfo: { flex: 1, marginLeft: 15 },
-  profileName: { fontSize: 18, fontWeight: 'bold', color: '#1A1A1A' },
-  profileEmail: { fontSize: 13, color: '#888', marginTop: 2 },
-  itemRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 15 },
-  iconBox: { width: 40, height: 40, borderRadius: 10, justifyContent: 'center', alignItems: 'center' },
-  itemLabel: { flex: 1, fontSize: 16, marginLeft: 15, color: '#333' },
-  arrow: { fontSize: 18, color: '#333', marginLeft: 10 },
-  separator: { height: 1, backgroundColor: '#eee', width: '100%' },
-  premiumBadge: { backgroundColor: '#C3B9EA', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10 },
-  premiumText: { color: '#4E33B3', fontSize: 12, fontWeight: 'bold' },
-  valueText: { color: '#888', fontSize: 14 },
+  langModalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 6,
+  },
+  langModalSub: {
+    fontSize: 13,
+    color: '#666',
+    marginBottom: 20,
+    lineHeight: 18,
+  },
+  langOptionCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F9F8FF',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#E8E4FF',
+  },
+  langOptionSelected: {
+    backgroundColor: '#EEF0FF',
+    borderColor: '#4E33B3',
+    borderWidth: 2,
+  },
+  langOptionText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#444',
+  },
+  langOptionTextSelected: {
+    color: '#4E33B3',
+    fontWeight: 'bold',
+  },
+  closeLangModalBtn: {
+    marginTop: 10,
+    alignSelf: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  closeLangModalText: {
+    color: '#888',
+    fontSize: 14,
+    fontWeight: '600',
+  }
 });
