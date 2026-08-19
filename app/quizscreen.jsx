@@ -243,3 +243,158 @@ export default function QuizScreen() {
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: '#FCFAEE',
+    },
+    headerContainer: {
+        backgroundColor: '#4C35A5',
+        borderBottomLeftRadius: 35,
+        borderBottomRightRadius: 35,
+        paddingTop: 50,
+        paddingBottom: 30,
+        paddingHorizontal: 25,
+    },
+    menuButton: {
+        marginBottom: 20,
+    },
+    courseTitle: {
+        fontSize: 26,
+        fontWeight: 'bold',
+        color: 'white',
+        lineHeight: 34,
+        marginBottom: 10,
+    },
+    starsContainer: {
+        flexDirection: 'row',
+    },
+    scrollContent: {
+        padding: 25,
+        paddingBottom: 100, // Space for the bottom button
+    },
+    progressHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 8,
+        marginTop: 10,
+    },
+    progressLabel: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: '#4E33B3',
+    },
+    progressStep: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: '#607D8B',
+    },
+    progressTrack: {
+        height: 10,
+        backgroundColor: '#E0E0E0',
+        borderRadius: 5,
+        marginBottom: 40,
+        overflow: 'hidden',
+    },
+    progressFill: {
+        height: '100%',
+        backgroundColor: '#C86B62', // Muted red/orange from image
+        borderRadius: 5,
+    },
+    questionText: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        color: '#111',
+        textAlign: 'center',
+        marginBottom: 10,
+    },
+    subText: {
+        fontSize: 15,
+        color: '#757575',
+        textAlign: 'center',
+        marginBottom: 30,
+    },
+    optionsContainer: {
+        gap: 15, // Space between cards
+    },
+    optionCard: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        borderWidth: 1,
+        borderColor: '#D1C4E9',
+        borderRadius: 12,
+        padding: 12,
+        paddingRight: 20,
+    },
+    optionSelectedCard: {
+        borderColor: '#4E33B3',
+        borderWidth: 2,
+        backgroundColor: '#F3E5F5',
+    },
+    optionCorrectCard: {
+        borderColor: '#00C853',
+        borderWidth: 2,
+        backgroundColor: '#E8F8EE',
+    },
+    optionWrongCard: {
+        borderColor: '#F44336',
+        borderWidth: 2,
+        backgroundColor: '#FFEBEE',
+    },
+    optionBadge: {
+        width: 35,
+        height: 35,
+        backgroundColor: '#F5F5F5',
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: '#E0E0E0',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 15,
+    },
+    optionBadgeSelected: {
+        backgroundColor: '#4E33B3',
+        borderColor: '#4E33B3',
+    },
+    badgeText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#333',
+    },
+    optionText: {
+        flex: 1,
+        fontSize: 15,
+        color: '#111',
+        fontWeight: '500',
+        lineHeight: 22,
+    },
+    checkIcon: {
+        marginLeft: 10,
+    },
+    bottomContainer: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        padding: 20,
+        backgroundColor: '#FCFAEE',
+    },
+    submitBtn: {
+        backgroundColor: '#4E33B3',
+        paddingVertical: 18,
+        borderRadius: 30,
+        alignItems: 'center',
+        elevation: 4,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+    },
+    submitBtnText: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight: 'bold',
+    }
+});
