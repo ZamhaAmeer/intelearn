@@ -179,5 +179,9 @@ async function registerForPushNotificationsAsync() {
       finalStatus = status;
     }
 
+    if (finalStatus !== 'granted') {
+      alert('Permission not granted!');
+      return;
+    }
 
 export default SplashScreen;
