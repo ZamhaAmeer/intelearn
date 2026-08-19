@@ -111,7 +111,7 @@ export default function LoginPage() {
           style={styles.headerBackground}
           resizeMode="stretch"
         >
-          
+
 {/* 3. Back Button positioned absolutely */}
           <View style={styles.backButtonContainer}>
             <TouchableOpacity
@@ -183,22 +183,22 @@ export default function LoginPage() {
               </View>
 
           {/* Remember Me & Forgot Password */}
-          <View style={styles.row}>
-            <TouchableOpacity 
-              style={styles.checkboxRow} 
-              onPress={() => setRememberMe(!rememberMe)}
-            >
-              <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
-                {rememberMe && <Text style={styles.checkmark}>✓</Text>}
-              </View>
-              <Text style={styles.checkboxLabel}>Remember Me</Text>
-            </TouchableOpacity>
+              <View style={styles.row}>
+                <TouchableOpacity
+                  style={styles.checkboxRow}
+                  onPress={() => setRememberMe(!rememberMe)}
+                >
+                  <View style={[styles.checkbox, isDark && { borderColor: '#888' }, rememberMe && styles.checkboxChecked]}>
+                    {rememberMe && <Text style={styles.checkmark}>✓</Text>}
+                  </View>
+                  <Text style={[styles.checkboxLabel, isDark && { color: '#AAAAAA' }]}>Remember Me</Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => setModalVisible(true)}>
-        <Text style={styles.forgotText}>Forgot Password?</Text>
-      </TouchableOpacity>
-          </View>
-        </View>
+                <TouchableOpacity onPress={() => setModalVisible(true)}>
+                  <Text style={[styles.forgotText, isDark && { color: '#B39DDB' }]}>Forgot Password?</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
 
         {/* Login Button */}
         <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
