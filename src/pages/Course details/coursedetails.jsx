@@ -523,7 +523,7 @@ export default function CourseDetailsScreen() {
                       item={course} 
                       onView={(item) => {
                         switch (item.code) {
-                          case 'IS1101': router.push('/FIS'); break;
+                          case 'IS1101': router.push({ pathname: '/FIS', params: { code: 'IS1101', id: item.id } }); break;
                           case 'IS1102': router.push('/structured-t'); break;
                           case 'IS1103': router.push('/structured-p'); break;
                           case 'IS1104': router.push('/theories-is'); break;
@@ -696,7 +696,6 @@ export default function CourseDetailsScreen() {
               <MenuOption iconName="home-variant" title="Home" active onPress={() => {setMenuVisible(false); router.replace('/coursedetails')}} />
               <MenuOption iconName="account" title="Profile" onPress={() => {setMenuVisible(false); router.replace('/profilescreen')}} />
               <MenuOption iconName="view-dashboard" title="Dashboard" />
-              <MenuOption iconName="controller-classic" title="Games" onPress={() => {setMenuVisible(false); router.replace('/minigamesection')}} />
               <MenuOption iconName="shield-check" title="Privacy" onPress={() => {setMenuVisible(false); router.replace('/privacy')}} />
               <MenuOption iconName="cog" title="Settings" onPress={() => {setMenuVisible(false); router.replace('/settings')}} />
             </View>
