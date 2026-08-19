@@ -54,3 +54,53 @@ export default function LessonDetailScreen() {
             Alert.alert("Notice", "No PDF attachment available for this lesson.");
         }
     };
+
+        return (
+        <View style={[styles.safeArea, isDark && { backgroundColor: '#121212' }]}>
+            <StatusBar barStyle="light-content" backgroundColor="#4E33B3" />
+
+            {/* --- PURPLE HEADER CARD --- */}
+            <View style={styles.headerContainer}>
+                {/* Hamburger / Back icon */}
+                <TouchableOpacity style={styles.menuButton} onPress={() => router.back()}>
+                    <Icon name="arrow-left" size={28} color="white" />
+                </TouchableOpacity>
+
+                {/* Course Name */}
+                <Text style={styles.courseTitle}>{courseTitle || "Information Systems"}</Text>
+
+                {/* Subtitle / Rating */}
+                <View style={styles.subHeaderRow}>
+                    <Text style={styles.subHeaderTitle}>{lessonTitle || "Module Details"}</Text>
+                    <View style={styles.starsRow}>
+                        {renderStars()}
+                    </View>
+                </View>
+            </View>
+
+            {/* --- BODY CONTENT --- */}
+            <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+
+                {/* Adapted Emotion Badge (if present) */}
+                {adaptedEmotion && (
+                    <View style={[styles.emotionBadge, isDark && { backgroundColor: '#2A2440', borderColor: '#4C35A5' }]}>
+                        <Icon name="brain" size={20} color="#7E57C2" />
+                        <Text style={[styles.emotionBadgeText, isDark && { color: '#B39DDB' }]}>
+                            Adaptive Content: Tailored for <Text style={{ fontWeight: 'bold' }}>{adaptedEmotion}</Text> state
+                        </Text>
+                    </View>
+                )}
+
+                {/* Attached Document Download Box */}
+                {url && url !== 'undefined' && (
+                    <TouchableOpacity style={[styles.pdfBox, isDark && { backgroundColor: '#1E1A33', borderColor: '#4C35A5' }]} onPress={handleOpenPDF} activeOpacity={0.8}>
+                        <View style={styles.pdfIconContainer}>
+                            <Icon name="file-pdf-box" size={36} color="#E53935" />
+                        </View>
+                        <View style={styles.pdfTextContainer}>
+                            <Text style={[styles.pdfTitle, isDark && { color: '#FFFFFF' }]}>Lesson Document Attachment</Text>
+                            <Text style={[styles.pdfSubtitle, isDark && { color: '#AAAAAA' }]}>Tap to open/download PDF file</Text>
+                        </View>
+                        <Icon name="download-outline" size={24} color={isDark ? "#B39DDB" : "#4E33B3"} />
+                    </TouchableOpacity>
+                )}
