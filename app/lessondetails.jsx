@@ -33,3 +33,24 @@ export default function LessonDetailScreen() {
     } catch (e) {
         console.log("Error parsing MCQs in lessondetails:", e);
     }
+
+    // Helper to render the 5 gold stars
+
+    const renderStars = () => {
+        return Array(5).fill(0).map((_, i) => (
+            <Icon key={i} name="star" size={16} color="#FFD700" style={styles.starIcon} />
+        ));
+    };
+
+    // --- NEW: PDF Download/Open Handler ---
+    const handleOpenPDF = () => {
+        if (url && url !== 'undefined') {
+            // Opens the URL in the phone's default browser / PDF viewer
+            Linking.openURL(url).catch((err) => {
+                console.error("Failed to open PDF URL:", err);
+                Alert.alert("Error", "Could not open the PDF file.");
+            });
+        } else {
+            Alert.alert("Notice", "No PDF attachment available for this lesson.");
+        }
+    };
