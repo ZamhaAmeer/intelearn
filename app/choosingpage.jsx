@@ -26,13 +26,13 @@ const ChoosingPage = () => {
 
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isDark && { backgroundColor: '#121212' }]}>
       
       {/* New Header Section: Use ImageBackground to apply the multi-layer wave asset.
         Replace with your actual asset path.
       */}
       <ImageBackground 
-        source={require("../src/assets/images/header-curve.png")} 
+        source={require('../src/assets/images/header-curve.png')} 
         style={styles.headerImageBackground}
         resizeMode="stretch" // This ensures the curve stretches across the full width
       >
