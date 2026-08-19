@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
+import { useGlobalTheme } from './themeStore';
 import {
   Dimensions,
   Image,
@@ -14,22 +15,23 @@ import {
 // Get screen height to scale the header appropriately
 const { height } = Dimensions.get('window');
 
-const choosingpage = () => {
+const ChoosingPage = () => {
   const router = useRouter();
+  const [isDark] = useGlobalTheme();
 
   const handleNavigation = () => {
     // Navigate to your login page file
-    router.push('/loginPage'); 
+    router.push('/loginpage'); 
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isDark && { backgroundColor: '#121212' }]}>
       
       {/* New Header Section: Use ImageBackground to apply the multi-layer wave asset.
         Replace with your actual asset path.
       */}
       <ImageBackground 
-        source={require("../src/assets/images/header-curve.png")} 
+        source={require('../src/assets/images/header-curve.png')} 
         style={styles.headerImageBackground}
         resizeMode="stretch" // This ensures the curve stretches across the full width
       >
@@ -47,40 +49,40 @@ const choosingpage = () => {
       <View style={styles.content}>
         {/* Welcome Section */}
         <View style={styles.welcomeSection}>
-          <Text style={styles.welcomeText}>Welcome to INTELEARN</Text>
-          <Text style={styles.tagline}>Learn smart, Grow fast</Text>
+          <Text style={[styles.welcomeText, isDark && { color: '#FFF' }]}>Welcome to INTELEARN</Text>
+          <Text style={[styles.tagline, isDark && { color: '#AAA' }]}>Learn smart, Grow fast</Text>
         </View>
 
-        {/* Path Section */}
+         {/* Path Section */}
         <View style={styles.pathSection}>
-          <Text style={styles.pathTitle}>Engrave your path</Text>
+          <Text style={[styles.pathTitle, isDark && { color: '#FFF' }]}>Engrave your path</Text>
           
           <View style={styles.optionsContainer}>
             {/* Student Option */}
             <TouchableOpacity 
-              style={styles.optionButton}
-              onPress={() => router.push("./loginpage_Student")} // Adjust paths as needed
+              style={[styles.optionButton, isDark && { backgroundColor: '#2A2A2A' }]}
+              onPress={() => router.push("./loginpage(student)")} // Adjust paths as needed
             >
-              <Ionicons name="school" size={35} color="black" style={styles.icon} />
-              <Text style={styles.optionText}>I am a Student</Text>
+              <Ionicons name="school" size={35} color={isDark ? "white" : "black"} style={styles.icon} />
+              <Text style={[styles.optionText, isDark && { color: '#FFF' }]}>I am a Student</Text>
             </TouchableOpacity>
 
             {/* Educator Option */}
             <TouchableOpacity 
-              style={styles.optionButton}
-              onPress={() => router.push("./loginPage_Lecturer")}
+              style={[styles.optionButton, isDark && { backgroundColor: '#2A2A2A' }]}
+              onPress={() => router.push("./loginpage(lecturer)")}
             >
-              <Ionicons name="people" size={35} color="black" style={styles.icon} />
-              <Text style={styles.optionText}>I am an Educator</Text>
+               <Ionicons name="people" size={35} color={isDark ? "white" : "black"} style={styles.icon} />
+              <Text style={[styles.optionText, isDark && { color: '#FFF' }]}>I am an Educator</Text>
             </TouchableOpacity>
 
-            {/* Guest Option */}
+           {/* Guest Option */}
             <TouchableOpacity 
-              style={styles.optionButton}
+              style={[styles.optionButton, isDark && { backgroundColor: '#2A2A2A' }]}
               onPress={() => router.push("./coursedetailsforguest")}
             >
-              <Ionicons name="person-outline" size={35} color="black" style={styles.icon} />
-              <Text style={styles.optionText}>I am a Guest</Text>
+              <Ionicons name="person-outline" size={35} color={isDark ? "white" : "black"} style={styles.icon} />
+              <Text style={[styles.optionText, isDark && { color: '#FFF' }]}>I am a Guest</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -121,7 +123,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
 
-  // Remaining Styles (updated for alignment/sizing)
+   // Remaining Styles (updated for alignment/sizing)
   content: {
     flex: 1,
     marginTop: -175, // Negative margin to bring content close to the wave dip
@@ -177,4 +179,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default choosingpage;
+export default ChoosingPage;

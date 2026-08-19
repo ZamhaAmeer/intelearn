@@ -1,6 +1,7 @@
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React from 'react';
+import { useGlobalTheme } from './themeStore';
 import {
   SafeAreaView,
   ScrollView,
@@ -12,8 +13,9 @@ import {
 } from 'react-native';
 
 export default function SubmissionScreen() {
+  const [isDark] = useGlobalTheme();
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={[styles.safeArea, isDark && { backgroundColor: '#121212' }]}>
       <StatusBar barStyle="light-content" backgroundColor="#4B2CBA" />
       
       {/* Top Purple Header */}
@@ -27,24 +29,24 @@ export default function SubmissionScreen() {
       </View>
 
       {/* Sub Header (White) */}
-      <View style={styles.subHeader}>
+      <View style={[styles.subHeader, isDark && { backgroundColor: '#1E1E1E' }]}>
         <TouchableOpacity style={styles.backButton} onPress={() => router.push('/coursedetails')}>
-          <Feather name="arrow-left" size={24} color="#0B1E4A" />
+          <Feather name="arrow-left" size={24} color={isDark ? "#FFF" : "#0B1E4A"} />
         </TouchableOpacity>
-        <Text style={styles.subHeaderText}>IS4106: Quiz 01 Submission</Text>
+        <Text style={[styles.subHeaderText, isDark && { color: '#FFF' }]}>IS4106: Quiz 01 Submission</Text>
         <TouchableOpacity>
-          <Feather name="more-vertical" size={24} color="#0B1E4A" />
+          <Feather name="more-vertical" size={24} color={isDark ? "#FFF" : "#0B1E4A"} />
         </TouchableOpacity>
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* Main Status Card */}
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>Submission status</Text>
+        <View style={[styles.card, isDark && { backgroundColor: '#1E1E1E', borderColor: '#2A2A2A' }]}>
+          <Text style={[styles.cardTitle, isDark && { color: '#FFF' }]}>Submission status</Text>
 
           {/* Submission Status */}
           <View style={styles.section}>
-            <Text style={styles.label}>SUBMISSION STATUS</Text>
+            <Text style={[styles.label, isDark && { color: '#AAAAAA' }]}>SUBMISSION STATUS</Text>
             <View style={styles.successBadge}>
               <MaterialCommunityIcons name="check-circle" size={18} color="#186A58" style={styles.badgeIcon} />
               <Text style={styles.successBadgeText}>Submitted for grading</Text>
@@ -125,7 +127,7 @@ export default function SubmissionScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#FCFDF8', 
+    backgroundColor: '#FCFDF8', // Light cream background
   },
   topHeader: {
     backgroundColor: '#4B2CBA',

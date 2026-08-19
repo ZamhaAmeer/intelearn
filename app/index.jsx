@@ -1,3 +1,5 @@
+import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device';
 import { useRouter } from "expo-router";
 import React, { useEffect, useRef } from "react";
 import {
@@ -158,5 +160,62 @@ const styles = StyleSheet.create({
   button: { backgroundColor: "#FFFFFF", paddingVertical: 16, paddingHorizontal: 60, borderRadius: 35, marginBottom: 80, elevation: 5, zIndex: 11 },
   buttonText: { fontSize: 18, fontWeight: "bold", color: "#2b0a90" },
 });
+
+//notifications
+async function registerForPushNotificationsAsync() {
+
+  if (Device.isDevice) {
+
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+
+    let finalStatus = existingStatus;
+
+    if (existingStatus !== 'granted') {
+
+      const { status } =
+        await Notifications.requestPermissionsAsync();
+
+      finalStatus = status;
+    }
+
+    if (finalStatus !== 'granted') {
+      alert('Permission not granted!');
+      return;
+    }
+
+    const tokenData =
+      await Notifications.getExpoPushTokenAsync({
+        projectId: 'YOUR_PROJECT_ID',
+      });
+
+      const token = tokenData.data;
+
+      console.log("TOKEN:");
+      console.log(token);
+
+      await fetch('http://172.22.236.72:3000/save-token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        token: token,
+      }),
+    });
+
+  } else {
+
+    alert('Use physical device');
+
+  }
+
+}
+
+useEffect(() => {
+
+  registerForPushNotificationsAsync();
+
+}, []);
 
 export default SplashScreen;
