@@ -24,7 +24,6 @@ const ChoosingPage = () => {
     router.push('/loginpage'); 
   };
 
-
   return (
     <View style={[styles.container, isDark && { backgroundColor: '#121212' }]}>
       
@@ -50,8 +49,8 @@ const ChoosingPage = () => {
       <View style={styles.content}>
         {/* Welcome Section */}
         <View style={styles.welcomeSection}>
-          <Text style={styles.welcomeText}>Welcome to INTELEARN</Text>
-          <Text style={styles.tagline}>Learn smart, Grow fast</Text>
+          <Text style={[styles.welcomeText, isDark && { color: '#FFF' }]}>Welcome to INTELEARN</Text>
+          <Text style={[styles.tagline, isDark && { color: '#AAA' }]}>Learn smart, Grow fast</Text>
         </View>
 
         {/* Path Section */}
