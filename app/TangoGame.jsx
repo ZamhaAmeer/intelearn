@@ -327,3 +327,27 @@ const ERROR_CATCHER = `
   }, true); // use capture to intercept before svelte stops propagation
 </script>
 `;
+
+adjustedHtml = adjustedHtml.replace('<head>', '<head>' + ERROR_CATCHER);
+
+export default function TangoGame() {
+  const [isGlobalDark] = useGlobalTheme();
+  const [isDarkMode, setIsDarkMode] = useState(isGlobalDark);
+  const webViewRef = useRef(null);
+  const router = useRouter();
+  const params = useLocalSearchParams();
+  const returnRoute = params?.returnRoute || '/coursedetails';
+
+  React.useEffect(() => {
+    setIsDarkMode(isGlobalDark);
+    const jsCode = `
+      window.__REACT_NATIVE_DARK_MODE__ = ${isGlobalDark};
+      if (${isGlobalDark}) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      true;
+    `;
+    webViewRef.current?.injectJavaScript(jsCode);
+  }, [isGlobalDark]);
