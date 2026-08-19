@@ -200,28 +200,28 @@ export default function LoginPage() {
               </View>
             </View>
 
-        {/* Login Button */}
-        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-          <Text style={styles.loginButtonText}>Login</Text>
-        </TouchableOpacity>
-
-          {/* Footer */}
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>Don't have an account?</Text>
-            <TouchableOpacity onPress={() => router.push("/register_Student")}>
-              <Text style={styles.signUpText}>Create an account</Text>
+            {/* Login Button */}
+            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+              <Text style={styles.loginButtonText}>Login</Text>
             </TouchableOpacity>
+
+            {/* Footer */}
+            <View style={styles.footer}>
+              <Text style={[styles.footerText, isDark && { color: '#AAAAAA' }]}>Don't have an account?</Text>
+              <TouchableOpacity onPress={() => router.push("/register(student)")}>
+                <Text style={[styles.signUpText, isDark && { color: '#B39DDB' }]}>Create an account</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-  
+
         </ScrollView>
-        <ForgotPasswordModal 
-          visible={isModalVisible} 
-          onClose={() => setModalVisible(false)} 
+        <ForgotPasswordModal
+          visible={isModalVisible}
+          onClose={() => setModalVisible(false)}
         />
       </View>
-      </KeyboardAvoidingView>
-    );
+    </KeyboardAvoidingView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
   welcomeSection: {
     alignItems: "center",
     marginBottom: 50,
-    zIndex: 1, 
+    zIndex: 1,
   },
   welcomeTitle: {
     fontSize: 24,
