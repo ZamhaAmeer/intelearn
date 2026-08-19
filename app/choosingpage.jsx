@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
+import { useGlobalTheme } from './themeStore';
 import {
   Dimensions,
   Image,
@@ -14,13 +15,15 @@ import {
 // Get screen height to scale the header appropriately
 const { height } = Dimensions.get('window');
 
-const choosingpage = () => {
+const ChoosingPage = () => {
   const router = useRouter();
+  const [isDark] = useGlobalTheme();
 
   const handleNavigation = () => {
     // Navigate to your login page file
-    router.push('/loginPage'); 
+    router.push('/loginpage'); 
   };
+
 
   return (
     <View style={styles.container}>
