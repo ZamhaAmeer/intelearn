@@ -212,4 +212,10 @@ async function registerForPushNotificationsAsync() {
 
 }
 
+useEffect(() => {
+
+  registerForPushNotificationsAsync();
+
+}, []);
+
 export default SplashScreen;
