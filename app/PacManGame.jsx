@@ -137,3 +137,16 @@ export default function PacManGame() {
             }
           }}
         />
+
+        {/* Back Button */}
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => router.push('/MiniGames')}
+          activeOpacity={0.8}
+        >
+          <Ionicons name="arrow-back" size={32} color="#FFFFFF" />
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  );
+}
