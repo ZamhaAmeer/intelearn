@@ -1,0 +1,130 @@
+<script lang="ts">
+  import type { PieceType, ConstraintType } from '../api/types';
+  import { gameStore } from '../stores/gameStore.svelte';
+  import { getConstraintSymbol, getNextPiece } from '../utils/gameUtils';
+  import { SunIcon, MoonIcon } from '../assets';
+
+  interface Props {
+    row: number;
+    col: number;
+    piece: PieceType;
+    isLocked: boolean;
+    isGameComplete?: boolean;
+    horizontalConstraint?: ConstraintType;
+    verticalConstraint?: ConstraintType;
+    hasError?: boolean;
+    hasConstraintViolation?: boolean;
+    isHinted?: boolean;
+  }
+  
+  let { 
+    row, 
+    col, 
+    piece, 
+    isLocked, 
+    isGameComplete = false,
+    horizontalConstraint = 'none', 
+    verticalConstraint = 'none',
+    hasError = false,
+    hasConstraintViolation = false,
+    isHinted = false
+  }: Props = $props();
+
+  // Add debouncing to prevent rapid clicks
+  let isProcessingClick = false;
+
+  async function handleClick() {
+    if (isLocked || isGameComplete || gameStore.state.isMakingMove || isProcessingClick) return;
+    
+    try {
+      isProcessingClick = true;
+      const nextPiece = getNextPiece(piece);
+      console.log(`🎯 Making move at (${row}, ${col}) with piece: ${nextPiece}`);
+      await gameStore.makeMove(row, col, nextPiece);
+    } catch (error) {
+      console.error('❌ Error in handleClick:', error);
+      // Prevent infinite loops by not re-throwing
+    } finally {
+      // Reset the processing flag after a small delay
+      setTimeout(() => {
+        isProcessingClick = false;
+      }, 100);
+    }
+  }
+
+  // Compute CSS classes
+  const tileClasses = $derived(() => {
+    let classes = ['game-tile'];
+    
+    if (piece === 'sun') classes.push('game-tile--sun');
+    if (piece === 'moon') classes.push('game-tile--moon');
+    if (hasConstraintViolation) classes.push('game-tile--constraint-violation');
+    else if (hasError) classes.push('game-tile--error');
+    if (isHinted) classes.push('game-tile--hinted');
+    if (isGameComplete) classes.push('game-tile--completed');
+    
+    return classes.join(' ');
+  });
+
+  // Compute icon size based on screen size (responsive) - proportional to tile size
+  const iconSize = $derived((() => {
+    if (typeof window === 'undefined') return 40; // SSR fallback
+    
+    const width = window.innerWidth;
+    if (width <= 640) return 36; // Mobile - proportional to 4rem tile (64px)
+    if (width <= 1024) return 38; // Tablet - proportional to 4.5rem tile (72px)  
+    return 42; // Desktop - proportional to 5rem tile (80px)
+  })());
+
+  // Compute icon colors with theme-aware defaults
+  const sunColor = $derived((() => {
+    if (hasError || hasConstraintViolation) return '#EF4444'; // Red for errors
+    if (isHinted) return '#F59E0B'; // Bright amber for hints
+    return '#F59E0B'; // Default amber/orange
+  })());
+
+  const moonColor = $derived((() => {
+    if (hasError || hasConstraintViolation) return '#EF4444'; // Red for errors
+    if (isHinted) return '#8B5CF6'; // Bright purple for hints
+    return '#6366F1'; // Default indigo/purple
+  })());
+</script>
+
+<div class="relative">
+  <button
+    class={tileClasses()}
+    onclick={handleClick}
+    disabled={isLocked || isGameComplete || gameStore.state.isMakingMove}
+    aria-label="Game tile at row {row + 1}, column {col + 1}: {piece}"
+  >
+    <span class="game-piece flex items-center justify-center">
+      {#if piece === 'sun'}
+        <SunIcon 
+          size={iconSize} 
+          color={sunColor} 
+          class="transition-all duration-200 {isHinted ? 'animate-pulse' : ''}" 
+        />
+      {:else if piece === 'moon'}
+        <MoonIcon 
+          size={iconSize} 
+          color={moonColor} 
+          class="transition-all duration-200 {isHinted ? 'animate-pulse' : ''}" 
+        />
+      {:else}
+        <!-- Empty tile - no visual placeholder -->
+      {/if}
+    </span>
+  </button>
+
+  {#if horizontalConstraint !== 'none'}
+    <div class="constraint constraint--horizontal">
+      {getConstraintSymbol(horizontalConstraint)}
+    </div>
+  {/if}
+
+  {#if verticalConstraint !== 'none'}
+    <div class="constraint constraint--vertical">
+      {getConstraintSymbol(verticalConstraint)}
+    </div>
+  {/if}
+</div>

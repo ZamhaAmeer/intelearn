@@ -1,0 +1,396 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    background-color: #ffffff;
+    color: #111827;
+  }
+  
+  html.dark {
+    background-color: #111827;
+    color: #f9fafb;
+  }
+  
+  body {
+    background-color: transparent;
+    color: inherit;
+  }
+}
+
+/* Game piece size variables - responsive and easily adjustable */
+:root {
+  --tile-size: 5rem;
+  --tile-font-size: 2.5rem;
+  --tile-border-radius: 0.375rem;
+  --piece-size: 4rem;  /* Increased from 3.5rem to 4rem for larger pieces */
+  
+  /* Mobile responsiveness - bigger sizes for better mobile experience */
+  --mobile-tile-size: 4rem;
+  --mobile-tile-font-size: 2rem;
+  --mobile-piece-size: 3.5rem;  /* Increased from 3rem to 3.5rem */
+  
+  /* Tablet responsiveness - medium sizes for tablets */
+  --tablet-tile-size: 4.5rem;
+  --tablet-tile-font-size: 2.25rem;
+  --tablet-piece-size: 3.75rem;  /* Increased from 3.25rem to 3.75rem */
+  
+  /* Color variables for easy customization */
+  --sun-color: #f59e0b;      /* Amber/yellow for sun */
+  --moon-color: #1d4ed8;     /* Deep blue for moon */
+  --moon-hover-bg: #dbeafe; /* Light blue background for moon hover */
+
+  /* Light theme colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-tertiary: #f3f4f6;
+  --bg-gradient-from: #dbeafe;
+  --bg-gradient-to: #e0e7ff;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+  --border-primary: #d1d5db;
+  --border-secondary: #6b7280;
+  --border-hover: #9ca3af;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --error-bg: rgba(254, 202, 202, 0.6);
+  --error-border: rgba(248, 113, 113, 0.7);
+  --error-shadow: rgba(248, 113, 113, 0.2);
+  --constraint-violation-bg: rgba(239, 68, 68, 0.4);
+  --constraint-violation-border: rgba(220, 38, 38, 0.6);
+  --constraint-violation-shadow: rgba(220, 38, 38, 0.25);
+  --hint-bg: #dbeafe;
+  --hint-border: #3b82f6;
+  --hint-shadow: rgba(59, 130, 246, 0.5);
+}
+
+/* Dark theme colors */
+:root.dark {
+  --bg-primary: #1f2937;
+  --bg-secondary: #111827;
+  --bg-tertiary: #374151;
+  --bg-gradient-from: #1f2937;
+  --bg-gradient-to: #111827;
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-tertiary: #9ca3af;
+  --border-primary: #4b5563;
+  --border-secondary: #6b7280;
+  --border-hover: #9ca3af;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --error-bg: rgba(127, 29, 29, 0.6);
+  --error-border: rgba(185, 28, 28, 0.7);
+  --error-shadow: rgba(185, 28, 28, 0.2);
+  --constraint-violation-bg: rgba(153, 27, 27, 0.4);
+  --constraint-violation-border: rgba(153, 27, 27, 0.6);
+  --constraint-violation-shadow: rgba(153, 27, 27, 0.25);
+  --hint-bg: #1e40af;
+  --hint-border: #3b82f6;
+  --hint-shadow: rgba(59, 130, 246, 0.5);
+}
+
+/* Custom styles for Tango game */
+.game-tile {
+  width: var(--tile-size);
+  height: var(--tile-size);
+  border: 2px solid var(--border-primary);
+  background-color: var(--bg-primary);
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--tile-font-size);
+  border-radius: var(--tile-border-radius);
+  position: relative;
+  /* Improved touch targets for mobile */
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Responsive tile sizing */
+@media (max-width: 640px) {
+  .game-tile {
+    width: var(--mobile-tile-size);
+    height: var(--mobile-tile-size);
+    font-size: var(--mobile-tile-font-size);
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .game-tile {
+    width: var(--tablet-tile-size);
+    height: var(--tablet-tile-size);
+    font-size: var(--tablet-tile-font-size);
+  }
+}
+
+.game-tile:hover:not(:disabled) {
+  border-color: var(--border-hover);
+  box-shadow: 0 4px 8px var(--shadow-color);
+  transform: translateY(-1px);
+  background-color: var(--bg-secondary);
+}
+
+.game-tile:disabled {
+  cursor: not-allowed;
+  background-color: var(--bg-secondary);
+  border-color: var(--border-secondary);
+}
+
+.game-tile:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Game piece styling - Updated for SVG icons */
+.game-piece {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  width: 100%;
+  height: 100%;
+}
+
+/* Piece type styling - Simplified for SVG icons */
+.game-tile--sun {
+  color: var(--sun-color);
+}
+
+.game-tile--sun:hover:not(:disabled) {
+  background-color: #fffbeb;
+  border-color: var(--sun-color);
+}
+
+.game-tile--moon {
+  color: var(--moon-color);
+}
+
+.game-tile--moon:hover:not(:disabled) {
+  background-color: var(--moon-hover-bg);
+  border-color: var(--moon-color);
+}
+
+/* Dark mode adjustments for piece hover states */
+:root.dark .game-tile--sun:hover:not(:disabled) {
+  background-color: rgba(251, 191, 36, 0.2);
+}
+
+:root.dark .game-tile--moon:hover:not(:disabled) {
+  background-color: rgba(29, 78, 216, 0.3);
+}
+
+/* Error state styling */
+.game-tile--error {
+  background-color: var(--error-bg) !important;
+  border-color: var(--error-border) !important;
+  box-shadow: 0 0 8px var(--error-shadow) !important;
+  animation: error-pulse 0.4s ease-out;
+}
+
+.game-tile--constraint-violation {
+  background-color: var(--constraint-violation-bg) !important;
+  border-color: var(--constraint-violation-border) !important;
+  box-shadow: 0 0 10px var(--constraint-violation-shadow) !important;
+  animation: error-pulse 0.4s ease-out;
+}
+
+.game-tile--hinted {
+  background-color: var(--hint-bg) !important;
+  border-color: var(--hint-border) !important;
+  box-shadow: 0 0 15px var(--hint-shadow) !important;
+  animation: hint-pulse 2s infinite;
+}
+
+/* Completed game state styling */
+.game-tile--completed {
+  opacity: 0.7;
+  cursor: not-allowed !important;
+  filter: saturate(0.6);
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+.game-tile--completed:hover {
+  opacity: 0.7 !important;
+  transform: none !important;
+  background-color: inherit !important;
+}
+
+@keyframes error-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes hint-pulse {
+  0%, 100% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
+  50% { box-shadow: 0 0 25px rgba(59, 130, 246, 0.8); }
+}
+
+/* Constraint styling */
+.constraint {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: 0.25rem;
+  z-index: 10;
+  transition: transform 0.15s ease-in-out;
+  cursor: default;
+}
+
+.constraint:hover {
+  transform: scale(1.1);
+  background-color: var(--bg-secondary);
+  border-color: var(--border-secondary);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.constraint--horizontal {
+  width: 1.5rem;
+  height: 1rem;
+  top: 50%;
+  right: -0.875rem;
+  transform: translateY(-50%);
+}
+
+.constraint--horizontal:hover {
+  transform: translateY(-50%) scale(1.1);
+}
+
+.constraint--vertical {
+  width: 1rem;
+  height: 1.5rem;
+  bottom: -0.875rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.constraint--vertical:hover {
+  transform: translateX(-50%) scale(1.1);
+}
+
+/* Responsive constraint sizing */
+@media (max-width: 640px) {
+  .constraint {
+    font-size: 0.75rem;
+  }
+  
+  .constraint--horizontal {
+    width: 1.25rem;
+    height: 0.875rem;
+    right: -0.75rem;
+  }
+  
+  .constraint--vertical {
+    width: 0.875rem;
+    height: 1.25rem;
+    bottom: -0.75rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .constraint {
+    font-size: 0.8125rem;
+  }
+  
+  .constraint--horizontal {
+    width: 1.375rem;
+    height: 0.9375rem;
+    right: -0.8125rem;
+  }
+  
+  .constraint--vertical {
+    width: 0.9375rem;
+    height: 1.375rem;
+    bottom: -0.8125rem;
+  }
+}
+
+.constraint-same {
+  color: var(--text-primary);
+}
+
+.constraint-different {
+  color: var(--text-primary);
+}
+
+/* Button styling */
+.game-button {
+  padding: 0.5rem 0.75rem;
+  background-color: #3b82f6;
+  color: white;
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 0.875rem;
+  /* Improved touch targets for mobile */
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.game-button:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+.game-button:disabled {
+  background-color: #d1d5db;
+  cursor: not-allowed;
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 640px) {
+  /* Improve touch targets on mobile */
+  button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  
+  /* Prevent text zoom on mobile iOS */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  select,
+  textarea {
+    font-size: 16px;
+  }
+  
+  /* Improve scrolling on mobile */
+  .max-h-40,
+  .max-h-48 {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Mobile hover states - disable hover on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .game-tile:hover:not(:disabled) {
+    transform: none;
+    box-shadow: none;
+    background-color: var(--bg-primary);
+  }
+  
+  .constraint:hover {
+    transform: none;
+    background-color: var(--bg-primary);
+    border-color: var(--border-primary);
+    box-shadow: none;
+  }
+}
+
+/* Landscape orientation on mobile - keep tiles reasonably sized */
+@media (max-width: 640px) and (orientation: landscape) {
+  :root {
+    --mobile-tile-size: 3.5rem;
+    --mobile-tile-font-size: 1.75rem;
+    --mobile-piece-size: 2.5rem;
+  }
+}
