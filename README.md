@@ -1,457 +1,536 @@
-# Inteleaarn
+# 🎓 Intelearn
 
-[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactnative.dev/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 [![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)](https://jwt.io/)
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![TensorFlow Lite](https://img.shields.io/badge/TensorFlow_Lite-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white)](https://www.tensorflow.org/lite)
 [![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/)
-[![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)](https://jwt.io/)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/)
 
-### An AI-Driven Interactive Learning Management System
+**Intelearn (Interactive Learning Intelligent System)** is an emotion-adaptive learning management system designed to provide a more personalized and engaging learning experience. It aims to identify students' emotional states during learning activities and adapt their learning experience through suitable interventions.
 
-Inteleaarn (Interactive Learning Intelligent System) is a centralized, web-based Learning Management System (LMS) designed to optimize institutional academic operations, streamline administrative workflows, and deliver role-specific learning experiences.
-
-The system uses a modular architecture with Role-Based Access Control (RBAC) to manage institutional departments, user permissions, bulk data processing, subject hierarchies, and real-time operational analytics for administrators, lecturers, and students.
+The project explores how emotion recognition and adaptive learning techniques can support students through appropriate learning resources, interactive activities, and encouragement.
 
 ---
 
-## 📌 Project Overview
+## 🎯 Project Overview
 
-Higher education institutions often face challenges managing fragmented academic records, manual user onboarding, and disconnected course delivery platforms.
+Traditional learning management systems primarily deliver educational content without fully considering students' emotional states during the learning process.
 
-Existing academic management tools can be rigid or lack tailored workflows for specific departmental structures. Institutions require a unified hub that separates administrative governance from everyday teaching and learning activities.
+Intelearn aims to address this challenge by combining learning management functionality with emotion-aware adaptation.
 
-Inteleaarn provides a streamlined workflow where administrators can onboard users and manage subjects in bulk, lecturers can curate interactive learning content, and students can access structured academic resources through dedicated dashboards.
+The system is designed to recognize selected emotional states and provide suitable learning interventions. For example, a student who appears frustrated may be offered a short interactive activity, while a student who appears sad may receive encouragement and an engaging learning activity.
 
-### Main Workflow
-
-```text
-User Authentication (JWT)
-      ↓
-Role Verification (RBAC)
-      ↓
-Role-Specific Dashboard Routing
-      ↓
-Department & Subject Management
-      ↓
-Content Delivery & Bulk Processing
-      ↓
-Interactive Learning & Assessment
-      ↓
-Real-Time Analytics & Progress Tracking
-```
-
----
+The goal is to create a more responsive, supportive, and personalized learning environment.
 
 ## 🎯 Objectives
 
-The main objectives of Inteleaarn are:
-
-1. To provide a centralized hub for institutional academic and administrative operations.
-2. To implement strict Role-Based Access Control (RBAC) for Administrators, Lecturers, and Students.
-3. To design intuitive, role-specific dashboards and interfaces using high-fidelity UI/UX standards.
-4. To automate bulk user onboarding and subject allocation via structured backend controllers.
-5. To structure academic curricula into modular subjects, departments, and learning materials.
-6. To ensure data integrity across users, lecturers, admins, and academic content via relational/structured database schemas.
-7. To provide real-time analytics and progress tracking for institutional oversight.
-8. To build a scalable, decoupled client-server architecture using RESTful APIs.
-
----
+-  Develop a platform that supports personalized learning experiences.
+-  Explore emotion recognition to understand students' learning states.
+-  Adapt learning activities according to detected emotional states.
+-  Provide interactive educational activities to encourage engagement.
+-  Support lecturers in organizing and delivering learning materials.
+-  Offer AI-assisted learning support through virtual learning mentors.
+-  Improve the accessibility and usability of digital learning.
 
 ## ✨ Key Features
 
-### 1. Role-Based Access Control (RBAC)
+### 🧠 1. Emotion-Adaptive Learning
 
-The system enforces permission boundaries across three primary user tiers:
+The system is designed to recognize the following emotional states:
 
-- **Administrators:** Full system oversight, department configuration, and user directory management.
-- **Lecturers:** Subject management, learning material uploads, and student performance tracking.
-- **Students:** Course enrollment, interactive content access, and personal progress monitoring.
+- 😊 Happy
+- 😢 Sad
+- 😐 Neutral
+- 😠 Frustrated
 
----
+Based on the detected state, Intelearn can provide appropriate learning interventions.
 
-### 2. Bulk Data Processing & Onboarding
+### 🎮 2. Personalized Learning Interventions
 
-Administrators can efficiently manage large student cohorts and staff directories through bulk data controllers, supporting:
+- 🎯 Mini-games
+- 🧩 Riddle quizzes
+- 📚 Concept revision activities
+- 💬 Encouraging messages
+- 📖 Additional learning resources
 
-- Batch user registration
-- Automated role assignment
-- Department and batch mapping
-- Validation of institutional records
+These interventions aim to help students remain engaged with their learning activities.
 
----
+### 📚 3. Learning Management
 
-### 3. Structured Academic Payload Representation
+- 🔎 Course discovery and course information
+- 📄 Learning-material access
+- 🗂️ Educational content organization
+- 📝 Quizzes and assignments
+- 🔁 Learning-resource revision
 
-Users, subjects, and permissions are processed using structured JSON schemas between the Express controllers and the React frontend.
+### 👨‍🏫 4. Lecturer Features
 
-Example:
+- 📤 Learning-material management
+- 📝 Quiz and assignment organization
+- 📚 Learning-activity preparation
+- 🎓 Digital learning support
 
-```json
-{
-  "subjectCode": "CIS3101",
-  "subjectName": "Software Engineering",
-  "department": "Computing and Information Systems",
-  "assignedLecturer": {
-    "lecturerId": "LEC-104",
-    "name": "Academic Staff"
-  },
-  "modules": [
-    {
-      "moduleId": "MOD-01",
-      "title": "System Architecture",
-      "status": "Published"
-    },
-    {
-      "moduleId": "MOD-02",
-      "title": "Database Modeling",
-      "status": "Draft"
-    }
-  ]
-}
-```
+### 🤖 5. AI Learning Mentors
 
----
+**🧑‍💻 Dhruv** — Designed to assist with technical questions and learning-related explanations.
 
-### 4. Subject & Curriculum Management
+**🌟 Maya** — Designed to provide encouraging academic guidance, step-by-step explanations, and motivational support.
 
-The system provides dedicated controllers for creating, updating, and archiving academic subjects:
+### 🔐 6. User Authentication
 
-- Department-level subject categorization
-- Lecturer-to-subject assignment
-- Module and resource structuring
+Authentication functionality helps protect learning features and supports access according to configured user roles.
 
----
+### 🎯 7. Interactive Learning Activities
 
-### 5. Role-Specific Interactive Dashboards
-
-Users interact with tailored workspaces built with React.js and Tailwind CSS, displaying relevant metrics, upcoming academic tasks, and quick-action controllers.
-
----
-
-### 6. Secure RESTful API Architecture
-
-Backend operations are protected through middleware chains:
-
-- JWT-based session authentication
-- Role-verification middleware
-- Request payload validation
-- Standardized error handling
+Interactive activities provide alternative ways for students to practise, review concepts, and engage with their learning.
 
 ---
 
 ## 🏗️ System Architecture
 
+Intelearn follows a modular architecture consisting of the following conceptual components:
+
+- 📱 **Frontend:** Mobile application and user interface.
+- ⚙️ **Backend API:** Application logic, authentication, and communication.
+- 🗃️ **Database:** Storage for application and learning data.
+- 🧠 **Emotion Detection:** Recognition of selected emotional states.
+- 🔄 **Adaptive Learning:** Selection of suitable learning interventions.
+- 🤖 **AI Learning Mentors:** Additional learning assistance where integrated.
+
+### 🗺️ Architecture Overview
+
 ```text
-                    ┌─────────────────────┐
-                    │   Client Browser    │
-                    │  Admin / Lec / Stu  │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │   React Frontend    │
-                    │ Vite + Tailwind CSS │
-                    └──────────┬──────────┘
-                               │
-                           REST API
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │  Express.js Backend │
-                    │       Node.js       │
-                    └──────────┬──────────┘
-                               │
-             ┌─────────────────┼─────────────────┐
-             │                 │                 │
-             ▼                 ▼                 ▼
-      ┌─────────────┐   ┌─────────────┐   ┌─────────────┐
-      │ Auth & RBAC │   │  API Route  │   │  Bulk Data  │
-      │ Middleware  │   │ Controllers │   │  Processor  │
-      └─────────────┘   └──────┬──────┘   └─────────────┘
-                               │
-                               ▼
-                        ┌─────────────┐
-                        │  Database   │
-                        │Models/Schema│
-                        └──────┬──────┘
-                               │
-                               ▼
-                     ┌────────────────────┐
-                     │ Role Dashboards &  │
-                     │ Academic Analytics │
-                     └────────────────────┘
+                  Intelearn Mobile App
+                          |
+                          v
+                     Backend API
+                          |
+           +--------------+--------------+
+           |              |              |
+           v              v              v
+        Database       Emotion        Learning
+                      Detection      Management
+                          |
+                          v
+                    Adaptive Learning
+                     Interventions
 ```
+
+*Note: This is a conceptual diagram. Update it to match the final implemented architecture.*
 
 ---
 
 ## 🛠️ Technology Stack
 
-| Layer | Technology |
-| :--- | :--- |
-| UI/UX Design | Figma |
-| Frontend | React.js (Vite) |
-| Styling | Tailwind CSS |
-| Backend/API | Node.js + Express.js |
-| Authentication | JSON Web Tokens (JWT) |
-| Access Control | Custom RBAC Middleware |
-| Database | MongoDB / Relational Database Schemas |
-| API Architecture | RESTful API Controllers |
-| Project Management | Agile Management Boards |
-| Version Control | Git + GitHub |
+| Component | Technology | Purpose |
+|---|---|---|
+| 📱 Frontend | React Native | Mobile application development |
+| 💻 Programming | JavaScript | Application logic |
+| ⚙️ Backend | Node.js | Server-side runtime |
+| 🔌 API framework | Express.js | REST API development |
+| 🔐 Authentication | JWT | Token-based authentication |
+| 🧠 Emotion detection | Machine learning model | Emotion classification |
+| 🎨 UI/UX design | Figma | Interface design and prototyping |
+| 🌿 Version control | Git and GitHub | Source-code management |
+
+*Include only the technologies actually used in your implementation.*
 
 ---
 
 ## 📂 Project Structure
 
+The following is an example structure. Update it to match your repository.
+
 ```text
-inteleaarn/
-│
-├── frontend/
+intelearn/
+├── 📱 frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   ├── pages/
-│   │   ├── context/
-│   │   └── services/
-│   └── React + Tailwind application
+│   │   ├── screens/
+│   │   ├── navigation/
+│   │   ├── services/
+│   │   └── assets/
+│   └── package.json
 │
-├── backend/
+├── ⚙️ backend/
 │   ├── controllers/
-│   ├── models/
 │   ├── routes/
 │   ├── middleware/
-│   └── Node.js + Express application
+│   ├── models/
+│   ├── services/
+│   ├── config/
+│   ├── index.js
+│   └── package.json
 │
-├── docs/
-│   ├── architecture/
-│   ├── srs/
-│   └── database-schemas/
+├── 🧠 emotion-detection/
+│   ├── model/
+│   ├── services/
+│   └── README.md
 │
+├── 📚 docs/
 ├── .gitignore
-├── README.md
-└── LICENSE
+└── README.md
 ```
 
 ---
 
-## 🔄 Development Plan
+## ⚙️ Project Setup and Installation
 
-### Phase 1 — Requirement Analysis & SRS
+### 📋 Prerequisites
 
-- [x] Define project scope and institutional objectives
-- [x] Prepare Software Requirements Specification (SRS)
-- [x] Design high-level system architecture diagram
-- [x] Set up project management tracking boards
+Install the required tools:
 
-### Phase 2 — UI/UX Design
+- [Node.js](https://nodejs.org/)
+- [Git](https://git-scm.com/)
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Expo Go](https://expo.dev/go), if the mobile application uses Expo
+- Required database and machine-learning dependencies, if applicable
 
-- [x] Design wireframes and high-fidelity prototypes in Figma
-- [x] Establish color palettes, typography, and component tokens
-- [x] Design role-specific views for Admins, Lecturers, and Students
+Verify your installations:
 
-### Phase 3 — Database & Schema Modeling
+```bash
+node --version
+npm --version
+git --version
+```
 
-- [x] Define entity relationships and schema constraints
-- [x] Create models for Users, Admins, Lecturers, and Students
-- [x] Create models for Departments, Subjects, and Learning Content
+### 📥 1. Clone the Repository
 
-### Phase 4 — Backend API & Controller Development
+```bash
+git clone <YOUR_GITHUB_REPOSITORY_URL>
+cd intelearn
+```
 
-- [x] Configure Node.js and Express.js server
-- [x] Implement JWT authentication and RBAC middleware
-- [x] Develop user and admin management controllers
-- [x] Implement bulk data processing endpoints
-- [x] Build subject and module CRUD controllers
+Replace the placeholder with your actual GitHub repository URL.
 
-### Phase 5 — Frontend Implementation
+### 📱 2. Install Frontend Dependencies
 
-- [x] Set up React.js application with Tailwind CSS
-- [x] Build reusable UI components and layout wrappers
-- [x] Implement role-based client routing
-- [x] Integrate frontend views with Express REST APIs
+```bash
+cd frontend
+npm install
+```
 
-### Phase 6 — Testing & Evaluation
+If the application uses Expo, start the development server:
 
-- [x] Conduct unit and integration testing on API endpoints
-- [x] Validate RBAC security boundaries across user roles
-- [x] Test bulk upload performance and error handling
-- [x] Conduct usability testing on dashboard workflows
+```bash
+npx expo start
+```
+
+Scan the displayed QR code with Expo Go or launch a supported emulator.
+
+### ⚙️ 3. Install Backend Dependencies
+
+Open a new terminal from the project root:
+
+```bash
+cd backend
+npm install
+```
+
+Create the required `.env` file using the environment variables expected by your backend.
+
+Example:
+
+```env
+PORT=5000
+JWT_SECRET=your_secure_secret
+DATABASE_URL=your_database_connection_string
+```
+
+Start the backend using the script configured in `package.json`. For example:
+
+```bash
+npm run dev
+```
+
+If the project has no `dev` script and uses `index.js` as its entry point, use:
+
+```bash
+node index.js
+```
+
+### 🧠 4. Configure Emotion Detection
+
+If emotion detection runs as a separate Python service, follow its own setup instructions.
+
+For a service that includes a `requirements.txt` file:
+
+```bash
+python -m venv .venv
+```
+
+Activate the virtual environment.
+
+**Windows:**
+
+```bash
+.venv\Scripts\activate
+```
+
+**macOS/Linux:**
+
+```bash
+source .venv/bin/activate
+```
+
+Install the dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Run the service using its actual entry point. Skip this step if emotion detection is already integrated into another application component.
+
+### 🔗 5. Configure the API Connection
+
+Configure the frontend to use the correct backend address.
+
+- **Android emulator:** `http://10.0.2.2:5000`
+- **Physical device:** `http://YOUR_COMPUTER_LAN_IP:5000`
+- **Local web application:** `http://localhost:5000`
+
+Use the appropriate address for your development environment and replace the port if necessary.
+
+### ▶️ 6. Run the Application
+
+Run each required component in a separate terminal:
+
+| Component | Example command |
+|---|---|
+| 📱 Frontend | `npx expo start` |
+| ⚙️ Backend | `npm run dev` |
+| 🧠 Separate emotion service | Follow its setup instructions |
+
+Start the backend and other required services before testing frontend features that depend on them.
+
+### 🛠️ Troubleshooting
+
+- 📦 **Dependency errors:** Check your Node.js version and run `npm install` in the correct directory.
+- 🔗 **Connection errors:** Verify the backend is running and the API URL is correct.
+- 🔐 **Authentication errors:** Check your environment variables and token configuration.
+- 🗃️ **Database errors:** Verify the database is running and its connection settings are correct.
+- 🧠 **Emotion-detection errors:** Check model files, dependencies, permissions, and service logs.
+
+**Security note:** Never commit `.env` files, credentials, or private keys to GitHub.
+
+*Setup commands are examples. Confirm the actual folder names, scripts, and environment variables against your repository.*
 
 ---
 
-## 🔐 Authentication & Access Flow
+## 🔄 How It Works
 
-Inteleaarn operates with strict **token-based authentication and role verification**.
+1. 🔐 The student signs in to the application.
+2. 🔎 The student searches for or selects a course.
+3. 📚 The student accesses learning materials or assessments.
+4. 🧠 Emotion detection evaluates supported input when appropriate.
+5. 🏷️ The system classifies the detected emotional state.
+6. 🎯 An appropriate learning intervention is selected.
+7. 🚀 The student continues learning with the recommended activity.
+
+---
+
+## 🔐 Authentication and Authorization
+
+A typical token-based authentication workflow includes:
+
+1. 👤 The user submits login credentials.
+2. ✅ The backend validates the credentials.
+3. 🎟️ An authentication token is issued after successful authentication.
+4. 🔒 The client handles the token securely.
+5. 📡 Protected requests include the token.
+6. 🛡️ The backend verifies the token and checks permissions.
+
+### 🛡️ Security Considerations
+
+- 🔑 Store passwords using secure password hashing.
+- 🔒 Keep secrets in environment variables.
+- 🚫 Exclude `.env` files from version control.
+- ✅ Validate incoming requests.
+- 👥 Apply role-based access control where required.
+- 🌐 Use HTTPS in production.
+
+---
+
+## 🧠 Emotion Detection Workflow
+
+### 🎭 Supported Emotional Categories
+
+| Emotion | Icon | Possible Intervention |
+|---|---|---|
+| Happy | 😊 | Continue learning or offer a suitable next activity |
+| Sad | 😢 | Encouragement or an engaging activity |
+| Neutral | 😐 | Continue the regular learning experience |
+| Frustrated | 😠 | Mini-game, riddle, or concept revision |
+
+Emotion classification is an estimate and should not be treated as a definitive assessment of a student's feelings.
+
+### 🔄 Workflow
 
 ```text
-User Login Request
-   ↓
-Credential Validation
-   ↓
-JWT Issuance (Contains User ID & Role)
-   ↓
-Protected Route Request
-   ↓
-RBAC Middleware Verification
-   ↓
-Grant / Deny Controller Access
+📚 Start Learning Activity
+          |
+          v
+🔍 Check Detection Conditions
+          |
+          v
+📷 Process Supported Input
+          |
+          v
+🧠 Classify Emotional State
+          |
+          v
+🎯 Select Learning Intervention
+          |
+          v
+🎮 Present Recommended Activity
+          |
+          v
+🚀 Continue Learning
 ```
 
-This ensures users can only invoke API controllers and view interface routes explicitly permitted for their institutional role.
+### 🔏 Privacy and Responsible Use
+
+- Inform users when emotion detection is active.
+- Process information only for the intended purpose.
+- Avoid unnecessary storage of facial data.
+- Protect any retained results.
+- Do not make high-impact academic decisions solely from emotion classification.
 
 ---
 
 ## 🔌 API Endpoints
 
-```text
-POST   /api/v1/auth/login
-POST   /api/v1/auth/register
+The following are example REST API endpoints. Confirm them against the actual backend routes.
 
-GET    /api/v1/users
-POST   /api/v1/users/bulk
-PUT    /api/v1/users/{id}
-DELETE /api/v1/users/{id}
-
-GET    /api/v1/subjects
-POST   /api/v1/subjects
-PUT    /api/v1/subjects/{id}
-DELETE /api/v1/subjects/{id}
-
-GET    /api/v1/lecturers
-POST   /api/v1/lecturers/assign
-```
+| Method | Example Endpoint | Purpose |
+|---|---|---|
+| `POST` | `/api/auth/register` | 👤 Register a user |
+| `POST` | `/api/auth/login` | 🔐 Authenticate a user |
+| `GET` | `/api/courses` | 📚 Retrieve courses |
+| `GET` | `/api/courses/:id` | 📖 Retrieve course details |
+| `GET` | `/api/materials` | 📄 Retrieve learning materials |
+| `GET` | `/api/quizzes` | 📝 Retrieve quizzes |
+| `POST` | `/api/quizzes` | ➕ Create a quiz, if authorized |
+| `GET` | `/api/assignments` | 📋 Retrieve assignments |
+| `POST` | `/api/assignments` | ➕ Create an assignment, if authorized |
+| `POST` | `/api/emotions/detect` | 🧠 Submit input for emotion detection, if implemented |
 
 ---
 
-## 🗄️ Database Entities
+## 🗃️ Core Data Entities
 
-### Users
+| Entity | Purpose |
+|---|---|
+| 👤 User | Account and profile information |
+| 🛡️ Role | User permissions |
+| 📚 Course | Course information |
+| 📄 Learning Material | Educational resources |
+| 📝 Quiz | Quiz information |
+| 📋 Assignment | Assignment information |
+| 📤 Submission | Student submissions |
+| 🧠 Emotion Result | Emotion-classification results, if retained |
+| 🎯 Learning Intervention | Adaptive activity or recommendation |
 
-Stores core authentication credentials, profile metadata, and global role identifiers.
-
-### Admins
-
-Stores administrative privileges and institutional oversight metadata.
-
-### Lecturers
-
-Stores academic staff profiles, department affiliations, and assigned subjects.
-
-### Subjects
-
-Stores curriculum details, subject codes, credit values, and associated learning modules.
-
-### Learning Content
-
-Stores course materials, module structures, and assessment resources linked to subjects.
+The final entities and relationships should reflect the database schema used in the project.
 
 ---
 
-## 🧠 System Processing Pipeline
+## 🧪 Development and Testing
 
-```text
-Client Action (Admin / Lecturer / Student)
-    ↓
-React State & API Service Call
-    ↓
-Express Route Handler
-    ↓
-JWT & RBAC Security Check
-    ↓
-Controller Business Logic
-    ↓
-Database Schema Validation & Query
-    ↓
-Structured JSON Response
-    ↓
-Dynamic UI Dashboard Update
-```
+### 🔍 Development Stages
 
----
+1. 📋 Requirement analysis
+2. 🎨 UI/UX design
+3. 📱 Frontend development
+4. ⚙️ Backend development
+5. 🧠 Emotion-detection integration
+6. 🧪 Testing and evaluation
+7. 🚀 Deployment and maintenance
 
-## 📊 Project Evaluation
+### ✅ Testing Areas
 
-The system is evaluated across four primary dimensions:
-
-### Security & Access Control
-
-- Accuracy of role permission boundaries
-- Token expiration and session security
-- Protection against unauthorized endpoint access
-
-### Backend Performance
-
-- Bulk user processing speed
-- API response latency
-- Database query optimization and schema integrity
-
-### Code & Architecture Quality
-
-- Modularity of Express controllers and routes
-- Reusability of React frontend components
-- Maintainability of state and API service layers
-
-### Usability
-
-- Clarity of role-specific dashboards
-- Ease of subject and content management
-- Responsiveness across desktop and mobile viewports
+- 🔐 Authentication and authorization
+- 📚 Course and material access
+- 📝 Quiz and assignment workflows
+- 🧠 Emotion-detection behavior
+- 🎯 Adaptive learning interventions
+- 📱 Mobile application usability
+- ⚡ API performance and application stability
 
 ---
 
-## 🚧 Current Scope
+## 📊 Evaluation
 
-The core implementation focuses on:
+### 🧠 Emotion-Detection Evaluation
 
-```text
-Institutional Setup
-        ↓
-Role-Based Authentication
-        ↓
-Bulk User & Staff Onboarding
-        ↓
-Subject & Curriculum Allocation
-        ↓
-Interactive Dashboard Operations
-        ↓
-Academic Progress Monitoring
-```
+Possible evaluation metrics include:
 
----
+- Accuracy
+- Precision
+- Recall
+- F1-score
+- Confusion matrix
 
-## 🔮 Future Improvements
+Report actual results from your evaluation rather than estimated performance values.
 
-Possible future extensions include:
+### 👥 Usability Evaluation
 
-- AI-powered personalized study path recommendations
-- Automated grading and intelligent quiz generation
-- Real-time in-app messaging and discussion forums
-- Live virtual classroom integration (WebRTC)
-- Mobile application support (React Native / Flutter)
-- Automated attendance and engagement analytics
+Evaluate navigation, task completion, accessibility, and user feedback.
+
+### ⚡ Performance Evaluation
+
+Measure API response times, application stability, and emotion-detection performance under expected conditions.
 
 ---
 
-## 👨‍💻 Project Status & Acknowledgments
+## 🚀 Future Enhancements
 
-**Status:** Capstone Project Completed / Active Refinement
-
-**Project:** Inteleaarn (Interactive Learning Intelligent System)
-
-**Type:** Undergraduate Group Capstone Project (Group No. 19)
-
-**Institution:** Department of Computing and Information Systems, Sabaragamuwa University of Sri Lanka
-
-**Industry Mentor:** Vadivel Abishethvarman (QC IT Solutions)
-
-**Internal Supervisor:** Ms. A.W.T. Dulmini
-
-**Primary Frontend:** React.js + Tailwind CSS
-
-**Primary Backend:** Node.js + Express.js
+- 🎯 More personalized learning recommendations
+- 🎮 Additional interactive learning activities
+- 🤖 Enhanced AI mentor capabilities
+- 📊 Learning progress analytics
+- 👨‍🏫 Improved lecturer dashboards
+- ♿ Enhanced accessibility support
+- 🧪 More comprehensive model evaluation
+- 🔏 Improved privacy controls
+- 🔗 Integration with existing learning management systems
 
 ---
 
-## 📜 License
+## 👥 Project Information
 
-This project is developed for academic and educational purposes.
+| Item | Details |
+|---|---|
+| 🎓 Project Name | Intelearn |
+| 📖 Full Name | Interactive Learning Intelligent System |
+| 💡 Project Type | Emotion-Adaptive Learning Management System |
+| 🏛️ University | Sabaragamuwa University of Sri Lanka |
+| 🏫 Faculty | Faculty of Computing |
+| 💻 Department | Department of Computing and Information Systems |
+| 👥 Group | Group 19 |
+| 🤝 Mentor | Vadivel Abishethvarman |
+| 🧑‍🏫 Supervisor | Ms. A. W. T. Dulmini |
+
+---
+
+## 📄 License
+
+This project was developed for academic purposes. Unless a separate license has been added to the repository, the code should not be assumed to be released under an open-source license.
+
+If the project is intended for public distribution, add an appropriate `LICENSE` file and update this section accordingly.
+
+---
+
+<div align="center">
+
+### 🎓 Intelearn
+
+**Towards a more personalized and engaging learning experience.**
+
+*Built with 💙 for smarter learning.*
+
+</div>
